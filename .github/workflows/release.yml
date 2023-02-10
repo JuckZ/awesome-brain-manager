@@ -1,0 +1,36 @@
+name: Build obsidian plugin
+
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  PLUGIN_NAME: awesome-brain-manager
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.x
+          cache: 'npm'
+      - name: Install
+        run: npm -D i
+      - name: Test
+        run: npm run report:coverage
+      - name: Build
+        id: build
+        run: |
+          npm run build --if-present
+          cp manifest.json dest
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npx semantic-release

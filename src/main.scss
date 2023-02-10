@@ -1,0 +1,20 @@
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+.book {
+  border: 1px solid var(--background-modifier-border);
+  padding: 10px;
+}
+
+.book__title {
+  font-weight: 600;
+}
+
+.book__author {
+  color: var(--text-muted);
+}

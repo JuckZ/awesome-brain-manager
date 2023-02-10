@@ -1,0 +1,40 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "include": ["src/**/*.ts", "types.d.ts", "src/utils/db/sqljs.js", "src/utils/db/sqljs.js"],
+  "exclude": ["node_modules", "**/*.spec.ts"],
+  "compilerOptions": {
+    // "esModuleInterop": true,
+    "baseUrl": "./src/",
+    // "inlineSourceMap": true,
+    // "inlineSources": true,
+    "module": "ESNext",
+    // "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "ES6",
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    // "noImplicitAny": true,
+    "importHelpers": true,
+    "isolatedModules": false,
+	  "strictNullChecks": true,
+    "lib": [
+      "DOM",
+      "ES5",
+      "ES6",
+      "ES7",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node",
+      "svelte",
+      "jest"
+    ]
+  }
+}
