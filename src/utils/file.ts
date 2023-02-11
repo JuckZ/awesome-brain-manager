@@ -63,11 +63,71 @@ export async function getAllFiles(folders, ignorePath: string[], ext, files): Pr
                 const element = children[index];
                 if (element.children && element.children.length != 0) {
                     await getAllFiles(element, ignorePath, ext, files);
-                } else if (element.extension && element.extension === ext) {
+                } else if (ext && ext.length > 0) {
+                    console.log(ext, element.extension, ext.contains(element.extension));
+                    if (element.extension && ext.contains(element.extension)) {
+                        files.push(element);
+                    }
+                } else {
                     files.push(element);
                 }
             }
         }
     }
     return files;
+}
+
+//from https://github.com/Pamela-Wang/Obsidian-Starter-Vaults/tree/2.01/Potato%20Vault/90%20Meta/92%20Plugins/Templater%20Scripts
+export function getCleanTitle(msg) {
+    // TODO 重构
+    if (msg) {
+        return msg.trim();
+    }
+    //  no dash in title so return current title trimmed
+    const count = (msg.match(/-/g) || []).length;
+    let nameTitle = msg;
+
+    if (nameTitle.length > 1) {
+        nameTitle = nameTitle.trim();
+    }
+
+    if (count == 0) {
+        // DONE send back empty string if untitled
+        if (msg.includes('Untitled')) {
+            console.log('Untitled so returning empty space');
+            return ' ';
+        } else {
+            console.log('No Dash so returning trimmed:', msg);
+            // TODO remove fullstop
+            return nameTitle.trim();
+        }
+    }
+    // if there is a dash in the title
+    else if (count == 1) {
+        console.log('Dash detected in:', msg);
+        nameTitle = nameTitle.split('-').slice(1);
+        nameTitle = nameTitle[0];
+        return nameTitle.trim();
+    } else if (count > 1) {
+        // TODO Check for date
+
+        const dateType = /(\d{4})([-])(\d{2})([-])(\d{2})/;
+        const isMatch = dateType.test(msg);
+
+        if (isMatch && count == 2) {
+            // since it has a date... and only has dashes for a date, return it.
+            console.log('Date detected! No other dash, return as is', msg);
+
+            return nameTitle.trim();
+        } else {
+            // it may contain date but also a front snippet OR it does not contain date and just multiple dashes
+            console.log('Just front snippets with extra dash or date but also more dash', msg);
+
+            nameTitle = nameTitle.split('-').slice(1);
+            nameTitle = nameTitle.join('-');
+            return nameTitle.trim();
+        }
+    } else {
+        console.log('Logic Error');
+    }
 }

@@ -39,7 +39,8 @@ import { buildTagRules } from 'render/Tag';
 import { ReminderModal } from 'ui/reminder';
 import Logger, { initLogger } from 'utils/logger';
 import { notify } from 'utils/request';
-import { getAllFiles, getNotePath } from 'utils/file';
+import { getAllFiles, getCleanTitle, getNotePath } from 'utils/file';
+import { getWeather } from 'utils/weather';
 import { getTagsFromTask, getTaskContentFromTask } from 'utils/common';
 import {
     dbResultsToDBTables,
@@ -52,7 +53,7 @@ import {
 } from 'utils/db/db';
 import { insertAfterHandler, setBanner } from 'utils/content';
 import { getEditorPositionFromIndex } from 'utils/editor';
-import { searchPicture } from 'utils/genBanner';
+import { getLocalRandom, searchPicture } from 'utils/genBanner';
 import { loadSQL } from 'utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from 'utils/promotodo';
 import type { Database } from 'sql.js';
@@ -780,11 +781,23 @@ export default class ObsidianManagerPlugin extends Plugin {
         this.style.detach();
     }
 
+    public getLocalRandom(title: string, path: string) {
+        return getLocalRandom(title, this.app.vault.getAbstractFileByPath(path));
+    }
+
+    public getCleanTitle(title: string) {
+        return getCleanTitle(title);
+    }
+
+    public async getWeather(city: string) {
+        // return await getWeather(city);
+        return '';
+    }
     async setRandomBanner(path: TAbstractFile | null, origin: string): Promise<void> {
         // const ignorePath = ['Journal', 'Reading', 'MyObsidian', 'Archive'];
         const ignorePath = [];
         // FIXME 找到并使用更高性能api this.app.vault.getMarkdownFiles();
-        const allFilePathNeededHandle: TFile[] = await getAllFiles(path, ignorePath, 'md', []);
+        const allFilePathNeededHandle: TFile[] = await getAllFiles(path, ignorePath, ['md'], []);
         // allFilePathNeededHandle = allFilePathNeededHandle.filter(file => {
         //     const banner =
         //         this.app.metadataCache.metadataCache[this.app.metadataCache.fileCache[file.path].hash].frontmatter

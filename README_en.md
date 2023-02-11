@@ -199,7 +199,7 @@ OUTDIR="../juckz.github.io/blogs/.obsidian/plugins/awesome-brain-manager" npm ru
 <details open>
   <summary><h2> 📈 4. Test report </h2></summary>
 
-  <img src="https://codecov.io/gh/JuckZ/awesome-brain-manager/branch/master/graphs/sunburst.svg?token=D6DI2HRC5Q"/>
+  <img src="https://codecov.io/gh/JuckZ/awesome-brain-manager/branch/master/graphs/tree.svg?token=OSGSNH98WS"/>
 </details>
 
 <details open>

@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import { request } from 'utils/request';
 import Logger from '../utils/logger';
+import { getAllFiles } from '../utils/file';
 
 export const searchPicture = async (source: string, keyword: string): Promise<string> => {
     const res: AxiosResponse = await new Promise((resolve, reject) => {
@@ -17,5 +18,15 @@ export const searchPicture = async (source: string, keyword: string): Promise<st
         return res.data;
     } else {
         return '';
+    }
+};
+
+export const getLocalRandom = async (title, path: any) => {
+    const allImages = await getAllFiles(path, [], ['png', 'jpg', 'jpeg', 'svg', 'gif', 'bmp', 'webp'], []);
+    const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
+    if (!randomImage) {
+        return '';
+    } else {
+        return randomImage.path;
     }
 };
