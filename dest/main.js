@@ -43667,6 +43667,9 @@ var TimeLine_default = /* @__PURE__ */ defineComponent({
     const props = __props;
     const { pomodoroList, plugin: plugin3 } = toRefs(props);
     const message = useMessage();
+    const formatDuration = (duration) => {
+      return import_moment7.default.utc(import_moment7.default.duration(duration, "milliseconds").asMilliseconds()).format("HH:mm:ss");
+    };
     const getOptions = (currentStatus) => {
       return [
         {
@@ -43725,7 +43728,7 @@ var TimeLine_default = /* @__PURE__ */ defineComponent({
     };
     onUpdated(() => {
     });
-    const __returned__ = { props, pomodoroList, plugin: plugin3, message, getOptions, handleSelect, statusTypeMap, getType: getType2, get NDropdown() {
+    const __returned__ = { props, pomodoroList, plugin: plugin3, message, formatDuration, getOptions, handleSelect, statusTypeMap, getType: getType2, get NDropdown() {
       return Dropdown_default;
     }, get NEmpty() {
       return Empty_default2;
@@ -43812,7 +43815,7 @@ function render10(_ctx, _cache, $props, $setup, $data, $options) {
                     type: "info"
                   }, {
                     default: withCtx(() => [
-                      createTextVNode(" \u23F3 " + toDisplayString(pomodoro.spend), 1)
+                      createTextVNode(" \u23F3 " + toDisplayString($setup.formatDuration(parseInt(pomodoro.spend))), 1)
                     ]),
                     _: 2
                   }, 1024)) : createCommentVNode("v-if", true),

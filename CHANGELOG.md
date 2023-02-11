@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.0...1.3.1) (2023-02-11)
+
+
+### Bug Fixes
+
+* 1.time spend format ([5b2ad5e](https://github.com/JuckZ/awesome-brain-manager/commit/5b2ad5ecbbdce39838ff340317bb5bf97056f7a7))
+
 # [1.3.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.2.0...1.3.0) (2023-02-11)
 
 
