@@ -35,7 +35,7 @@
                             {{ pomodoro.status.toUpperCase() }}
                         </n-tag>
                         <n-tag v-if="parseInt(pomodoro.spend) != 0" size="small" :bordered="false" type="info">
-                            ⏳ {{ pomodoro.spend }}
+                            ⏳ {{ formatDuration(parseInt(pomodoro.spend)) }}
                         </n-tag>
                         <n-tag v-if="parseInt(pomodoro.breaknum) != 0" size="small" :bordered="false" type="error">
                             ⏸️ {{ pomodoro.breaknum }}
@@ -71,6 +71,10 @@ const props = defineProps<{
 
 const { pomodoroList, plugin } = toRefs(props);
 const message = useMessage();
+
+const formatDuration = (duration: number) => {
+    return moment.utc(moment.duration(duration, 'milliseconds').asMilliseconds()).format('HH:mm:ss');
+};
 
 // ⏳❗⛔⭕✅▶️⏸️⏺️⏹️⏯️🔄️🔚🔴🟠🟡🟢🔵🟣🟤⚫
 const getOptions = currentStatus => {
