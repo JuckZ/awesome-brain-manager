@@ -2,8 +2,8 @@
     <n-config-provider
         :theme="theme"
         :theme-overrides="theme.name === 'light' ? lightThemeOverrides : darkThemeOverrides"
-        :locale="zhCN"
-        :date-locale="dateZhCN"
+        :locale="locale"
+        :date-locale="dateLocale"
         :breakpoints="{ xs: 0, s: 640, m: 1024, l: 1280, xl: 1536, xxl: 1920 }"
     >
         <n-message-provider>
@@ -38,9 +38,8 @@
 import { Ref, nextTick, onMounted, onUpdated, ref, toRefs } from 'vue';
 import { NConfigProvider, GlobalThemeOverrides, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
 // theme
-import { createTheme, darkTheme, lightTheme, datePickerDark, inputDark } from 'naive-ui';
+import { createTheme, darkTheme, lightTheme, zhCN, dateZhCN, enUS, dateEnUS, datePickerDark, inputDark } from 'naive-ui';
 // locale & dateLocale
-import { dateZhCN, zhCN } from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
 import type { DBRows } from '../types/mdb';
 import CalendarView from './CalendarView.vue';
@@ -57,14 +56,27 @@ import { eventTypes } from '../types/types';
 
 // const darkTheme = createTheme([inputDark, datePickerDark]);
 let theme = ref(darkTheme);
+let locale = ref(zhCN);
+let dateLocale = ref(dateZhCN);
+let language = window.localStorage.getItem('language') || 'en';
 
 // TODO 需要重启窗口才能切换主题
+// @ts-ignore
 if(window.app.getTheme() === 'obsidian') {
     theme.value = darkTheme;
+    // @ts-ignore
 } else if(window.app.getTheme() === 'moonstone') {
     theme.value = lightTheme;
 } else {
     theme.value = lightTheme;
+}
+// TODO 可以单独设置语言
+if (language === 'zh') {
+    locale.value = zhCN;
+    dateLocale.value = dateZhCN;
+} else {
+    locale.value = enUS;
+    dateLocale.value = dateEnUS;
 }
 
 const lightThemeOverrides: GlobalThemeOverrides = {
