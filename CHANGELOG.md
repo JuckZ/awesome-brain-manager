@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.0.1...1.1.0) (2023-02-11)
+
+
+### Features
+
+* 1.theme support ([ea5233e](https://github.com/JuckZ/awesome-brain-manager/commit/ea5233e403f4c4cf87c17662de1e17b27adb2070))
+
 ## [1.0.1](https://github.com/JuckZ/awesome-brain-manager/compare/v1.0.0...1.0.1) (2023-02-10)
 
 
