@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.1.0...1.2.0) (2023-02-11)
+
+
+### Bug Fixes
+
+* 1.style conflict bug ([a5c834a](https://github.com/JuckZ/awesome-brain-manager/commit/a5c834ae55cd7b84e6a94ec531f3c50623ef6191))
+
+
+### Features
+
+* 1.i18n support(not really finish) ([fa96d86](https://github.com/JuckZ/awesome-brain-manager/commit/fa96d865fd2f56c42c3365cd6c6bf2a8ecf6e496))
+
 # [1.1.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.0.1...1.1.0) (2023-02-11)
 
 

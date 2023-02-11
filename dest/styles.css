@@ -1,4 +1,4 @@
-/* sfc-style:D:\projects\awesome-brain-manager\src\ui\PomodoroListView.vue?type=style&index=0 */
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/PomodoroListView.vue?type=style&index=0 */
 #pomodoroList {
   background-color: none !important;
 }
@@ -13,28 +13,28 @@
   flex: 1;
 }
 
-/* sfc-style:D:\projects\awesome-brain-manager\src\ui\CalendarView.vue?type=style&index=0 */
-#calendarContainerInSelf[data-v-c3071a59] .n-calendar-header__extra .n-button-group .n-button {
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/CalendarView.vue?type=style&index=0 */
+#calendarContainerInSelf[data-v-fa20c457] .n-calendar-header__extra .n-button-group .n-button {
   max-width: max-content;
 }
 
-/* sfc-style:D:\projects\awesome-brain-manager\src\ui\ClockView.vue?type=style&index=0 */
-.radialTimeText[data-v-3b6139ec] {
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/ClockView.vue?type=style&index=0 */
+.radialTimeText[data-v-8dea1342] {
   font-size: 32px;
   font-weight: 600;
 }
 
-/* sfc-style:D:\projects\awesome-brain-manager\src\ui\PomodoroHistory.vue?type=style&index=0 */
-#historyViewContainer[data-v-fb617fc8] {
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/PomodoroHistory.vue?type=style&index=0 */
+#historyViewContainer[data-v-81d758ef] {
   padding: 5px 10px;
 }
 
-/* fakecss:D:/projects/awesome-brain-manager/src/ui/components/Icon.esbuild-svelte-fake-css */
+/* fakecss:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/components/Icon.esbuild-svelte-fake-css */
 .icon.svelte-1gcidq0 {
   vertical-align: middle;
 }
 
-/* fakecss:D:/projects/awesome-brain-manager/src/ui/components/Reminder.esbuild-svelte-fake-css */
+/* fakecss:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/components/Reminder.esbuild-svelte-fake-css */
 main.svelte-ero3m8 {
   padding: 1em;
   margin: 0 auto;
@@ -57,17 +57,3 @@ main.svelte-ero3m8 {
 }
 
 /* src/main.scss */
-body {
-  font: 100% Helvetica, sans-serif;
-  color: #333;
-}
-.book {
-  border: 1px solid var(--background-modifier-border);
-  padding: 10px;
-}
-.book__title {
-  font-weight: 600;
-}
-.book__author {
-  color: var(--text-muted);
-}
