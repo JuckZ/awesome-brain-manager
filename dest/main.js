@@ -8877,7 +8877,7 @@ var require_sql_wasm = __commonJS({
             return 0;
           Q2.Ha.write(a4, b2, 0, d4, c6, false);
           return 0;
-        } } }, Ab = null, Bb = {}, R2 = [], Cb = 1, T2 = null, Db = true, P = null, xb = {}, U = (a4, b2 = {}) => {
+        } } }, Ab = null, Bb = {}, R2 = [], Cb = 1, T3 = null, Db = true, P = null, xb = {}, U = (a4, b2 = {}) => {
           a4 = hb("/", a4);
           if (!a4)
             return { path: "", node: null };
@@ -8909,13 +8909,13 @@ var require_sql_wasm = __commonJS({
         }, Fb = (a4, b2) => {
           for (var c6 = 0, d4 = 0; d4 < b2.length; d4++)
             c6 = (c6 << 5) - c6 + b2.charCodeAt(d4) | 0;
-          return (a4 + c6 >>> 0) % T2.length;
+          return (a4 + c6 >>> 0) % T3.length;
         }, Gb = (a4) => {
           var b2 = Fb(a4.parent.id, a4.name);
-          if (T2[b2] === a4)
-            T2[b2] = a4.Wa;
+          if (T3[b2] === a4)
+            T3[b2] = a4.Wa;
           else
-            for (b2 = T2[b2]; b2; ) {
+            for (b2 = T3[b2]; b2; ) {
               if (b2.Wa === a4) {
                 b2.Wa = a4.Wa;
                 break;
@@ -8926,7 +8926,7 @@ var require_sql_wasm = __commonJS({
           var c6;
           if (c6 = (c6 = Hb(a4, "x")) ? c6 : a4.Ga.lookup ? 0 : 2)
             throw new P(c6, a4);
-          for (c6 = T2[Fb(a4.id, b2)]; c6; c6 = c6.Wa) {
+          for (c6 = T3[Fb(a4.id, b2)]; c6; c6 = c6.Wa) {
             var d4 = c6.name;
             if (c6.parent.id === a4.id && d4 === b2)
               return c6;
@@ -8935,8 +8935,8 @@ var require_sql_wasm = __commonJS({
         }, wb = (a4, b2, c6, d4) => {
           a4 = new Ib(a4, b2, c6, d4);
           b2 = Fb(a4.parent.id, a4.name);
-          a4.Wa = T2[b2];
-          return T2[b2] = a4;
+          a4.Wa = T3[b2];
+          return T3[b2] = a4;
         }, Jb = { r: 0, "r+": 2, w: 577, "w+": 578, a: 1089, "a+": 1090 }, Kb = (a4) => {
           var b2 = ["r", "w", "rw"][a4 & 3];
           a4 & 512 && (b2 += "w");
@@ -9495,7 +9495,7 @@ var require_sql_wasm = __commonJS({
           a4 ? this.mode |= 146 : this.mode &= -147;
         } } });
         $b();
-        T2 = Array(4096);
+        T3 = Array(4096);
         Qb(Q2, "/");
         V("/tmp");
         V("/home");
@@ -15538,7 +15538,7 @@ function d(e3) {
   let t3, i3, n2, o2 = e3 && e3.element, s4 = o2 || document.body, h6 = window.innerWidth, c6 = window.innerHeight, l2 = { x: h6 / 2, y: h6 / 2 };
   const d4 = e3 && e3.dateColor || "blue", a4 = e3 && e3.faceColor || "black", r = e3 && e3.secondsColor || "red", A2 = e3 && e3.minutesColor || "black", u2 = e3 && e3.hoursColor || "black", m3 = 0.4;
   let g = new Date(), p2 = g.getDate(), f = g.getYear() + 1900;
-  const y3 = (" " + ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"][g.getDay()] + " " + p2 + " " + ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"][g.getMonth()] + " " + f).split(""), v = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2"], w3 = v.length, x2 = ["\u2022", "\u2022", "\u2022"], E2 = ["\u2022", "\u2022", "\u2022", "\u2022"], M3 = ["\u2022", "\u2022", "\u2022", "\u2022", "\u2022"], L2 = 360 / w3, C = 360 / y3.length, B2 = 45 / 6.5, Y2 = [], b2 = [], R2 = [], S3 = [], W = [], H3 = [], I2 = [], X2 = [], T2 = [];
+  const y3 = (" " + ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"][g.getDay()] + " " + p2 + " " + ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"][g.getMonth()] + " " + f).split(""), v = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2"], w3 = v.length, x2 = ["\u2022", "\u2022", "\u2022"], E2 = ["\u2022", "\u2022", "\u2022", "\u2022"], M3 = ["\u2022", "\u2022", "\u2022", "\u2022", "\u2022"], L2 = 360 / w3, C = 360 / y3.length, B2 = 45 / 6.5, Y2 = [], b2 = [], R2 = [], S3 = [], W = [], H3 = [], I2 = [], X2 = [], T3 = [];
   var D2 = parseInt(y3.length + w3 + x2.length + E2.length + M3.length) + 1;
   const F = window.matchMedia("(prefers-reduced-motion: reduce)");
   function z2() {
@@ -15548,7 +15548,7 @@ function d(e3) {
     for (let e4 = 0; e4 < D2; e4++)
       Y2[e4] = 0, b2[e4] = 0, R2[e4] = 0, S3[e4] = 0;
     for (let e4 = 0; e4 < y3.length; e4++)
-      T2[e4] = { color: d4, value: y3[e4] };
+      T3[e4] = { color: d4, value: y3[e4] };
     for (let e4 = 0; e4 < v.length; e4++)
       X2[e4] = { color: a4, value: v[e4] };
     for (let e4 = 0; e4 < x2.length; e4++)
@@ -15585,16 +15585,16 @@ function d(e3) {
     }(), function() {
       i3.clearRect(0, 0, h6, c6);
       const e4 = new Date(), t4 = e4.getSeconds(), n3 = Math.PI * (t4 - 15) / 30, o3 = e4.getMinutes(), s5 = Math.PI * (o3 - 15) / 30, l3 = e4.getHours(), d5 = Math.PI * (l3 - 3) / 6 + Math.PI * parseInt(e4.getMinutes()) / 360;
-      for (let e5 = 0; e5 < T2.length; e5++)
-        T2[e5].y = Y2[e5] + 67.5 * Math.sin(-n3 + e5 * C * Math.PI / 180), T2[e5].x = b2[e5] + 67.5 * Math.cos(-n3 + e5 * C * Math.PI / 180), i3.fillStyle = T2[e5].color, i3.fillText(T2[e5].value, T2[e5].x, T2[e5].y);
+      for (let e5 = 0; e5 < T3.length; e5++)
+        T3[e5].y = Y2[e5] + 67.5 * Math.sin(-n3 + e5 * C * Math.PI / 180), T3[e5].x = b2[e5] + 67.5 * Math.cos(-n3 + e5 * C * Math.PI / 180), i3.fillStyle = T3[e5].color, i3.fillText(T3[e5].value, T3[e5].x, T3[e5].y);
       for (let e5 = 0; e5 < X2.length; e5++)
-        X2[e5].y = Y2[T2.length + e5] + 45 * Math.sin(e5 * L2 * Math.PI / 180), X2[e5].x = b2[T2.length + e5] + 45 * Math.cos(e5 * L2 * Math.PI / 180), i3.fillStyle = X2[e5].color, i3.fillText(X2[e5].value, X2[e5].x, X2[e5].y);
+        X2[e5].y = Y2[T3.length + e5] + 45 * Math.sin(e5 * L2 * Math.PI / 180), X2[e5].x = b2[T3.length + e5] + 45 * Math.cos(e5 * L2 * Math.PI / 180), i3.fillStyle = X2[e5].color, i3.fillText(X2[e5].value, X2[e5].x, X2[e5].y);
       for (let e5 = 0; e5 < I2.length; e5++)
-        I2[e5].y = Y2[T2.length + w3 + e5] + 0 + e5 * B2 * Math.sin(d5), I2[e5].x = b2[T2.length + w3 + e5] + 0 + e5 * B2 * Math.cos(d5), i3.fillStyle = I2[e5].color, i3.fillText(I2[e5].value, I2[e5].x, I2[e5].y);
+        I2[e5].y = Y2[T3.length + w3 + e5] + 0 + e5 * B2 * Math.sin(d5), I2[e5].x = b2[T3.length + w3 + e5] + 0 + e5 * B2 * Math.cos(d5), i3.fillStyle = I2[e5].color, i3.fillText(I2[e5].value, I2[e5].x, I2[e5].y);
       for (let e5 = 0; e5 < H3.length; e5++)
-        H3[e5].y = Y2[T2.length + w3 + I2.length + e5] + 0 + e5 * B2 * Math.sin(s5), H3[e5].x = b2[T2.length + w3 + I2.length + e5] + 0 + e5 * B2 * Math.cos(s5), i3.fillStyle = H3[e5].color, i3.fillText(H3[e5].value, H3[e5].x, H3[e5].y);
+        H3[e5].y = Y2[T3.length + w3 + I2.length + e5] + 0 + e5 * B2 * Math.sin(s5), H3[e5].x = b2[T3.length + w3 + I2.length + e5] + 0 + e5 * B2 * Math.cos(s5), i3.fillStyle = H3[e5].color, i3.fillText(H3[e5].value, H3[e5].x, H3[e5].y);
       for (let e5 = 0; e5 < W.length; e5++)
-        W[e5].y = Y2[T2.length + w3 + I2.length + H3.length + e5] + 0 + e5 * B2 * Math.sin(n3), W[e5].x = b2[T2.length + w3 + I2.length + H3.length + e5] + 0 + e5 * B2 * Math.cos(n3), i3.fillStyle = W[e5].color, i3.fillText(W[e5].value, W[e5].x, W[e5].y);
+        W[e5].y = Y2[T3.length + w3 + I2.length + H3.length + e5] + 0 + e5 * B2 * Math.sin(n3), W[e5].x = b2[T3.length + w3 + I2.length + H3.length + e5] + 0 + e5 * B2 * Math.cos(n3), i3.fillStyle = W[e5].color, i3.fillText(W[e5].value, W[e5].x, W[e5].y);
     }(), n2 = requestAnimationFrame(Q2);
   }
   function Z() {
@@ -15644,19 +15644,6 @@ function a(e3) {
 }
 
 // src/render/CursorEffects.ts
-var effects = [
-  "bubbleCursor",
-  "clockCursor",
-  "emojiCursor",
-  "fairyDustCursor",
-  "followingDotCursor",
-  "ghostCursor",
-  "rainbowCursor",
-  "snowflakeCursor",
-  "springyEmojiCursor",
-  "textFlag",
-  "trailingCursor"
-];
 var cursorEffects = [];
 function enableCursorEffect(effectName) {
   let emo;
@@ -15713,6 +15700,194 @@ function disableCursorEffect() {
 
 // src/render/Blast.ts
 var import_party_js = __toESM(require_lib());
+
+// src/locale/en.ts
+var en_default = {
+  menu: {
+    setBannerForCurrent: "Set Random Banner For Current File",
+    setBannerForTheFolder: "Set random banner for this path",
+    planPomodoro: "Plan a pomodoro",
+    defaultTask: "Default task: ",
+    showPomodoroHistory: "Show pomodoro history"
+  },
+  command: {
+    "awesome-brain-manager-check-in": "Habit Check In",
+    "awesome-brain-manager-remove-check-in": "Remove Habit Check In",
+    "awesome-brain-manager-rollover": "Rollover Todos Now",
+    "awesome-brain-manager-undo": "Undo last rollover"
+  },
+  setting: {
+    cursorEffect: {
+      name: "Cursor Effect",
+      desc: "Select a mouse effect"
+    },
+    powerMode: {
+      name: "Power Mode",
+      desc: "Enable power mode effects?"
+    },
+    shakeMode: {
+      name: "Shake Mode",
+      desc: "Enable editor shake mode effects?"
+    },
+    expectedTime: {
+      name: "Expected Time",
+      desc: "How many minutes do you want to set for a pomodoro?"
+    },
+    title: {
+      effects: "Beautiful Effects",
+      pomodoro: "Pomodoro(beta feature)",
+      warning: "!!!The following features are experimental!!! If you really need, recommend  you use uphy's obsidian-reminder and lumoe's obsidian-rollover-daily-todos plugin."
+    }
+  },
+  info: {
+    effects: {
+      none: "No Effect",
+      bubbleCursor: "Bubble",
+      clockCursor: "Clock",
+      emojiCursor: "Emoji",
+      fairyDustCursor: "Fairy Dust",
+      followingDotCursor: "Following Dot",
+      ghostCursor: "Ghost",
+      rainbowCursor: "Rainbow",
+      snowflakeCursor: "Snowflake",
+      springyEmojiCursor: "Springy Emoji",
+      textFlag: "Text Flag",
+      trailingCursor: "Trailing"
+    },
+    powerMode: {
+      "0": "No Effect",
+      "1": "Square Particle",
+      "2": "Circle Particle",
+      "3": "Party",
+      "4": "HeartBeat"
+    },
+    Pomodoro: "Pomodoro",
+    "Awesome Brain Manager": "Awesome Brain Manager",
+    unknown: "unknown",
+    ltr: "LTR",
+    trl: "RTL",
+    done: "Done: ",
+    noDoingTask: "No task to focus on",
+    haveABreak: "Have a break",
+    noTag: "No Tags",
+    taskType: "Task type",
+    planNum: "Plan task number",
+    finishNum: "Finish task number",
+    todayNum: "Today task",
+    totalNum: "Total task",
+    todayTime: "Today time",
+    totalTime: "Total time",
+    noTimeLine: "No timeline content",
+    startTask: "\u25B6\uFE0F Start",
+    stopTask: "\u23F8\uFE0F Stop",
+    finishTask: "\u2705 Finish",
+    cancelTask: "\u{1F534} Cancel",
+    deleteTask: "\u2757 Delete",
+    handleThisFirst: "Please handle this unfinished task: "
+  }
+};
+
+// src/locale/zh-cn.ts
+var zh_cn_default = {
+  menu: {
+    setBannerForCurrent: "\u5207\u6362\u5F53\u524D\u6587\u4EF6banner\u56FE",
+    setBannerForTheFolder: "\u5207\u6362\u5F53\u524D\u8DEF\u5F84\u4E0B\u6587\u4EF6\u7684banner\u56FE",
+    planPomodoro: "\u89C4\u5212\u4E00\u4E2A\u756A\u8304\u949F",
+    defaultTask: "\u9ED8\u8BA4\u4EFB\u52A1\uFF1A"
+  },
+  command: {
+    "awesome-brain-manager-check-in": "\u4E60\u60EF\u6253\u5361",
+    "awesome-brain-manager-remove-check-in": "\u79FB\u9664\u4E60\u60EF\u6253\u5361",
+    "awesome-brain-manager-rollover": "\u5C06\u672A\u5B8C\u6210\u4EFB\u52A1\u8BB0\u5F55\u5230\u4ECA\u5929",
+    "awesome-brain-manager-undo": '\u64A4\u9500"\u5C06\u672A\u5B8C\u6210\u4EFB\u52A1\u8BB0\u5F55\u5230\u4ECA\u5929"\u7684\u64CD\u4F5C'
+  },
+  setting: {
+    cursorEffect: {
+      name: "\u9F20\u6807\u7279\u6548",
+      desc: "\u9009\u62E9\u4E00\u4E2A\u9F20\u6807\u7279\u6548"
+    },
+    powerMode: {
+      name: "\u6309\u952E\u7279\u6548",
+      desc: "\u9009\u62E9\u4E00\u4E2A\u6309\u952E\u7279\u6548"
+    },
+    shakeMode: {
+      name: "\u7A97\u53E3\u6296\u52A8",
+      desc: "\u662F\u5426\u5F00\u542F\u7A97\u53E3\u6296\u52A8\u7279\u6548\uFF1F"
+    },
+    expectedTime: {
+      name: "\u756A\u8304\u949F\u65F6\u95F4",
+      desc: "\u4F60\u671F\u671B\u4E00\u4E2A\u756A\u8304\u949F\u591A\u5C11\u5206\u949F\uFF1F"
+    },
+    title: {
+      effects: "\u9F20\u6807\u3001\u6309\u952E\u7279\u6548",
+      pomodoro: "\u756A\u8304\u949F(beta version)",
+      warning: "!!!\u4EE5\u4E0B\u529F\u80FD\u5728\u5B9E\u9A8C\u9636\u6BB5!!! \u5982\u679C\u4F60\u786E\u5B9E\u9700\u8981\uFF0C\u63A8\u8350\u4F7F\u7528 obsidian-reminder \u548C obsidian-rollover-daily-todos\u63D2\u4EF6."
+    }
+  },
+  info: {
+    effects: {
+      none: "\u65E0\u7279\u6548",
+      bubbleCursor: "\u6C14\u6CE1",
+      clockCursor: "\u65F6\u949F",
+      emojiCursor: "\u8868\u60C5",
+      fairyDustCursor: "\u4ED9\u5C18",
+      followingDotCursor: "\u8DDF\u968F\u70B9",
+      ghostCursor: "\u91CD\u5F71",
+      rainbowCursor: "\u5F69\u8679",
+      snowflakeCursor: "\u96EA\u82B1",
+      springyEmojiCursor: "\u5F39\u6027\u8868\u60C5",
+      textFlag: "\u6587\u672C\u6807\u5FD7",
+      trailingCursor: "Trailing"
+    },
+    powerMode: {
+      "0": "\u65E0\u7279\u6548",
+      "1": "\u65B9\u5757\u7C92\u5B50",
+      "2": "\u5706\u5F62\u7C92\u5B50",
+      "3": "\u6D3E\u5BF9",
+      "4": "\u5FC3\u8DF3"
+    },
+    Pomodoro: "\u756A\u8304\u949F",
+    "Awesome Brain Manager": "Awesome Brain Manager",
+    unknown: "unknown",
+    ltr: "LTR",
+    trl: "RTL",
+    done: "\u5B8C\u6210\uFF1A",
+    noDoingTask: "\u5F53\u524D\u65E0\u4E13\u6CE8\u4EFB\u52A1",
+    haveABreak: "\u4F11\u606F\u4E00\u4E0B",
+    noTag: "\u65E0\u6807\u7B7E",
+    taskType: "\u4EFB\u52A1\u7C7B\u578B",
+    planNum: "\u4E13\u6CE8\u6B21\u6570",
+    finishNum: "\u5B8C\u6210\u6B21\u6570",
+    todayNum: "\u4ECA\u65E5\u756A\u8304",
+    totalNum: "\u603B\u756A\u8304",
+    todayTime: "\u4ECA\u65E5\u4E13\u6CE8\u65F6\u957F",
+    totalTime: "\u603B\u4E13\u6CE8\u65F6\u957F",
+    noTimeLine: "\u65E0\u65F6\u95F4\u7EBF\u5185\u5BB9",
+    startTask: "\u25B6\uFE0F \u5F00\u59CB",
+    stopTask: "\u23F8\uFE0F \u6682\u505C",
+    finishTask: "\u2705 \u5B8C\u6210",
+    cancelTask: "\u{1F534} \u53D6\u6D88",
+    deleteTask: "\u2757 \u5220\u9664",
+    handleThisFirst: "\u8BF7\u5148\u5904\u7406\u672A\u5B8C\u6210\u4EFB\u52A1\uFF1A"
+  }
+};
+
+// src/i18n.ts
+var T = class {
+  constructor() {
+    this.all = {
+      en: en_default,
+      zh: zh_cn_default
+    };
+    this.lang = localStorage.getItem("language") || "en";
+  }
+  get texts() {
+    return this.all[this.lang];
+  }
+};
+var i18n_default2 = new T().texts;
+
+// src/render/Blast.ts
 var shakeTime = 0;
 var shakeTimeMax = 0;
 var lastTime = 0;
@@ -15927,7 +16102,7 @@ function toggleShake(targetVal) {
   enableShake = targetVal;
 }
 function toggleBlast(targetEffect) {
-  if (Object.keys(powerMode).contains(targetEffect)) {
+  if (Object.keys(i18n_default2.info.powerMode).contains(targetEffect)) {
     effect = targetEffect;
     isActive = true;
     if (!canvas) {
@@ -15952,13 +16127,6 @@ function toggleBlast(targetEffect) {
     return;
   }
 }
-var powerMode = {
-  "0": "No Effect",
-  "1": "Effect 1",
-  "2": "Effect 2",
-  "3": "Effect 3",
-  "4": "Effect 4"
-};
 
 // src/settings.ts
 var TAG_RESCAN = "re-scan";
@@ -15966,21 +16134,20 @@ var Settings = class {
   constructor() {
     this.settings = new SettingTabModel();
     const reminderFormatSettings = new ReminderFormatSettings(this.settings);
-    this.cursorEffectBuilder = this.settings.newSettingBuilder().key("cursorEffect").name("Cursor Effect").desc("Select a mouse effect").dropdown("none");
-    this.cursorEffectBuilder.addOption("none", "none");
-    effects.forEach((f) => this.cursorEffectBuilder.addOption(`${f}`, f));
+    this.cursorEffectBuilder = this.settings.newSettingBuilder().key("cursorEffect").name(i18n_default2.setting.cursorEffect.name).desc(i18n_default2.setting.cursorEffect.desc).dropdown("none");
+    Object.keys(i18n_default2.info.effects).forEach((f) => this.cursorEffectBuilder.addOption(`${i18n_default2.info.effects[f]}`, f));
     this.cursorEffect = this.cursorEffectBuilder.onAnyValueChanged((context) => {
       toggleCursorEffects(SETTINGS.cursorEffect.value);
     }).build(new RawSerde());
-    this.powerModeBuilder = this.settings.newSettingBuilder().key("powerMode").name("Enable editor power mode").desc("Enable power mode effects?").dropdown("0");
-    Object.keys(powerMode).forEach((f) => {
-      this.powerModeBuilder.addOption(powerMode[f], f);
+    this.powerModeBuilder = this.settings.newSettingBuilder().key("powerMode").name(i18n_default2.setting.powerMode.name).desc(i18n_default2.setting.powerMode.desc).dropdown("0");
+    Object.keys(i18n_default2.info.powerMode).forEach((f) => {
+      this.powerModeBuilder.addOption(i18n_default2.info.powerMode[f], f);
     });
     this.powerMode = this.powerModeBuilder.onAnyValueChanged((context) => {
       toggleBlast(SETTINGS.powerMode.value);
     }).build(new RawSerde());
-    this.shakeMode = this.settings.newSettingBuilder().key("shakeMode").name("Shake Mode").desc("Enable editor shake mode?").toggle(false).build(new RawSerde());
-    this.expectedTime = this.settings.newSettingBuilder().key("expectedTime").name("Expected Time").desc("How many minutes do you want to set for a pomodoro?").number(25).build(new RawSerde());
+    this.shakeMode = this.settings.newSettingBuilder().key("shakeMode").name(i18n_default2.setting.shakeMode.name).desc(i18n_default2.setting.shakeMode.desc).toggle(false).build(new RawSerde());
+    this.expectedTime = this.settings.newSettingBuilder().key("expectedTime").name(i18n_default2.setting.expectedTime.name).desc(i18n_default2.setting.expectedTime.desc).number(25).build(new RawSerde());
     this.reminderTime = this.settings.newSettingBuilder().key("reminderTime").name("Reminder Time").desc("Time when a reminder with no time part will show").tag(TAG_RESCAN).text("09:00").placeHolder("Time (hh:mm)").build(new TimeSerde());
     this.useSystemNotification = this.settings.newSettingBuilder().key("useSystemNotification").name("Use system notification").desc("Use system notification for reminder notifications").toggle(false).build(new RawSerde());
     this.laters = this.settings.newSettingBuilder().key("laters").name("Remind me later").desc("Line-separated list of remind me later items").textArea("In 30 minutes\nIn 1 hour\nIn 3 hours\nTomorrow\nNext week").placeHolder("In 30 minutes\nIn 1 hour\nIn 3 hours\nTomorrow\nNext week").build(new LatersSerde());
@@ -16014,9 +16181,9 @@ var Settings = class {
     this.deleteOnComplete = this.settings.newSettingBuilder().key("deleteOnComplete").name("Delete todos from previous day").desc("Once todos are found, they are added to Today's Daily Note. If successful, they are deleted from Yesterday's Daily note. Enabling this is destructive and may result in lost data. Keeping this disabled will simply duplicate them from yesterday's note and place them in the appropriate section. Note that currently, duplicate todos will be deleted regardless of what heading they are in, and which heading you choose from above.").toggle(false).build(new RawSerde());
     this.removeEmptyTodos = this.settings.newSettingBuilder().key("removeEmptyTodos").name("Remove empty todos in rollover").desc("If you have empty todos, they will not be rolled over to the next day.").toggle(true).build(new RawSerde());
     this.debugEnable = this.settings.newSettingBuilder().key("debugEnable").name("Enable debug").desc("If you set this value as true, your will see debug info in console.").toggle(false).build(new RawSerde());
-    this.settings.newGroup("Beautiful Effects").addSettings(this.cursorEffect, this.powerMode, this.shakeMode);
-    this.settings.newGroup("Pomodoro(beta feature)").addSettings(this.expectedTime);
-    this.settings.newGroup("!!!The following features are experimental!!! If you really need, recommend  you use uphy's obsidian-reminder and lumoe's obsidian-rollover-daily-todos plugin.");
+    this.settings.newGroup(i18n_default2.setting.title.effects).addSettings(this.cursorEffect, this.powerMode, this.shakeMode);
+    this.settings.newGroup(i18n_default2.setting.title.pomodoro).addSettings(this.expectedTime);
+    this.settings.newGroup(i18n_default2.setting.title.warning);
     this.settings.newGroup("Rollover TODOs").addSettings(this.templateHeading, this.deleteOnComplete, this.removeEmptyTodos);
     this.settings.newGroup("Notification Settings").addSettings(this.reminderTime, this.laters, this.useSystemNotification);
     this.settings.newGroup("Editor").addSettings(this.autoCompleteTrigger, this.primaryFormat);
@@ -16223,7 +16390,7 @@ var PomodoroReminderModal = class extends import_obsidian6.Modal {
   }
   onOpen() {
     const { contentEl } = this;
-    contentEl.createEl("h2", { text: "\u5B8C\u6210\uFF1A" + this.pomodoro.task });
+    contentEl.createEl("h2", { text: i18n_default2.info.done + this.pomodoro.task });
   }
   onClose() {
     const { contentEl } = this;
@@ -16458,8 +16625,8 @@ function recordEffectScope(effect4, scope = activeEffectScope) {
     scope.effects.push(effect4);
   }
 }
-var createDep = (effects3) => {
-  const dep = new Set(effects3);
+var createDep = (effects2) => {
+  const dep = new Set(effects2);
   dep.w = 0;
   dep.n = 0;
   return dep;
@@ -16660,27 +16827,27 @@ function trigger(target, type, key, newValue, oldValue, oldTarget) {
       }
     }
   } else {
-    const effects3 = [];
+    const effects2 = [];
     for (const dep of deps) {
       if (dep) {
-        effects3.push(...dep);
+        effects2.push(...dep);
       }
     }
     if (false) {
-      triggerEffects(createDep(effects3), eventInfo);
+      triggerEffects(createDep(effects2), eventInfo);
     } else {
-      triggerEffects(createDep(effects3));
+      triggerEffects(createDep(effects2));
     }
   }
 }
 function triggerEffects(dep, debuggerEventExtraInfo) {
-  const effects3 = isArray2(dep) ? dep : [...dep];
-  for (const effect4 of effects3) {
+  const effects2 = isArray2(dep) ? dep : [...dep];
+  for (const effect4 of effects2) {
     if (effect4.computed) {
       triggerEffect(effect4, debuggerEventExtraInfo);
     }
   }
-  for (const effect4 of effects3) {
+  for (const effect4 of effects2) {
     if (!effect4.computed) {
       triggerEffect(effect4, debuggerEventExtraInfo);
     }
@@ -17160,32 +17327,32 @@ function markRaw(value) {
 }
 var toReactive = (value) => isObject(value) ? reactive(value) : value;
 var toReadonly = (value) => isObject(value) ? readonly(value) : value;
-function trackRefValue(ref3) {
+function trackRefValue(ref2) {
   if (shouldTrack && activeEffect) {
-    ref3 = toRaw(ref3);
+    ref2 = toRaw(ref2);
     if (false) {
-      trackEffects(ref3.dep || (ref3.dep = createDep()), {
-        target: ref3,
+      trackEffects(ref2.dep || (ref2.dep = createDep()), {
+        target: ref2,
         type: "get",
         key: "value"
       });
     } else {
-      trackEffects(ref3.dep || (ref3.dep = createDep()));
+      trackEffects(ref2.dep || (ref2.dep = createDep()));
     }
   }
 }
-function triggerRefValue(ref3, newVal) {
-  ref3 = toRaw(ref3);
-  if (ref3.dep) {
+function triggerRefValue(ref2, newVal) {
+  ref2 = toRaw(ref2);
+  if (ref2.dep) {
     if (false) {
-      triggerEffects(ref3.dep, {
-        target: ref3,
+      triggerEffects(ref2.dep, {
+        target: ref2,
         type: "set",
         key: "value",
         newValue: newVal
       });
     } else {
-      triggerEffects(ref3.dep);
+      triggerEffects(ref2.dep);
     }
   }
 }
@@ -17223,8 +17390,8 @@ var RefImpl = class {
     }
   }
 };
-function unref(ref3) {
-  return isRef(ref3) ? ref3.value : ref3;
+function unref(ref2) {
+  return isRef(ref2) ? ref2.value : ref2;
 }
 var shallowUnwrapHandlers = {
   get: (target, key, receiver) => unref(Reflect.get(target, key, receiver)),
@@ -19667,7 +19834,7 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
   }
   const refValue = vnode.shapeFlag & 4 ? getExposeProxy(vnode.component) || vnode.component.proxy : vnode.el;
   const value = isUnmount ? null : refValue;
-  const { i: owner, r: ref3 } = rawRef;
+  const { i: owner, r: ref2 } = rawRef;
   if (false) {
     warn(`Missing ref owner context. ref cannot be used on hoisted vnodes. A vnode with ref must be created inside the render function.`);
     return;
@@ -19675,7 +19842,7 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
   const oldRef = oldRawRef && oldRawRef.r;
   const refs = owner.refs === EMPTY_OBJ ? owner.refs = {} : owner.refs;
   const setupState = owner.setupState;
-  if (oldRef != null && oldRef !== ref3) {
+  if (oldRef != null && oldRef !== ref2) {
     if (isString(oldRef)) {
       refs[oldRef] = null;
       if (hasOwn(setupState, oldRef)) {
@@ -19685,44 +19852,44 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
       oldRef.value = null;
     }
   }
-  if (isFunction(ref3)) {
-    callWithErrorHandling(ref3, owner, 12, [value, refs]);
+  if (isFunction(ref2)) {
+    callWithErrorHandling(ref2, owner, 12, [value, refs]);
   } else {
-    const _isString = isString(ref3);
-    const _isRef = isRef(ref3);
+    const _isString = isString(ref2);
+    const _isRef = isRef(ref2);
     if (_isString || _isRef) {
       const doSet = () => {
         if (rawRef.f) {
-          const existing = _isString ? hasOwn(setupState, ref3) ? setupState[ref3] : refs[ref3] : ref3.value;
+          const existing = _isString ? hasOwn(setupState, ref2) ? setupState[ref2] : refs[ref2] : ref2.value;
           if (isUnmount) {
             isArray2(existing) && remove(existing, refValue);
           } else {
             if (!isArray2(existing)) {
               if (_isString) {
-                refs[ref3] = [refValue];
-                if (hasOwn(setupState, ref3)) {
-                  setupState[ref3] = refs[ref3];
+                refs[ref2] = [refValue];
+                if (hasOwn(setupState, ref2)) {
+                  setupState[ref2] = refs[ref2];
                 }
               } else {
-                ref3.value = [refValue];
+                ref2.value = [refValue];
                 if (rawRef.k)
-                  refs[rawRef.k] = ref3.value;
+                  refs[rawRef.k] = ref2.value;
               }
             } else if (!existing.includes(refValue)) {
               existing.push(refValue);
             }
           }
         } else if (_isString) {
-          refs[ref3] = value;
-          if (hasOwn(setupState, ref3)) {
-            setupState[ref3] = value;
+          refs[ref2] = value;
+          if (hasOwn(setupState, ref2)) {
+            setupState[ref2] = value;
           }
         } else if (_isRef) {
-          ref3.value = value;
+          ref2.value = value;
           if (rawRef.k)
             refs[rawRef.k] = value;
         } else if (false) {
-          warn("Invalid template ref type:", ref3, `(${typeof ref3})`);
+          warn("Invalid template ref type:", ref2, `(${typeof ref2})`);
         }
       };
       if (value) {
@@ -19732,7 +19899,7 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
         doSet();
       }
     } else if (false) {
-      warn("Invalid template ref type:", ref3, `(${typeof ref3})`);
+      warn("Invalid template ref type:", ref2, `(${typeof ref2})`);
     }
   }
 }
@@ -19778,7 +19945,7 @@ function baseCreateRenderer(options, createHydrationFns) {
       optimized = false;
       n2.dynamicChildren = null;
     }
-    const { type, ref: ref3, shapeFlag } = n2;
+    const { type, ref: ref2, shapeFlag } = n2;
     switch (type) {
       case Text:
         processText(n12, n2, container, anchor);
@@ -19809,8 +19976,8 @@ function baseCreateRenderer(options, createHydrationFns) {
           warn("Invalid VNode type:", type, `(${typeof type})`);
         }
     }
-    if (ref3 != null && parentComponent) {
-      setRef(ref3, n12 && n12.ref, parentSuspense, n2 || n12, !n2);
+    if (ref2 != null && parentComponent) {
+      setRef(ref2, n12 && n12.ref, parentSuspense, n2 || n12, !n2);
     }
   };
   const processText = (n12, n2, container, anchor) => {
@@ -20507,9 +20674,9 @@ function baseCreateRenderer(options, createHydrationFns) {
     }
   };
   const unmount2 = (vnode, parentComponent, parentSuspense, doRemove = false, optimized = false) => {
-    const { type, props, ref: ref3, children: children2, dynamicChildren, shapeFlag, patchFlag, dirs } = vnode;
-    if (ref3 != null) {
-      setRef(ref3, null, parentSuspense, vnode, true);
+    const { type, props, ref: ref2, children: children2, dynamicChildren, shapeFlag, patchFlag, dirs } = vnode;
+    if (ref2 != null) {
+      setRef(ref2, null, parentSuspense, vnode, true);
     }
     if (shapeFlag & 256) {
       parentComponent.ctx.deactivate(vnode);
@@ -20950,8 +21117,8 @@ function isSameVNodeType(n12, n2) {
 }
 var InternalObjectKey = `__vInternal`;
 var normalizeKey = ({ key }) => key != null ? key : null;
-var normalizeRef = ({ ref: ref3, ref_key, ref_for }) => {
-  return ref3 != null ? isString(ref3) || isRef(ref3) || isFunction(ref3) ? { i: currentRenderingInstance, r: ref3, k: ref_key, f: !!ref_for } : ref3 : null;
+var normalizeRef = ({ ref: ref2, ref_key, ref_for }) => {
+  return ref2 != null ? isString(ref2) || isRef(ref2) || isFunction(ref2) ? { i: currentRenderingInstance, r: ref2, k: ref_key, f: !!ref_for } : ref2 : null;
 };
 function createBaseVNode(type, props = null, children2 = null, patchFlag = 0, dynamicProps = null, shapeFlag = type === Fragment ? 0 : 1, isBlockNode = false, needFullChildrenNormalization = false) {
   const vnode = {
@@ -21051,7 +21218,7 @@ function guardReactiveProps(props) {
   return isProxy(props) || InternalObjectKey in props ? extend({}, props) : props;
 }
 function cloneVNode(vnode, extraProps, mergeRef = false) {
-  const { props, ref: ref3, patchFlag, children: children2 } = vnode;
+  const { props, ref: ref2, patchFlag, children: children2 } = vnode;
   const mergedProps = extraProps ? mergeProps(props || {}, extraProps) : props;
   const cloned = {
     __v_isVNode: true,
@@ -21059,7 +21226,7 @@ function cloneVNode(vnode, extraProps, mergeRef = false) {
     type: vnode.type,
     props: mergedProps,
     key: mergedProps && normalizeKey(mergedProps),
-    ref: extraProps && extraProps.ref ? mergeRef && ref3 ? isArray2(ref3) ? ref3.concat(normalizeRef(extraProps)) : [ref3, normalizeRef(extraProps)] : normalizeRef(extraProps) : ref3,
+    ref: extraProps && extraProps.ref ? mergeRef && ref2 ? isArray2(ref2) ? ref2.concat(normalizeRef(extraProps)) : [ref2, normalizeRef(extraProps)] : normalizeRef(extraProps) : ref2,
     scopeId: vnode.scopeId,
     slotScopeIds: vnode.slotScopeIds,
     children: false ? children2.map(deepCloneVNode) : children2,
@@ -22677,12 +22844,12 @@ function getFirstSlotVNode(slots, slotName = "default", props = void 0) {
 }
 
 // node_modules/naive-ui/es/_utils/vue/create-ref-setter.js
-function createRefSetter(ref3) {
+function createRefSetter(ref2) {
   return (inst) => {
     if (inst) {
-      ref3.value = inst.$el;
+      ref2.value = inst.$el;
     } else {
-      ref3.value = null;
+      ref2.value = null;
     }
   };
 }
@@ -30206,7 +30373,7 @@ var formatters2 = {
     var timestamp = Math.floor(originalDate.getTime() / 1e3);
     return addLeadingZeros(timestamp, token.length);
   },
-  T: function T(date, token, _localize, options) {
+  T: function T2(date, token, _localize, options) {
     var originalDate = options._originalDate || date;
     var timestamp = originalDate.getTime();
     return addLeadingZeros(timestamp, token.length);
@@ -38741,13 +38908,13 @@ var Dropdown_default = defineComponent({
     };
   },
   render() {
-    const renderPopoverBody = (className, ref3, style2, onMouseenter, onMouseleave) => {
+    const renderPopoverBody = (className, ref2, style2, onMouseenter, onMouseleave) => {
       var _a3;
       const { mergedClsPrefix, menuProps } = this;
       (_a3 = this.onRender) === null || _a3 === void 0 ? void 0 : _a3.call(this);
       const menuNodeProps = (menuProps === null || menuProps === void 0 ? void 0 : menuProps(void 0, this.tmNodes.map((v) => v.rawNode))) || {};
       const dropdownProps2 = {
-        ref: createRefSetter(ref3),
+        ref: createRefSetter(ref2),
         class: [className, `${mergedClsPrefix}-dropdown`, this.themeClass],
         clsPrefix: mergedClsPrefix,
         tmNodes: this.tmNodes,
@@ -42746,6 +42913,8 @@ var OverView_default = /* @__PURE__ */ defineComponent({
       return Grid_default;
     }, get NGridItem() {
       return GridItem_default;
+    }, get t() {
+      return i18n_default2;
     } };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
@@ -42762,56 +42931,56 @@ function render5(_ctx, _cache, $props, $setup, $data, $options) {
       createVNode($setup["NGridItem"], null, {
         default: withCtx(() => [
           createVNode($setup["NCard"], {
-            title: "\u4ECA\u65E5\u756A\u8304",
+            title: $setup.t.info.todayNum,
             "content-style": "font-size: 16px;"
           }, {
             default: withCtx(() => [
               createTextVNode(toDisplayString($setup.countPomodoro($setup.allPomodoro, "todayNum")), 1)
             ]),
             _: 1
-          })
+          }, 8, ["title"])
         ]),
         _: 1
       }),
       createVNode($setup["NGridItem"], null, {
         default: withCtx(() => [
           createVNode($setup["NCard"], {
-            title: "\u4ECA\u65E5\u4E13\u6CE8\u65F6\u957F",
+            title: $setup.t.info.todayTime,
             "content-style": "font-size: 16px;"
           }, {
             default: withCtx(() => [
               createTextVNode(toDisplayString($setup.countPomodoro($setup.allPomodoro, "todayTime")), 1)
             ]),
             _: 1
-          })
+          }, 8, ["title"])
         ]),
         _: 1
       }),
       createVNode($setup["NGridItem"], null, {
         default: withCtx(() => [
           createVNode($setup["NCard"], {
-            title: "\u603B\u756A\u8304",
+            title: $setup.t.info.totalNum,
             "content-style": "font-size: 16px;"
           }, {
             default: withCtx(() => [
               createTextVNode(toDisplayString($setup.countPomodoro($setup.allPomodoro, "totalNum")), 1)
             ]),
             _: 1
-          })
+          }, 8, ["title"])
         ]),
         _: 1
       }),
       createVNode($setup["NGridItem"], null, {
         default: withCtx(() => [
           createVNode($setup["NCard"], {
-            title: "\u603B\u4E13\u6CE8\u65F6\u957F",
+            title: $setup.t.info.totalTime,
             "content-style": "font-size: 16px;"
           }, {
             default: withCtx(() => [
               createTextVNode(toDisplayString($setup.countPomodoro($setup.allPomodoro, "totalTime")), 1)
             ]),
             _: 1
-          })
+          }, 8, ["title"])
         ]),
         _: 1
       })
@@ -43049,10 +43218,10 @@ function render6(_ctx, _cache, $props, $setup, $data, $options) {
     style: normalizeStyle(_ctx.progressStyle)
   }, null, 12, _hoisted_6)], 8, _hoisted_12))], 4);
 }
-function styleInject(css, ref3) {
-  if (ref3 === void 0)
-    ref3 = {};
-  var insertAt = ref3.insertAt;
+function styleInject(css, ref2) {
+  if (ref2 === void 0)
+    ref2 = {};
+  var insertAt = ref2.insertAt;
   if (!css || typeof document === "undefined") {
     return;
   }
@@ -43128,6 +43297,8 @@ var ClockView_default = /* @__PURE__ */ defineComponent({
       return Result_default;
     }, get NSpace() {
       return Space_default;
+    }, get t() {
+      return i18n_default2;
     } };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
@@ -43159,9 +43330,9 @@ function render7(_ctx, _cache, $props, $setup, $data, $options) {
         }, 8, ["completed-steps", "total-steps"])) : (openBlock(), createBlock($setup["NResult"], {
           key: 1,
           status: "418",
-          title: "\u65E0\u6B63\u5728\u4E13\u6CE8\u7684\u4EFB\u52A1",
-          description: "\u4F11\u606F\u4E00\u4E0B\u5427"
-        }))
+          title: $setup.t.info.noDoingTask,
+          description: $setup.t.info.haveABreak
+        }, null, 8, ["title", "description"]))
       ]),
       _: 1
     })
@@ -43499,27 +43670,27 @@ var TimeLine_default = /* @__PURE__ */ defineComponent({
     const getOptions = (currentStatus) => {
       return [
         {
-          label: "\u25B6\uFE0F\u5F00\u59CB\u4E13\u6CE8",
+          label: i18n_default2.info.startTask,
           key: "ing",
           show: !["done", "cancelled", "ing"].contains(currentStatus)
         },
         {
-          label: "\u23F8\uFE0F\u6682\u505C\u4EFB\u52A1",
+          label: i18n_default2.info.stopTask,
           key: "break",
           show: !["done", "cancelled", "todo", "break"].contains(currentStatus)
         },
         {
-          label: "\u2705\u5B8C\u6210\u4EFB\u52A1",
+          label: i18n_default2.info.finishTask,
           key: "done",
           show: !["done", "cancelled", "todo", "break"].contains(currentStatus)
         },
         {
-          label: "\u{1F534}\u653E\u5F03\u4EFB\u52A1",
+          label: i18n_default2.info.cancelTask,
           key: "cancelled",
           show: !["done", "cancelled"].contains(currentStatus)
         },
         {
-          label: "\u2757\u5220\u9664\u8BB0\u5F55",
+          label: i18n_default2.info.deleteTask,
           key: "deleted"
         }
       ];
@@ -43530,7 +43701,7 @@ var TimeLine_default = /* @__PURE__ */ defineComponent({
         if (targetStatus == "ing") {
           const ingPomodoro = pomodoroList.value.find((item) => item.status === "ing");
           if (ingPomodoro) {
-            message.error(`\u8BF7\u5148\u5904\u7406\u4EFB\u52A1\uFF1A${ingPomodoro.task}`);
+            message.error(`${i18n_default2.info.handleThisFirst + ingPomodoro.task}`);
             return;
           }
         }
@@ -43574,6 +43745,8 @@ var TimeLine_default = /* @__PURE__ */ defineComponent({
       return RadioButtonOffOutline_default;
     }, get moment() {
       return import_moment7.default;
+    }, get t() {
+      return i18n_default2;
     } };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
@@ -43665,7 +43838,7 @@ function render10(_ctx, _cache, $props, $setup, $data, $options) {
       _: 1
     })) : (openBlock(), createBlock($setup["NEmpty"], {
       key: 1,
-      description: "\u6682\u65E0\u65F6\u95F4\u7EBF\u5185\u5BB9"
+      description: $setup.t.info.noTimeLine
     }, {
       icon: withCtx(() => [
         createVNode($setup["NIcon"], null, {
@@ -43676,7 +43849,7 @@ function render10(_ctx, _cache, $props, $setup, $data, $options) {
         })
       ]),
       _: 1
-    }))
+    }, 8, ["description"]))
   ]);
 }
 
@@ -43693,7 +43866,7 @@ var Title_default = defineComponent({
 });
 var A = defineComponent({
   setup() {
-    return () => createVNode(Fragment, null, [createTextVNode("\u756A\u8304\u949F\u6570\u636E\u770B\u677F")]);
+    return () => createVNode(Fragment, null, [i18n_default2.info.Pomodoro]);
   }
 });
 
@@ -44754,7 +44927,7 @@ function _scaleRangesChanged(meta) {
 var atEdge = (t3) => t3 === 0 || t3 === 1;
 var elasticIn = (t3, s4, p2) => -(Math.pow(2, 10 * (t3 -= 1)) * Math.sin((t3 - s4) * TAU / p2));
 var elasticOut = (t3, s4, p2) => Math.pow(2, -10 * t3) * Math.sin((t3 - s4) * TAU / p2) + 1;
-var effects2 = {
+var effects = {
   linear: (t3) => t3,
   easeInQuad: (t3) => t3 * t3,
   easeOutQuad: (t3) => -t3 * (t3 - 2),
@@ -44799,7 +44972,7 @@ var effects2 = {
     }
     return 0.5 * ((t3 -= 2) * t3 * (((s4 *= 1.525) + 1) * t3 + s4) + 2);
   },
-  easeInBounce: (t3) => 1 - effects2.easeOutBounce(1 - t3),
+  easeInBounce: (t3) => 1 - effects.easeOutBounce(1 - t3),
   easeOutBounce(t3) {
     const m3 = 7.5625;
     const d4 = 2.75;
@@ -44814,7 +44987,7 @@ var effects2 = {
     }
     return m3 * (t3 -= 2.625 / d4) * t3 + 0.984375;
   },
-  easeInOutBounce: (t3) => t3 < 0.5 ? effects2.easeInBounce(t3 * 2) * 0.5 : effects2.easeOutBounce(t3 * 2 - 1) * 0.5 + 0.5
+  easeInOutBounce: (t3) => t3 < 0.5 ? effects.easeInBounce(t3 * 2) * 0.5 : effects.easeOutBounce(t3 * 2 - 1) * 0.5 + 0.5
 };
 function isPatternOrGradient(value) {
   if (value && typeof value === "object") {
@@ -46717,7 +46890,7 @@ var Animation = class {
     ]);
     this._active = true;
     this._fn = cfg.fn || interpolators[cfg.type || typeof from2];
-    this._easing = effects2[cfg.easing] || effects2.linear;
+    this._easing = effects[cfg.easing] || effects.linear;
     this._start = Math.floor(Date.now() + (cfg.delay || 0));
     this._duration = this._total = Math.floor(cfg.duration);
     this._loop = !!cfg.loop;
@@ -57785,12 +57958,12 @@ var DoughnutChart_default = /* @__PURE__ */ defineComponent({
     let dateSet = [];
     const setDataSet = (raw) => {
       const res = {
-        "No Tags": 0
+        [i18n_default2.info.noTag]: 0
       };
       raw.forEach((pomodoro) => {
         var _a3;
         if (!pomodoro.tags) {
-          res["No Tags"]++;
+          res[i18n_default2.info.noTag]++;
         } else {
           (_a3 = pomodoro.tags) == null ? void 0 : _a3.split(",").forEach((tag) => {
             if (res[tag] == void 0) {
@@ -57810,7 +57983,7 @@ var DoughnutChart_default = /* @__PURE__ */ defineComponent({
       var data = {
         labels,
         datasets: [{
-          label: "\u4E13\u6CE8\u7C7B\u578B",
+          label: i18n_default2.info.taskType,
           backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 205, 86)", "rgb(244, 67, 54)", "rgb(103, 58, 183)", "rgb(3, 169, 244)", "rgb(0, 188, 212)", "rgb(139, 195, 74)", "rgb(233, 30, 99)", "rgb(156, 39, 176)", "rgb(0, 150, 136)", "rgb(255, 152, 0)", "rgb(76, 175, 80)"],
           hoverBorderColor: "rgba(255,99,132,1)",
           hoverOffset: 4,
@@ -57950,13 +58123,13 @@ var LineChart_default = /* @__PURE__ */ defineComponent({
       var data = {
         labels,
         datasets: [{
-          label: "\u4E13\u6CE8\u6B21\u6570",
+          label: i18n_default2.info.planNum,
           fill: false,
           backgroundColor: "rgb(54, 162, 235)",
           borderColor: "rgba(54, 162, 235, 0.6)",
           data: todayStart.value
         }, {
-          label: "\u5B8C\u6210\u6B21\u6570",
+          label: i18n_default2.info.finishNum,
           backgroundColor: "rgb(255, 99, 132)",
           borderColor: "rgba(255, 99, 132, 0.6)",
           data: todayDone.value,
@@ -58230,7 +58403,7 @@ var PomodoroHistoryView = class extends import_obsidian8.ItemView {
     return POMODORO_HISTORY_VIEW;
   }
   getDisplayText() {
-    return "Pomodoro History View";
+    return i18n_default2.info.Pomodoro;
   }
   getIcon() {
     return "clock";
@@ -61591,12 +61764,12 @@ ${todos_today.join("\n")}`;
   }
   async customizeEditorMenu(menu, editor, info) {
     menu.addItem((item) => {
-      item.setTitle("Set Random Banner For Current File").setIcon("image").onClick((async) => {
+      item.setTitle(i18n_default2.menu.setBannerForCurrent).setIcon("image").onClick((async) => {
         new ImageOriginModal(this.app, this, this.app.workspace.getActiveFile()).open();
       });
     });
     menu.addItem((item) => {
-      item.setTitle("Plan a pomodoro").setIcon("clock").onClick(async () => {
+      item.setTitle(i18n_default2.menu.planPomodoro).setIcon("clock").onClick(async () => {
         const cursorPos = editor.getCursor();
         let task = editor.getSelection();
         if (!task) {
@@ -61607,7 +61780,7 @@ ${todos_today.join("\n")}`;
         task = task.replace("- [x] ", "");
         task = task.replace("- [ ] ", "").trim();
         if (!task) {
-          task = "Default task " + Date.now();
+          task = i18n_default2.menu.defaultTask + Date.now();
         }
         this.startPomodoro(task);
       });
@@ -61621,7 +61794,7 @@ ${todos_today.join("\n")}`;
   }
   async customizeFileMenu(menu, file, source, leaf) {
     menu.addItem((item) => {
-      item.setTitle("Set random banner for this path").setIcon("image").onClick(async () => {
+      item.setTitle(i18n_default2.menu.setBannerForTheFolder).setIcon("image").onClick(async () => {
         new ImageOriginModal(this.app, this, file).open();
       });
     });
@@ -61684,7 +61857,7 @@ ${todos_today.join("\n")}`;
           this.updatePomodoro(pomodoro);
           this.pomodoroTarget = null;
         } else {
-          logger_default.error("\u66F4\u65B0\u5931\u8D25", pomodoro);
+          logger_default.error("Update failed", pomodoro);
         }
       }
     }, 1 * 1e3));
@@ -61834,14 +62007,14 @@ ${todos_today.join("\n")}`;
   setupCommands() {
     this.addCommand({
       id: "awesome-brain-manager-check-in",
-      name: "Habit Check In",
+      name: i18n_default2.command["awesome-brain-manager-check-in"],
       callback: () => {
         this.habitCheckIn();
       }
     });
     this.addCommand({
       id: "awesome-brain-manager-remove-check-in",
-      name: "Remove Habit Check In",
+      name: i18n_default2.command["awesome-brain-manager-remove-check-in"],
       callback: () => {
         this.removeHabitCheckIn();
       }
@@ -61856,12 +62029,12 @@ ${todos_today.join("\n")}`;
     });
     this.addCommand({
       id: "awesome-brain-manager-rollover",
-      name: "Rollover Todos Now",
+      name: i18n_default2.command["awesome-brain-manager-rollover"],
       callback: () => this.rollover(void 0)
     });
     this.addCommand({
       id: "awesome-brain-manager-undo",
-      name: "Undo last rollover",
+      name: i18n_default2.command["awesome-brain-manager-undo"],
       checkCallback: (checking) => {
         if (this.undoHistory.length > 0) {
           const now = (0, import_moment8.default)();
@@ -61886,7 +62059,7 @@ ${todos_today.join("\n")}`;
   getDocumentDirection() {
     const view = this.app.workspace.getActiveViewOfType(import_obsidian16.MarkdownView);
     if (!view)
-      return "unknown";
+      return i18n_default2.info.unknown;
     const rtlEditors = view.contentEl.getElementsByClassName("is-rtl");
     if (rtlEditors.length > 0)
       return "rtl";
@@ -61992,7 +62165,7 @@ ${todos_today.join("\n")}`;
     this.addTag(new Tag("blue", "yellow", "juckz", { name: "" }, { fontFamily: "" }));
     this.addRibbonIcon("settings-2", "Awesome Brain Manager", (event) => {
       const menu = new import_obsidian16.Menu();
-      menu.addItem((item) => item.setTitle("Show pomodoro history").setIcon("alarm-clock").onClick(async () => {
+      menu.addItem((item) => item.setTitle(i18n_default2.menu.showPomodoroHistory).setIcon("alarm-clock").onClick(async () => {
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         await this.app.workspace.getLeaf(true).setViewState({
           type: POMODORO_HISTORY_VIEW,
@@ -62006,9 +62179,9 @@ ${todos_today.join("\n")}`;
   watchVault() {
     const callback2 = () => {
       if (media.matches) {
-        console.log("Dark mode act1ive");
+        logger_default.log("Dark mode active");
       } else {
-        console.log("Light mode 1active");
+        logger_default.log("Light mode active");
       }
     };
     media.addEventListener("change", callback2);
