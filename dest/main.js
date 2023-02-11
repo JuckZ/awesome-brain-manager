@@ -2115,10 +2115,10 @@ var require_moment = __commonJS({
         return createDuration(NaN);
       }
       function Duration(duration) {
-        var normalizedInput = normalizeObjectUnits(duration), years2 = normalizedInput.year || 0, quarters = normalizedInput.quarter || 0, months2 = normalizedInput.month || 0, weeks2 = normalizedInput.week || normalizedInput.isoWeek || 0, days2 = normalizedInput.day || 0, hours2 = normalizedInput.hour || 0, minutes2 = normalizedInput.minute || 0, seconds2 = normalizedInput.second || 0, milliseconds2 = normalizedInput.millisecond || 0;
+        var normalizedInput = normalizeObjectUnits(duration), years2 = normalizedInput.year || 0, quarters = normalizedInput.quarter || 0, months2 = normalizedInput.month || 0, weeks2 = normalizedInput.week || normalizedInput.isoWeek || 0, days3 = normalizedInput.day || 0, hours2 = normalizedInput.hour || 0, minutes2 = normalizedInput.minute || 0, seconds2 = normalizedInput.second || 0, milliseconds2 = normalizedInput.millisecond || 0;
         this._isValid = isDurationValid(normalizedInput);
         this._milliseconds = +milliseconds2 + seconds2 * 1e3 + minutes2 * 6e4 + hours2 * 1e3 * 60 * 60;
-        this._days = +days2 + weeks2 * 7;
+        this._days = +days3 + weeks2 * 7;
         this._months = +months2 + quarters * 3 + years2 * 12;
         this._data = {};
         this._locale = getLocale();
@@ -2395,7 +2395,7 @@ var require_moment = __commonJS({
         };
       }
       function addSubtract(mom, duration, isAdding, updateOffset) {
-        var milliseconds2 = duration._milliseconds, days2 = absRound(duration._days), months2 = absRound(duration._months);
+        var milliseconds2 = duration._milliseconds, days3 = absRound(duration._days), months2 = absRound(duration._months);
         if (!mom.isValid()) {
           return;
         }
@@ -2403,14 +2403,14 @@ var require_moment = __commonJS({
         if (months2) {
           setMonth(mom, get3(mom, "Month") + months2 * isAdding);
         }
-        if (days2) {
-          set$12(mom, "Date", get3(mom, "Date") + days2 * isAdding);
+        if (days3) {
+          set$12(mom, "Date", get3(mom, "Date") + days3 * isAdding);
         }
         if (milliseconds2) {
           mom._d.setTime(mom._d.valueOf() + milliseconds2 * isAdding);
         }
         if (updateOffset) {
-          hooks.updateOffset(mom, days2 || months2);
+          hooks.updateOffset(mom, days3 || months2);
         }
       }
       var add3 = createAdder(1, "add"), subtract = createAdder(-1, "subtract");
@@ -3466,10 +3466,10 @@ var require_moment = __commonJS({
         }
       }
       function bubble() {
-        var milliseconds2 = this._milliseconds, days2 = this._days, months2 = this._months, data = this._data, seconds2, minutes2, hours2, years2, monthsFromDays;
-        if (!(milliseconds2 >= 0 && days2 >= 0 && months2 >= 0 || milliseconds2 <= 0 && days2 <= 0 && months2 <= 0)) {
-          milliseconds2 += absCeil(monthsToDays(months2) + days2) * 864e5;
-          days2 = 0;
+        var milliseconds2 = this._milliseconds, days3 = this._days, months2 = this._months, data = this._data, seconds2, minutes2, hours2, years2, monthsFromDays;
+        if (!(milliseconds2 >= 0 && days3 >= 0 && months2 >= 0 || milliseconds2 <= 0 && days3 <= 0 && months2 <= 0)) {
+          milliseconds2 += absCeil(monthsToDays(months2) + days3) * 864e5;
+          days3 = 0;
           months2 = 0;
         }
         data.milliseconds = milliseconds2 % 1e3;
@@ -3479,19 +3479,19 @@ var require_moment = __commonJS({
         data.minutes = minutes2 % 60;
         hours2 = absFloor(minutes2 / 60);
         data.hours = hours2 % 24;
-        days2 += absFloor(hours2 / 24);
-        monthsFromDays = absFloor(daysToMonths(days2));
+        days3 += absFloor(hours2 / 24);
+        monthsFromDays = absFloor(daysToMonths(days3));
         months2 += monthsFromDays;
-        days2 -= absCeil(monthsToDays(monthsFromDays));
+        days3 -= absCeil(monthsToDays(monthsFromDays));
         years2 = absFloor(months2 / 12);
         months2 %= 12;
-        data.days = days2;
+        data.days = days3;
         data.months = months2;
         data.years = years2;
         return this;
       }
-      function daysToMonths(days2) {
-        return days2 * 4800 / 146097;
+      function daysToMonths(days3) {
+        return days3 * 4800 / 146097;
       }
       function monthsToDays(months2) {
         return months2 * 146097 / 4800;
@@ -3500,11 +3500,11 @@ var require_moment = __commonJS({
         if (!this.isValid()) {
           return NaN;
         }
-        var days2, months2, milliseconds2 = this._milliseconds;
+        var days3, months2, milliseconds2 = this._milliseconds;
         units = normalizeUnits(units);
         if (units === "month" || units === "quarter" || units === "year") {
-          days2 = this._days + milliseconds2 / 864e5;
-          months2 = this._months + daysToMonths(days2);
+          days3 = this._days + milliseconds2 / 864e5;
+          months2 = this._months + daysToMonths(days3);
           switch (units) {
             case "month":
               return months2;
@@ -3514,20 +3514,20 @@ var require_moment = __commonJS({
               return months2 / 12;
           }
         } else {
-          days2 = this._days + Math.round(monthsToDays(this._months));
+          days3 = this._days + Math.round(monthsToDays(this._months));
           switch (units) {
             case "week":
-              return days2 / 7 + milliseconds2 / 6048e5;
+              return days3 / 7 + milliseconds2 / 6048e5;
             case "day":
-              return days2 + milliseconds2 / 864e5;
+              return days3 + milliseconds2 / 864e5;
             case "hour":
-              return days2 * 24 + milliseconds2 / 36e5;
+              return days3 * 24 + milliseconds2 / 36e5;
             case "minute":
-              return days2 * 1440 + milliseconds2 / 6e4;
+              return days3 * 1440 + milliseconds2 / 6e4;
             case "second":
-              return days2 * 86400 + milliseconds2 / 1e3;
+              return days3 * 86400 + milliseconds2 / 1e3;
             case "millisecond":
-              return Math.floor(days2 * 864e5) + milliseconds2;
+              return Math.floor(days3 * 864e5) + milliseconds2;
             default:
               throw new Error("Unknown unit " + units);
           }
@@ -3557,7 +3557,7 @@ var require_moment = __commonJS({
           return this.isValid() ? this._data[name2] : NaN;
         };
       }
-      var milliseconds = makeGetter("milliseconds"), seconds = makeGetter("seconds"), minutes = makeGetter("minutes"), hours = makeGetter("hours"), days = makeGetter("days"), months = makeGetter("months"), years = makeGetter("years");
+      var milliseconds = makeGetter("milliseconds"), seconds = makeGetter("seconds"), minutes = makeGetter("minutes"), hours = makeGetter("hours"), days2 = makeGetter("days"), months = makeGetter("months"), years = makeGetter("years");
       function weeks() {
         return absFloor(this.days() / 7);
       }
@@ -3574,7 +3574,7 @@ var require_moment = __commonJS({
         return locale4.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
       }
       function relativeTime$1(posNegDuration, withoutSuffix, thresholds2, locale4) {
-        var duration = createDuration(posNegDuration).abs(), seconds2 = round2(duration.as("s")), minutes2 = round2(duration.as("m")), hours2 = round2(duration.as("h")), days2 = round2(duration.as("d")), months2 = round2(duration.as("M")), weeks2 = round2(duration.as("w")), years2 = round2(duration.as("y")), a4 = seconds2 <= thresholds2.ss && ["s", seconds2] || seconds2 < thresholds2.s && ["ss", seconds2] || minutes2 <= 1 && ["m"] || minutes2 < thresholds2.m && ["mm", minutes2] || hours2 <= 1 && ["h"] || hours2 < thresholds2.h && ["hh", hours2] || days2 <= 1 && ["d"] || days2 < thresholds2.d && ["dd", days2];
+        var duration = createDuration(posNegDuration).abs(), seconds2 = round2(duration.as("s")), minutes2 = round2(duration.as("m")), hours2 = round2(duration.as("h")), days3 = round2(duration.as("d")), months2 = round2(duration.as("M")), weeks2 = round2(duration.as("w")), years2 = round2(duration.as("y")), a4 = seconds2 <= thresholds2.ss && ["s", seconds2] || seconds2 < thresholds2.s && ["ss", seconds2] || minutes2 <= 1 && ["m"] || minutes2 < thresholds2.m && ["mm", minutes2] || hours2 <= 1 && ["h"] || hours2 < thresholds2.h && ["hh", hours2] || days3 <= 1 && ["d"] || days3 < thresholds2.d && ["dd", days3];
         if (thresholds2.w != null) {
           a4 = a4 || weeks2 <= 1 && ["w"] || weeks2 < thresholds2.w && ["ww", weeks2];
         }
@@ -3640,7 +3640,7 @@ var require_moment = __commonJS({
         if (!this.isValid()) {
           return this.localeData().invalidDate();
         }
-        var seconds2 = abs$1(this._milliseconds) / 1e3, days2 = abs$1(this._days), months2 = abs$1(this._months), minutes2, hours2, years2, s4, total = this.asSeconds(), totalSign, ymSign, daysSign, hmsSign;
+        var seconds2 = abs$1(this._milliseconds) / 1e3, days3 = abs$1(this._days), months2 = abs$1(this._months), minutes2, hours2, years2, s4, total = this.asSeconds(), totalSign, ymSign, daysSign, hmsSign;
         if (!total) {
           return "P0D";
         }
@@ -3655,7 +3655,7 @@ var require_moment = __commonJS({
         ymSign = sign2(this._months) !== sign2(total) ? "-" : "";
         daysSign = sign2(this._days) !== sign2(total) ? "-" : "";
         hmsSign = sign2(this._milliseconds) !== sign2(total) ? "-" : "";
-        return totalSign + "P" + (years2 ? ymSign + years2 + "Y" : "") + (months2 ? ymSign + months2 + "M" : "") + (days2 ? daysSign + days2 + "D" : "") + (hours2 || minutes2 || seconds2 ? "T" : "") + (hours2 ? hmsSign + hours2 + "H" : "") + (minutes2 ? hmsSign + minutes2 + "M" : "") + (seconds2 ? hmsSign + s4 + "S" : "");
+        return totalSign + "P" + (years2 ? ymSign + years2 + "Y" : "") + (months2 ? ymSign + months2 + "M" : "") + (days3 ? daysSign + days3 + "D" : "") + (hours2 || minutes2 || seconds2 ? "T" : "") + (hours2 ? hmsSign + hours2 + "H" : "") + (minutes2 ? hmsSign + minutes2 + "M" : "") + (seconds2 ? hmsSign + s4 + "S" : "");
       }
       var proto$2 = Duration.prototype;
       proto$2.isValid = isValid$1;
@@ -3680,7 +3680,7 @@ var require_moment = __commonJS({
       proto$2.seconds = seconds;
       proto$2.minutes = minutes;
       proto$2.hours = hours;
-      proto$2.days = days;
+      proto$2.days = days2;
       proto$2.weeks = weeks;
       proto$2.months = months;
       proto$2.years = years;
@@ -5729,7 +5729,7 @@ var require_source = __commonJS({
         parent
       };
     };
-    var createBuilder = (self20, _styler, _isEmpty) => {
+    var createBuilder = (self79, _styler, _isEmpty) => {
       const builder = (...arguments_) => {
         if (isArray6(arguments_[0]) && isArray6(arguments_[0].raw)) {
           return applyStyle(builder, chalkTag(builder, ...arguments_));
@@ -5737,16 +5737,16 @@ var require_source = __commonJS({
         return applyStyle(builder, arguments_.length === 1 ? "" + arguments_[0] : arguments_.join(" "));
       };
       Object.setPrototypeOf(builder, proto);
-      builder._generator = self20;
+      builder._generator = self79;
       builder._styler = _styler;
       builder._isEmpty = _isEmpty;
       return builder;
     };
-    var applyStyle = (self20, string) => {
-      if (self20.level <= 0 || !string) {
-        return self20._isEmpty ? "" : string;
+    var applyStyle = (self79, string) => {
+      if (self79.level <= 0 || !string) {
+        return self79._isEmpty ? "" : string;
       }
-      let styler = self20._styler;
+      let styler = self79._styler;
       if (styler === void 0) {
         return string;
       }
@@ -10527,8 +10527,8 @@ function inMinutes(minutes) {
 function inHours(hours) {
   return add(hours, "hours");
 }
-function inDays(days) {
-  return add(days, "days");
+function inDays(days2) {
+  return add(days2, "days");
 }
 function inWeeks(weeks) {
   return add(weeks, "weeks");
@@ -11726,7 +11726,7 @@ var ToText = function() {
     }
     if (isPresent(this.origOptions.byweekday)) {
       var byweekday = !isArray(this.origOptions.byweekday) ? [this.origOptions.byweekday] : this.origOptions.byweekday;
-      var days = String(byweekday);
+      var days2 = String(byweekday);
       this.byweekday = {
         allWeeks: byweekday.filter(function(weekday) {
           return !weekday.n;
@@ -11734,8 +11734,8 @@ var ToText = function() {
         someWeeks: byweekday.filter(function(weekday) {
           return Boolean(weekday.n);
         }),
-        isWeekdays: days.indexOf("MO") !== -1 && days.indexOf("TU") !== -1 && days.indexOf("WE") !== -1 && days.indexOf("TH") !== -1 && days.indexOf("FR") !== -1 && days.indexOf("SA") === -1 && days.indexOf("SU") === -1,
-        isEveryDay: days.indexOf("MO") !== -1 && days.indexOf("TU") !== -1 && days.indexOf("WE") !== -1 && days.indexOf("TH") !== -1 && days.indexOf("FR") !== -1 && days.indexOf("SA") !== -1 && days.indexOf("SU") !== -1
+        isWeekdays: days2.indexOf("MO") !== -1 && days2.indexOf("TU") !== -1 && days2.indexOf("WE") !== -1 && days2.indexOf("TH") !== -1 && days2.indexOf("FR") !== -1 && days2.indexOf("SA") === -1 && days2.indexOf("SU") === -1,
+        isEveryDay: days2.indexOf("MO") !== -1 && days2.indexOf("TU") !== -1 && days2.indexOf("WE") !== -1 && days2.indexOf("TH") !== -1 && days2.indexOf("FR") !== -1 && days2.indexOf("SA") !== -1 && days2.indexOf("SU") !== -1
       };
       var sortWeekDays = function(a4, b2) {
         return a4.weekday - b2.weekday;
@@ -12479,16 +12479,16 @@ var DateTime3 = function(_super) {
       }
     }
   };
-  DateTime4.prototype.addWeekly = function(days, wkst) {
+  DateTime4.prototype.addWeekly = function(days2, wkst) {
     if (wkst > this.getWeekday()) {
-      this.day += -(this.getWeekday() + 1 + (6 - wkst)) + days * 7;
+      this.day += -(this.getWeekday() + 1 + (6 - wkst)) + days2 * 7;
     } else {
-      this.day += -(this.getWeekday() - wkst) + days * 7;
+      this.day += -(this.getWeekday() - wkst) + days2 * 7;
     }
     this.fixDay();
   };
-  DateTime4.prototype.addDaily = function(days) {
-    this.day += days;
+  DateTime4.prototype.addDaily = function(days2) {
+    this.day += days2;
     this.fixDay();
   };
   DateTime4.prototype.addHours = function(hours, filtered, byhour) {
@@ -12842,8 +12842,8 @@ function parseIndividualNumber(value) {
   return value;
 }
 function parseWeekday(value) {
-  var days = value.split(",");
-  return days.map(function(day) {
+  var days2 = value.split(",");
+  return days2.map(function(day) {
     if (day.length === 2) {
       return Days[day];
     }
@@ -17289,13 +17289,13 @@ var ComputedRefImpl = class {
     this["__v_isReadonly"] = isReadonly2;
   }
   get value() {
-    const self20 = toRaw(this);
-    trackRefValue(self20);
-    if (self20._dirty || !self20._cacheable) {
-      self20._dirty = false;
-      self20._value = self20.effect.run();
+    const self79 = toRaw(this);
+    trackRefValue(self79);
+    if (self79._dirty || !self79._cacheable) {
+      self79._dirty = false;
+      self79._value = self79.effect.run();
     }
-    return self20._value;
+    return self79._value;
   }
   set value(newValue) {
     this._setter(newValue);
@@ -28090,13 +28090,13 @@ function useTheme(resolveId, mountId, style2, defaultTheme, props, clsPrefixRef)
   }
   const mergedThemeRef = computed2(() => {
     var _a3;
-    const { theme: { common: selfCommon, self: self20, peers = {} } = {}, themeOverrides: selfOverrides = {}, builtinThemeOverrides: builtinOverrides = {} } = props;
+    const { theme: { common: selfCommon, self: self79, peers = {} } = {}, themeOverrides: selfOverrides = {}, builtinThemeOverrides: builtinOverrides = {} } = props;
     const { common: selfCommonOverrides, peers: peersOverrides } = selfOverrides;
     const { common: globalCommon = void 0, [resolveId]: { common: globalSelfCommon = void 0, self: globalSelf = void 0, peers: globalPeers = {} } = {} } = (NConfigProvider === null || NConfigProvider === void 0 ? void 0 : NConfigProvider.mergedThemeRef.value) || {};
     const { common: globalCommonOverrides = void 0, [resolveId]: globalSelfOverrides = {} } = (NConfigProvider === null || NConfigProvider === void 0 ? void 0 : NConfigProvider.mergedThemeOverridesRef.value) || {};
     const { common: globalSelfCommonOverrides, peers: globalPeersOverrides = {} } = globalSelfOverrides;
     const mergedCommon = merge_default({}, selfCommon || globalSelfCommon || globalCommon || defaultTheme.common, globalCommonOverrides, globalSelfCommonOverrides, selfCommonOverrides);
-    const mergedSelf = merge_default((_a3 = self20 || globalSelf || defaultTheme.self) === null || _a3 === void 0 ? void 0 : _a3(mergedCommon), builtinOverrides, globalSelfOverrides, selfOverrides);
+    const mergedSelf = merge_default((_a3 = self79 || globalSelf || defaultTheme.self) === null || _a3 === void 0 ? void 0 : _a3(mergedCommon), builtinOverrides, globalSelfOverrides, selfOverrides);
     return {
       common: mergedCommon,
       self: mergedSelf,
@@ -32085,6 +32085,14 @@ var emptyLight = {
 };
 var light_default2 = emptyLight;
 
+// node_modules/naive-ui/es/empty/styles/dark.js
+var emptyDark = {
+  name: "Empty",
+  common: dark_default,
+  self: self2
+};
+var dark_default2 = emptyDark;
+
 // node_modules/naive-ui/es/empty/src/styles/index.cssr.js
 var index_cssr_default5 = cB("empty", `
  display: flex;
@@ -32195,7 +32203,7 @@ var scrollbarDark = {
   common: dark_default,
   self: self3
 };
-var dark_default2 = scrollbarDark;
+var dark_default3 = scrollbarDark;
 
 // node_modules/naive-ui/es/_styles/transitions/fade-in.cssr.js
 var {
@@ -32863,6 +32871,48 @@ var Scrollbar = defineComponent({
 });
 var XScrollbar = Scrollbar;
 
+// node_modules/naive-ui/es/_internal/select-menu/styles/_common.js
+var common_default3 = {
+  height: "calc(var(--n-option-height) * 7.6)",
+  paddingSmall: "4px 0",
+  paddingMedium: "4px 0",
+  paddingLarge: "4px 0",
+  paddingHuge: "4px 0",
+  optionPaddingSmall: "0 12px",
+  optionPaddingMedium: "0 12px",
+  optionPaddingLarge: "0 12px",
+  optionPaddingHuge: "0 12px",
+  loadingSize: "18px"
+};
+
+// node_modules/naive-ui/es/_internal/select-menu/styles/light.js
+var self4 = (vars) => {
+  const { borderRadius, popoverColor, textColor3, dividerColor, textColor2, primaryColorPressed, textColorDisabled, primaryColor, opacityDisabled, hoverColor, fontSizeSmall, fontSizeMedium, fontSizeLarge, fontSizeHuge, heightSmall, heightMedium, heightLarge, heightHuge } = vars;
+  return Object.assign(Object.assign({}, common_default3), { optionFontSizeSmall: fontSizeSmall, optionFontSizeMedium: fontSizeMedium, optionFontSizeLarge: fontSizeLarge, optionFontSizeHuge: fontSizeHuge, optionHeightSmall: heightSmall, optionHeightMedium: heightMedium, optionHeightLarge: heightLarge, optionHeightHuge: heightHuge, borderRadius, color: popoverColor, groupHeaderTextColor: textColor3, actionDividerColor: dividerColor, optionTextColor: textColor2, optionTextColorPressed: primaryColorPressed, optionTextColorDisabled: textColorDisabled, optionTextColorActive: primaryColor, optionOpacityDisabled: opacityDisabled, optionCheckColor: primaryColor, optionColorPending: hoverColor, optionColorActive: "rgba(0, 0, 0, 0)", optionColorActivePending: hoverColor, actionTextColor: textColor2, loadingColor: primaryColor });
+};
+var internalSelectMenuLight = createTheme({
+  name: "InternalSelectMenu",
+  common: light_default,
+  peers: {
+    Scrollbar: light_default3,
+    Empty: light_default2
+  },
+  self: self4
+});
+var light_default4 = internalSelectMenuLight;
+
+// node_modules/naive-ui/es/_internal/select-menu/styles/dark.js
+var internalSelectMenuDark = {
+  name: "InternalSelectMenu",
+  common: dark_default,
+  peers: {
+    Scrollbar: dark_default3,
+    Empty: dark_default2
+  },
+  self: self4
+};
+var dark_default4 = internalSelectMenuDark;
+
 // node_modules/naive-ui/es/_styles/transitions/fade-in-scale-up.cssr.js
 var {
   cubicBezierEaseIn,
@@ -32950,7 +33000,7 @@ var Wave_default = defineComponent({
 });
 
 // node_modules/naive-ui/es/popover/styles/_common.js
-var common_default3 = {
+var common_default4 = {
   space: "6px",
   spaceArrow: "10px",
   arrowOffset: "10px",
@@ -32960,9 +33010,9 @@ var common_default3 = {
 };
 
 // node_modules/naive-ui/es/popover/styles/light.js
-var self4 = (vars) => {
+var self5 = (vars) => {
   const { boxShadow2, popoverColor, textColor2, borderRadius, fontSize: fontSize2, dividerColor } = vars;
-  return Object.assign(Object.assign({}, common_default3), {
+  return Object.assign(Object.assign({}, common_default4), {
     fontSize: fontSize2,
     borderRadius,
     color: popoverColor,
@@ -32974,9 +33024,17 @@ var self4 = (vars) => {
 var popoverLight = {
   name: "Popover",
   common: light_default,
-  self: self4
+  self: self5
 };
-var light_default4 = popoverLight;
+var light_default5 = popoverLight;
+
+// node_modules/naive-ui/es/popover/styles/dark.js
+var popoverDark = {
+  name: "Popover",
+  common: dark_default,
+  self: self5
+};
+var dark_default5 = popoverDark;
 
 // node_modules/naive-ui/es/popover/src/styles/index.cssr.js
 var oppositePlacement = {
@@ -33173,7 +33231,7 @@ var PopoverBody_default = defineComponent({
   props: popoverBodyProps,
   setup(props, { slots, attrs }) {
     const { namespaceRef, mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props);
-    const themeRef = use_theme_default("Popover", "-popover", index_cssr_default8, light_default4, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Popover", "-popover", index_cssr_default8, light_default5, props, mergedClsPrefixRef);
     const followerRef = ref(null);
     const NPopover = inject("NPopover");
     const bodyRef = ref(null);
@@ -33849,7 +33907,7 @@ var Popover_default = defineComponent({
 });
 
 // node_modules/naive-ui/es/tag/styles/_common.js
-var common_default4 = {
+var common_default5 = {
   closeIconSizeTiny: "12px",
   closeIconSizeSmall: "12px",
   closeIconSizeMedium: "14px",
@@ -33863,10 +33921,100 @@ var common_default4 = {
   closeMarginRtl: "0 4px 0 0"
 };
 
+// node_modules/naive-ui/es/tag/styles/dark.js
+var tagDark = {
+  name: "Tag",
+  common: dark_default,
+  self(vars) {
+    const { textColor2, primaryColorHover, primaryColorPressed, primaryColor, infoColor, successColor, warningColor, errorColor, baseColor, borderColor, tagColor, opacityDisabled, closeIconColor, closeIconColorHover, closeIconColorPressed, closeColorHover, closeColorPressed, borderRadiusSmall: borderRadius, fontSizeMini, fontSizeTiny, fontSizeSmall, fontSizeMedium, heightMini, heightTiny, heightSmall, heightMedium, buttonColor2Hover, buttonColor2Pressed, fontWeightStrong } = vars;
+    return Object.assign(Object.assign({}, common_default5), {
+      closeBorderRadius: borderRadius,
+      heightTiny: heightMini,
+      heightSmall: heightTiny,
+      heightMedium: heightSmall,
+      heightLarge: heightMedium,
+      borderRadius,
+      opacityDisabled,
+      fontSizeTiny: fontSizeMini,
+      fontSizeSmall: fontSizeTiny,
+      fontSizeMedium: fontSizeSmall,
+      fontSizeLarge: fontSizeMedium,
+      fontWeightStrong,
+      textColorCheckable: textColor2,
+      textColorHoverCheckable: textColor2,
+      textColorPressedCheckable: textColor2,
+      textColorChecked: baseColor,
+      colorCheckable: "#0000",
+      colorHoverCheckable: buttonColor2Hover,
+      colorPressedCheckable: buttonColor2Pressed,
+      colorChecked: primaryColor,
+      colorCheckedHover: primaryColorHover,
+      colorCheckedPressed: primaryColorPressed,
+      border: `1px solid ${borderColor}`,
+      textColor: textColor2,
+      color: tagColor,
+      colorBordered: "#0000",
+      closeIconColor,
+      closeIconColorHover,
+      closeIconColorPressed,
+      closeColorHover,
+      closeColorPressed,
+      borderPrimary: `1px solid ${changeColor(primaryColor, { alpha: 0.3 })}`,
+      textColorPrimary: primaryColor,
+      colorPrimary: changeColor(primaryColor, { alpha: 0.16 }),
+      colorBorderedPrimary: "#0000",
+      closeIconColorPrimary: scaleColor(primaryColor, { lightness: 0.7 }),
+      closeIconColorHoverPrimary: scaleColor(primaryColor, { lightness: 0.7 }),
+      closeIconColorPressedPrimary: scaleColor(primaryColor, {
+        lightness: 0.7
+      }),
+      closeColorHoverPrimary: changeColor(primaryColor, { alpha: 0.16 }),
+      closeColorPressedPrimary: changeColor(primaryColor, { alpha: 0.12 }),
+      borderInfo: `1px solid ${changeColor(infoColor, { alpha: 0.3 })}`,
+      textColorInfo: infoColor,
+      colorInfo: changeColor(infoColor, { alpha: 0.16 }),
+      colorBorderedInfo: "#0000",
+      closeIconColorInfo: scaleColor(infoColor, { alpha: 0.7 }),
+      closeIconColorHoverInfo: scaleColor(infoColor, { alpha: 0.7 }),
+      closeIconColorPressedInfo: scaleColor(infoColor, { alpha: 0.7 }),
+      closeColorHoverInfo: changeColor(infoColor, { alpha: 0.16 }),
+      closeColorPressedInfo: changeColor(infoColor, { alpha: 0.12 }),
+      borderSuccess: `1px solid ${changeColor(successColor, { alpha: 0.3 })}`,
+      textColorSuccess: successColor,
+      colorSuccess: changeColor(successColor, { alpha: 0.16 }),
+      colorBorderedSuccess: "#0000",
+      closeIconColorSuccess: scaleColor(successColor, { alpha: 0.7 }),
+      closeIconColorHoverSuccess: scaleColor(successColor, { alpha: 0.7 }),
+      closeIconColorPressedSuccess: scaleColor(successColor, { alpha: 0.7 }),
+      closeColorHoverSuccess: changeColor(successColor, { alpha: 0.16 }),
+      closeColorPressedSuccess: changeColor(successColor, { alpha: 0.12 }),
+      borderWarning: `1px solid ${changeColor(warningColor, { alpha: 0.3 })}`,
+      textColorWarning: warningColor,
+      colorWarning: changeColor(warningColor, { alpha: 0.16 }),
+      colorBorderedWarning: "#0000",
+      closeIconColorWarning: scaleColor(warningColor, { alpha: 0.7 }),
+      closeIconColorHoverWarning: scaleColor(warningColor, { alpha: 0.7 }),
+      closeIconColorPressedWarning: scaleColor(warningColor, { alpha: 0.7 }),
+      closeColorHoverWarning: changeColor(warningColor, { alpha: 0.16 }),
+      closeColorPressedWarning: changeColor(warningColor, { alpha: 0.11 }),
+      borderError: `1px solid ${changeColor(errorColor, { alpha: 0.3 })}`,
+      textColorError: errorColor,
+      colorError: changeColor(errorColor, { alpha: 0.16 }),
+      colorBorderedError: "#0000",
+      closeIconColorError: scaleColor(errorColor, { alpha: 0.7 }),
+      closeIconColorHoverError: scaleColor(errorColor, { alpha: 0.7 }),
+      closeIconColorPressedError: scaleColor(errorColor, { alpha: 0.7 }),
+      closeColorHoverError: changeColor(errorColor, { alpha: 0.16 }),
+      closeColorPressedError: changeColor(errorColor, { alpha: 0.12 })
+    });
+  }
+};
+var dark_default6 = tagDark;
+
 // node_modules/naive-ui/es/tag/styles/light.js
-var self5 = (vars) => {
+var self6 = (vars) => {
   const { textColor2, primaryColorHover, primaryColorPressed, primaryColor, infoColor, successColor, warningColor, errorColor, baseColor, borderColor, opacityDisabled, tagColor, closeIconColor, closeIconColorHover, closeIconColorPressed, borderRadiusSmall: borderRadius, fontSizeMini, fontSizeTiny, fontSizeSmall, fontSizeMedium, heightMini, heightTiny, heightSmall, heightMedium, closeColorHover, closeColorPressed, buttonColor2Hover, buttonColor2Pressed, fontWeightStrong } = vars;
-  return Object.assign(Object.assign({}, common_default4), {
+  return Object.assign(Object.assign({}, common_default5), {
     closeBorderRadius: borderRadius,
     heightTiny: heightMini,
     heightSmall: heightTiny,
@@ -33948,9 +34096,9 @@ var self5 = (vars) => {
 var tagLight = {
   name: "Tag",
   common: light_default,
-  self: self5
+  self: self6
 };
-var light_default5 = tagLight;
+var light_default6 = tagLight;
 
 // node_modules/naive-ui/es/tag/src/common-props.js
 var common_props_default = {
@@ -34082,7 +34230,7 @@ var Tag_default = defineComponent({
     }
     const contentRef = ref(null);
     const { mergedBorderedRef, mergedClsPrefixRef, inlineThemeDisabled, mergedRtlRef } = useConfig(props);
-    const themeRef = use_theme_default("Tag", "-tag", index_cssr_default9, light_default5, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Tag", "-tag", index_cssr_default9, light_default6, props, mergedClsPrefixRef);
     provide(tagInjectionKey, {
       roundRef: toRef(props, "round")
     });
@@ -34207,6 +34355,165 @@ var Tag_default = defineComponent({
   }
 });
 
+// node_modules/naive-ui/es/_internal/selection/styles/_common.js
+var common_default6 = {
+  paddingSingle: "0 26px 0 12px",
+  paddingMultiple: "3px 26px 0 12px",
+  clearSize: "16px",
+  arrowSize: "16px"
+};
+
+// node_modules/naive-ui/es/_internal/selection/styles/light.js
+var self7 = (vars) => {
+  const { borderRadius, textColor2, textColorDisabled, inputColor, inputColorDisabled, primaryColor, primaryColorHover, warningColor, warningColorHover, errorColor, errorColorHover, borderColor, iconColor, iconColorDisabled, clearColor, clearColorHover, clearColorPressed, placeholderColor, placeholderColorDisabled, fontSizeTiny, fontSizeSmall, fontSizeMedium, fontSizeLarge, heightTiny, heightSmall, heightMedium, heightLarge } = vars;
+  return Object.assign(Object.assign({}, common_default6), {
+    fontSizeTiny,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    heightTiny,
+    heightSmall,
+    heightMedium,
+    heightLarge,
+    borderRadius,
+    textColor: textColor2,
+    textColorDisabled,
+    placeholderColor,
+    placeholderColorDisabled,
+    color: inputColor,
+    colorDisabled: inputColorDisabled,
+    colorActive: inputColor,
+    border: `1px solid ${borderColor}`,
+    borderHover: `1px solid ${primaryColorHover}`,
+    borderActive: `1px solid ${primaryColor}`,
+    borderFocus: `1px solid ${primaryColorHover}`,
+    boxShadowHover: "none",
+    boxShadowActive: `0 0 0 2px ${changeColor(primaryColor, {
+      alpha: 0.2
+    })}`,
+    boxShadowFocus: `0 0 0 2px ${changeColor(primaryColor, {
+      alpha: 0.2
+    })}`,
+    caretColor: primaryColor,
+    arrowColor: iconColor,
+    arrowColorDisabled: iconColorDisabled,
+    loadingColor: primaryColor,
+    borderWarning: `1px solid ${warningColor}`,
+    borderHoverWarning: `1px solid ${warningColorHover}`,
+    borderActiveWarning: `1px solid ${warningColor}`,
+    borderFocusWarning: `1px solid ${warningColorHover}`,
+    boxShadowHoverWarning: "none",
+    boxShadowActiveWarning: `0 0 0 2px ${changeColor(warningColor, {
+      alpha: 0.2
+    })}`,
+    boxShadowFocusWarning: `0 0 0 2px ${changeColor(warningColor, {
+      alpha: 0.2
+    })}`,
+    colorActiveWarning: inputColor,
+    caretColorWarning: warningColor,
+    borderError: `1px solid ${errorColor}`,
+    borderHoverError: `1px solid ${errorColorHover}`,
+    borderActiveError: `1px solid ${errorColor}`,
+    borderFocusError: `1px solid ${errorColorHover}`,
+    boxShadowHoverError: "none",
+    boxShadowActiveError: `0 0 0 2px ${changeColor(errorColor, {
+      alpha: 0.2
+    })}`,
+    boxShadowFocusError: `0 0 0 2px ${changeColor(errorColor, {
+      alpha: 0.2
+    })}`,
+    colorActiveError: inputColor,
+    caretColorError: errorColor,
+    clearColor,
+    clearColorHover,
+    clearColorPressed
+  });
+};
+var internalSelectionLight = createTheme({
+  name: "InternalSelection",
+  common: light_default,
+  peers: {
+    Popover: light_default5
+  },
+  self: self7
+});
+var light_default7 = internalSelectionLight;
+
+// node_modules/naive-ui/es/_internal/selection/styles/dark.js
+var internalSelectionDark = {
+  name: "InternalSelection",
+  common: dark_default,
+  peers: {
+    Popover: dark_default5
+  },
+  self(vars) {
+    const { borderRadius, textColor2, textColorDisabled, inputColor, inputColorDisabled, primaryColor, primaryColorHover, warningColor, warningColorHover, errorColor, errorColorHover, iconColor, iconColorDisabled, clearColor, clearColorHover, clearColorPressed, placeholderColor, placeholderColorDisabled, fontSizeTiny, fontSizeSmall, fontSizeMedium, fontSizeLarge, heightTiny, heightSmall, heightMedium, heightLarge } = vars;
+    return Object.assign(Object.assign({}, common_default6), {
+      fontSizeTiny,
+      fontSizeSmall,
+      fontSizeMedium,
+      fontSizeLarge,
+      heightTiny,
+      heightSmall,
+      heightMedium,
+      heightLarge,
+      borderRadius,
+      textColor: textColor2,
+      textColorDisabled,
+      placeholderColor,
+      placeholderColorDisabled,
+      color: inputColor,
+      colorDisabled: inputColorDisabled,
+      colorActive: changeColor(primaryColor, { alpha: 0.1 }),
+      border: "1px solid #0000",
+      borderHover: `1px solid ${primaryColorHover}`,
+      borderActive: `1px solid ${primaryColor}`,
+      borderFocus: `1px solid ${primaryColorHover}`,
+      boxShadowHover: "none",
+      boxShadowActive: `0 0 8px 0 ${changeColor(primaryColor, {
+        alpha: 0.4
+      })}`,
+      boxShadowFocus: `0 0 8px 0 ${changeColor(primaryColor, {
+        alpha: 0.4
+      })}`,
+      caretColor: primaryColor,
+      arrowColor: iconColor,
+      arrowColorDisabled: iconColorDisabled,
+      loadingColor: primaryColor,
+      borderWarning: `1px solid ${warningColor}`,
+      borderHoverWarning: `1px solid ${warningColorHover}`,
+      borderActiveWarning: `1px solid ${warningColor}`,
+      borderFocusWarning: `1px solid ${warningColorHover}`,
+      boxShadowHoverWarning: "none",
+      boxShadowActiveWarning: `0 0 8px 0 ${changeColor(warningColor, {
+        alpha: 0.4
+      })}`,
+      boxShadowFocusWarning: `0 0 8px 0 ${changeColor(warningColor, {
+        alpha: 0.4
+      })}`,
+      colorActiveWarning: changeColor(warningColor, { alpha: 0.1 }),
+      caretColorWarning: warningColor,
+      borderError: `1px solid ${errorColor}`,
+      borderHoverError: `1px solid ${errorColorHover}`,
+      borderActiveError: `1px solid ${errorColor}`,
+      borderFocusError: `1px solid ${errorColorHover}`,
+      boxShadowHoverError: "none",
+      boxShadowActiveError: `0 0 8px 0 ${changeColor(errorColor, {
+        alpha: 0.4
+      })}`,
+      boxShadowFocusError: `0 0 8px 0 ${changeColor(errorColor, {
+        alpha: 0.4
+      })}`,
+      colorActiveError: changeColor(errorColor, { alpha: 0.1 }),
+      caretColorError: errorColor,
+      clearColor,
+      clearColorHover,
+      clearColorPressed
+    });
+  }
+};
+var dark_default7 = internalSelectionDark;
+
 // node_modules/naive-ui/es/_styles/transitions/fade-in-width-expand.cssr.js
 var {
   cubicBezierEaseInOut: cubicBezierEaseInOut3
@@ -34237,6 +34544,157 @@ function fadeInWidthExpandTransition({
  margin-right ${duration} ${cubicBezierEaseInOut3};
  `)];
 }
+
+// node_modules/naive-ui/es/alert/styles/_common.js
+var common_default7 = {
+  iconMargin: "11px 8px 0 12px",
+  iconMarginRtl: "11px 12px 0 8px",
+  iconSize: "24px",
+  closeIconSize: "16px",
+  closeSize: "20px",
+  closeMargin: "13px 14px 0 0",
+  closeMarginRtl: "13px 0 0 14px",
+  padding: "13px"
+};
+
+// node_modules/naive-ui/es/alert/styles/dark.js
+var alertDark = {
+  name: "Alert",
+  common: dark_default,
+  self(vars) {
+    const { lineHeight: lineHeight3, borderRadius, fontWeightStrong, dividerColor, inputColor, textColor1, textColor2, closeColorHover, closeColorPressed, closeIconColor, closeIconColorHover, closeIconColorPressed, infoColorSuppl, successColorSuppl, warningColorSuppl, errorColorSuppl, fontSize: fontSize2 } = vars;
+    return Object.assign(Object.assign({}, common_default7), {
+      fontSize: fontSize2,
+      lineHeight: lineHeight3,
+      titleFontWeight: fontWeightStrong,
+      borderRadius,
+      border: `1px solid ${dividerColor}`,
+      color: inputColor,
+      titleTextColor: textColor1,
+      iconColor: textColor2,
+      contentTextColor: textColor2,
+      closeBorderRadius: borderRadius,
+      closeColorHover,
+      closeColorPressed,
+      closeIconColor,
+      closeIconColorHover,
+      closeIconColorPressed,
+      borderInfo: `1px solid ${changeColor(infoColorSuppl, { alpha: 0.35 })}`,
+      colorInfo: changeColor(infoColorSuppl, { alpha: 0.25 }),
+      titleTextColorInfo: textColor1,
+      iconColorInfo: infoColorSuppl,
+      contentTextColorInfo: textColor2,
+      closeColorHoverInfo: closeColorHover,
+      closeColorPressedInfo: closeColorPressed,
+      closeIconColorInfo: closeIconColor,
+      closeIconColorHoverInfo: closeIconColorHover,
+      closeIconColorPressedInfo: closeIconColorPressed,
+      borderSuccess: `1px solid ${changeColor(successColorSuppl, {
+        alpha: 0.35
+      })}`,
+      colorSuccess: changeColor(successColorSuppl, { alpha: 0.25 }),
+      titleTextColorSuccess: textColor1,
+      iconColorSuccess: successColorSuppl,
+      contentTextColorSuccess: textColor2,
+      closeColorHoverSuccess: closeColorHover,
+      closeColorPressedSuccess: closeColorPressed,
+      closeIconColorSuccess: closeIconColor,
+      closeIconColorHoverSuccess: closeIconColorHover,
+      closeIconColorPressedSuccess: closeIconColorPressed,
+      borderWarning: `1px solid ${changeColor(warningColorSuppl, {
+        alpha: 0.35
+      })}`,
+      colorWarning: changeColor(warningColorSuppl, { alpha: 0.25 }),
+      titleTextColorWarning: textColor1,
+      iconColorWarning: warningColorSuppl,
+      contentTextColorWarning: textColor2,
+      closeColorHoverWarning: closeColorHover,
+      closeColorPressedWarning: closeColorPressed,
+      closeIconColorWarning: closeIconColor,
+      closeIconColorHoverWarning: closeIconColorHover,
+      closeIconColorPressedWarning: closeIconColorPressed,
+      borderError: `1px solid ${changeColor(errorColorSuppl, { alpha: 0.35 })}`,
+      colorError: changeColor(errorColorSuppl, { alpha: 0.25 }),
+      titleTextColorError: textColor1,
+      iconColorError: errorColorSuppl,
+      contentTextColorError: textColor2,
+      closeColorHoverError: closeColorHover,
+      closeColorPressedError: closeColorPressed,
+      closeIconColorError: closeIconColor,
+      closeIconColorHoverError: closeIconColorHover,
+      closeIconColorPressedError: closeIconColorPressed
+    });
+  }
+};
+var dark_default8 = alertDark;
+
+// node_modules/naive-ui/es/alert/styles/light.js
+var self8 = (vars) => {
+  const { lineHeight: lineHeight3, borderRadius, fontWeightStrong, baseColor, dividerColor, actionColor, textColor1, textColor2, closeColorHover, closeColorPressed, closeIconColor, closeIconColorHover, closeIconColorPressed, infoColor, successColor, warningColor, errorColor, fontSize: fontSize2 } = vars;
+  return Object.assign(Object.assign({}, common_default7), {
+    fontSize: fontSize2,
+    lineHeight: lineHeight3,
+    titleFontWeight: fontWeightStrong,
+    borderRadius,
+    border: `1px solid ${dividerColor}`,
+    color: actionColor,
+    titleTextColor: textColor1,
+    iconColor: textColor2,
+    contentTextColor: textColor2,
+    closeBorderRadius: borderRadius,
+    closeColorHover,
+    closeColorPressed,
+    closeIconColor,
+    closeIconColorHover,
+    closeIconColorPressed,
+    borderInfo: `1px solid ${composite(baseColor, changeColor(infoColor, { alpha: 0.25 }))}`,
+    colorInfo: composite(baseColor, changeColor(infoColor, { alpha: 0.08 })),
+    titleTextColorInfo: textColor1,
+    iconColorInfo: infoColor,
+    contentTextColorInfo: textColor2,
+    closeColorHoverInfo: closeColorHover,
+    closeColorPressedInfo: closeColorPressed,
+    closeIconColorInfo: closeIconColor,
+    closeIconColorHoverInfo: closeIconColorHover,
+    closeIconColorPressedInfo: closeIconColorPressed,
+    borderSuccess: `1px solid ${composite(baseColor, changeColor(successColor, { alpha: 0.25 }))}`,
+    colorSuccess: composite(baseColor, changeColor(successColor, { alpha: 0.08 })),
+    titleTextColorSuccess: textColor1,
+    iconColorSuccess: successColor,
+    contentTextColorSuccess: textColor2,
+    closeColorHoverSuccess: closeColorHover,
+    closeColorPressedSuccess: closeColorPressed,
+    closeIconColorSuccess: closeIconColor,
+    closeIconColorHoverSuccess: closeIconColorHover,
+    closeIconColorPressedSuccess: closeIconColorPressed,
+    borderWarning: `1px solid ${composite(baseColor, changeColor(warningColor, { alpha: 0.33 }))}`,
+    colorWarning: composite(baseColor, changeColor(warningColor, { alpha: 0.08 })),
+    titleTextColorWarning: textColor1,
+    iconColorWarning: warningColor,
+    contentTextColorWarning: textColor2,
+    closeColorHoverWarning: closeColorHover,
+    closeColorPressedWarning: closeColorPressed,
+    closeIconColorWarning: closeIconColor,
+    closeIconColorHoverWarning: closeIconColorHover,
+    closeIconColorPressedWarning: closeIconColorPressed,
+    borderError: `1px solid ${composite(baseColor, changeColor(errorColor, { alpha: 0.25 }))}`,
+    colorError: composite(baseColor, changeColor(errorColor, { alpha: 0.08 })),
+    titleTextColorError: textColor1,
+    iconColorError: errorColor,
+    contentTextColorError: textColor2,
+    closeColorHoverError: closeColorHover,
+    closeColorPressedError: closeColorPressed,
+    closeIconColorError: closeIconColor,
+    closeIconColorHoverError: closeIconColorHover,
+    closeIconColorPressedError: closeIconColorPressed
+  });
+};
+var alertLight = {
+  name: "Alert",
+  common: light_default,
+  self: self8
+};
+var light_default8 = alertLight;
 
 // node_modules/naive-ui/es/_styles/transitions/fade-in-height-expand.cssr.js
 var {
@@ -34289,13 +34747,49 @@ function fadeInHeightExpandTransition({
  `)];
 }
 
+// node_modules/naive-ui/es/anchor/styles/_common.js
+var common_default8 = {
+  linkFontSize: "13px",
+  linkPadding: "0 0 0 16px",
+  railWidth: "4px"
+};
+
+// node_modules/naive-ui/es/anchor/styles/light.js
+var self9 = (vars) => {
+  const { borderRadius, railColor, primaryColor, primaryColorHover, primaryColorPressed, textColor2 } = vars;
+  return Object.assign(Object.assign({}, common_default8), {
+    borderRadius,
+    railColor,
+    railColorActive: primaryColor,
+    linkColor: changeColor(primaryColor, { alpha: 0.15 }),
+    linkTextColor: textColor2,
+    linkTextColorHover: primaryColorHover,
+    linkTextColorPressed: primaryColorPressed,
+    linkTextColorActive: primaryColor
+  });
+};
+var anchorLight = {
+  name: "Anchor",
+  common: light_default,
+  self: self9
+};
+var light_default9 = anchorLight;
+
+// node_modules/naive-ui/es/anchor/styles/dark.js
+var anchorDark = {
+  name: "Anchor",
+  common: dark_default,
+  self: self9
+};
+var dark_default9 = anchorDark;
+
 // node_modules/naive-ui/es/_utils/env/browser.js
 var isChrome = isBrowser && "chrome" in window;
 var isFirefox = isBrowser && navigator.userAgent.includes("Firefox");
 var isSafari = isBrowser && navigator.userAgent.includes("Safari") && !isChrome;
 
 // node_modules/naive-ui/es/input/styles/_common.js
-var common_default5 = {
+var common_default9 = {
   paddingTiny: "0 8px",
   paddingSmall: "0 10px",
   paddingMedium: "0 12px",
@@ -34309,7 +34803,7 @@ var inputDark = {
   common: dark_default,
   self(vars) {
     const { textColor2, textColor3, textColorDisabled, primaryColor, primaryColorHover, inputColor, inputColorDisabled, warningColor, warningColorHover, errorColor, errorColorHover, borderRadius, lineHeight: lineHeight3, fontSizeTiny, fontSizeSmall, fontSizeMedium, fontSizeLarge, heightTiny, heightSmall, heightMedium, heightLarge, clearColor, clearColorHover, clearColorPressed, placeholderColor, placeholderColorDisabled, iconColor, iconColorDisabled, iconColorHover, iconColorPressed } = vars;
-    return Object.assign(Object.assign({}, common_default5), {
+    return Object.assign(Object.assign({}, common_default9), {
       countTextColorDisabled: textColorDisabled,
       countTextColor: textColor3,
       heightTiny,
@@ -34371,12 +34865,12 @@ var inputDark = {
     });
   }
 };
-var dark_default3 = inputDark;
+var dark_default10 = inputDark;
 
 // node_modules/naive-ui/es/input/styles/light.js
-var self6 = (vars) => {
+var self10 = (vars) => {
   const { textColor2, textColor3, textColorDisabled, primaryColor, primaryColorHover, inputColor, inputColorDisabled, borderColor, warningColor, warningColorHover, errorColor, errorColorHover, borderRadius, lineHeight: lineHeight3, fontSizeTiny, fontSizeSmall, fontSizeMedium, fontSizeLarge, heightTiny, heightSmall, heightMedium, heightLarge, actionColor, clearColor, clearColorHover, clearColorPressed, placeholderColor, placeholderColorDisabled, iconColor, iconColorDisabled, iconColorHover, iconColorPressed } = vars;
-  return Object.assign(Object.assign({}, common_default5), {
+  return Object.assign(Object.assign({}, common_default9), {
     countTextColorDisabled: textColorDisabled,
     countTextColor: textColor3,
     heightTiny,
@@ -34440,9 +34934,193 @@ var self6 = (vars) => {
 var inputLight = {
   name: "Input",
   common: light_default,
-  self: self6
+  self: self10
 };
-var light_default6 = inputLight;
+var light_default10 = inputLight;
+
+// node_modules/naive-ui/es/auto-complete/styles/light.js
+function self11(vars) {
+  const { boxShadow2 } = vars;
+  return {
+    menuBoxShadow: boxShadow2
+  };
+}
+var autoCompleteLight = createTheme({
+  name: "AutoComplete",
+  common: light_default,
+  peers: {
+    InternalSelectMenu: light_default4,
+    Input: light_default10
+  },
+  self: self11
+});
+var light_default11 = autoCompleteLight;
+
+// node_modules/naive-ui/es/auto-complete/styles/dark.js
+var autoCompleteDark = {
+  name: "AutoComplete",
+  common: dark_default,
+  peers: {
+    InternalSelectMenu: dark_default4,
+    Input: dark_default10
+  },
+  self: self11
+};
+var dark_default11 = autoCompleteDark;
+
+// node_modules/naive-ui/es/avatar/styles/light.js
+var self12 = (vars) => {
+  const { borderRadius, avatarColor, cardColor, fontSize: fontSize2, heightTiny, heightSmall, heightMedium, heightLarge, heightHuge, modalColor, popoverColor } = vars;
+  return {
+    borderRadius,
+    fontSize: fontSize2,
+    border: `2px solid ${cardColor}`,
+    heightTiny,
+    heightSmall,
+    heightMedium,
+    heightLarge,
+    heightHuge,
+    color: composite(cardColor, avatarColor),
+    colorModal: composite(modalColor, avatarColor),
+    colorPopover: composite(popoverColor, avatarColor)
+  };
+};
+var avatarLight = {
+  name: "Avatar",
+  common: light_default,
+  self: self12
+};
+var light_default12 = avatarLight;
+
+// node_modules/naive-ui/es/avatar/styles/dark.js
+var avatarDark = {
+  name: "Avatar",
+  common: dark_default,
+  self: self12
+};
+var dark_default12 = avatarDark;
+
+// node_modules/naive-ui/es/avatar-group/styles/light.js
+var self13 = () => {
+  return {
+    gap: "-12px"
+  };
+};
+var avatarGroupLight = createTheme({
+  name: "AvatarGroup",
+  common: light_default,
+  peers: {
+    Avatar: light_default12
+  },
+  self: self13
+});
+var light_default13 = avatarGroupLight;
+
+// node_modules/naive-ui/es/avatar-group/styles/dark.js
+var avatarGroupDark = {
+  name: "AvatarGroup",
+  common: dark_default,
+  peers: {
+    Avatar: dark_default12
+  },
+  self: self13
+};
+var dark_default13 = avatarGroupDark;
+
+// node_modules/naive-ui/es/back-top/styles/_common.js
+var common_default10 = {
+  width: "44px",
+  height: "44px",
+  borderRadius: "22px",
+  iconSize: "26px"
+};
+
+// node_modules/naive-ui/es/back-top/styles/dark.js
+var backTopDark = {
+  name: "BackTop",
+  common: dark_default,
+  self(vars) {
+    const { popoverColor, textColor2, primaryColorHover, primaryColorPressed } = vars;
+    return Object.assign(Object.assign({}, common_default10), { color: popoverColor, textColor: textColor2, iconColor: textColor2, iconColorHover: primaryColorHover, iconColorPressed: primaryColorPressed, boxShadow: "0 2px 8px 0px rgba(0, 0, 0, .12)", boxShadowHover: "0 2px 12px 0px rgba(0, 0, 0, .18)", boxShadowPressed: "0 2px 12px 0px rgba(0, 0, 0, .18)" });
+  }
+};
+var dark_default14 = backTopDark;
+
+// node_modules/naive-ui/es/back-top/styles/light.js
+var self14 = (vars) => {
+  const { popoverColor, textColor2, primaryColorHover, primaryColorPressed } = vars;
+  return Object.assign(Object.assign({}, common_default10), { color: popoverColor, textColor: textColor2, iconColor: textColor2, iconColorHover: primaryColorHover, iconColorPressed: primaryColorPressed, boxShadow: "0 2px 8px 0px rgba(0, 0, 0, .12)", boxShadowHover: "0 2px 12px 0px rgba(0, 0, 0, .18)", boxShadowPressed: "0 2px 12px 0px rgba(0, 0, 0, .18)" });
+};
+var backTopLight = {
+  name: "BackTop",
+  common: light_default,
+  self: self14
+};
+var light_default14 = backTopLight;
+
+// node_modules/naive-ui/es/badge/styles/dark.js
+var badgeDark = {
+  name: "Badge",
+  common: dark_default,
+  self(vars) {
+    const { errorColorSuppl, infoColorSuppl, successColorSuppl, warningColorSuppl, fontFamily: fontFamily2 } = vars;
+    return {
+      color: errorColorSuppl,
+      colorInfo: infoColorSuppl,
+      colorSuccess: successColorSuppl,
+      colorError: errorColorSuppl,
+      colorWarning: warningColorSuppl,
+      fontSize: "12px",
+      fontFamily: fontFamily2
+    };
+  }
+};
+var dark_default15 = badgeDark;
+
+// node_modules/naive-ui/es/badge/styles/light.js
+var self15 = (vars) => {
+  const { errorColor, infoColor, successColor, warningColor, fontFamily: fontFamily2 } = vars;
+  return {
+    color: errorColor,
+    colorInfo: infoColor,
+    colorSuccess: successColor,
+    colorError: errorColor,
+    colorWarning: warningColor,
+    fontSize: "12px",
+    fontFamily: fontFamily2
+  };
+};
+var badgeLight = {
+  name: "Badge",
+  common: light_default,
+  self: self15
+};
+var light_default15 = badgeLight;
+
+// node_modules/naive-ui/es/breadcrumb/styles/_common.js
+var common_default11 = {
+  fontWeightActive: "400"
+};
+
+// node_modules/naive-ui/es/breadcrumb/styles/light.js
+var self16 = (vars) => {
+  const { fontSize: fontSize2, textColor3, textColor2, borderRadius, buttonColor2Hover, buttonColor2Pressed } = vars;
+  return Object.assign(Object.assign({}, common_default11), { fontSize: fontSize2, itemLineHeight: "1.25", itemTextColor: textColor3, itemTextColorHover: textColor2, itemTextColorPressed: textColor2, itemTextColorActive: textColor2, itemBorderRadius: borderRadius, itemColorHover: buttonColor2Hover, itemColorPressed: buttonColor2Pressed, separatorColor: textColor3 });
+};
+var breadcrumbLight = {
+  name: "Breadcrumb",
+  common: light_default,
+  self: self16
+};
+var light_default16 = breadcrumbLight;
+
+// node_modules/naive-ui/es/breadcrumb/styles/dark.js
+var breadcrumbDark = {
+  name: "Breadcrumb",
+  common: dark_default,
+  self: self16
+};
+var dark_default16 = breadcrumbDark;
 
 // node_modules/naive-ui/es/_utils/color/index.js
 function createHoverColor(rgb) {
@@ -34456,7 +35134,7 @@ function createPressedColor(rgb) {
 var buttonGroupInjectionKey = createInjectionKey("n-button-group");
 
 // node_modules/naive-ui/es/button/styles/_common.js
-var common_default6 = {
+var common_default12 = {
   paddingTiny: "0 6px",
   paddingSmall: "0 10px",
   paddingMedium: "0 14px",
@@ -34477,9 +35155,9 @@ var common_default6 = {
 };
 
 // node_modules/naive-ui/es/button/styles/light.js
-var self7 = (vars) => {
+var self17 = (vars) => {
   const { heightTiny, heightSmall, heightMedium, heightLarge, borderRadius, fontSizeTiny, fontSizeSmall, fontSizeMedium, fontSizeLarge, opacityDisabled, textColor2, textColor3, primaryColorHover, primaryColorPressed, borderColor, primaryColor, baseColor, infoColor, infoColorHover, infoColorPressed, successColor, successColorHover, successColorPressed, warningColor, warningColorHover, warningColorPressed, errorColor, errorColorHover, errorColorPressed, fontWeight, buttonColor2, buttonColor2Hover, buttonColor2Pressed, fontWeightStrong } = vars;
-  return Object.assign(Object.assign({}, common_default6), {
+  return Object.assign(Object.assign({}, common_default12), {
     heightTiny,
     heightSmall,
     heightMedium,
@@ -34670,16 +35348,16 @@ var self7 = (vars) => {
 var buttonLight = {
   name: "Button",
   common: light_default,
-  self: self7
+  self: self17
 };
-var light_default7 = buttonLight;
+var light_default17 = buttonLight;
 
 // node_modules/naive-ui/es/button/styles/dark.js
 var buttonDark = {
   name: "Button",
   common: dark_default,
   self(vars) {
-    const commonSelf = self7(vars);
+    const commonSelf = self17(vars);
     commonSelf.waveOpacity = "0.8";
     commonSelf.colorOpacitySecondary = "0.16";
     commonSelf.colorOpacitySecondaryHover = "0.2";
@@ -34687,7 +35365,7 @@ var buttonDark = {
     return commonSelf;
   }
 };
-var dark_default4 = buttonDark;
+var dark_default17 = buttonDark;
 
 // node_modules/naive-ui/es/button/src/styles/index.cssr.js
 var index_cssr_default10 = c3([cB("button", `
@@ -34956,12 +35634,12 @@ var Button = defineComponent({
       enterPressedRef.value = false;
     };
     const { inlineThemeDisabled, mergedClsPrefixRef, mergedRtlRef } = useConfig(props);
-    const themeRef = use_theme_default("Button", "-button", index_cssr_default10, light_default7, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Button", "-button", index_cssr_default10, light_default17, props, mergedClsPrefixRef);
     const rtlEnabledRef = useRtl("Button", mergedRtlRef, mergedClsPrefixRef);
     const cssVarsRef = computed2(() => {
       const theme = themeRef.value;
-      const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5, cubicBezierEaseOut: cubicBezierEaseOut3 }, self: self20 } = theme;
-      const { rippleDuration, opacityDisabled, fontWeight, fontWeightStrong } = self20;
+      const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5, cubicBezierEaseOut: cubicBezierEaseOut3 }, self: self79 } = theme;
+      const { rippleDuration, opacityDisabled, fontWeight, fontWeightStrong } = self79;
       const size3 = mergedSizeRef.value;
       const { dashed, type, ghost, text: text2, color: color2, round: round2, circle, textColor, secondary, tertiary, quaternary, strong } = props;
       const fontProps = {
@@ -34985,7 +35663,7 @@ var Button = defineComponent({
       const mergedType = typeIsTertiary ? "default" : type;
       if (text2) {
         const propTextColor = textColor || color2;
-        const mergedTextColor = propTextColor || self20[createKey("textColorText", mergedType)];
+        const mergedTextColor = propTextColor || self79[createKey("textColorText", mergedType)];
         colorProps = {
           "--n-color": "#0000",
           "--n-color-hover": "#0000",
@@ -34994,10 +35672,10 @@ var Button = defineComponent({
           "--n-color-disabled": "#0000",
           "--n-ripple-color": "#0000",
           "--n-text-color": mergedTextColor,
-          "--n-text-color-hover": propTextColor ? createHoverColor(propTextColor) : self20[createKey("textColorTextHover", mergedType)],
-          "--n-text-color-pressed": propTextColor ? createPressedColor(propTextColor) : self20[createKey("textColorTextPressed", mergedType)],
-          "--n-text-color-focus": propTextColor ? createHoverColor(propTextColor) : self20[createKey("textColorTextHover", mergedType)],
-          "--n-text-color-disabled": propTextColor || self20[createKey("textColorTextDisabled", mergedType)]
+          "--n-text-color-hover": propTextColor ? createHoverColor(propTextColor) : self79[createKey("textColorTextHover", mergedType)],
+          "--n-text-color-pressed": propTextColor ? createPressedColor(propTextColor) : self79[createKey("textColorTextPressed", mergedType)],
+          "--n-text-color-focus": propTextColor ? createHoverColor(propTextColor) : self79[createKey("textColorTextHover", mergedType)],
+          "--n-text-color-disabled": propTextColor || self79[createKey("textColorTextDisabled", mergedType)]
         };
       } else if (ghost || dashed) {
         const mergedTextColor = textColor || color2;
@@ -35007,31 +35685,31 @@ var Button = defineComponent({
           "--n-color-pressed": "#0000",
           "--n-color-focus": "#0000",
           "--n-color-disabled": "#0000",
-          "--n-ripple-color": color2 || self20[createKey("rippleColor", mergedType)],
-          "--n-text-color": mergedTextColor || self20[createKey("textColorGhost", mergedType)],
-          "--n-text-color-hover": mergedTextColor ? createHoverColor(mergedTextColor) : self20[createKey("textColorGhostHover", mergedType)],
-          "--n-text-color-pressed": mergedTextColor ? createPressedColor(mergedTextColor) : self20[createKey("textColorGhostPressed", mergedType)],
-          "--n-text-color-focus": mergedTextColor ? createHoverColor(mergedTextColor) : self20[createKey("textColorGhostHover", mergedType)],
-          "--n-text-color-disabled": mergedTextColor || self20[createKey("textColorGhostDisabled", mergedType)]
+          "--n-ripple-color": color2 || self79[createKey("rippleColor", mergedType)],
+          "--n-text-color": mergedTextColor || self79[createKey("textColorGhost", mergedType)],
+          "--n-text-color-hover": mergedTextColor ? createHoverColor(mergedTextColor) : self79[createKey("textColorGhostHover", mergedType)],
+          "--n-text-color-pressed": mergedTextColor ? createPressedColor(mergedTextColor) : self79[createKey("textColorGhostPressed", mergedType)],
+          "--n-text-color-focus": mergedTextColor ? createHoverColor(mergedTextColor) : self79[createKey("textColorGhostHover", mergedType)],
+          "--n-text-color-disabled": mergedTextColor || self79[createKey("textColorGhostDisabled", mergedType)]
         };
       } else if (secondary) {
-        const typeTextColor = typeIsDefault ? self20.textColor : typeIsTertiary ? self20.textColorTertiary : self20[createKey("color", mergedType)];
+        const typeTextColor = typeIsDefault ? self79.textColor : typeIsTertiary ? self79.textColorTertiary : self79[createKey("color", mergedType)];
         const mergedTextColor = color2 || typeTextColor;
         const isColoredType = type !== "default" && type !== "tertiary";
         colorProps = {
           "--n-color": isColoredType ? changeColor(mergedTextColor, {
-            alpha: Number(self20.colorOpacitySecondary)
-          }) : self20.colorSecondary,
+            alpha: Number(self79.colorOpacitySecondary)
+          }) : self79.colorSecondary,
           "--n-color-hover": isColoredType ? changeColor(mergedTextColor, {
-            alpha: Number(self20.colorOpacitySecondaryHover)
-          }) : self20.colorSecondaryHover,
+            alpha: Number(self79.colorOpacitySecondaryHover)
+          }) : self79.colorSecondaryHover,
           "--n-color-pressed": isColoredType ? changeColor(mergedTextColor, {
-            alpha: Number(self20.colorOpacitySecondaryPressed)
-          }) : self20.colorSecondaryPressed,
+            alpha: Number(self79.colorOpacitySecondaryPressed)
+          }) : self79.colorSecondaryPressed,
           "--n-color-focus": isColoredType ? changeColor(mergedTextColor, {
-            alpha: Number(self20.colorOpacitySecondaryHover)
-          }) : self20.colorSecondaryHover,
-          "--n-color-disabled": self20.colorSecondary,
+            alpha: Number(self79.colorOpacitySecondaryHover)
+          }) : self79.colorSecondaryHover,
+          "--n-color-disabled": self79.colorSecondary,
           "--n-ripple-color": "#0000",
           "--n-text-color": mergedTextColor,
           "--n-text-color-hover": mergedTextColor,
@@ -35040,20 +35718,20 @@ var Button = defineComponent({
           "--n-text-color-disabled": mergedTextColor
         };
       } else if (tertiary || quaternary) {
-        const typeColor = typeIsDefault ? self20.textColor : typeIsTertiary ? self20.textColorTertiary : self20[createKey("color", mergedType)];
+        const typeColor = typeIsDefault ? self79.textColor : typeIsTertiary ? self79.textColorTertiary : self79[createKey("color", mergedType)];
         const mergedColor = color2 || typeColor;
         if (tertiary) {
-          colorProps["--n-color"] = self20.colorTertiary;
-          colorProps["--n-color-hover"] = self20.colorTertiaryHover;
-          colorProps["--n-color-pressed"] = self20.colorTertiaryPressed;
-          colorProps["--n-color-focus"] = self20.colorSecondaryHover;
-          colorProps["--n-color-disabled"] = self20.colorTertiary;
+          colorProps["--n-color"] = self79.colorTertiary;
+          colorProps["--n-color-hover"] = self79.colorTertiaryHover;
+          colorProps["--n-color-pressed"] = self79.colorTertiaryPressed;
+          colorProps["--n-color-focus"] = self79.colorSecondaryHover;
+          colorProps["--n-color-disabled"] = self79.colorTertiary;
         } else {
-          colorProps["--n-color"] = self20.colorQuaternary;
-          colorProps["--n-color-hover"] = self20.colorQuaternaryHover;
-          colorProps["--n-color-pressed"] = self20.colorQuaternaryPressed;
-          colorProps["--n-color-focus"] = self20.colorQuaternaryHover;
-          colorProps["--n-color-disabled"] = self20.colorQuaternary;
+          colorProps["--n-color"] = self79.colorQuaternary;
+          colorProps["--n-color-hover"] = self79.colorQuaternaryHover;
+          colorProps["--n-color-pressed"] = self79.colorQuaternaryPressed;
+          colorProps["--n-color-focus"] = self79.colorQuaternaryHover;
+          colorProps["--n-color-disabled"] = self79.colorQuaternary;
         }
         colorProps["--n-ripple-color"] = "#0000";
         colorProps["--n-text-color"] = mergedColor;
@@ -35063,17 +35741,17 @@ var Button = defineComponent({
         colorProps["--n-text-color-disabled"] = mergedColor;
       } else {
         colorProps = {
-          "--n-color": color2 || self20[createKey("color", mergedType)],
-          "--n-color-hover": color2 ? createHoverColor(color2) : self20[createKey("colorHover", mergedType)],
-          "--n-color-pressed": color2 ? createPressedColor(color2) : self20[createKey("colorPressed", mergedType)],
-          "--n-color-focus": color2 ? createHoverColor(color2) : self20[createKey("colorFocus", mergedType)],
-          "--n-color-disabled": color2 || self20[createKey("colorDisabled", mergedType)],
-          "--n-ripple-color": color2 || self20[createKey("rippleColor", mergedType)],
-          "--n-text-color": textColor || (color2 ? self20.textColorPrimary : typeIsTertiary ? self20.textColorTertiary : self20[createKey("textColor", mergedType)]),
-          "--n-text-color-hover": textColor || (color2 ? self20.textColorHoverPrimary : self20[createKey("textColorHover", mergedType)]),
-          "--n-text-color-pressed": textColor || (color2 ? self20.textColorPressedPrimary : self20[createKey("textColorPressed", mergedType)]),
-          "--n-text-color-focus": textColor || (color2 ? self20.textColorFocusPrimary : self20[createKey("textColorFocus", mergedType)]),
-          "--n-text-color-disabled": textColor || (color2 ? self20.textColorDisabledPrimary : self20[createKey("textColorDisabled", mergedType)])
+          "--n-color": color2 || self79[createKey("color", mergedType)],
+          "--n-color-hover": color2 ? createHoverColor(color2) : self79[createKey("colorHover", mergedType)],
+          "--n-color-pressed": color2 ? createPressedColor(color2) : self79[createKey("colorPressed", mergedType)],
+          "--n-color-focus": color2 ? createHoverColor(color2) : self79[createKey("colorFocus", mergedType)],
+          "--n-color-disabled": color2 || self79[createKey("colorDisabled", mergedType)],
+          "--n-ripple-color": color2 || self79[createKey("rippleColor", mergedType)],
+          "--n-text-color": textColor || (color2 ? self79.textColorPrimary : typeIsTertiary ? self79.textColorTertiary : self79[createKey("textColor", mergedType)]),
+          "--n-text-color-hover": textColor || (color2 ? self79.textColorHoverPrimary : self79[createKey("textColorHover", mergedType)]),
+          "--n-text-color-pressed": textColor || (color2 ? self79.textColorPressedPrimary : self79[createKey("textColorPressed", mergedType)]),
+          "--n-text-color-focus": textColor || (color2 ? self79.textColorFocusPrimary : self79[createKey("textColorFocus", mergedType)]),
+          "--n-text-color-disabled": textColor || (color2 ? self79.textColorDisabledPrimary : self79[createKey("textColorDisabled", mergedType)])
         };
       }
       let borderProps2 = {
@@ -35093,14 +35771,14 @@ var Button = defineComponent({
         };
       } else {
         borderProps2 = {
-          "--n-border": self20[createKey("border", mergedType)],
-          "--n-border-hover": self20[createKey("borderHover", mergedType)],
-          "--n-border-pressed": self20[createKey("borderPressed", mergedType)],
-          "--n-border-focus": self20[createKey("borderFocus", mergedType)],
-          "--n-border-disabled": self20[createKey("borderDisabled", mergedType)]
+          "--n-border": self79[createKey("border", mergedType)],
+          "--n-border-hover": self79[createKey("borderHover", mergedType)],
+          "--n-border-pressed": self79[createKey("borderPressed", mergedType)],
+          "--n-border-focus": self79[createKey("borderFocus", mergedType)],
+          "--n-border-disabled": self79[createKey("borderDisabled", mergedType)]
         };
       }
-      const { [createKey("height", size3)]: height, [createKey("fontSize", size3)]: fontSize2, [createKey("padding", size3)]: padding, [createKey("paddingRound", size3)]: paddingRound, [createKey("iconSize", size3)]: iconSize, [createKey("borderRadius", size3)]: borderRadius, [createKey("iconMargin", size3)]: iconMargin, waveOpacity } = self20;
+      const { [createKey("height", size3)]: height, [createKey("fontSize", size3)]: fontSize2, [createKey("padding", size3)]: padding, [createKey("paddingRound", size3)]: paddingRound, [createKey("iconSize", size3)]: iconSize, [createKey("borderRadius", size3)]: borderRadius, [createKey("iconMargin", size3)]: iconMargin, waveOpacity } = self79;
       const sizeProps = {
         "--n-width": circle && !text2 ? height : "initial",
         "--n-height": text2 ? "initial" : height,
@@ -35357,14 +36035,14 @@ function dateArray(monthTs, valueTs, currentTs, startDay, strip = false) {
 }
 
 // node_modules/naive-ui/es/calendar/styles/_common.js
-var common_default7 = {
+var common_default13 = {
   titleFontSize: "22px"
 };
 
 // node_modules/naive-ui/es/calendar/styles/light.js
-var self8 = (vars) => {
+var self18 = (vars) => {
   const { borderRadius, fontSize: fontSize2, lineHeight: lineHeight3, textColor2, textColor1, textColorDisabled, dividerColor, fontWeightStrong, primaryColor, baseColor, hoverColor, cardColor, modalColor, popoverColor } = vars;
-  return Object.assign(Object.assign({}, common_default7), {
+  return Object.assign(Object.assign({}, common_default13), {
     borderRadius,
     borderColor: composite(cardColor, dividerColor),
     borderColorModal: composite(modalColor, dividerColor),
@@ -35390,11 +36068,22 @@ var calendarLight = createTheme({
   name: "Calendar",
   common: light_default,
   peers: {
-    Button: light_default7
+    Button: light_default17
   },
-  self: self8
+  self: self18
 });
-var light_default8 = calendarLight;
+var light_default18 = calendarLight;
+
+// node_modules/naive-ui/es/calendar/styles/dark.js
+var calendarDark = {
+  name: "Calendar",
+  common: dark_default,
+  peers: {
+    Button: dark_default17
+  },
+  self: self18
+};
+var dark_default18 = calendarDark;
 
 // node_modules/naive-ui/es/calendar/src/styles/index.cssr.js
 var index_cssr_default12 = c3([cB("calendar", `
@@ -35526,7 +36215,7 @@ var Calendar_default = defineComponent({
   setup(props) {
     var _a3;
     const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props);
-    const themeRef = use_theme_default("Calendar", "-calendar", index_cssr_default12, light_default8, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Calendar", "-calendar", index_cssr_default12, light_default18, props, mergedClsPrefixRef);
     const { localeRef, dateLocaleRef } = useLocale("DatePicker");
     const now = Date.now();
     const monthTsRef = ref(startOfMonth((_a3 = props.defaultValue) !== null && _a3 !== void 0 ? _a3 : now).valueOf());
@@ -35682,8 +36371,50 @@ var Calendar_default = defineComponent({
   }
 });
 
+// node_modules/naive-ui/es/color-picker/styles/light.js
+var self19 = (vars) => {
+  const { fontSize: fontSize2, boxShadow2, popoverColor, textColor2, borderRadius, borderColor, heightSmall, heightMedium, heightLarge, fontSizeSmall, fontSizeMedium, fontSizeLarge, dividerColor } = vars;
+  return {
+    panelFontSize: fontSize2,
+    boxShadow: boxShadow2,
+    color: popoverColor,
+    textColor: textColor2,
+    borderRadius,
+    border: `1px solid ${borderColor}`,
+    heightSmall,
+    heightMedium,
+    heightLarge,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    dividerColor
+  };
+};
+var colorPickerLight = createTheme({
+  name: "ColorPicker",
+  common: light_default,
+  peers: {
+    Input: light_default10,
+    Button: light_default17
+  },
+  self: self19
+});
+var light_default19 = colorPickerLight;
+
+// node_modules/naive-ui/es/color-picker/styles/dark.js
+var colorPickerDark = {
+  name: "ColorPicker",
+  common: dark_default,
+  peers: {
+    Input: dark_default10,
+    Button: dark_default17
+  },
+  self: self19
+};
+var dark_default19 = colorPickerDark;
+
 // node_modules/naive-ui/es/card/styles/_common.js
-var common_default8 = {
+var common_default14 = {
   paddingSmall: "12px 16px 12px",
   paddingMedium: "19px 24px 20px",
   paddingLarge: "23px 32px 24px",
@@ -35697,9 +36428,9 @@ var common_default8 = {
 };
 
 // node_modules/naive-ui/es/card/styles/light.js
-var self9 = (vars) => {
+var self20 = (vars) => {
   const { primaryColor, borderRadius, lineHeight: lineHeight3, fontSize: fontSize2, cardColor, textColor2, textColor1, dividerColor, fontWeightStrong, closeIconColor, closeIconColorHover, closeIconColorPressed, closeColorHover, closeColorPressed, modalColor, boxShadow1, popoverColor, actionColor } = vars;
-  return Object.assign(Object.assign({}, common_default8), {
+  return Object.assign(Object.assign({}, common_default14), {
     lineHeight: lineHeight3,
     color: cardColor,
     colorModal: modalColor,
@@ -35730,9 +36461,24 @@ var self9 = (vars) => {
 var cardLight = {
   name: "Card",
   common: light_default,
-  self: self9
+  self: self20
 };
-var light_default9 = cardLight;
+var light_default20 = cardLight;
+
+// node_modules/naive-ui/es/card/styles/dark.js
+var cardDark = {
+  name: "Card",
+  common: dark_default,
+  self(vars) {
+    const commonSelf = self20(vars);
+    const { cardColor, modalColor, popoverColor } = vars;
+    commonSelf.colorEmbedded = cardColor;
+    commonSelf.colorEmbeddedModal = modalColor;
+    commonSelf.colorEmbeddedPopover = popoverColor;
+    return commonSelf;
+  }
+};
+var dark_default20 = cardDark;
 
 // node_modules/naive-ui/es/card/src/styles/index.cssr.js
 var index_cssr_default13 = c3([cB("card", `
@@ -35882,7 +36628,7 @@ var Card_default = defineComponent({
         call(onClose);
     };
     const { inlineThemeDisabled, mergedClsPrefixRef, mergedRtlRef } = useConfig(props);
-    const themeRef = use_theme_default("Card", "-card", index_cssr_default13, light_default9, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Card", "-card", index_cssr_default13, light_default20, props, mergedClsPrefixRef);
     const rtlEnabledRef = useRtl("Card", mergedRtlRef, mergedClsPrefixRef);
     const cssVarsRef = computed2(() => {
       const { size: size3 } = props;
@@ -35955,6 +36701,246 @@ var Card_default = defineComponent({
     ]), resolveWrappedSlot($slots.action, (children2) => children2 && h3("div", { class: `${mergedClsPrefix}-card__action`, role: "none" }, children2)));
   }
 });
+
+// node_modules/naive-ui/es/carousel/styles/light.js
+var self21 = (vars) => {
+  return {
+    dotSize: "8px",
+    dotColor: "rgba(255, 255, 255, .3)",
+    dotColorActive: "rgba(255, 255, 255, 1)",
+    dotColorFocus: "rgba(255, 255, 255, .5)",
+    dotLineWidth: "16px",
+    dotLineWidthActive: "24px",
+    arrowColor: "#eee"
+  };
+};
+var carouselLight = {
+  name: "Carousel",
+  common: light_default,
+  self: self21
+};
+var light_default21 = carouselLight;
+
+// node_modules/naive-ui/es/carousel/styles/dark.js
+var carouselDark = {
+  name: "Carousel",
+  common: dark_default,
+  self: self21
+};
+var dark_default21 = carouselDark;
+
+// node_modules/naive-ui/es/checkbox/styles/_common.js
+var common_default15 = {
+  sizeSmall: "14px",
+  sizeMedium: "16px",
+  sizeLarge: "18px",
+  labelPadding: "0 8px",
+  labelFontWeight: "400"
+};
+
+// node_modules/naive-ui/es/checkbox/styles/light.js
+var self22 = (vars) => {
+  const { baseColor, inputColorDisabled, cardColor, modalColor, popoverColor, textColorDisabled, borderColor, primaryColor, textColor2, fontSizeSmall, fontSizeMedium, fontSizeLarge, borderRadiusSmall, lineHeight: lineHeight3 } = vars;
+  return Object.assign(Object.assign({}, common_default15), {
+    labelLineHeight: lineHeight3,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    borderRadius: borderRadiusSmall,
+    color: baseColor,
+    colorChecked: primaryColor,
+    colorDisabled: inputColorDisabled,
+    colorDisabledChecked: inputColorDisabled,
+    colorTableHeader: cardColor,
+    colorTableHeaderModal: modalColor,
+    colorTableHeaderPopover: popoverColor,
+    checkMarkColor: baseColor,
+    checkMarkColorDisabled: textColorDisabled,
+    checkMarkColorDisabledChecked: textColorDisabled,
+    border: `1px solid ${borderColor}`,
+    borderDisabled: `1px solid ${borderColor}`,
+    borderDisabledChecked: `1px solid ${borderColor}`,
+    borderChecked: `1px solid ${primaryColor}`,
+    borderFocus: `1px solid ${primaryColor}`,
+    boxShadowFocus: `0 0 0 2px ${changeColor(primaryColor, { alpha: 0.3 })}`,
+    textColor: textColor2,
+    textColorDisabled
+  });
+};
+var checkboxLight = {
+  name: "Checkbox",
+  common: light_default,
+  self: self22
+};
+var light_default22 = checkboxLight;
+
+// node_modules/naive-ui/es/checkbox/styles/dark.js
+var checkboxDark = {
+  name: "Checkbox",
+  common: dark_default,
+  self(vars) {
+    const { cardColor } = vars;
+    const commonSelf = self22(vars);
+    commonSelf.color = "#0000";
+    commonSelf.checkMarkColor = cardColor;
+    return commonSelf;
+  }
+};
+var dark_default22 = checkboxDark;
+
+// node_modules/naive-ui/es/cascader/styles/light.js
+var self23 = (vars) => {
+  const { borderRadius, boxShadow2, popoverColor, textColor2, textColor3, primaryColor, textColorDisabled, dividerColor, hoverColor, fontSizeMedium, heightMedium } = vars;
+  return {
+    menuBorderRadius: borderRadius,
+    menuColor: popoverColor,
+    menuBoxShadow: boxShadow2,
+    menuDividerColor: dividerColor,
+    menuHeight: "calc(var(--n-option-height) * 6.6)",
+    optionArrowColor: textColor3,
+    optionHeight: heightMedium,
+    optionFontSize: fontSizeMedium,
+    optionColorHover: hoverColor,
+    optionTextColor: textColor2,
+    optionTextColorActive: primaryColor,
+    optionTextColorDisabled: textColorDisabled,
+    optionCheckMarkColor: primaryColor,
+    loadingColor: primaryColor,
+    columnWidth: "180px"
+  };
+};
+var cascaderLight = createTheme({
+  name: "Cascader",
+  common: light_default,
+  peers: {
+    InternalSelectMenu: light_default4,
+    InternalSelection: light_default7,
+    Scrollbar: light_default3,
+    Checkbox: light_default22,
+    Empty: light_default2
+  },
+  self: self23
+});
+var light_default23 = cascaderLight;
+
+// node_modules/naive-ui/es/cascader/styles/dark.js
+var cascaderDark = {
+  name: "Cascader",
+  common: dark_default,
+  peers: {
+    InternalSelectMenu: dark_default4,
+    InternalSelection: dark_default7,
+    Scrollbar: dark_default3,
+    Checkbox: dark_default22,
+    Empty: light_default2
+  },
+  self: self23
+};
+var dark_default23 = cascaderDark;
+
+// node_modules/naive-ui/es/code/styles/dark.js
+var codeDark = {
+  name: "Code",
+  common: dark_default,
+  self(vars) {
+    const { textColor2, fontSize: fontSize2, fontWeightStrong, textColor3 } = vars;
+    return {
+      textColor: textColor2,
+      fontSize: fontSize2,
+      fontWeightStrong,
+      "mono-3": "#5c6370",
+      "hue-1": "#56b6c2",
+      "hue-2": "#61aeee",
+      "hue-3": "#c678dd",
+      "hue-4": "#98c379",
+      "hue-5": "#e06c75",
+      "hue-5-2": "#be5046",
+      "hue-6": "#d19a66",
+      "hue-6-2": "#e6c07b",
+      lineNumberTextColor: textColor3
+    };
+  }
+};
+var dark_default24 = codeDark;
+
+// node_modules/naive-ui/es/code/styles/light.js
+var self24 = (vars) => {
+  const { textColor2, fontSize: fontSize2, fontWeightStrong, textColor3 } = vars;
+  return {
+    textColor: textColor2,
+    fontSize: fontSize2,
+    fontWeightStrong,
+    "mono-3": "#a0a1a7",
+    "hue-1": "#0184bb",
+    "hue-2": "#4078f2",
+    "hue-3": "#a626a4",
+    "hue-4": "#50a14f",
+    "hue-5": "#e45649",
+    "hue-5-2": "#c91243",
+    "hue-6": "#986801",
+    "hue-6-2": "#c18401",
+    lineNumberTextColor: textColor3
+  };
+};
+var codeLight = {
+  name: "Code",
+  common: light_default,
+  self: self24
+};
+var light_default24 = codeLight;
+
+// node_modules/naive-ui/es/collapse/styles/light.js
+var self25 = (vars) => {
+  const { fontWeight, textColor1, textColor2, textColorDisabled, dividerColor, fontSize: fontSize2 } = vars;
+  return {
+    titleFontSize: fontSize2,
+    titleFontWeight: fontWeight,
+    dividerColor,
+    titleTextColor: textColor1,
+    titleTextColorDisabled: textColorDisabled,
+    fontSize: fontSize2,
+    textColor: textColor2,
+    arrowColor: textColor2,
+    arrowColorDisabled: textColorDisabled,
+    itemMargin: "16px 0 0 0"
+  };
+};
+var collapseLight = {
+  name: "Collapse",
+  common: light_default,
+  self: self25
+};
+var light_default25 = collapseLight;
+
+// node_modules/naive-ui/es/collapse/styles/dark.js
+var collapseDark = {
+  name: "Collapse",
+  common: dark_default,
+  self: self25
+};
+var dark_default25 = collapseDark;
+
+// node_modules/naive-ui/es/collapse-transition/styles/light.js
+var self26 = (vars) => {
+  const { cubicBezierEaseInOut: cubicBezierEaseInOut5 } = vars;
+  return {
+    bezier: cubicBezierEaseInOut5
+  };
+};
+var collapseTransitionLight = {
+  name: "CollapseTransition",
+  common: light_default,
+  self: self26
+};
+var light_default26 = collapseTransitionLight;
+
+// node_modules/naive-ui/es/collapse-transition/styles/dark.js
+var collapseTransitionDark = {
+  name: "CollapseTransition",
+  common: dark_default,
+  self: self26
+};
+var dark_default26 = collapseTransitionDark;
 
 // node_modules/naive-ui/es/config-provider/src/ConfigProvider.js
 var configProviderProps = {
@@ -36134,38 +37120,310 @@ var ConfigProvider_default = defineComponent({
   }
 });
 
+// node_modules/naive-ui/es/popselect/styles/dark.js
+var popselect = {
+  name: "Popselect",
+  common: dark_default,
+  peers: {
+    Popover: dark_default5,
+    InternalSelectMenu: dark_default4
+  }
+};
+var dark_default27 = popselect;
+
+// node_modules/naive-ui/es/popselect/styles/light.js
+function self27(vars) {
+  const { boxShadow2 } = vars;
+  return {
+    menuBoxShadow: boxShadow2
+  };
+}
+var popselectLight = createTheme({
+  name: "Popselect",
+  common: light_default,
+  peers: {
+    Popover: light_default5,
+    InternalSelectMenu: light_default4
+  },
+  self: self27
+});
+var light_default27 = popselectLight;
+
+// node_modules/naive-ui/es/select/styles/light.js
+function self28(vars) {
+  const { boxShadow2 } = vars;
+  return {
+    menuBoxShadow: boxShadow2
+  };
+}
+var selectLight = createTheme({
+  name: "Select",
+  common: light_default,
+  peers: {
+    InternalSelection: light_default7,
+    InternalSelectMenu: light_default4
+  },
+  self: self28
+});
+var light_default28 = selectLight;
+
+// node_modules/naive-ui/es/select/styles/dark.js
+var selectDark = {
+  name: "Select",
+  common: dark_default,
+  peers: {
+    InternalSelection: dark_default7,
+    InternalSelectMenu: dark_default4
+  },
+  self: self28
+};
+var dark_default28 = selectDark;
+
+// node_modules/naive-ui/es/pagination/styles/_common.js
+var common_default16 = {
+  itemPaddingSmall: "0 4px",
+  itemMarginSmall: "0 0 0 8px",
+  itemMarginSmallRtl: "0 8px 0 0",
+  itemPaddingMedium: "0 4px",
+  itemMarginMedium: "0 0 0 8px",
+  itemMarginMediumRtl: "0 8px 0 0",
+  itemPaddingLarge: "0 4px",
+  itemMarginLarge: "0 0 0 8px",
+  itemMarginLargeRtl: "0 8px 0 0",
+  buttonIconSizeSmall: "14px",
+  buttonIconSizeMedium: "16px",
+  buttonIconSizeLarge: "18px",
+  inputWidthSmall: "60px",
+  selectWidthSmall: "unset",
+  inputMarginSmall: "0 0 0 8px",
+  inputMarginSmallRtl: "0 8px 0 0",
+  selectMarginSmall: "0 0 0 8px",
+  prefixMarginSmall: "0 8px 0 0",
+  suffixMarginSmall: "0 0 0 8px",
+  inputWidthMedium: "60px",
+  selectWidthMedium: "unset",
+  inputMarginMedium: "0 0 0 8px",
+  inputMarginMediumRtl: "0 8px 0 0",
+  selectMarginMedium: "0 0 0 8px",
+  prefixMarginMedium: "0 8px 0 0",
+  suffixMarginMedium: "0 0 0 8px",
+  inputWidthLarge: "60px",
+  selectWidthLarge: "unset",
+  inputMarginLarge: "0 0 0 8px",
+  inputMarginLargeRtl: "0 8px 0 0",
+  selectMarginLarge: "0 0 0 8px",
+  prefixMarginLarge: "0 8px 0 0",
+  suffixMarginLarge: "0 0 0 8px"
+};
+
+// node_modules/naive-ui/es/pagination/styles/light.js
+var self29 = (vars) => {
+  const {
+    textColor2,
+    primaryColor,
+    primaryColorHover,
+    primaryColorPressed,
+    inputColorDisabled,
+    textColorDisabled,
+    borderColor,
+    borderRadius,
+    fontSizeTiny,
+    fontSizeSmall,
+    fontSizeMedium,
+    heightTiny,
+    heightSmall,
+    heightMedium
+  } = vars;
+  return Object.assign(Object.assign({}, common_default16), { buttonColor: "#0000", buttonColorHover: "#0000", buttonColorPressed: "#0000", buttonBorder: `1px solid ${borderColor}`, buttonBorderHover: `1px solid ${borderColor}`, buttonBorderPressed: `1px solid ${borderColor}`, buttonIconColor: textColor2, buttonIconColorHover: textColor2, buttonIconColorPressed: textColor2, itemTextColor: textColor2, itemTextColorHover: primaryColorHover, itemTextColorPressed: primaryColorPressed, itemTextColorActive: primaryColor, itemTextColorDisabled: textColorDisabled, itemColor: "#0000", itemColorHover: "#0000", itemColorPressed: "#0000", itemColorActive: "#0000", itemColorActiveHover: "#0000", itemColorDisabled: inputColorDisabled, itemBorder: "1px solid #0000", itemBorderHover: "1px solid #0000", itemBorderPressed: "1px solid #0000", itemBorderActive: `1px solid ${primaryColor}`, itemBorderDisabled: `1px solid ${borderColor}`, itemBorderRadius: borderRadius, itemSizeSmall: heightTiny, itemSizeMedium: heightSmall, itemSizeLarge: heightMedium, itemFontSizeSmall: fontSizeTiny, itemFontSizeMedium: fontSizeSmall, itemFontSizeLarge: fontSizeMedium, jumperFontSizeSmall: fontSizeTiny, jumperFontSizeMedium: fontSizeSmall, jumperFontSizeLarge: fontSizeMedium, jumperTextColor: textColor2, jumperTextColorDisabled: textColorDisabled });
+};
+var paginationLight = createTheme({
+  name: "Pagination",
+  common: light_default,
+  peers: {
+    Select: light_default28,
+    Input: light_default10,
+    Popselect: light_default27
+  },
+  self: self29
+});
+var light_default29 = paginationLight;
+
+// node_modules/naive-ui/es/pagination/styles/dark.js
+var paginationDark = {
+  name: "Pagination",
+  common: dark_default,
+  peers: {
+    Select: dark_default28,
+    Input: dark_default10,
+    Popselect: dark_default27
+  },
+  self(vars) {
+    const { primaryColor, opacity3 } = vars;
+    const borderColorActive = changeColor(primaryColor, {
+      alpha: Number(opacity3)
+    });
+    const commonSelf = self29(vars);
+    commonSelf.itemBorderActive = `1px solid ${borderColorActive}`;
+    commonSelf.itemBorderDisabled = "1px solid #0000";
+    return commonSelf;
+  }
+};
+var dark_default29 = paginationDark;
+
 // node_modules/naive-ui/es/tooltip/styles/_common.js
-var common_default9 = {
+var common_default17 = {
   padding: "8px 14px"
 };
 
+// node_modules/naive-ui/es/tooltip/styles/dark.js
+var tooltipDark = {
+  name: "Tooltip",
+  common: dark_default,
+  peers: {
+    Popover: dark_default5
+  },
+  self(vars) {
+    const { borderRadius, boxShadow2, popoverColor, textColor2 } = vars;
+    return Object.assign(Object.assign({}, common_default17), { borderRadius, boxShadow: boxShadow2, color: popoverColor, textColor: textColor2 });
+  }
+};
+var dark_default30 = tooltipDark;
+
 // node_modules/naive-ui/es/tooltip/styles/light.js
-var self10 = (vars) => {
+var self30 = (vars) => {
   const { borderRadius, boxShadow2, baseColor } = vars;
-  return Object.assign(Object.assign({}, common_default9), { borderRadius, boxShadow: boxShadow2, color: composite(baseColor, "rgba(0, 0, 0, .85)"), textColor: baseColor });
+  return Object.assign(Object.assign({}, common_default17), { borderRadius, boxShadow: boxShadow2, color: composite(baseColor, "rgba(0, 0, 0, .85)"), textColor: baseColor });
 };
 var tooltipLight = createTheme({
   name: "Tooltip",
   common: light_default,
   peers: {
-    Popover: light_default4
+    Popover: light_default5
   },
-  self: self10
+  self: self30
 });
-var light_default10 = tooltipLight;
+var light_default30 = tooltipLight;
+
+// node_modules/naive-ui/es/ellipsis/styles/dark.js
+var ellipsisDark = {
+  name: "Ellipsis",
+  common: dark_default,
+  peers: {
+    Tooltip: dark_default30
+  }
+};
+var dark_default31 = ellipsisDark;
 
 // node_modules/naive-ui/es/ellipsis/styles/light.js
 var ellipsisLight = createTheme({
   name: "Ellipsis",
   common: light_default,
   peers: {
-    Tooltip: light_default10
+    Tooltip: light_default30
   }
 });
-var light_default11 = ellipsisLight;
+var light_default31 = ellipsisLight;
+
+// node_modules/naive-ui/es/radio/styles/_common.js
+var common_default18 = {
+  radioSizeSmall: "14px",
+  radioSizeMedium: "16px",
+  radioSizeLarge: "18px",
+  labelPadding: "0 8px",
+  labelFontWeight: "400"
+};
+
+// node_modules/naive-ui/es/radio/styles/dark.js
+var radioDark = {
+  name: "Radio",
+  common: dark_default,
+  self(vars) {
+    const { borderColor, primaryColor, baseColor, textColorDisabled, inputColorDisabled, textColor2, opacityDisabled, borderRadius, fontSizeSmall, fontSizeMedium, fontSizeLarge, heightSmall, heightMedium, heightLarge, lineHeight: lineHeight3 } = vars;
+    return Object.assign(Object.assign({}, common_default18), {
+      labelLineHeight: lineHeight3,
+      buttonHeightSmall: heightSmall,
+      buttonHeightMedium: heightMedium,
+      buttonHeightLarge: heightLarge,
+      fontSizeSmall,
+      fontSizeMedium,
+      fontSizeLarge,
+      boxShadow: `inset 0 0 0 1px ${borderColor}`,
+      boxShadowActive: `inset 0 0 0 1px ${primaryColor}`,
+      boxShadowFocus: `inset 0 0 0 1px ${primaryColor}, 0 0 0 2px ${changeColor(primaryColor, { alpha: 0.3 })}`,
+      boxShadowHover: `inset 0 0 0 1px ${primaryColor}`,
+      boxShadowDisabled: `inset 0 0 0 1px ${borderColor}`,
+      color: "#0000",
+      colorDisabled: inputColorDisabled,
+      colorActive: "#0000",
+      textColor: textColor2,
+      textColorDisabled,
+      dotColorActive: primaryColor,
+      dotColorDisabled: borderColor,
+      buttonBorderColor: borderColor,
+      buttonBorderColorActive: primaryColor,
+      buttonBorderColorHover: primaryColor,
+      buttonColor: "#0000",
+      buttonColorActive: primaryColor,
+      buttonTextColor: textColor2,
+      buttonTextColorActive: baseColor,
+      buttonTextColorHover: primaryColor,
+      opacityDisabled,
+      buttonBoxShadowFocus: `inset 0 0 0 1px ${primaryColor}, 0 0 0 2px ${changeColor(primaryColor, { alpha: 0.3 })}`,
+      buttonBoxShadowHover: `inset 0 0 0 1px ${primaryColor}`,
+      buttonBoxShadow: "inset 0 0 0 1px #0000",
+      buttonBorderRadius: borderRadius
+    });
+  }
+};
+var dark_default32 = radioDark;
+
+// node_modules/naive-ui/es/radio/styles/light.js
+var self31 = (vars) => {
+  const { borderColor, primaryColor, baseColor, textColorDisabled, inputColorDisabled, textColor2, opacityDisabled, borderRadius, fontSizeSmall, fontSizeMedium, fontSizeLarge, heightSmall, heightMedium, heightLarge, lineHeight: lineHeight3 } = vars;
+  return Object.assign(Object.assign({}, common_default18), {
+    labelLineHeight: lineHeight3,
+    buttonHeightSmall: heightSmall,
+    buttonHeightMedium: heightMedium,
+    buttonHeightLarge: heightLarge,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    boxShadow: `inset 0 0 0 1px ${borderColor}`,
+    boxShadowActive: `inset 0 0 0 1px ${primaryColor}`,
+    boxShadowFocus: `inset 0 0 0 1px ${primaryColor}, 0 0 0 2px ${changeColor(primaryColor, { alpha: 0.2 })}`,
+    boxShadowHover: `inset 0 0 0 1px ${primaryColor}`,
+    boxShadowDisabled: `inset 0 0 0 1px ${borderColor}`,
+    color: baseColor,
+    colorDisabled: inputColorDisabled,
+    colorActive: "#0000",
+    textColor: textColor2,
+    textColorDisabled,
+    dotColorActive: primaryColor,
+    dotColorDisabled: borderColor,
+    buttonBorderColor: borderColor,
+    buttonBorderColorActive: primaryColor,
+    buttonBorderColorHover: borderColor,
+    buttonColor: baseColor,
+    buttonColorActive: baseColor,
+    buttonTextColor: textColor2,
+    buttonTextColorActive: primaryColor,
+    buttonTextColorHover: primaryColor,
+    opacityDisabled,
+    buttonBoxShadowFocus: `inset 0 0 0 1px ${primaryColor}, 0 0 0 2px ${changeColor(primaryColor, { alpha: 0.3 })}`,
+    buttonBoxShadowHover: "inset 0 0 0 1px #0000",
+    buttonBoxShadow: "inset 0 0 0 1px #0000",
+    buttonBorderRadius: borderRadius
+  });
+};
+var radioLight = {
+  name: "Radio",
+  common: light_default,
+  self: self31
+};
+var light_default32 = radioLight;
 
 // node_modules/naive-ui/es/dropdown/styles/_common.js
-var common_default10 = {
+var common_default19 = {
   padding: "4px 0",
   optionIconSizeSmall: "14px",
   optionIconSizeMedium: "16px",
@@ -36190,9 +37448,9 @@ var common_default10 = {
 };
 
 // node_modules/naive-ui/es/dropdown/styles/light.js
-var self11 = (vars) => {
+var self32 = (vars) => {
   const { primaryColor, textColor2, dividerColor, hoverColor, popoverColor, invertedColor, borderRadius, fontSizeSmall, fontSizeMedium, fontSizeLarge, fontSizeHuge, heightSmall, heightMedium, heightLarge, heightHuge, textColor3, opacityDisabled } = vars;
-  return Object.assign(Object.assign({}, common_default10), {
+  return Object.assign(Object.assign({}, common_default19), {
     optionHeightSmall: heightSmall,
     optionHeightMedium: heightMedium,
     optionHeightLarge: heightLarge,
@@ -36231,11 +37489,131 @@ var dropdownLight = createTheme({
   name: "Dropdown",
   common: light_default,
   peers: {
-    Popover: light_default4
+    Popover: light_default5
   },
-  self: self11
+  self: self32
 });
-var light_default12 = dropdownLight;
+var light_default33 = dropdownLight;
+
+// node_modules/naive-ui/es/dropdown/styles/dark.js
+var dropdownDark = {
+  name: "Dropdown",
+  common: dark_default,
+  peers: {
+    Popover: dark_default5
+  },
+  self(vars) {
+    const { primaryColorSuppl, primaryColor, popoverColor } = vars;
+    const commonSelf = self32(vars);
+    commonSelf.colorInverted = popoverColor;
+    commonSelf.optionColorActive = changeColor(primaryColor, { alpha: 0.15 });
+    commonSelf.optionColorActiveInverted = primaryColorSuppl;
+    commonSelf.optionColorHoverInverted = primaryColorSuppl;
+    return commonSelf;
+  }
+};
+var dark_default33 = dropdownDark;
+
+// node_modules/naive-ui/es/data-table/styles/_common.js
+var common_default20 = {
+  thPaddingSmall: "8px",
+  thPaddingMedium: "12px",
+  thPaddingLarge: "12px",
+  tdPaddingSmall: "8px",
+  tdPaddingMedium: "12px",
+  tdPaddingLarge: "12px",
+  sorterSize: "15px",
+  resizableContainerSize: "8px",
+  resizableSize: "2px",
+  filterSize: "15px",
+  paginationMargin: "12px 0 0 0",
+  emptyPadding: "48px 0",
+  actionPadding: "8px 12px",
+  actionButtonMargin: "0 8px 0 0"
+};
+
+// node_modules/naive-ui/es/data-table/styles/light.js
+var self33 = (vars) => {
+  const { cardColor, modalColor, popoverColor, textColor2, textColor1, tableHeaderColor, tableColorHover, iconColor, primaryColor, fontWeightStrong, borderRadius, lineHeight: lineHeight3, fontSizeSmall, fontSizeMedium, fontSizeLarge, dividerColor, heightSmall, opacityDisabled, tableColorStriped } = vars;
+  return Object.assign(Object.assign({}, common_default20), {
+    actionDividerColor: dividerColor,
+    lineHeight: lineHeight3,
+    borderRadius,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    borderColor: composite(cardColor, dividerColor),
+    tdColorHover: composite(cardColor, tableColorHover),
+    tdColorStriped: composite(cardColor, tableColorStriped),
+    thColor: composite(cardColor, tableHeaderColor),
+    thColorHover: composite(composite(cardColor, tableHeaderColor), tableColorHover),
+    tdColor: cardColor,
+    tdTextColor: textColor2,
+    thTextColor: textColor1,
+    thFontWeight: fontWeightStrong,
+    thButtonColorHover: tableColorHover,
+    thIconColor: iconColor,
+    thIconColorActive: primaryColor,
+    borderColorModal: composite(modalColor, dividerColor),
+    tdColorHoverModal: composite(modalColor, tableColorHover),
+    tdColorStripedModal: composite(modalColor, tableColorStriped),
+    thColorModal: composite(modalColor, tableHeaderColor),
+    thColorHoverModal: composite(composite(modalColor, tableHeaderColor), tableColorHover),
+    tdColorModal: modalColor,
+    borderColorPopover: composite(popoverColor, dividerColor),
+    tdColorHoverPopover: composite(popoverColor, tableColorHover),
+    tdColorStripedPopover: composite(popoverColor, tableColorStriped),
+    thColorPopover: composite(popoverColor, tableHeaderColor),
+    thColorHoverPopover: composite(composite(popoverColor, tableHeaderColor), tableColorHover),
+    tdColorPopover: popoverColor,
+    boxShadowBefore: "inset -12px 0 8px -12px rgba(0, 0, 0, .18)",
+    boxShadowAfter: "inset 12px 0 8px -12px rgba(0, 0, 0, .18)",
+    loadingColor: primaryColor,
+    loadingSize: heightSmall,
+    opacityLoading: opacityDisabled
+  });
+};
+var dataTableLight = createTheme({
+  name: "DataTable",
+  common: light_default,
+  peers: {
+    Button: light_default17,
+    Checkbox: light_default22,
+    Radio: light_default32,
+    Pagination: light_default29,
+    Scrollbar: light_default3,
+    Empty: light_default2,
+    Popover: light_default5,
+    Ellipsis: light_default31,
+    Dropdown: light_default33
+  },
+  self: self33
+});
+var light_default34 = dataTableLight;
+
+// node_modules/naive-ui/es/data-table/styles/dark.js
+var dataTableDark = {
+  name: "DataTable",
+  common: dark_default,
+  peers: {
+    Button: dark_default17,
+    Checkbox: dark_default22,
+    Radio: dark_default32,
+    Pagination: dark_default29,
+    Scrollbar: dark_default3,
+    Empty: dark_default2,
+    Popover: dark_default5,
+    Ellipsis: dark_default31,
+    Dropdown: dark_default33
+  },
+  self(vars) {
+    const commonSelf = self33(vars);
+    commonSelf.boxShadowAfter = "inset 12px 0 8px -12px rgba(0, 0, 0, .36)";
+    commonSelf.boxShadowBefore = "inset -12px 0 8px -12px rgba(0, 0, 0, .36)";
+    return commonSelf;
+  }
+};
+var dark_default34 = dataTableDark;
 
 // node_modules/naive-ui/es/tooltip/src/Tooltip.js
 var tooltipProps = Object.assign(Object.assign({}, popoverBaseProps), use_theme_default.props);
@@ -36244,7 +37622,7 @@ var Tooltip_default = defineComponent({
   props: tooltipProps,
   __popover__: true,
   setup(props) {
-    const themeRef = use_theme_default("Tooltip", "-tooltip", void 0, light_default10, props);
+    const themeRef = use_theme_default("Tooltip", "-tooltip", void 0, light_default30, props);
     const popoverRef = ref(null);
     const tooltipExposedMethod = {
       syncPosition() {
@@ -36296,7 +37674,7 @@ var Ellipsis_default = defineComponent({
   props: ellipsisProps,
   setup(props, { slots, attrs }) {
     const { mergedClsPrefixRef } = useConfig(props);
-    const mergedTheme = use_theme_default("Ellipsis", "-ellipsis", index_cssr_default14, light_default11, props, mergedClsPrefixRef);
+    const mergedTheme = use_theme_default("Ellipsis", "-ellipsis", index_cssr_default14, light_default31, props, mergedClsPrefixRef);
     const triggerRef2 = ref(null);
     const triggerInnerRef = ref(null);
     const tooltipRef = ref(null);
@@ -36436,7 +37814,7 @@ var DropdownDivider_default = defineComponent({
 });
 
 // node_modules/naive-ui/es/icon/styles/light.js
-var self12 = (vars) => {
+var self34 = (vars) => {
   const { textColorBase, opacity1, opacity2, opacity3, opacity4, opacity5 } = vars;
   return {
     color: textColorBase,
@@ -36450,9 +37828,17 @@ var self12 = (vars) => {
 var iconLight = {
   name: "Icon",
   common: light_default,
-  self: self12
+  self: self34
 };
-var light_default13 = iconLight;
+var light_default35 = iconLight;
+
+// node_modules/naive-ui/es/icon/styles/dark.js
+var iconDark = {
+  name: "Icon",
+  common: dark_default,
+  self: self34
+};
+var dark_default35 = iconDark;
 
 // node_modules/naive-ui/es/icon/src/styles/index.cssr.js
 var index_cssr_default15 = cB("icon", `
@@ -36485,12 +37871,12 @@ var NIcon = defineComponent({
   props: iconProps,
   setup(props) {
     const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props);
-    const themeRef = use_theme_default("Icon", "-icon", index_cssr_default15, light_default13, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Icon", "-icon", index_cssr_default15, light_default35, props, mergedClsPrefixRef);
     const cssVarsRef = computed2(() => {
       const { depth } = props;
-      const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5 }, self: self20 } = themeRef.value;
+      const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5 }, self: self79 } = themeRef.value;
       if (depth !== void 0) {
-        const { color: color2, [`opacity${depth}Depth`]: opacity } = self20;
+        const { color: color2, [`opacity${depth}Depth`]: opacity } = self79;
         return {
           "--n-bezier": cubicBezierEaseInOut5,
           "--n-color": color2,
@@ -37186,7 +38572,7 @@ var Dropdown_default = defineComponent({
       }
     }, keyboardEnabledRef);
     const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props);
-    const themeRef = use_theme_default("Dropdown", "-dropdown", index_cssr_default16, light_default12, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Dropdown", "-dropdown", index_cssr_default16, light_default33, props, mergedClsPrefixRef);
     provide(dropdownInjectionKey, {
       labelFieldRef: toRef(props, "labelField"),
       childrenFieldRef: toRef(props, "childrenField"),
@@ -37296,8 +38682,8 @@ var Dropdown_default = defineComponent({
     }
     const cssVarsRef = computed2(() => {
       const { size: size3, inverted } = props;
-      const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5 }, self: self20 } = themeRef.value;
-      const { padding, dividerColor, borderRadius, optionOpacityDisabled, [createKey("optionIconSuffixWidth", size3)]: optionIconSuffixWidth, [createKey("optionSuffixWidth", size3)]: optionSuffixWidth, [createKey("optionIconPrefixWidth", size3)]: optionIconPrefixWidth, [createKey("optionPrefixWidth", size3)]: optionPrefixWidth, [createKey("fontSize", size3)]: fontSize2, [createKey("optionHeight", size3)]: optionHeight, [createKey("optionIconSize", size3)]: optionIconSize } = self20;
+      const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5 }, self: self79 } = themeRef.value;
+      const { padding, dividerColor, borderRadius, optionOpacityDisabled, [createKey("optionIconSuffixWidth", size3)]: optionIconSuffixWidth, [createKey("optionSuffixWidth", size3)]: optionSuffixWidth, [createKey("optionIconPrefixWidth", size3)]: optionIconPrefixWidth, [createKey("optionPrefixWidth", size3)]: optionPrefixWidth, [createKey("fontSize", size3)]: fontSize2, [createKey("optionHeight", size3)]: optionHeight, [createKey("optionIconSize", size3)]: optionIconSize } = self79;
       const vars = {
         "--n-bezier": cubicBezierEaseInOut5,
         "--n-font-size": fontSize2,
@@ -37313,27 +38699,27 @@ var Dropdown_default = defineComponent({
         "--n-option-opacity-disabled": optionOpacityDisabled
       };
       if (inverted) {
-        vars["--n-color"] = self20.colorInverted;
-        vars["--n-option-color-hover"] = self20.optionColorHoverInverted;
-        vars["--n-option-color-active"] = self20.optionColorActiveInverted;
-        vars["--n-option-text-color"] = self20.optionTextColorInverted;
-        vars["--n-option-text-color-hover"] = self20.optionTextColorHoverInverted;
-        vars["--n-option-text-color-active"] = self20.optionTextColorActiveInverted;
-        vars["--n-option-text-color-child-active"] = self20.optionTextColorChildActiveInverted;
-        vars["--n-prefix-color"] = self20.prefixColorInverted;
-        vars["--n-suffix-color"] = self20.suffixColorInverted;
-        vars["--n-group-header-text-color"] = self20.groupHeaderTextColorInverted;
+        vars["--n-color"] = self79.colorInverted;
+        vars["--n-option-color-hover"] = self79.optionColorHoverInverted;
+        vars["--n-option-color-active"] = self79.optionColorActiveInverted;
+        vars["--n-option-text-color"] = self79.optionTextColorInverted;
+        vars["--n-option-text-color-hover"] = self79.optionTextColorHoverInverted;
+        vars["--n-option-text-color-active"] = self79.optionTextColorActiveInverted;
+        vars["--n-option-text-color-child-active"] = self79.optionTextColorChildActiveInverted;
+        vars["--n-prefix-color"] = self79.prefixColorInverted;
+        vars["--n-suffix-color"] = self79.suffixColorInverted;
+        vars["--n-group-header-text-color"] = self79.groupHeaderTextColorInverted;
       } else {
-        vars["--n-color"] = self20.color;
-        vars["--n-option-color-hover"] = self20.optionColorHover;
-        vars["--n-option-color-active"] = self20.optionColorActive;
-        vars["--n-option-text-color"] = self20.optionTextColor;
-        vars["--n-option-text-color-hover"] = self20.optionTextColorHover;
-        vars["--n-option-text-color-active"] = self20.optionTextColorActive;
-        vars["--n-option-text-color-child-active"] = self20.optionTextColorChildActive;
-        vars["--n-prefix-color"] = self20.prefixColor;
-        vars["--n-suffix-color"] = self20.suffixColor;
-        vars["--n-group-header-text-color"] = self20.groupHeaderTextColor;
+        vars["--n-color"] = self79.color;
+        vars["--n-option-color-hover"] = self79.optionColorHover;
+        vars["--n-option-color-active"] = self79.optionColorActive;
+        vars["--n-option-text-color"] = self79.optionTextColor;
+        vars["--n-option-text-color-hover"] = self79.optionTextColorHover;
+        vars["--n-option-text-color-active"] = self79.optionTextColorActive;
+        vars["--n-option-text-color-child-active"] = self79.optionTextColorChildActive;
+        vars["--n-prefix-color"] = self79.prefixColor;
+        vars["--n-suffix-color"] = self79.suffixColor;
+        vars["--n-group-header-text-color"] = self79.groupHeaderTextColor;
       }
       return vars;
     });
@@ -37394,7 +38780,7 @@ var Dropdown_default = defineComponent({
 });
 
 // node_modules/naive-ui/es/time-picker/styles/_common.js
-var common_default11 = {
+var common_default21 = {
   itemFontSize: "12px",
   itemHeight: "36px",
   itemWidth: "52px",
@@ -37402,9 +38788,9 @@ var common_default11 = {
 };
 
 // node_modules/naive-ui/es/time-picker/styles/light.js
-var self13 = (vars) => {
+var self35 = (vars) => {
   const { popoverColor, textColor2, primaryColor, hoverColor, dividerColor, opacityDisabled, boxShadow2, borderRadius, iconColor, iconColorDisabled } = vars;
-  return Object.assign(Object.assign({}, common_default11), {
+  return Object.assign(Object.assign({}, common_default21), {
     panelColor: popoverColor,
     panelBoxShadow: boxShadow2,
     panelDividerColor: dividerColor,
@@ -37423,28 +38809,28 @@ var timePickerLight = createTheme({
   common: light_default,
   peers: {
     Scrollbar: light_default3,
-    Button: light_default7,
-    Input: light_default6
+    Button: light_default17,
+    Input: light_default10
   },
-  self: self13
+  self: self35
 });
-var light_default14 = timePickerLight;
+var light_default36 = timePickerLight;
 
 // node_modules/naive-ui/es/time-picker/styles/dark.js
 var timePickerDark = {
   name: "TimePicker",
   common: dark_default,
   peers: {
-    Scrollbar: dark_default2,
-    Button: dark_default4,
-    Input: dark_default3
+    Scrollbar: dark_default3,
+    Button: dark_default17,
+    Input: dark_default10
   },
-  self: self13
+  self: self35
 };
-var dark_default5 = timePickerDark;
+var dark_default36 = timePickerDark;
 
 // node_modules/naive-ui/es/date-picker/styles/_common.js
-var common_default12 = {
+var common_default22 = {
   itemSize: "24px",
   itemCellWidth: "38px",
   itemCellHeight: "32px",
@@ -37481,9 +38867,9 @@ var common_default12 = {
 };
 
 // node_modules/naive-ui/es/date-picker/styles/light.js
-var self14 = (vars) => {
+var self36 = (vars) => {
   const { hoverColor, fontSize: fontSize2, textColor2, textColorDisabled, popoverColor, primaryColor, borderRadiusSmall, iconColor, iconColorDisabled, textColor1, dividerColor, boxShadow2, borderRadius, fontWeightStrong } = vars;
-  return Object.assign(Object.assign({}, common_default12), {
+  return Object.assign(Object.assign({}, common_default22), {
     itemFontSize: fontSize2,
     calendarDaysFontSize: fontSize2,
     calendarTitleFontSize: fontSize2,
@@ -37518,51 +38904,318 @@ var datePickerLight = createTheme({
   name: "DatePicker",
   common: light_default,
   peers: {
-    Input: light_default6,
-    Button: light_default7,
-    TimePicker: light_default14,
+    Input: light_default10,
+    Button: light_default17,
+    TimePicker: light_default36,
     Scrollbar: light_default3
   },
-  self: self14
+  self: self36
 });
+var light_default37 = datePickerLight;
 
 // node_modules/naive-ui/es/date-picker/styles/dark.js
 var datePickerDark = {
   name: "DatePicker",
   common: dark_default,
   peers: {
-    Input: dark_default3,
-    Button: dark_default4,
-    TimePicker: dark_default5,
-    Scrollbar: dark_default2
+    Input: dark_default10,
+    Button: dark_default17,
+    TimePicker: dark_default36,
+    Scrollbar: dark_default3
   },
   self(vars) {
     const { popoverColor, hoverColor, primaryColor } = vars;
-    const commonSelf = self14(vars);
+    const commonSelf = self36(vars);
     commonSelf.itemColorDisabled = composite(popoverColor, hoverColor);
     commonSelf.itemColorIncluded = changeColor(primaryColor, { alpha: 0.15 });
     commonSelf.itemColorHover = composite(popoverColor, hoverColor);
     return commonSelf;
   }
 };
-var dark_default6 = datePickerDark;
+var dark_default37 = datePickerDark;
+
+// node_modules/naive-ui/es/descriptions/styles/_common.js
+var common_default23 = {
+  thPaddingBorderedSmall: "8px 12px",
+  thPaddingBorderedMedium: "12px 16px",
+  thPaddingBorderedLarge: "16px 24px",
+  thPaddingSmall: "0",
+  thPaddingMedium: "0",
+  thPaddingLarge: "0",
+  tdPaddingBorderedSmall: "8px 12px",
+  tdPaddingBorderedMedium: "12px 16px",
+  tdPaddingBorderedLarge: "16px 24px",
+  tdPaddingSmall: "0 0 8px 0",
+  tdPaddingMedium: "0 0 12px 0",
+  tdPaddingLarge: "0 0 16px 0"
+};
+
+// node_modules/naive-ui/es/descriptions/styles/light.js
+var self37 = (vars) => {
+  const { tableHeaderColor, textColor2, textColor1, cardColor, modalColor, popoverColor, dividerColor, borderRadius, fontWeightStrong, lineHeight: lineHeight3, fontSizeSmall, fontSizeMedium, fontSizeLarge } = vars;
+  return Object.assign(Object.assign({}, common_default23), {
+    lineHeight: lineHeight3,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    titleTextColor: textColor1,
+    thColor: composite(cardColor, tableHeaderColor),
+    thColorModal: composite(modalColor, tableHeaderColor),
+    thColorPopover: composite(popoverColor, tableHeaderColor),
+    thTextColor: textColor1,
+    thFontWeight: fontWeightStrong,
+    tdTextColor: textColor2,
+    tdColor: cardColor,
+    tdColorModal: modalColor,
+    tdColorPopover: popoverColor,
+    borderColor: composite(cardColor, dividerColor),
+    borderColorModal: composite(modalColor, dividerColor),
+    borderColorPopover: composite(popoverColor, dividerColor),
+    borderRadius
+  });
+};
+var descriptionsLight = {
+  name: "Descriptions",
+  common: light_default,
+  self: self37
+};
+var light_default38 = descriptionsLight;
+
+// node_modules/naive-ui/es/descriptions/styles/dark.js
+var descriptionsDark = {
+  name: "Descriptions",
+  common: dark_default,
+  self: self37
+};
+var dark_default38 = descriptionsDark;
+
+// node_modules/naive-ui/es/dialog/styles/_common.js
+var common_default24 = {
+  titleFontSize: "18px",
+  padding: "16px 28px 20px 28px",
+  iconSize: "28px",
+  actionSpace: "12px",
+  contentMargin: "8px 0 16px 0",
+  iconMargin: "0 4px 0 0",
+  iconMarginIconTop: "4px 0 8px 0",
+  closeSize: "22px",
+  closeIconSize: "18px",
+  closeMargin: "20px 26px 0 0",
+  closeMarginIconTop: "10px 16px 0 0"
+};
+
+// node_modules/naive-ui/es/dialog/styles/light.js
+var self38 = (vars) => {
+  const { textColor1, textColor2, modalColor, closeIconColor, closeIconColorHover, closeIconColorPressed, closeColorHover, closeColorPressed, infoColor, successColor, warningColor, errorColor, primaryColor, dividerColor, borderRadius, fontWeightStrong, lineHeight: lineHeight3, fontSize: fontSize2 } = vars;
+  return Object.assign(Object.assign({}, common_default24), {
+    fontSize: fontSize2,
+    lineHeight: lineHeight3,
+    border: `1px solid ${dividerColor}`,
+    titleTextColor: textColor1,
+    textColor: textColor2,
+    color: modalColor,
+    closeColorHover,
+    closeColorPressed,
+    closeIconColor,
+    closeIconColorHover,
+    closeIconColorPressed,
+    closeBorderRadius: borderRadius,
+    iconColor: primaryColor,
+    iconColorInfo: infoColor,
+    iconColorSuccess: successColor,
+    iconColorWarning: warningColor,
+    iconColorError: errorColor,
+    borderRadius,
+    titleFontWeight: fontWeightStrong
+  });
+};
+var dialogLight = createTheme({
+  name: "Dialog",
+  common: light_default,
+  peers: {
+    Button: light_default17
+  },
+  self: self38
+});
+var light_default39 = dialogLight;
+
+// node_modules/naive-ui/es/dialog/styles/dark.js
+var dialogDark = {
+  name: "Dialog",
+  common: dark_default,
+  peers: {
+    Button: dark_default17
+  },
+  self: self38
+};
+var dark_default39 = dialogDark;
+
+// node_modules/naive-ui/es/modal/styles/light.js
+var self39 = (vars) => {
+  const { modalColor, textColor2, boxShadow3 } = vars;
+  return {
+    color: modalColor,
+    textColor: textColor2,
+    boxShadow: boxShadow3
+  };
+};
+var modalLight = createTheme({
+  name: "Modal",
+  common: light_default,
+  peers: {
+    Scrollbar: light_default3,
+    Dialog: light_default39,
+    Card: light_default20
+  },
+  self: self39
+});
+var light_default40 = modalLight;
+
+// node_modules/naive-ui/es/modal/styles/dark.js
+var modalDark = {
+  name: "Modal",
+  common: dark_default,
+  peers: {
+    Scrollbar: dark_default3,
+    Dialog: dark_default39,
+    Card: dark_default20
+  },
+  self: self39
+};
+var dark_default40 = modalDark;
+
+// node_modules/naive-ui/es/divider/styles/light.js
+var self40 = (vars) => {
+  const { textColor1, dividerColor, fontWeightStrong } = vars;
+  return {
+    textColor: textColor1,
+    color: dividerColor,
+    fontWeight: fontWeightStrong
+  };
+};
+var dividerLight = {
+  name: "Divider",
+  common: light_default,
+  self: self40
+};
+var light_default41 = dividerLight;
+
+// node_modules/naive-ui/es/divider/styles/dark.js
+var dividerDark = {
+  name: "Divider",
+  common: dark_default,
+  self: self40
+};
+var dark_default41 = dividerDark;
+
+// node_modules/naive-ui/es/drawer/styles/light.js
+var self41 = (vars) => {
+  const { modalColor, textColor1, textColor2, boxShadow3, lineHeight: lineHeight3, fontWeightStrong, dividerColor, closeColorHover, closeColorPressed, closeIconColor, closeIconColorHover, closeIconColorPressed, borderRadius, primaryColorHover } = vars;
+  return {
+    bodyPadding: "16px 24px",
+    headerPadding: "16px 24px",
+    footerPadding: "16px 24px",
+    color: modalColor,
+    textColor: textColor2,
+    titleTextColor: textColor1,
+    titleFontSize: "18px",
+    titleFontWeight: fontWeightStrong,
+    boxShadow: boxShadow3,
+    lineHeight: lineHeight3,
+    headerBorderBottom: `1px solid ${dividerColor}`,
+    footerBorderTop: `1px solid ${dividerColor}`,
+    closeIconColor,
+    closeIconColorHover,
+    closeIconColorPressed,
+    closeSize: "22px",
+    closeIconSize: "18px",
+    closeColorHover,
+    closeColorPressed,
+    closeBorderRadius: borderRadius,
+    resizableTriggerColorHover: primaryColorHover
+  };
+};
+var drawerLight = createTheme({
+  name: "Drawer",
+  common: light_default,
+  peers: {
+    Scrollbar: light_default3
+  },
+  self: self41
+});
+var light_default42 = drawerLight;
+
+// node_modules/naive-ui/es/drawer/styles/dark.js
+var drawerDark = {
+  name: "Drawer",
+  common: dark_default,
+  peers: {
+    Scrollbar: dark_default3
+  },
+  self: self41
+};
+var dark_default42 = drawerDark;
+
+// node_modules/naive-ui/es/dynamic-input/styles/_common.js
+var common_default25 = {
+  actionMargin: "0 0 0 20px",
+  actionMarginRtl: "0 20px 0 0"
+};
+
+// node_modules/naive-ui/es/dynamic-input/styles/dark.js
+var dynamicInputDark = {
+  name: "DynamicInput",
+  common: dark_default,
+  peers: {
+    Input: dark_default10,
+    Button: dark_default17
+  },
+  self() {
+    return common_default25;
+  }
+};
+var dark_default43 = dynamicInputDark;
+
+// node_modules/naive-ui/es/dynamic-input/styles/light.js
+var self42 = () => {
+  return common_default25;
+};
+var dynamicInputLight = createTheme({
+  name: "DynamicInput",
+  common: light_default,
+  peers: {
+    Input: light_default10,
+    Button: light_default17
+  },
+  self: self42
+});
+var light_default43 = dynamicInputLight;
 
 // node_modules/naive-ui/es/space/styles/_common.js
-var common_default13 = {
+var common_default26 = {
   gapSmall: "4px 8px",
   gapMedium: "8px 12px",
   gapLarge: "12px 16px"
 };
 
+// node_modules/naive-ui/es/space/styles/dark.js
+var spaceDark = {
+  name: "Space",
+  self() {
+    return common_default26;
+  }
+};
+var dark_default44 = spaceDark;
+
 // node_modules/naive-ui/es/space/styles/light.js
-var self15 = () => {
-  return common_default13;
+var self43 = () => {
+  return common_default26;
 };
 var spaceLight = {
   name: "Space",
-  self: self15
+  self: self43
 };
-var light_default15 = spaceLight;
+var light_default44 = spaceLight;
 
 // node_modules/naive-ui/es/space/src/utils.js
 var supportFlexGap;
@@ -37616,7 +39269,7 @@ var Space_default = defineComponent({
   props: spaceProps,
   setup(props) {
     const { mergedClsPrefixRef, mergedRtlRef } = useConfig(props);
-    const themeRef = use_theme_default("Space", "-space", void 0, light_default15, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Space", "-space", void 0, light_default44, props, mergedClsPrefixRef);
     const rtlEnabledRef = useRtl("Space", mergedRtlRef, mergedClsPrefixRef);
     return {
       useGap: ensureSupportFlexGap(),
@@ -37690,6 +39343,101 @@ var Space_default = defineComponent({
   }
 });
 
+// node_modules/naive-ui/es/dynamic-tags/styles/dark.js
+var dynamicTagsDark = {
+  name: "DynamicTags",
+  common: dark_default,
+  peers: {
+    Input: dark_default10,
+    Button: dark_default17,
+    Tag: dark_default6,
+    Space: dark_default44
+  },
+  self() {
+    return {
+      inputWidth: "64px"
+    };
+  }
+};
+var dark_default45 = dynamicTagsDark;
+
+// node_modules/naive-ui/es/dynamic-tags/styles/light.js
+var dynamicTagsLight = createTheme({
+  name: "DynamicTags",
+  common: light_default,
+  peers: {
+    Input: light_default10,
+    Button: light_default17,
+    Tag: light_default6,
+    Space: light_default44
+  },
+  self() {
+    return {
+      inputWidth: "64px"
+    };
+  }
+});
+var light_default45 = dynamicTagsLight;
+
+// node_modules/naive-ui/es/element/styles/dark.js
+var elementDark = {
+  name: "Element",
+  common: dark_default
+};
+var dark_default46 = elementDark;
+
+// node_modules/naive-ui/es/element/styles/light.js
+var elementLight = {
+  name: "Element",
+  common: light_default
+};
+var light_default46 = elementLight;
+
+// node_modules/naive-ui/es/form/styles/_common.js
+var common_default27 = {
+  feedbackPadding: "4px 0 0 2px",
+  feedbackHeightSmall: "24px",
+  feedbackHeightMedium: "24px",
+  feedbackHeightLarge: "26px",
+  feedbackFontSizeSmall: "13px",
+  feedbackFontSizeMedium: "14px",
+  feedbackFontSizeLarge: "14px",
+  labelFontSizeLeftSmall: "14px",
+  labelFontSizeLeftMedium: "14px",
+  labelFontSizeLeftLarge: "15px",
+  labelFontSizeTopSmall: "13px",
+  labelFontSizeTopMedium: "14px",
+  labelFontSizeTopLarge: "14px",
+  labelHeightSmall: "24px",
+  labelHeightMedium: "26px",
+  labelHeightLarge: "28px",
+  labelPaddingVertical: "0 0 6px 2px",
+  labelPaddingHorizontal: "0 12px 0 0",
+  labelTextAlignVertical: "left",
+  labelTextAlignHorizontal: "right",
+  labelFontWeight: "400"
+};
+
+// node_modules/naive-ui/es/form/styles/light.js
+var self44 = (vars) => {
+  const { heightSmall, heightMedium, heightLarge, textColor1, errorColor, warningColor, lineHeight: lineHeight3, textColor3 } = vars;
+  return Object.assign(Object.assign({}, common_default27), { blankHeightSmall: heightSmall, blankHeightMedium: heightMedium, blankHeightLarge: heightLarge, lineHeight: lineHeight3, labelTextColor: textColor1, asteriskColor: errorColor, feedbackTextColorError: errorColor, feedbackTextColorWarning: warningColor, feedbackTextColor: textColor3 });
+};
+var formLight = {
+  name: "Form",
+  common: light_default,
+  self: self44
+};
+var light_default47 = formLight;
+
+// node_modules/naive-ui/es/form/styles/dark.js
+var formItemDark = {
+  name: "Form",
+  common: dark_default,
+  self: self44
+};
+var dark_default47 = formItemDark;
+
 // node_modules/naive-ui/es/grid/src/config.js
 var defaultSpan = 1;
 var gridInjectionKey = createInjectionKey("n-grid");
@@ -37728,7 +39476,7 @@ var GridItem_default = defineComponent({
       overflowRef,
       layoutShiftDisabledRef
     } = inject(gridInjectionKey);
-    const self20 = getCurrentInstance();
+    const self79 = getCurrentInstance();
     return {
       overflow: overflowRef,
       itemStyle: itemStyleRef,
@@ -37743,7 +39491,7 @@ var GridItem_default = defineComponent({
           privateShow = true,
           privateColStart = void 0,
           privateOffset = 0
-        } = self20.vnode.props;
+        } = self79.vnode.props;
         const { value: xGap } = xGapRef;
         const mergedXGap = pxfy(xGap || 0);
         return {
@@ -37766,6 +39514,55 @@ var GridItem_default = defineComponent({
     return h3("div", { style: [this.itemStyle, this.deriveStyle()] }, (_b2 = (_a3 = this.$slots).default) === null || _b2 === void 0 ? void 0 : _b2.call(_a3, { overflow: this.overflow }));
   }
 });
+
+// node_modules/naive-ui/es/gradient-text/styles/dark.js
+var gradientTextDark = {
+  name: "GradientText",
+  common: dark_default,
+  self(vars) {
+    const { primaryColor, successColor, warningColor, errorColor, infoColor, primaryColorSuppl, successColorSuppl, warningColorSuppl, errorColorSuppl, infoColorSuppl, fontWeightStrong } = vars;
+    return {
+      fontWeight: fontWeightStrong,
+      rotate: "252deg",
+      colorStartPrimary: primaryColor,
+      colorEndPrimary: primaryColorSuppl,
+      colorStartInfo: infoColor,
+      colorEndInfo: infoColorSuppl,
+      colorStartWarning: warningColor,
+      colorEndWarning: warningColorSuppl,
+      colorStartError: errorColor,
+      colorEndError: errorColorSuppl,
+      colorStartSuccess: successColor,
+      colorEndSuccess: successColorSuppl
+    };
+  }
+};
+var dark_default48 = gradientTextDark;
+
+// node_modules/naive-ui/es/gradient-text/styles/light.js
+var self45 = (vars) => {
+  const { primaryColor, successColor, warningColor, errorColor, infoColor, fontWeightStrong } = vars;
+  return {
+    fontWeight: fontWeightStrong,
+    rotate: "252deg",
+    colorStartPrimary: changeColor(primaryColor, { alpha: 0.6 }),
+    colorEndPrimary: primaryColor,
+    colorStartInfo: changeColor(infoColor, { alpha: 0.6 }),
+    colorEndInfo: infoColor,
+    colorStartWarning: changeColor(warningColor, { alpha: 0.6 }),
+    colorEndWarning: warningColor,
+    colorStartError: changeColor(errorColor, { alpha: 0.6 }),
+    colorEndError: errorColor,
+    colorStartSuccess: changeColor(successColor, { alpha: 0.6 }),
+    colorEndSuccess: successColor
+  };
+};
+var gradientTextLight = {
+  name: "GradientText",
+  common: light_default,
+  self: self45
+};
+var light_default48 = gradientTextLight;
 
 // node_modules/naive-ui/es/config-provider/src/config.js
 var defaultBreakpoints = {
@@ -38004,8 +39801,109 @@ var Grid_default = defineComponent({
   }
 });
 
+// node_modules/naive-ui/es/icon-wrapper/styles/light.js
+var self46 = (vars) => {
+  const { primaryColor, baseColor } = vars;
+  return {
+    color: primaryColor,
+    iconColor: baseColor
+  };
+};
+var iconWrapperLight = {
+  name: "IconWrapper",
+  common: light_default,
+  self: self46
+};
+var light_default49 = iconWrapperLight;
+
+// node_modules/naive-ui/es/icon-wrapper/styles/dark.js
+var iconDark2 = {
+  name: "IconWrapper",
+  common: dark_default,
+  self: self46
+};
+var dark_default49 = iconDark2;
+
+// node_modules/naive-ui/es/image/styles/light.js
+function self47() {
+  return {
+    toolbarIconColor: "rgba(255, 255, 255, .9)",
+    toolbarColor: "rgba(0, 0, 0, .35)",
+    toolbarBoxShadow: "none",
+    toolbarBorderRadius: "24px"
+  };
+}
+var imageLight = createTheme({
+  name: "Image",
+  common: light_default,
+  peers: {
+    Tooltip: light_default30
+  },
+  self: self47
+});
+
+// node_modules/naive-ui/es/notification/styles/_common.js
+var common_default28 = {
+  closeMargin: "16px 12px",
+  closeSize: "20px",
+  closeIconSize: "16px",
+  width: "365px",
+  padding: "16px",
+  titleFontSize: "16px",
+  metaFontSize: "12px",
+  descriptionFontSize: "12px"
+};
+
+// node_modules/naive-ui/es/notification/styles/light.js
+var self48 = (vars) => {
+  const { textColor2, successColor, infoColor, warningColor, errorColor, popoverColor, closeIconColor, closeIconColorHover, closeIconColorPressed, closeColorHover, closeColorPressed, textColor1, textColor3, borderRadius, fontWeightStrong, boxShadow2, lineHeight: lineHeight3, fontSize: fontSize2 } = vars;
+  return Object.assign(Object.assign({}, common_default28), {
+    borderRadius,
+    lineHeight: lineHeight3,
+    fontSize: fontSize2,
+    headerFontWeight: fontWeightStrong,
+    iconColor: textColor2,
+    iconColorSuccess: successColor,
+    iconColorInfo: infoColor,
+    iconColorWarning: warningColor,
+    iconColorError: errorColor,
+    color: popoverColor,
+    textColor: textColor2,
+    closeIconColor,
+    closeIconColorHover,
+    closeIconColorPressed,
+    closeBorderRadius: borderRadius,
+    closeColorHover,
+    closeColorPressed,
+    headerTextColor: textColor1,
+    descriptionTextColor: textColor3,
+    actionTextColor: textColor2,
+    boxShadow: boxShadow2
+  });
+};
+var notificationLight = createTheme({
+  name: "Notification",
+  common: light_default,
+  peers: {
+    Scrollbar: light_default3
+  },
+  self: self48
+});
+var light_default50 = notificationLight;
+
+// node_modules/naive-ui/es/notification/styles/dark.js
+var notificationDark = {
+  name: "Notification",
+  common: dark_default,
+  peers: {
+    Scrollbar: dark_default3
+  },
+  self: self48
+};
+var dark_default50 = notificationDark;
+
 // node_modules/naive-ui/es/message/styles/_common.js
-var common_default14 = {
+var common_default29 = {
   margin: "0 0 8px 0",
   padding: "10px 20px",
   maxWidth: "720px",
@@ -38019,9 +39917,9 @@ var common_default14 = {
 };
 
 // node_modules/naive-ui/es/message/styles/light.js
-var self16 = (vars) => {
+var self49 = (vars) => {
   const { textColor2, closeIconColor, closeIconColorHover, closeIconColorPressed, infoColor, successColor, errorColor, warningColor, popoverColor, boxShadow2, primaryColor, lineHeight: lineHeight3, borderRadius, closeColorHover, closeColorPressed } = vars;
-  return Object.assign(Object.assign({}, common_default14), {
+  return Object.assign(Object.assign({}, common_default29), {
     closeBorderRadius: borderRadius,
     textColor: textColor2,
     textColorInfo: textColor2,
@@ -38085,12 +39983,146 @@ var self16 = (vars) => {
 var messageLight = {
   name: "Message",
   common: light_default,
-  self: self16
+  self: self49
 };
-var light_default16 = messageLight;
+var light_default51 = messageLight;
+
+// node_modules/naive-ui/es/message/styles/dark.js
+var messageDark = {
+  name: "Message",
+  common: dark_default,
+  self: self49
+};
+var dark_default51 = messageDark;
+
+// node_modules/naive-ui/es/button-group/styles/dark.js
+var buttonGroupDark = {
+  name: "ButtonGroup",
+  common: dark_default
+};
+var dark_default52 = buttonGroupDark;
+
+// node_modules/naive-ui/es/button-group/styles/light.js
+var buttonGroupLight = {
+  name: "ButtonGroup",
+  common: light_default
+};
+var light_default52 = buttonGroupLight;
+
+// node_modules/naive-ui/es/input-number/styles/dark.js
+var inputNumberDark = {
+  name: "InputNumber",
+  common: dark_default,
+  peers: {
+    Button: dark_default17,
+    Input: dark_default10
+  },
+  self(vars) {
+    const { textColorDisabled } = vars;
+    return {
+      iconColorDisabled: textColorDisabled
+    };
+  }
+};
+var dark_default53 = inputNumberDark;
+
+// node_modules/naive-ui/es/input-number/styles/light.js
+var self50 = (vars) => {
+  const { textColorDisabled } = vars;
+  return {
+    iconColorDisabled: textColorDisabled
+  };
+};
+var inputNumberLight = createTheme({
+  name: "InputNumber",
+  common: light_default,
+  peers: {
+    Button: light_default17,
+    Input: light_default10
+  },
+  self: self50
+});
+var light_default53 = inputNumberLight;
+
+// node_modules/naive-ui/es/layout/styles/dark.js
+var layoutDark = {
+  name: "Layout",
+  common: dark_default,
+  peers: {
+    Scrollbar: dark_default3
+  },
+  self(vars) {
+    const { textColor2, bodyColor, popoverColor, cardColor, dividerColor, scrollbarColor, scrollbarColorHover } = vars;
+    return {
+      textColor: textColor2,
+      textColorInverted: textColor2,
+      color: bodyColor,
+      colorEmbedded: bodyColor,
+      headerColor: cardColor,
+      headerColorInverted: cardColor,
+      footerColor: cardColor,
+      footerColorInverted: cardColor,
+      headerBorderColor: dividerColor,
+      headerBorderColorInverted: dividerColor,
+      footerBorderColor: dividerColor,
+      footerBorderColorInverted: dividerColor,
+      siderBorderColor: dividerColor,
+      siderBorderColorInverted: dividerColor,
+      siderColor: cardColor,
+      siderColorInverted: cardColor,
+      siderToggleButtonBorder: "1px solid transparent",
+      siderToggleButtonColor: popoverColor,
+      siderToggleButtonIconColor: textColor2,
+      siderToggleButtonIconColorInverted: textColor2,
+      siderToggleBarColor: composite(bodyColor, scrollbarColor),
+      siderToggleBarColorHover: composite(bodyColor, scrollbarColorHover),
+      __invertScrollbar: "false"
+    };
+  }
+};
+var dark_default54 = layoutDark;
+
+// node_modules/naive-ui/es/layout/styles/light.js
+var self51 = (vars) => {
+  const { baseColor, textColor2, bodyColor, cardColor, dividerColor, actionColor, scrollbarColor, scrollbarColorHover, invertedColor } = vars;
+  return {
+    textColor: textColor2,
+    textColorInverted: "#FFF",
+    color: bodyColor,
+    colorEmbedded: actionColor,
+    headerColor: cardColor,
+    headerColorInverted: invertedColor,
+    footerColor: actionColor,
+    footerColorInverted: invertedColor,
+    headerBorderColor: dividerColor,
+    headerBorderColorInverted: invertedColor,
+    footerBorderColor: dividerColor,
+    footerBorderColorInverted: invertedColor,
+    siderBorderColor: dividerColor,
+    siderBorderColorInverted: invertedColor,
+    siderColor: cardColor,
+    siderColorInverted: invertedColor,
+    siderToggleButtonBorder: `1px solid ${dividerColor}`,
+    siderToggleButtonColor: baseColor,
+    siderToggleButtonIconColor: textColor2,
+    siderToggleButtonIconColorInverted: textColor2,
+    siderToggleBarColor: composite(bodyColor, scrollbarColor),
+    siderToggleBarColorHover: composite(bodyColor, scrollbarColorHover),
+    __invertScrollbar: "true"
+  };
+};
+var layoutLight = createTheme({
+  name: "Layout",
+  common: light_default,
+  peers: {
+    Scrollbar: light_default3
+  },
+  self: self51
+});
+var light_default54 = layoutLight;
 
 // node_modules/naive-ui/es/list/styles/light.js
-var self17 = (vars) => {
+var self52 = (vars) => {
   const { textColor2, cardColor, modalColor, popoverColor, dividerColor, borderRadius, fontSize: fontSize2, hoverColor } = vars;
   return {
     textColor: textColor2,
@@ -38110,12 +40142,393 @@ var self17 = (vars) => {
 var listLight = {
   name: "List",
   common: light_default,
-  self: self17
+  self: self52
 };
-var light_default17 = listLight;
+var light_default55 = listLight;
+
+// node_modules/naive-ui/es/list/styles/dark.js
+var listDark = {
+  name: "List",
+  common: dark_default,
+  self: self52
+};
+var dark_default55 = listDark;
+
+// node_modules/naive-ui/es/loading-bar/styles/dark.js
+var loadingBarDark = {
+  name: "LoadingBar",
+  common: dark_default,
+  self(vars) {
+    const { primaryColor } = vars;
+    return {
+      colorError: "red",
+      colorLoading: primaryColor,
+      height: "2px"
+    };
+  }
+};
+var dark_default56 = loadingBarDark;
+
+// node_modules/naive-ui/es/loading-bar/styles/light.js
+var self53 = (vars) => {
+  const { primaryColor, errorColor } = vars;
+  return {
+    colorError: errorColor,
+    colorLoading: primaryColor,
+    height: "2px"
+  };
+};
+var loadingBarLight = {
+  name: "LoadingBar",
+  common: light_default,
+  self: self53
+};
+var light_default56 = loadingBarLight;
+
+// node_modules/naive-ui/es/log/styles/dark.js
+var logDark = {
+  name: "Log",
+  common: dark_default,
+  peers: {
+    Scrollbar: dark_default3,
+    Code: dark_default24
+  },
+  self(vars) {
+    const { textColor2, inputColor, fontSize: fontSize2, primaryColor } = vars;
+    return {
+      loaderFontSize: fontSize2,
+      loaderTextColor: textColor2,
+      loaderColor: inputColor,
+      loaderBorder: "1px solid #0000",
+      loadingColor: primaryColor
+    };
+  }
+};
+var dark_default57 = logDark;
+
+// node_modules/naive-ui/es/log/styles/light.js
+var self54 = (vars) => {
+  const { textColor2, modalColor, borderColor, fontSize: fontSize2, primaryColor } = vars;
+  return {
+    loaderFontSize: fontSize2,
+    loaderTextColor: textColor2,
+    loaderColor: modalColor,
+    loaderBorder: `1px solid ${borderColor}`,
+    loadingColor: primaryColor
+  };
+};
+var logLight = createTheme({
+  name: "Log",
+  common: light_default,
+  peers: {
+    Scrollbar: light_default3,
+    Code: light_default24
+  },
+  self: self54
+});
+var light_default57 = logLight;
+
+// node_modules/naive-ui/es/mention/styles/dark.js
+var listDark2 = {
+  name: "Mention",
+  common: dark_default,
+  peers: {
+    InternalSelectMenu: dark_default4,
+    Input: dark_default10
+  },
+  self(vars) {
+    const { boxShadow2 } = vars;
+    return {
+      menuBoxShadow: boxShadow2
+    };
+  }
+};
+var dark_default58 = listDark2;
+
+// node_modules/naive-ui/es/mention/styles/light.js
+var self55 = (vars) => {
+  const { boxShadow2 } = vars;
+  return {
+    menuBoxShadow: boxShadow2
+  };
+};
+var mentionLight = createTheme({
+  name: "Mention",
+  common: light_default,
+  peers: {
+    InternalSelectMenu: light_default4,
+    Input: light_default10
+  },
+  self: self55
+});
+var light_default58 = mentionLight;
+
+// node_modules/naive-ui/es/menu/styles/light.js
+function createPartialInvertedVars(color2, activeItemColor, activeTextColor, groupTextColor) {
+  return {
+    itemColorHoverInverted: "#0000",
+    itemColorActiveInverted: activeItemColor,
+    itemColorActiveHoverInverted: activeItemColor,
+    itemColorActiveCollapsedInverted: activeItemColor,
+    itemTextColorInverted: color2,
+    itemTextColorHoverInverted: activeTextColor,
+    itemTextColorChildActiveInverted: activeTextColor,
+    itemTextColorChildActiveHoverInverted: activeTextColor,
+    itemTextColorActiveInverted: activeTextColor,
+    itemTextColorActiveHoverInverted: activeTextColor,
+    itemTextColorHorizontalInverted: color2,
+    itemTextColorHoverHorizontalInverted: activeTextColor,
+    itemTextColorChildActiveHorizontalInverted: activeTextColor,
+    itemTextColorChildActiveHoverHorizontalInverted: activeTextColor,
+    itemTextColorActiveHorizontalInverted: activeTextColor,
+    itemTextColorActiveHoverHorizontalInverted: activeTextColor,
+    itemIconColorInverted: color2,
+    itemIconColorHoverInverted: activeTextColor,
+    itemIconColorActiveInverted: activeTextColor,
+    itemIconColorActiveHoverInverted: activeTextColor,
+    itemIconColorChildActiveInverted: activeTextColor,
+    itemIconColorChildActiveHoverInverted: activeTextColor,
+    itemIconColorCollapsedInverted: color2,
+    itemIconColorHorizontalInverted: color2,
+    itemIconColorHoverHorizontalInverted: activeTextColor,
+    itemIconColorActiveHorizontalInverted: activeTextColor,
+    itemIconColorActiveHoverHorizontalInverted: activeTextColor,
+    itemIconColorChildActiveHorizontalInverted: activeTextColor,
+    itemIconColorChildActiveHoverHorizontalInverted: activeTextColor,
+    arrowColorInverted: color2,
+    arrowColorHoverInverted: activeTextColor,
+    arrowColorActiveInverted: activeTextColor,
+    arrowColorActiveHoverInverted: activeTextColor,
+    arrowColorChildActiveInverted: activeTextColor,
+    arrowColorChildActiveHoverInverted: activeTextColor,
+    groupTextColorInverted: groupTextColor
+  };
+}
+var self56 = (vars) => {
+  const { borderRadius, textColor3, primaryColor, textColor2, textColor1, fontSize: fontSize2, dividerColor, hoverColor, primaryColorHover } = vars;
+  return Object.assign({
+    borderRadius,
+    color: "#0000",
+    groupTextColor: textColor3,
+    itemColorHover: hoverColor,
+    itemColorActive: changeColor(primaryColor, { alpha: 0.1 }),
+    itemColorActiveHover: changeColor(primaryColor, { alpha: 0.1 }),
+    itemColorActiveCollapsed: changeColor(primaryColor, { alpha: 0.1 }),
+    itemTextColor: textColor2,
+    itemTextColorHover: textColor2,
+    itemTextColorActive: primaryColor,
+    itemTextColorActiveHover: primaryColor,
+    itemTextColorChildActive: primaryColor,
+    itemTextColorChildActiveHover: primaryColor,
+    itemTextColorHorizontal: textColor2,
+    itemTextColorHoverHorizontal: primaryColorHover,
+    itemTextColorActiveHorizontal: primaryColor,
+    itemTextColorActiveHoverHorizontal: primaryColor,
+    itemTextColorChildActiveHorizontal: primaryColor,
+    itemTextColorChildActiveHoverHorizontal: primaryColor,
+    itemIconColor: textColor1,
+    itemIconColorHover: textColor1,
+    itemIconColorActive: primaryColor,
+    itemIconColorActiveHover: primaryColor,
+    itemIconColorChildActive: primaryColor,
+    itemIconColorChildActiveHover: primaryColor,
+    itemIconColorCollapsed: textColor1,
+    itemIconColorHorizontal: textColor1,
+    itemIconColorHoverHorizontal: primaryColorHover,
+    itemIconColorActiveHorizontal: primaryColor,
+    itemIconColorActiveHoverHorizontal: primaryColor,
+    itemIconColorChildActiveHorizontal: primaryColor,
+    itemIconColorChildActiveHoverHorizontal: primaryColor,
+    itemHeight: "42px",
+    arrowColor: textColor2,
+    arrowColorHover: textColor2,
+    arrowColorActive: primaryColor,
+    arrowColorActiveHover: primaryColor,
+    arrowColorChildActive: primaryColor,
+    arrowColorChildActiveHover: primaryColor,
+    colorInverted: "#0000",
+    borderColorHorizontal: "#0000",
+    fontSize: fontSize2,
+    dividerColor
+  }, createPartialInvertedVars("#BBB", primaryColor, "#FFF", "#AAA"));
+};
+var menuLight = createTheme({
+  name: "Menu",
+  common: light_default,
+  peers: {
+    Tooltip: light_default30,
+    Dropdown: light_default33
+  },
+  self: self56
+});
+var light_default59 = menuLight;
+
+// node_modules/naive-ui/es/menu/styles/dark.js
+var menuDark = {
+  name: "Menu",
+  common: dark_default,
+  peers: {
+    Tooltip: dark_default30,
+    Dropdown: dark_default33
+  },
+  self(vars) {
+    const { primaryColor, primaryColorSuppl } = vars;
+    const commonSelf = self56(vars);
+    commonSelf.itemColorActive = changeColor(primaryColor, { alpha: 0.15 });
+    commonSelf.itemColorActiveHover = changeColor(primaryColor, { alpha: 0.15 });
+    commonSelf.itemColorActiveCollapsed = changeColor(primaryColor, {
+      alpha: 0.15
+    });
+    commonSelf.itemColorActiveInverted = primaryColorSuppl;
+    commonSelf.itemColorActiveHoverInverted = primaryColorSuppl;
+    commonSelf.itemColorActiveCollapsedInverted = primaryColorSuppl;
+    return commonSelf;
+  }
+};
+var dark_default59 = menuDark;
+
+// node_modules/naive-ui/es/page-header/styles/_common.js
+var common_default30 = {
+  titleFontSize: "18px",
+  backSize: "22px"
+};
+
+// node_modules/naive-ui/es/page-header/styles/light.js
+function self57(vars) {
+  const { textColor1, textColor2, textColor3, fontSize: fontSize2, fontWeightStrong, primaryColorHover, primaryColorPressed } = vars;
+  return Object.assign(Object.assign({}, common_default30), { titleFontWeight: fontWeightStrong, fontSize: fontSize2, titleTextColor: textColor1, backColor: textColor2, backColorHover: primaryColorHover, backColorPressed: primaryColorPressed, subtitleTextColor: textColor3 });
+}
+var pageHeaderLight = createTheme({
+  name: "PageHeader",
+  common: light_default,
+  self: self57
+});
+
+// node_modules/naive-ui/es/page-header/styles/dark.js
+var pageHeaderDark = {
+  name: "PageHeader",
+  common: dark_default,
+  self: self57
+};
+
+// node_modules/naive-ui/es/popconfirm/styles/_common.js
+var common_default31 = {
+  iconSize: "22px"
+};
+
+// node_modules/naive-ui/es/popconfirm/styles/light.js
+var self58 = (vars) => {
+  const { fontSize: fontSize2, warningColor } = vars;
+  return Object.assign(Object.assign({}, common_default31), { fontSize: fontSize2, iconColor: warningColor });
+};
+var popconfirmLight = createTheme({
+  name: "Popconfirm",
+  common: light_default,
+  peers: {
+    Button: light_default17,
+    Popover: light_default5
+  },
+  self: self58
+});
+var light_default60 = popconfirmLight;
+
+// node_modules/naive-ui/es/popconfirm/styles/dark.js
+var popconfirmDark = {
+  name: "Popconfirm",
+  common: dark_default,
+  peers: {
+    Button: dark_default17,
+    Popover: dark_default5
+  },
+  self: self58
+};
+var dark_default60 = popconfirmDark;
+
+// node_modules/naive-ui/es/progress/styles/light.js
+var self59 = (vars) => {
+  const { infoColor, successColor, warningColor, errorColor, textColor2, progressRailColor, fontSize: fontSize2, fontWeight } = vars;
+  return {
+    fontSize: fontSize2,
+    fontSizeCircle: "28px",
+    fontWeightCircle: fontWeight,
+    railColor: progressRailColor,
+    railHeight: "8px",
+    iconSizeCircle: "36px",
+    iconSizeLine: "18px",
+    iconColor: infoColor,
+    iconColorInfo: infoColor,
+    iconColorSuccess: successColor,
+    iconColorWarning: warningColor,
+    iconColorError: errorColor,
+    textColorCircle: textColor2,
+    textColorLineInner: "rgb(255, 255, 255)",
+    textColorLineOuter: textColor2,
+    fillColor: infoColor,
+    fillColorInfo: infoColor,
+    fillColorSuccess: successColor,
+    fillColorWarning: warningColor,
+    fillColorError: errorColor,
+    lineBgProcessing: "linear-gradient(90deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, .5) 100%)"
+  };
+};
+var progressLight = {
+  name: "Progress",
+  common: light_default,
+  self: self59
+};
+var light_default61 = progressLight;
+
+// node_modules/naive-ui/es/progress/styles/dark.js
+var progressDark = {
+  name: "Progress",
+  common: dark_default,
+  self(vars) {
+    const commonSelf = self59(vars);
+    commonSelf.textColorLineInner = "rgb(0, 0, 0)";
+    commonSelf.lineBgProcessing = "linear-gradient(90deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, .5) 100%)";
+    return commonSelf;
+  }
+};
+var dark_default61 = progressDark;
+
+// node_modules/naive-ui/es/rate/styles/dark.js
+var rateDark = {
+  name: "Rate",
+  common: dark_default,
+  self(vars) {
+    const { railColor } = vars;
+    return {
+      itemColor: railColor,
+      itemColorActive: "#CCAA33",
+      itemSize: "20px",
+      sizeSmall: "16px",
+      sizeMedium: "20px",
+      sizeLarge: "24px"
+    };
+  }
+};
+var dark_default62 = rateDark;
+
+// node_modules/naive-ui/es/rate/styles/light.js
+var self60 = (vars) => {
+  const { railColor } = vars;
+  return {
+    itemColor: railColor,
+    itemColorActive: "#FFCC33",
+    sizeSmall: "16px",
+    sizeMedium: "20px",
+    sizeLarge: "24px"
+  };
+};
+var themeLight = {
+  name: "Rate",
+  common: light_default,
+  self: self60
+};
+var light_default62 = themeLight;
 
 // node_modules/naive-ui/es/result/styles/_common.js
-var common_default15 = {
+var common_default32 = {
   titleFontSizeSmall: "26px",
   titleFontSizeMedium: "32px",
   titleFontSizeLarge: "40px",
@@ -38135,19 +40548,382 @@ var common_default15 = {
 };
 
 // node_modules/naive-ui/es/result/styles/light.js
-var self18 = (vars) => {
+var self61 = (vars) => {
   const { textColor2, textColor1, errorColor, successColor, infoColor, warningColor, lineHeight: lineHeight3, fontWeightStrong } = vars;
-  return Object.assign(Object.assign({}, common_default15), { lineHeight: lineHeight3, titleFontWeight: fontWeightStrong, titleTextColor: textColor1, textColor: textColor2, iconColorError: errorColor, iconColorSuccess: successColor, iconColorInfo: infoColor, iconColorWarning: warningColor });
+  return Object.assign(Object.assign({}, common_default32), { lineHeight: lineHeight3, titleFontWeight: fontWeightStrong, titleTextColor: textColor1, textColor: textColor2, iconColorError: errorColor, iconColorSuccess: successColor, iconColorInfo: infoColor, iconColorWarning: warningColor });
 };
 var resultLight = {
   name: "Result",
   common: light_default,
-  self: self18
+  self: self61
 };
-var light_default18 = resultLight;
+var light_default63 = resultLight;
+
+// node_modules/naive-ui/es/result/styles/dark.js
+var resultDark = {
+  name: "Result",
+  common: dark_default,
+  self: self61
+};
+var dark_default63 = resultDark;
+
+// node_modules/naive-ui/es/slider/styles/_common.js
+var common_default33 = {
+  railHeight: "4px",
+  railWidthVertical: "4px",
+  handleSize: "18px",
+  dotHeight: "8px",
+  dotWidth: "8px",
+  dotBorderRadius: "4px"
+};
+
+// node_modules/naive-ui/es/slider/styles/dark.js
+var sliderDark = {
+  name: "Slider",
+  common: dark_default,
+  self(vars) {
+    const boxShadow = "0 2px 8px 0 rgba(0, 0, 0, 0.12)";
+    const { railColor, modalColor, primaryColorSuppl, popoverColor, textColor2, cardColor, borderRadius, fontSize: fontSize2, opacityDisabled } = vars;
+    return Object.assign(Object.assign({}, common_default33), { fontSize: fontSize2, markFontSize: fontSize2, railColor, railColorHover: railColor, fillColor: primaryColorSuppl, fillColorHover: primaryColorSuppl, opacityDisabled, handleColor: "#FFF", dotColor: cardColor, dotColorModal: modalColor, dotColorPopover: popoverColor, handleBoxShadow: "0px 2px 4px 0 rgba(0, 0, 0, 0.4)", handleBoxShadowHover: "0px 2px 4px 0 rgba(0, 0, 0, 0.4)", handleBoxShadowActive: "0px 2px 4px 0 rgba(0, 0, 0, 0.4)", handleBoxShadowFocus: "0px 2px 4px 0 rgba(0, 0, 0, 0.4)", indicatorColor: popoverColor, indicatorBoxShadow: boxShadow, indicatorTextColor: textColor2, indicatorBorderRadius: borderRadius, dotBorder: `2px solid ${railColor}`, dotBorderActive: `2px solid ${primaryColorSuppl}`, dotBoxShadow: "" });
+  }
+};
+var dark_default64 = sliderDark;
+
+// node_modules/naive-ui/es/slider/styles/light.js
+var self62 = (vars) => {
+  const indicatorColor = "rgba(0, 0, 0, .85)";
+  const boxShadow = "0 2px 8px 0 rgba(0, 0, 0, 0.12)";
+  const { railColor, primaryColor, baseColor, cardColor, modalColor, popoverColor, borderRadius, fontSize: fontSize2, opacityDisabled } = vars;
+  return Object.assign(Object.assign({}, common_default33), { fontSize: fontSize2, markFontSize: fontSize2, railColor, railColorHover: railColor, fillColor: primaryColor, fillColorHover: primaryColor, opacityDisabled, handleColor: "#FFF", dotColor: cardColor, dotColorModal: modalColor, dotColorPopover: popoverColor, handleBoxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.3), inset 0 0 1px 0 rgba(0, 0, 0, 0.05)", handleBoxShadowHover: "0 1px 4px 0 rgba(0, 0, 0, 0.3), inset 0 0 1px 0 rgba(0, 0, 0, 0.05)", handleBoxShadowActive: "0 1px 4px 0 rgba(0, 0, 0, 0.3), inset 0 0 1px 0 rgba(0, 0, 0, 0.05)", handleBoxShadowFocus: "0 1px 4px 0 rgba(0, 0, 0, 0.3), inset 0 0 1px 0 rgba(0, 0, 0, 0.05)", indicatorColor, indicatorBoxShadow: boxShadow, indicatorTextColor: baseColor, indicatorBorderRadius: borderRadius, dotBorder: `2px solid ${railColor}`, dotBorderActive: `2px solid ${primaryColor}`, dotBoxShadow: "" });
+};
+var sliderLight = {
+  name: "Slider",
+  common: light_default,
+  self: self62
+};
+var light_default64 = sliderLight;
+
+// node_modules/naive-ui/es/spin/styles/light.js
+var self63 = (vars) => {
+  const { opacityDisabled, heightTiny, heightSmall, heightMedium, heightLarge, heightHuge, primaryColor, fontSize: fontSize2 } = vars;
+  return {
+    fontSize: fontSize2,
+    textColor: primaryColor,
+    sizeTiny: heightTiny,
+    sizeSmall: heightSmall,
+    sizeMedium: heightMedium,
+    sizeLarge: heightLarge,
+    sizeHuge: heightHuge,
+    color: primaryColor,
+    opacitySpinning: opacityDisabled
+  };
+};
+var spinLight = {
+  name: "Spin",
+  common: light_default,
+  self: self63
+};
+var light_default65 = spinLight;
+
+// node_modules/naive-ui/es/spin/styles/dark.js
+var spinDark = {
+  name: "Spin",
+  common: dark_default,
+  self: self63
+};
+var dark_default65 = spinDark;
+
+// node_modules/naive-ui/es/statistic/styles/light.js
+var self64 = (vars) => {
+  const { textColor2, textColor3, fontSize: fontSize2, fontWeight } = vars;
+  return {
+    labelFontSize: fontSize2,
+    labelFontWeight: fontWeight,
+    valueFontWeight: fontWeight,
+    valueFontSize: "24px",
+    labelTextColor: textColor3,
+    valuePrefixTextColor: textColor2,
+    valueSuffixTextColor: textColor2,
+    valueTextColor: textColor2
+  };
+};
+var statisticLight = {
+  name: "Statistic",
+  common: light_default,
+  self: self64
+};
+var light_default66 = statisticLight;
+
+// node_modules/naive-ui/es/statistic/styles/dark.js
+var statisticDark = {
+  name: "Statistic",
+  common: dark_default,
+  self: self64
+};
+var dark_default66 = statisticDark;
+
+// node_modules/naive-ui/es/steps/styles/_common.js
+var common_default34 = {
+  stepHeaderFontSizeSmall: "14px",
+  stepHeaderFontSizeMedium: "16px",
+  indicatorIndexFontSizeSmall: "14px",
+  indicatorIndexFontSizeMedium: "16px",
+  indicatorSizeSmall: "22px",
+  indicatorSizeMedium: "28px",
+  indicatorIconSizeSmall: "14px",
+  indicatorIconSizeMedium: "18px"
+};
+
+// node_modules/naive-ui/es/steps/styles/light.js
+var self65 = (vars) => {
+  const { fontWeightStrong, baseColor, textColorDisabled, primaryColor, errorColor, textColor1, textColor2 } = vars;
+  return Object.assign(Object.assign({}, common_default34), { stepHeaderFontWeight: fontWeightStrong, indicatorTextColorProcess: baseColor, indicatorTextColorWait: textColorDisabled, indicatorTextColorFinish: primaryColor, indicatorTextColorError: errorColor, indicatorBorderColorProcess: primaryColor, indicatorBorderColorWait: textColorDisabled, indicatorBorderColorFinish: primaryColor, indicatorBorderColorError: errorColor, indicatorColorProcess: primaryColor, indicatorColorWait: "#0000", indicatorColorFinish: "#0000", indicatorColorError: "#0000", splitorColorProcess: textColorDisabled, splitorColorWait: textColorDisabled, splitorColorFinish: primaryColor, splitorColorError: textColorDisabled, headerTextColorProcess: textColor1, headerTextColorWait: textColorDisabled, headerTextColorFinish: textColorDisabled, headerTextColorError: errorColor, descriptionTextColorProcess: textColor2, descriptionTextColorWait: textColorDisabled, descriptionTextColorFinish: textColorDisabled, descriptionTextColorError: errorColor });
+};
+var stepsLight = {
+  name: "Steps",
+  common: light_default,
+  self: self65
+};
+var light_default67 = stepsLight;
+
+// node_modules/naive-ui/es/steps/styles/dark.js
+var stepsDark = {
+  name: "Steps",
+  common: dark_default,
+  self: self65
+};
+var dark_default67 = stepsDark;
+
+// node_modules/naive-ui/es/switch/styles/_common.js
+var common_default35 = {
+  buttonHeightSmall: "14px",
+  buttonHeightMedium: "18px",
+  buttonHeightLarge: "22px",
+  buttonWidthSmall: "14px",
+  buttonWidthMedium: "18px",
+  buttonWidthLarge: "22px",
+  buttonWidthPressedSmall: "20px",
+  buttonWidthPressedMedium: "24px",
+  buttonWidthPressedLarge: "28px",
+  railHeightSmall: "18px",
+  railHeightMedium: "22px",
+  railHeightLarge: "26px",
+  railWidthSmall: "32px",
+  railWidthMedium: "40px",
+  railWidthLarge: "48px"
+};
+
+// node_modules/naive-ui/es/switch/styles/dark.js
+var switchDark = {
+  name: "Switch",
+  common: dark_default,
+  self(vars) {
+    const { primaryColorSuppl, opacityDisabled, borderRadius, primaryColor, textColor2, baseColor } = vars;
+    const railOverlayColor = "rgba(255, 255, 255, .20)";
+    return Object.assign(Object.assign({}, common_default35), { iconColor: baseColor, textColor: textColor2, loadingColor: primaryColorSuppl, opacityDisabled, railColor: railOverlayColor, railColorActive: primaryColorSuppl, buttonBoxShadow: "0px 2px 4px 0 rgba(0, 0, 0, 0.4)", buttonColor: "#FFF", railBorderRadiusSmall: borderRadius, railBorderRadiusMedium: borderRadius, railBorderRadiusLarge: borderRadius, buttonBorderRadiusSmall: borderRadius, buttonBorderRadiusMedium: borderRadius, buttonBorderRadiusLarge: borderRadius, boxShadowFocus: `0 0 8px 0 ${changeColor(primaryColor, { alpha: 0.3 })}` });
+  }
+};
+var dark_default68 = switchDark;
+
+// node_modules/naive-ui/es/switch/styles/light.js
+var self66 = (vars) => {
+  const { primaryColor, opacityDisabled, borderRadius, textColor3 } = vars;
+  const railOverlayColor = "rgba(0, 0, 0, .14)";
+  return Object.assign(Object.assign({}, common_default35), { iconColor: textColor3, textColor: "white", loadingColor: primaryColor, opacityDisabled, railColor: railOverlayColor, railColorActive: primaryColor, buttonBoxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.3), inset 0 0 1px 0 rgba(0, 0, 0, 0.05)", buttonColor: "#FFF", railBorderRadiusSmall: borderRadius, railBorderRadiusMedium: borderRadius, railBorderRadiusLarge: borderRadius, buttonBorderRadiusSmall: borderRadius, buttonBorderRadiusMedium: borderRadius, buttonBorderRadiusLarge: borderRadius, boxShadowFocus: `0 0 0 2px ${changeColor(primaryColor, { alpha: 0.2 })}` });
+};
+var switchLight = {
+  name: "Switch",
+  common: light_default,
+  self: self66
+};
+var light_default68 = switchLight;
+
+// node_modules/naive-ui/es/table/styles/_common.js
+var common_default36 = {
+  thPaddingSmall: "6px",
+  thPaddingMedium: "12px",
+  thPaddingLarge: "12px",
+  tdPaddingSmall: "6px",
+  tdPaddingMedium: "12px",
+  tdPaddingLarge: "12px"
+};
+
+// node_modules/naive-ui/es/table/styles/light.js
+var self67 = (vars) => {
+  const { dividerColor, cardColor, modalColor, popoverColor, tableHeaderColor, tableColorStriped, textColor1, textColor2, borderRadius, fontWeightStrong, lineHeight: lineHeight3, fontSizeSmall, fontSizeMedium, fontSizeLarge } = vars;
+  return Object.assign(Object.assign({}, common_default36), {
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    lineHeight: lineHeight3,
+    borderRadius,
+    borderColor: composite(cardColor, dividerColor),
+    borderColorModal: composite(modalColor, dividerColor),
+    borderColorPopover: composite(popoverColor, dividerColor),
+    tdColor: cardColor,
+    tdColorModal: modalColor,
+    tdColorPopover: popoverColor,
+    tdColorStriped: composite(cardColor, tableColorStriped),
+    tdColorStripedModal: composite(modalColor, tableColorStriped),
+    tdColorStripedPopover: composite(popoverColor, tableColorStriped),
+    thColor: composite(cardColor, tableHeaderColor),
+    thColorModal: composite(modalColor, tableHeaderColor),
+    thColorPopover: composite(popoverColor, tableHeaderColor),
+    thTextColor: textColor1,
+    tdTextColor: textColor2,
+    thFontWeight: fontWeightStrong
+  });
+};
+var tableLight = {
+  name: "Table",
+  common: light_default,
+  self: self67
+};
+var light_default69 = tableLight;
+
+// node_modules/naive-ui/es/table/styles/dark.js
+var tableDark = {
+  name: "Table",
+  common: dark_default,
+  self: self67
+};
+var dark_default69 = tableDark;
+
+// node_modules/naive-ui/es/tabs/styles/_common.js
+var common_default37 = {
+  tabFontSizeSmall: "14px",
+  tabFontSizeMedium: "14px",
+  tabFontSizeLarge: "16px",
+  tabGapSmallLine: "36px",
+  tabGapMediumLine: "36px",
+  tabGapLargeLine: "36px",
+  tabPaddingSmallLine: "6px 0",
+  tabPaddingMediumLine: "10px 0",
+  tabPaddingLargeLine: "14px 0",
+  tabPaddingVerticalSmallLine: "0 6px",
+  tabPaddingVerticalMediumLine: "0 10px",
+  tabPaddingVerticalLargeLine: "0 14px",
+  tabGapSmallBar: "36px",
+  tabGapMediumBar: "36px",
+  tabGapLargeBar: "36px",
+  tabPaddingSmallBar: "4px 0",
+  tabPaddingMediumBar: "6px 0",
+  tabPaddingLargeBar: "10px 0",
+  tabPaddingVerticalSmallBar: "0 4px",
+  tabPaddingVerticalMediumBar: "0 6px ",
+  tabPaddingVerticalLargeBar: "0 10px ",
+  tabGapSmallCard: "4px",
+  tabGapMediumCard: "4px",
+  tabGapLargeCard: "4px",
+  tabPaddingSmallCard: "6px 10px",
+  tabPaddingMediumCard: "8px 12px",
+  tabPaddingLargeCard: "8px 16px",
+  tabPaddingSmallSegment: "4px 0",
+  tabPaddingMediumSegment: "6px 0",
+  tabPaddingLargeSegment: "8px 0",
+  tabPaddingVerticalLargeSegment: "0 8px",
+  tabPaddingVerticalSmallCard: "10px 6px",
+  tabPaddingVerticalMediumCard: "12px 8px",
+  tabPaddingVerticalLargeCard: "16px 8px",
+  tabPaddingVerticalSmallSegment: "0 4px",
+  tabPaddingVerticalMediumSegment: "0 6px",
+  tabGapSmallSegment: "0",
+  tabGapMediumSegment: "0",
+  tabGapLargeSegment: "0",
+  panePaddingSmall: "8px 0 0 0",
+  panePaddingMedium: "12px 0 0 0",
+  panePaddingLarge: "16px 0 0 0",
+  closeSize: "18px",
+  closeIconSize: "14px"
+};
+
+// node_modules/naive-ui/es/tabs/styles/light.js
+var self68 = (vars) => {
+  const { textColor2, primaryColor, textColorDisabled, closeIconColor, closeIconColorHover, closeIconColorPressed, closeColorHover, closeColorPressed, tabColor, baseColor, dividerColor, fontWeight, textColor1, borderRadius, fontSize: fontSize2, fontWeightStrong } = vars;
+  return Object.assign(Object.assign({}, common_default37), {
+    colorSegment: tabColor,
+    tabFontSizeCard: fontSize2,
+    tabTextColorLine: textColor1,
+    tabTextColorActiveLine: primaryColor,
+    tabTextColorHoverLine: primaryColor,
+    tabTextColorDisabledLine: textColorDisabled,
+    tabTextColorSegment: textColor1,
+    tabTextColorActiveSegment: textColor2,
+    tabTextColorHoverSegment: textColor2,
+    tabTextColorDisabledSegment: textColorDisabled,
+    tabTextColorBar: textColor1,
+    tabTextColorActiveBar: primaryColor,
+    tabTextColorHoverBar: primaryColor,
+    tabTextColorDisabledBar: textColorDisabled,
+    tabTextColorCard: textColor1,
+    tabTextColorHoverCard: textColor1,
+    tabTextColorActiveCard: primaryColor,
+    tabTextColorDisabledCard: textColorDisabled,
+    barColor: primaryColor,
+    closeIconColor,
+    closeIconColorHover,
+    closeIconColorPressed,
+    closeColorHover,
+    closeColorPressed,
+    closeBorderRadius: borderRadius,
+    tabColor,
+    tabColorSegment: baseColor,
+    tabBorderColor: dividerColor,
+    tabFontWeightActive: fontWeight,
+    tabFontWeight: fontWeight,
+    tabBorderRadius: borderRadius,
+    paneTextColor: textColor2,
+    fontWeightStrong
+  });
+};
+var tabsLight = {
+  name: "Tabs",
+  common: light_default,
+  self: self68
+};
+var light_default70 = tabsLight;
+
+// node_modules/naive-ui/es/tabs/styles/dark.js
+var tabsDark = {
+  name: "Tabs",
+  common: dark_default,
+  self(vars) {
+    const commonSelf = self68(vars);
+    const { inputColor } = vars;
+    commonSelf.colorSegment = inputColor;
+    commonSelf.tabColorSegment = inputColor;
+    return commonSelf;
+  }
+};
+var dark_default70 = tabsDark;
+
+// node_modules/naive-ui/es/thing/styles/light.js
+var self69 = (vars) => {
+  const { textColor1, textColor2, fontWeightStrong, fontSize: fontSize2 } = vars;
+  return {
+    fontSize: fontSize2,
+    titleTextColor: textColor1,
+    textColor: textColor2,
+    titleFontWeight: fontWeightStrong
+  };
+};
+var thingLight = {
+  name: "Thing",
+  common: light_default,
+  self: self69
+};
+var light_default71 = thingLight;
+
+// node_modules/naive-ui/es/thing/styles/dark.js
+var thingDark = {
+  name: "Thing",
+  common: dark_default,
+  self: self69
+};
+var dark_default71 = thingDark;
 
 // node_modules/naive-ui/es/timeline/styles/_common.js
-var common_default16 = {
+var common_default38 = {
   titleMarginMedium: "0 0 6px 0",
   titleMarginLarge: "-2px 0 6px 0",
   titleFontSizeMedium: "14px",
@@ -38156,17 +40932,462 @@ var common_default16 = {
   iconSizeLarge: "14px"
 };
 
+// node_modules/naive-ui/es/timeline/styles/dark.js
+var timelineDark = {
+  name: "Timeline",
+  common: dark_default,
+  self(vars) {
+    const { textColor3, infoColorSuppl, errorColorSuppl, successColorSuppl, warningColorSuppl, textColor1, textColor2, railColor, fontWeightStrong, fontSize: fontSize2 } = vars;
+    return Object.assign(Object.assign({}, common_default38), { contentFontSize: fontSize2, titleFontWeight: fontWeightStrong, circleBorder: `2px solid ${textColor3}`, circleBorderInfo: `2px solid ${infoColorSuppl}`, circleBorderError: `2px solid ${errorColorSuppl}`, circleBorderSuccess: `2px solid ${successColorSuppl}`, circleBorderWarning: `2px solid ${warningColorSuppl}`, iconColor: textColor3, iconColorInfo: infoColorSuppl, iconColorError: errorColorSuppl, iconColorSuccess: successColorSuppl, iconColorWarning: warningColorSuppl, titleTextColor: textColor1, contentTextColor: textColor2, metaTextColor: textColor3, lineColor: railColor });
+  }
+};
+var dark_default72 = timelineDark;
+
 // node_modules/naive-ui/es/timeline/styles/light.js
-var self19 = (vars) => {
+var self70 = (vars) => {
   const { textColor3, infoColor, errorColor, successColor, warningColor, textColor1, textColor2, railColor, fontWeightStrong, fontSize: fontSize2 } = vars;
-  return Object.assign(Object.assign({}, common_default16), { contentFontSize: fontSize2, titleFontWeight: fontWeightStrong, circleBorder: `2px solid ${textColor3}`, circleBorderInfo: `2px solid ${infoColor}`, circleBorderError: `2px solid ${errorColor}`, circleBorderSuccess: `2px solid ${successColor}`, circleBorderWarning: `2px solid ${warningColor}`, iconColor: textColor3, iconColorInfo: infoColor, iconColorError: errorColor, iconColorSuccess: successColor, iconColorWarning: warningColor, titleTextColor: textColor1, contentTextColor: textColor2, metaTextColor: textColor3, lineColor: railColor });
+  return Object.assign(Object.assign({}, common_default38), { contentFontSize: fontSize2, titleFontWeight: fontWeightStrong, circleBorder: `2px solid ${textColor3}`, circleBorderInfo: `2px solid ${infoColor}`, circleBorderError: `2px solid ${errorColor}`, circleBorderSuccess: `2px solid ${successColor}`, circleBorderWarning: `2px solid ${warningColor}`, iconColor: textColor3, iconColorInfo: infoColor, iconColorError: errorColor, iconColorSuccess: successColor, iconColorWarning: warningColor, titleTextColor: textColor1, contentTextColor: textColor2, metaTextColor: textColor3, lineColor: railColor });
 };
 var timelineLight = {
   name: "Timeline",
   common: light_default,
-  self: self19
+  self: self70
 };
-var light_default19 = timelineLight;
+var light_default72 = timelineLight;
+
+// node_modules/naive-ui/es/transfer/styles/_common.js
+var common_default39 = {
+  extraFontSizeSmall: "12px",
+  extraFontSizeMedium: "12px",
+  extraFontSizeLarge: "14px",
+  titleFontSizeSmall: "14px",
+  titleFontSizeMedium: "16px",
+  titleFontSizeLarge: "16px",
+  closeSize: "20px",
+  closeIconSize: "16px",
+  headerHeightSmall: "44px",
+  headerHeightMedium: "44px",
+  headerHeightLarge: "50px"
+};
+
+// node_modules/naive-ui/es/transfer/styles/dark.js
+var transferDark = {
+  name: "Transfer",
+  common: dark_default,
+  peers: {
+    Checkbox: dark_default22,
+    Scrollbar: dark_default3,
+    Input: dark_default10,
+    Empty: dark_default2,
+    Button: dark_default17
+  },
+  self(vars) {
+    const { fontWeight, fontSizeLarge, fontSizeMedium, fontSizeSmall, heightLarge, heightMedium, borderRadius, inputColor, tableHeaderColor, textColor1, textColorDisabled, textColor2, textColor3, hoverColor, closeColorHover, closeColorPressed, closeIconColor, closeIconColorHover, closeIconColorPressed, dividerColor } = vars;
+    return Object.assign(Object.assign({}, common_default39), {
+      itemHeightSmall: heightMedium,
+      itemHeightMedium: heightMedium,
+      itemHeightLarge: heightLarge,
+      fontSizeSmall,
+      fontSizeMedium,
+      fontSizeLarge,
+      borderRadius,
+      dividerColor,
+      borderColor: "#0000",
+      listColor: inputColor,
+      headerColor: tableHeaderColor,
+      titleTextColor: textColor1,
+      titleTextColorDisabled: textColorDisabled,
+      extraTextColor: textColor3,
+      extraTextColorDisabled: textColorDisabled,
+      itemTextColor: textColor2,
+      itemTextColorDisabled: textColorDisabled,
+      itemColorPending: hoverColor,
+      titleFontWeight: fontWeight,
+      closeColorHover,
+      closeColorPressed,
+      closeIconColor,
+      closeIconColorHover,
+      closeIconColorPressed
+    });
+  }
+};
+var dark_default73 = transferDark;
+
+// node_modules/naive-ui/es/transfer/styles/light.js
+var self71 = (vars) => {
+  const { fontWeight, fontSizeLarge, fontSizeMedium, fontSizeSmall, heightLarge, heightMedium, borderRadius, cardColor, tableHeaderColor, textColor1, textColorDisabled, textColor2, textColor3, borderColor, hoverColor, closeColorHover, closeColorPressed, closeIconColor, closeIconColorHover, closeIconColorPressed } = vars;
+  return Object.assign(Object.assign({}, common_default39), {
+    itemHeightSmall: heightMedium,
+    itemHeightMedium: heightMedium,
+    itemHeightLarge: heightLarge,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    borderRadius,
+    dividerColor: borderColor,
+    borderColor,
+    listColor: cardColor,
+    headerColor: composite(cardColor, tableHeaderColor),
+    titleTextColor: textColor1,
+    titleTextColorDisabled: textColorDisabled,
+    extraTextColor: textColor3,
+    extraTextColorDisabled: textColorDisabled,
+    itemTextColor: textColor2,
+    itemTextColorDisabled: textColorDisabled,
+    itemColorPending: hoverColor,
+    titleFontWeight: fontWeight,
+    closeColorHover,
+    closeColorPressed,
+    closeIconColor,
+    closeIconColorHover,
+    closeIconColorPressed
+  });
+};
+var transferLight = createTheme({
+  name: "Transfer",
+  common: light_default,
+  peers: {
+    Checkbox: light_default22,
+    Scrollbar: light_default3,
+    Input: light_default10,
+    Empty: light_default2,
+    Button: light_default17
+  },
+  self: self71
+});
+var light_default73 = transferLight;
+
+// node_modules/naive-ui/es/tree/styles/light.js
+var self72 = (vars) => {
+  const { borderRadiusSmall, hoverColor, pressedColor, primaryColor, textColor3, textColor2, textColorDisabled, fontSize: fontSize2 } = vars;
+  return {
+    fontSize: fontSize2,
+    nodeBorderRadius: borderRadiusSmall,
+    nodeColorHover: hoverColor,
+    nodeColorPressed: pressedColor,
+    nodeColorActive: changeColor(primaryColor, { alpha: 0.1 }),
+    arrowColor: textColor3,
+    nodeTextColor: textColor2,
+    nodeTextColorDisabled: textColorDisabled,
+    loadingColor: primaryColor,
+    dropMarkColor: primaryColor
+  };
+};
+var treeLight = createTheme({
+  name: "Tree",
+  common: light_default,
+  peers: {
+    Checkbox: light_default22,
+    Scrollbar: light_default3,
+    Empty: light_default2
+  },
+  self: self72
+});
+var light_default74 = treeLight;
+
+// node_modules/naive-ui/es/tree/styles/dark.js
+var treeDark = {
+  name: "Tree",
+  common: dark_default,
+  peers: {
+    Checkbox: dark_default22,
+    Scrollbar: dark_default3,
+    Empty: dark_default2
+  },
+  self(vars) {
+    const { primaryColor } = vars;
+    const commonSelf = self72(vars);
+    commonSelf.nodeColorActive = changeColor(primaryColor, { alpha: 0.15 });
+    return commonSelf;
+  }
+};
+var dark_default74 = treeDark;
+
+// node_modules/naive-ui/es/tree-select/styles/dark.js
+var treeSelectDark = {
+  name: "TreeSelect",
+  common: dark_default,
+  peers: {
+    Tree: dark_default74,
+    Empty: dark_default2,
+    InternalSelection: dark_default7
+  }
+};
+var dark_default75 = treeSelectDark;
+
+// node_modules/naive-ui/es/tree-select/styles/light.js
+var self73 = (vars) => {
+  const { popoverColor, boxShadow2, borderRadius, heightMedium, dividerColor, textColor2 } = vars;
+  return {
+    menuPadding: "4px",
+    menuColor: popoverColor,
+    menuBoxShadow: boxShadow2,
+    menuBorderRadius: borderRadius,
+    menuHeight: `calc(${heightMedium} * 7.6)`,
+    actionDividerColor: dividerColor,
+    actionTextColor: textColor2,
+    actionPadding: "8px 12px"
+  };
+};
+var treeSelectLight = createTheme({
+  name: "TreeSelect",
+  common: light_default,
+  peers: {
+    Tree: light_default74,
+    Empty: light_default2,
+    InternalSelection: light_default7
+  },
+  self: self73
+});
+var light_default75 = treeSelectLight;
+
+// node_modules/naive-ui/es/typography/styles/_common.js
+var common_default40 = {
+  headerFontSize1: "30px",
+  headerFontSize2: "22px",
+  headerFontSize3: "18px",
+  headerFontSize4: "16px",
+  headerFontSize5: "16px",
+  headerFontSize6: "16px",
+  headerMargin1: "28px 0 20px 0",
+  headerMargin2: "28px 0 20px 0",
+  headerMargin3: "28px 0 20px 0",
+  headerMargin4: "28px 0 18px 0",
+  headerMargin5: "28px 0 18px 0",
+  headerMargin6: "28px 0 18px 0",
+  headerPrefixWidth1: "16px",
+  headerPrefixWidth2: "16px",
+  headerPrefixWidth3: "12px",
+  headerPrefixWidth4: "12px",
+  headerPrefixWidth5: "12px",
+  headerPrefixWidth6: "12px",
+  headerBarWidth1: "4px",
+  headerBarWidth2: "4px",
+  headerBarWidth3: "3px",
+  headerBarWidth4: "3px",
+  headerBarWidth5: "3px",
+  headerBarWidth6: "3px",
+  pMargin: "16px 0 16px 0",
+  liMargin: ".25em 0 0 0",
+  olPadding: "0 0 0 2em",
+  ulPadding: "0 0 0 2em"
+};
+
+// node_modules/naive-ui/es/typography/styles/light.js
+var self74 = (vars) => {
+  const { primaryColor, textColor2, borderColor, lineHeight: lineHeight3, fontSize: fontSize2, borderRadiusSmall, dividerColor, fontWeightStrong, textColor1, textColor3, infoColor, warningColor, errorColor, successColor, codeColor } = vars;
+  return Object.assign(Object.assign({}, common_default40), { aTextColor: primaryColor, blockquoteTextColor: textColor2, blockquotePrefixColor: borderColor, blockquoteLineHeight: lineHeight3, blockquoteFontSize: fontSize2, codeBorderRadius: borderRadiusSmall, liTextColor: textColor2, liLineHeight: lineHeight3, liFontSize: fontSize2, hrColor: dividerColor, headerFontWeight: fontWeightStrong, headerTextColor: textColor1, pTextColor: textColor2, pTextColor1Depth: textColor1, pTextColor2Depth: textColor2, pTextColor3Depth: textColor3, pLineHeight: lineHeight3, pFontSize: fontSize2, headerBarColor: primaryColor, headerBarColorPrimary: primaryColor, headerBarColorInfo: infoColor, headerBarColorError: errorColor, headerBarColorWarning: warningColor, headerBarColorSuccess: successColor, textColor: textColor2, textColor1Depth: textColor1, textColor2Depth: textColor2, textColor3Depth: textColor3, textColorPrimary: primaryColor, textColorInfo: infoColor, textColorSuccess: successColor, textColorWarning: warningColor, textColorError: errorColor, codeTextColor: textColor2, codeColor, codeBorder: "1px solid #0000" });
+};
+var typographyLight = {
+  name: "Typography",
+  common: light_default,
+  self: self74
+};
+var light_default76 = typographyLight;
+
+// node_modules/naive-ui/es/typography/styles/dark.js
+var typographyDark = {
+  name: "Typography",
+  common: dark_default,
+  self: self74
+};
+var dark_default76 = typographyDark;
+
+// node_modules/naive-ui/es/upload/styles/light.js
+var self75 = (vars) => {
+  const { iconColor, primaryColor, errorColor, textColor2, successColor, opacityDisabled, actionColor, borderColor, hoverColor, lineHeight: lineHeight3, borderRadius, fontSize: fontSize2 } = vars;
+  return {
+    fontSize: fontSize2,
+    lineHeight: lineHeight3,
+    borderRadius,
+    draggerColor: actionColor,
+    draggerBorder: `1px dashed ${borderColor}`,
+    draggerBorderHover: `1px dashed ${primaryColor}`,
+    itemColorHover: hoverColor,
+    itemColorHoverError: changeColor(errorColor, {
+      alpha: 0.06
+    }),
+    itemTextColor: textColor2,
+    itemTextColorError: errorColor,
+    itemTextColorSuccess: successColor,
+    itemIconColor: iconColor,
+    itemDisabledOpacity: opacityDisabled,
+    itemBorderImageCardError: `1px solid ${errorColor}`,
+    itemBorderImageCard: `1px solid ${borderColor}`
+  };
+};
+var uploadLight = createTheme({
+  name: "Upload",
+  common: light_default,
+  peers: {
+    Button: light_default17,
+    Progress: light_default61
+  },
+  self: self75
+});
+var light_default77 = uploadLight;
+
+// node_modules/naive-ui/es/upload/styles/dark.js
+var uploadDark = {
+  name: "Upload",
+  common: dark_default,
+  peers: {
+    Button: dark_default17,
+    Progress: dark_default61
+  },
+  self(vars) {
+    const { errorColor } = vars;
+    const commonSelf = self75(vars);
+    commonSelf.itemColorHoverError = changeColor(errorColor, {
+      alpha: 0.09
+    });
+    return commonSelf;
+  }
+};
+var dark_default77 = uploadDark;
+
+// node_modules/naive-ui/es/watermark/styles/dark.js
+var watermarkDark = {
+  name: "Watermark",
+  common: dark_default,
+  self(vars) {
+    const { fontFamily: fontFamily2 } = vars;
+    return {
+      fontFamily: fontFamily2
+    };
+  }
+};
+var dark_default78 = watermarkDark;
+
+// node_modules/naive-ui/es/watermark/styles/light.js
+var watermarkLight = createTheme({
+  name: "Watermark",
+  common: light_default,
+  self(vars) {
+    const { fontFamily: fontFamily2 } = vars;
+    return {
+      fontFamily: fontFamily2
+    };
+  }
+});
+var light_default78 = watermarkLight;
+
+// node_modules/naive-ui/es/legacy-grid/styles/light.js
+var rowLight = {
+  name: "Row",
+  common: light_default
+};
+var light_default79 = rowLight;
+
+// node_modules/naive-ui/es/legacy-grid/styles/dark.js
+var rowDark = {
+  name: "Row",
+  common: dark_default
+};
+var dark_default79 = rowDark;
+
+// node_modules/naive-ui/es/image/styles/dark.js
+var imageDark = {
+  name: "Image",
+  common: dark_default,
+  peers: {
+    Tooltip: dark_default30
+  },
+  self: (vars) => {
+    const { textColor2 } = vars;
+    return {
+      toolbarIconColor: textColor2,
+      toolbarColor: "rgba(0, 0, 0, .35)",
+      toolbarBoxShadow: "none",
+      toolbarBorderRadius: "24px"
+    };
+  }
+};
+
+// node_modules/naive-ui/es/legacy-transfer/styles/_common.js
+var common_default41 = {
+  extraFontSize: "12px",
+  width: "440px"
+};
+
+// node_modules/naive-ui/es/legacy-transfer/styles/dark.js
+var transferDark2 = {
+  name: "Transfer",
+  common: dark_default,
+  peers: {
+    Checkbox: dark_default22,
+    Scrollbar: dark_default3,
+    Input: dark_default10,
+    Empty: dark_default2,
+    Button: dark_default17
+  },
+  self(vars) {
+    const { iconColorDisabled, iconColor, fontWeight, fontSizeLarge, fontSizeMedium, fontSizeSmall, heightLarge, heightMedium, heightSmall, borderRadius, inputColor, tableHeaderColor, textColor1, textColorDisabled, textColor2, hoverColor } = vars;
+    return Object.assign(Object.assign({}, common_default41), {
+      itemHeightSmall: heightSmall,
+      itemHeightMedium: heightMedium,
+      itemHeightLarge: heightLarge,
+      fontSizeSmall,
+      fontSizeMedium,
+      fontSizeLarge,
+      borderRadius,
+      borderColor: "#0000",
+      listColor: inputColor,
+      headerColor: tableHeaderColor,
+      titleTextColor: textColor1,
+      titleTextColorDisabled: textColorDisabled,
+      extraTextColor: textColor2,
+      filterDividerColor: "#0000",
+      itemTextColor: textColor2,
+      itemTextColorDisabled: textColorDisabled,
+      itemColorPending: hoverColor,
+      titleFontWeight: fontWeight,
+      iconColor,
+      iconColorDisabled
+    });
+  }
+};
+var dark_default80 = transferDark2;
+
+// node_modules/naive-ui/es/legacy-transfer/styles/light.js
+var self76 = (vars) => {
+  const { fontWeight, iconColorDisabled, iconColor, fontSizeLarge, fontSizeMedium, fontSizeSmall, heightLarge, heightMedium, heightSmall, borderRadius, cardColor, tableHeaderColor, textColor1, textColorDisabled, textColor2, borderColor, hoverColor } = vars;
+  return Object.assign(Object.assign({}, common_default41), {
+    itemHeightSmall: heightSmall,
+    itemHeightMedium: heightMedium,
+    itemHeightLarge: heightLarge,
+    fontSizeSmall,
+    fontSizeMedium,
+    fontSizeLarge,
+    borderRadius,
+    borderColor,
+    listColor: cardColor,
+    headerColor: composite(cardColor, tableHeaderColor),
+    titleTextColor: textColor1,
+    titleTextColorDisabled: textColorDisabled,
+    extraTextColor: textColor2,
+    filterDividerColor: borderColor,
+    itemTextColor: textColor2,
+    itemTextColorDisabled: textColorDisabled,
+    itemColorPending: hoverColor,
+    titleFontWeight: fontWeight,
+    iconColor,
+    iconColorDisabled
+  });
+};
+var transferLight2 = createTheme({
+  name: "Transfer",
+  common: light_default,
+  peers: {
+    Checkbox: light_default22,
+    Scrollbar: light_default3,
+    Input: light_default10,
+    Empty: light_default2,
+    Button: light_default17
+  },
+  self: self76
+});
+var light_default80 = transferLight2;
 
 // node_modules/naive-ui/es/list/src/styles/index.cssr.js
 var index_cssr_default17 = c3([cB("list", `
@@ -38258,7 +41479,7 @@ var List_default = defineComponent({
   setup(props) {
     const { mergedClsPrefixRef, inlineThemeDisabled, mergedRtlRef } = useConfig(props);
     const rtlEnabledRef = useRtl("List", mergedRtlRef, mergedClsPrefixRef);
-    const themeRef = use_theme_default("List", "-list", index_cssr_default17, light_default17, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("List", "-list", index_cssr_default17, light_default55, props, mergedClsPrefixRef);
     provide(listInjectionKey, {
       showDividerRef: toRef(props, "showDivider"),
       mergedClsPrefixRef
@@ -38471,7 +41692,7 @@ var Message_default = defineComponent({
       mergedClsPrefixRef
     } = inject(messageProviderInjectionKey);
     const rtlEnabledRef = useRtl("Message", mergedRtlRef, mergedClsPrefixRef);
-    const themeRef = use_theme_default("Message", "-message", index_cssr_default18, light_default16, messageProviderProps2, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Message", "-message", index_cssr_default18, light_default51, messageProviderProps2, mergedClsPrefixRef);
     const cssVarsRef = computed2(() => {
       const { type } = props;
       const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5 }, self: { padding, margin, maxWidth, iconMargin, closeMargin, closeSize, iconSize, fontSize: fontSize2, lineHeight: lineHeight3, borderRadius, iconColorInfo, iconColorSuccess, iconColorWarning, iconColorError, iconColorLoading, closeIconSize, closeBorderRadius, [createKey("textColor", type)]: textColor, [createKey("boxShadow", type)]: boxShadow, [createKey("color", type)]: color2, [createKey("closeColorHover", type)]: closeColorHover, [createKey("closeColorPressed", type)]: closeColorPressed, [createKey("closeIconColor", type)]: closeIconColor, [createKey("closeIconColorPressed", type)]: closeIconColorPressed, [createKey("closeIconColorHover", type)]: closeIconColorHover } } = themeRef.value;
@@ -38808,7 +42029,7 @@ var Result_default = defineComponent({
   props: resultProps,
   setup(props) {
     const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig(props);
-    const themeRef = use_theme_default("Result", "-result", index_cssr_default19, light_default18, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Result", "-result", index_cssr_default19, light_default63, props, mergedClsPrefixRef);
     const cssVarsRef = computed2(() => {
       const { size: size3, status } = props;
       const { common: { cubicBezierEaseInOut: cubicBezierEaseInOut5 }, self: { textColor, lineHeight: lineHeight3, titleTextColor, titleFontWeight, [createKey("iconColor", status)]: iconColor, [createKey("fontSize", size3)]: fontSize2, [createKey("titleFontSize", size3)]: titleFontSize, [createKey("iconSize", size3)]: iconSize } } = themeRef.value;
@@ -38849,6 +42070,41 @@ var Result_default = defineComponent({
     return h3("div", { class: [`${mergedClsPrefix}-result`, this.themeClass], style: this.cssVars }, h3("div", { class: `${mergedClsPrefix}-result-icon` }, ((_a3 = $slots.icon) === null || _a3 === void 0 ? void 0 : _a3.call($slots)) || h3(Icon_default, { clsPrefix: mergedClsPrefix }, { default: () => iconMap[status] })), h3("div", { class: `${mergedClsPrefix}-result-header` }, this.title ? h3("div", { class: `${mergedClsPrefix}-result-header__title` }, this.title) : null, this.description ? h3("div", { class: `${mergedClsPrefix}-result-header__description` }, this.description) : null), $slots.default && h3("div", { class: `${mergedClsPrefix}-result-content` }, $slots), $slots.footer && h3("div", { class: `${mergedClsPrefix}-result-footer` }, $slots.footer()));
   }
 });
+
+// node_modules/naive-ui/es/skeleton/styles/dark.js
+var skeletonDark = {
+  name: "Skeleton",
+  common: dark_default,
+  self(vars) {
+    const { heightSmall, heightMedium, heightLarge, borderRadius } = vars;
+    return {
+      color: "rgba(255, 255, 255, 0.12)",
+      colorEnd: "rgba(255, 255, 255, 0.18)",
+      borderRadius,
+      heightSmall,
+      heightMedium,
+      heightLarge
+    };
+  }
+};
+
+// node_modules/naive-ui/es/skeleton/styles/light.js
+var self77 = (vars) => {
+  const { heightSmall, heightMedium, heightLarge, borderRadius } = vars;
+  return {
+    color: "#eee",
+    colorEnd: "#ddd",
+    borderRadius,
+    heightSmall,
+    heightMedium,
+    heightLarge
+  };
+};
+var skeletonLight = {
+  name: "Skeleton",
+  common: light_default,
+  self: self77
+};
 
 // node_modules/naive-ui/es/timeline/src/styles/index.cssr.js
 var lineHeight2 = 1.25;
@@ -38964,7 +42220,7 @@ var Timeline_default = defineComponent({
   props: timelineProps,
   setup(props, { slots }) {
     const { mergedClsPrefixRef } = useConfig(props);
-    const themeRef = use_theme_default("Timeline", "-timeline", index_cssr_default20, light_default19, props, mergedClsPrefixRef);
+    const themeRef = use_theme_default("Timeline", "-timeline", index_cssr_default20, light_default72, props, mergedClsPrefixRef);
     provide(timelineInjectionKey, {
       props,
       mergedThemeRef: themeRef,
@@ -39058,25 +42314,196 @@ var TimelineItem_default = defineComponent({
   }
 });
 
-// node_modules/naive-ui/es/themes/utils.js
-function createTheme2(name2, componentThemes) {
-  const nameIsString = typeof name2 === "string";
-  const theme = {
-    name: nameIsString ? name2 : "customized-theme"
-  };
-  if (nameIsString) {
-    if (componentThemes) {
-      for (const cTheme of componentThemes) {
-        theme[cTheme.name] = cTheme;
-      }
-    }
-  } else {
-    for (const cTheme of name2) {
-      theme[cTheme.name] = cTheme;
-    }
-  }
-  return theme;
-}
+// node_modules/naive-ui/es/equation/styles/light.js
+var self78 = () => ({});
+var equationLight = {
+  name: "Equation",
+  common: light_default,
+  self: self78
+};
+var light_default81 = equationLight;
+
+// node_modules/naive-ui/es/equation/styles/dark.js
+var equationDark = {
+  name: "Equation",
+  common: dark_default,
+  self: self78
+};
+var dark_default81 = equationDark;
+
+// node_modules/naive-ui/es/themes/dark.js
+var darkTheme = {
+  name: "dark",
+  common: dark_default,
+  Alert: dark_default8,
+  Anchor: dark_default9,
+  AutoComplete: dark_default11,
+  Avatar: dark_default12,
+  AvatarGroup: dark_default13,
+  BackTop: dark_default14,
+  Badge: dark_default15,
+  Breadcrumb: dark_default16,
+  Button: dark_default17,
+  ButtonGroup: dark_default52,
+  Calendar: dark_default18,
+  Card: dark_default20,
+  Carousel: dark_default21,
+  Cascader: dark_default23,
+  Checkbox: dark_default22,
+  Code: dark_default24,
+  Collapse: dark_default25,
+  CollapseTransition: dark_default26,
+  ColorPicker: dark_default19,
+  DataTable: dark_default34,
+  DatePicker: dark_default37,
+  Descriptions: dark_default38,
+  Dialog: dark_default39,
+  Divider: dark_default41,
+  Drawer: dark_default42,
+  Dropdown: dark_default33,
+  DynamicInput: dark_default43,
+  DynamicTags: dark_default45,
+  Element: dark_default46,
+  Empty: dark_default2,
+  Ellipsis: dark_default31,
+  Equation: dark_default81,
+  Form: dark_default47,
+  GradientText: dark_default48,
+  Icon: dark_default35,
+  IconWrapper: dark_default49,
+  Image: imageDark,
+  Input: dark_default10,
+  InputNumber: dark_default53,
+  LegacyTransfer: dark_default80,
+  Layout: dark_default54,
+  List: dark_default55,
+  LoadingBar: dark_default56,
+  Log: dark_default57,
+  Menu: dark_default59,
+  Mention: dark_default58,
+  Message: dark_default51,
+  Modal: dark_default40,
+  Notification: dark_default50,
+  PageHeader: pageHeaderDark,
+  Pagination: dark_default29,
+  Popconfirm: dark_default60,
+  Popover: dark_default5,
+  Popselect: dark_default27,
+  Progress: dark_default61,
+  Radio: dark_default32,
+  Rate: dark_default62,
+  Result: dark_default63,
+  Row: dark_default79,
+  Scrollbar: dark_default3,
+  Select: dark_default28,
+  Skeleton: skeletonDark,
+  Slider: dark_default64,
+  Space: dark_default44,
+  Spin: dark_default65,
+  Statistic: dark_default66,
+  Steps: dark_default67,
+  Switch: dark_default68,
+  Table: dark_default69,
+  Tabs: dark_default70,
+  Tag: dark_default6,
+  Thing: dark_default71,
+  TimePicker: dark_default36,
+  Timeline: dark_default72,
+  Tooltip: dark_default30,
+  Transfer: dark_default73,
+  Tree: dark_default74,
+  TreeSelect: dark_default75,
+  Typography: dark_default76,
+  Upload: dark_default77,
+  Watermark: dark_default78
+};
+
+// node_modules/naive-ui/es/themes/light.js
+var lightTheme = {
+  name: "light",
+  common: light_default,
+  Alert: light_default8,
+  Anchor: light_default9,
+  AutoComplete: light_default11,
+  Avatar: light_default12,
+  AvatarGroup: light_default13,
+  BackTop: light_default14,
+  Badge: light_default15,
+  Breadcrumb: light_default16,
+  Button: light_default17,
+  ButtonGroup: light_default52,
+  Calendar: light_default18,
+  Card: light_default20,
+  Carousel: light_default21,
+  Cascader: light_default23,
+  Checkbox: light_default22,
+  Code: light_default24,
+  Collapse: light_default25,
+  CollapseTransition: light_default26,
+  ColorPicker: light_default19,
+  DataTable: light_default34,
+  DatePicker: light_default37,
+  Descriptions: light_default38,
+  Dialog: light_default39,
+  Divider: light_default41,
+  Drawer: light_default42,
+  Dropdown: light_default33,
+  DynamicInput: light_default43,
+  DynamicTags: light_default45,
+  Element: light_default46,
+  Empty: light_default2,
+  Equation: light_default81,
+  Ellipsis: light_default31,
+  Form: light_default47,
+  GradientText: light_default48,
+  Icon: light_default35,
+  IconWrapper: light_default49,
+  Image: imageLight,
+  Input: light_default10,
+  InputNumber: light_default53,
+  Layout: light_default54,
+  LegacyTransfer: light_default80,
+  List: light_default55,
+  LoadingBar: light_default56,
+  Log: light_default57,
+  Menu: light_default59,
+  Mention: light_default58,
+  Message: light_default51,
+  Modal: light_default40,
+  Notification: light_default50,
+  PageHeader: pageHeaderLight,
+  Pagination: light_default29,
+  Popconfirm: light_default60,
+  Popover: light_default5,
+  Popselect: light_default27,
+  Progress: light_default61,
+  Radio: light_default32,
+  Rate: light_default62,
+  Row: light_default79,
+  Result: light_default63,
+  Scrollbar: light_default3,
+  Skeleton: skeletonLight,
+  Select: light_default28,
+  Slider: light_default64,
+  Space: light_default44,
+  Spin: light_default65,
+  Statistic: light_default66,
+  Steps: light_default67,
+  Switch: light_default68,
+  Table: light_default69,
+  Tabs: light_default70,
+  Tag: light_default6,
+  Thing: light_default71,
+  TimePicker: light_default36,
+  Timeline: light_default72,
+  Tooltip: light_default30,
+  Transfer: light_default73,
+  Tree: light_default74,
+  TreeSelect: light_default75,
+  Typography: light_default76,
+  Upload: light_default77,
+  Watermark: light_default78
+};
 
 // src/utils/constants.ts
 var MAX_TIME_SINCE_CREATION = 5e3;
@@ -54612,7 +58039,16 @@ var PomodoroHistory_default = /* @__PURE__ */ defineComponent({
   }) {
     expose();
     const props = __props;
-    const darkTheme2 = createTheme2([dark_default3, dark_default6]);
+    let theme = ref(darkTheme);
+    if (window.app.getTheme() === "obsidian") {
+      theme.value = darkTheme;
+    } else if (window.app.getTheme() === "moonstone") {
+      theme.value = lightTheme;
+    } else {
+      theme.value = lightTheme;
+    }
+    const lightThemeOverrides = {};
+    const darkThemeOverrides = {};
     let H1Title = () => createVNode("h1", null, [createVNode(Title_default, null, null)]);
     const {
       plugin: plugin3
@@ -54629,7 +58065,14 @@ var PomodoroHistory_default = /* @__PURE__ */ defineComponent({
     });
     addEventListener(eventTypes.pomodoroChange, updateData);
     const __returned__ = {
-      darkTheme: darkTheme2,
+      get theme() {
+        return theme;
+      },
+      set theme(v) {
+        theme = v;
+      },
+      lightThemeOverrides,
+      darkThemeOverrides,
       props,
       get H1Title() {
         return H1Title;
@@ -54681,7 +58124,8 @@ var PomodoroHistory_default = /* @__PURE__ */ defineComponent({
 var _hoisted_19 = { id: "historyViewContainer" };
 function render13(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createBlock($setup["NConfigProvider"], {
-    theme: $setup.darkTheme,
+    theme: $setup.theme,
+    "theme-overrides": $setup.theme.name === "light" ? $setup.lightThemeOverrides : $setup.darkThemeOverrides,
     locale: $setup.zhCN,
     "date-locale": $setup.dateZhCN,
     breakpoints: { xs: 0, s: 640, m: 1024, l: 1280, xl: 1536, xxl: 1920 }
@@ -54744,7 +58188,7 @@ function render13(_ctx, _cache, $props, $setup, $data, $options) {
       })
     ]),
     _: 1
-  }, 8, ["theme", "locale", "date-locale"]);
+  }, 8, ["theme", "theme-overrides", "locale", "date-locale"]);
 }
 
 // src/ui/PomodoroHistory.vue
@@ -56017,7 +59461,7 @@ var utils_default = {
 };
 
 // node_modules/axios/lib/core/AxiosError.js
-function AxiosError(message, code, config, request2, response) {
+function AxiosError(message, code, config, request3, response) {
   Error.call(this);
   if (Error.captureStackTrace) {
     Error.captureStackTrace(this, this.constructor);
@@ -56028,7 +59472,7 @@ function AxiosError(message, code, config, request2, response) {
   this.name = "AxiosError";
   code && (this.code = code);
   config && (this.config = config);
-  request2 && (this.request = request2);
+  request3 && (this.request = request3);
   response && (this.response = response);
 }
 utils_default.inherits(AxiosError, Error, {
@@ -56068,14 +59512,14 @@ var descriptors2 = {};
 });
 Object.defineProperties(AxiosError, descriptors2);
 Object.defineProperty(prototype, "isAxiosError", { value: true });
-AxiosError.from = (error, code, config, request2, response, customProps) => {
+AxiosError.from = (error, code, config, request3, response, customProps) => {
   const axiosError = Object.create(prototype);
   utils_default.toFlatObject(error, axiosError, function filter2(obj) {
     return obj !== Error.prototype;
   }, (prop) => {
     return prop !== "isAxiosError";
   });
-  AxiosError.call(axiosError, error.message, code, config, request2, response);
+  AxiosError.call(axiosError, error.message, code, config, request3, response);
   axiosError.cause = error;
   axiosError.name = error.name;
   customProps && Object.assign(axiosError, customProps);
@@ -56488,8 +59932,8 @@ var isURLSameOrigin_default = browser_default.isStandardBrowserEnv ? function st
 }();
 
 // node_modules/axios/lib/cancel/CanceledError.js
-function CanceledError(message, config, request2) {
-  AxiosError_default.call(this, message == null ? "canceled" : message, AxiosError_default.ERR_CANCELED, config, request2);
+function CanceledError(message, config, request3) {
+  AxiosError_default.call(this, message == null ? "canceled" : message, AxiosError_default.ERR_CANCELED, config, request3);
   this.name = "CanceledError";
 }
 utils_default.inherits(CanceledError, AxiosError_default, {
@@ -56617,17 +60061,17 @@ function AxiosHeaders(headers, defaults3) {
 }
 Object.assign(AxiosHeaders.prototype, {
   set: function(header, valueOrRewrite, rewrite) {
-    const self20 = this;
+    const self79 = this;
     function setHeader(_value, _header, _rewrite) {
       const lHeader = normalizeHeader(_header);
       if (!lHeader) {
         throw new Error("header name must be a non-empty string");
       }
-      const key = findKey2(self20, lHeader);
-      if (key && _rewrite !== true && (self20[key] === false || _rewrite === false)) {
+      const key = findKey2(self79, lHeader);
+      if (key && _rewrite !== true && (self79[key] === false || _rewrite === false)) {
         return;
       }
-      self20[key || _header] = normalizeValue(_value);
+      self79[key || _header] = normalizeValue(_value);
     }
     if (utils_default.isPlainObject(header)) {
       utils_default.forEach(header, (_value, _header) => {
@@ -56669,14 +60113,14 @@ Object.assign(AxiosHeaders.prototype, {
     return false;
   },
   delete: function(header, matcher) {
-    const self20 = this;
+    const self79 = this;
     let deleted = false;
     function deleteHeader(_header) {
       _header = normalizeHeader(_header);
       if (_header) {
-        const key = findKey2(self20, _header);
-        if (key && (!matcher || matchHeaderValue(self20, self20[key], key, matcher))) {
-          delete self20[key];
+        const key = findKey2(self79, _header);
+        if (key && (!matcher || matchHeaderValue(self79, self79[key], key, matcher))) {
+          delete self79[key];
           deleted = true;
         }
       }
@@ -56692,20 +60136,20 @@ Object.assign(AxiosHeaders.prototype, {
     return Object.keys(this).forEach(this.delete.bind(this));
   },
   normalize: function(format2) {
-    const self20 = this;
+    const self79 = this;
     const headers = {};
     utils_default.forEach(this, (value, header) => {
       const key = findKey2(headers, header);
       if (key) {
-        self20[key] = normalizeValue(value);
-        delete self20[header];
+        self79[key] = normalizeValue(value);
+        delete self79[header];
         return;
       }
       const normalized = format2 ? formatHeader(header) : String(header).trim();
       if (normalized !== header) {
-        delete self20[header];
+        delete self79[header];
       }
-      self20[normalized] = normalizeValue(value);
+      self79[normalized] = normalizeValue(value);
       headers[normalized] = true;
     });
     return this;
@@ -56825,28 +60269,28 @@ function xhrAdapter(config) {
     if (utils_default.isFormData(requestData) && browser_default.isStandardBrowserEnv) {
       requestHeaders.setContentType(false);
     }
-    let request2 = new XMLHttpRequest();
+    let request3 = new XMLHttpRequest();
     if (config.auth) {
       const username = config.auth.username || "";
       const password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : "";
       requestHeaders.set("Authorization", "Basic " + btoa(username + ":" + password));
     }
     const fullPath = buildFullPath(config.baseURL, config.url);
-    request2.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
-    request2.timeout = config.timeout;
+    request3.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+    request3.timeout = config.timeout;
     function onloadend() {
-      if (!request2) {
+      if (!request3) {
         return;
       }
-      const responseHeaders = AxiosHeaders_default.from("getAllResponseHeaders" in request2 && request2.getAllResponseHeaders());
-      const responseData = !responseType || responseType === "text" || responseType === "json" ? request2.responseText : request2.response;
+      const responseHeaders = AxiosHeaders_default.from("getAllResponseHeaders" in request3 && request3.getAllResponseHeaders());
+      const responseData = !responseType || responseType === "text" || responseType === "json" ? request3.responseText : request3.response;
       const response = {
         data: responseData,
-        status: request2.status,
-        statusText: request2.statusText,
+        status: request3.status,
+        statusText: request3.statusText,
         headers: responseHeaders,
         config,
-        request: request2
+        request: request3
       };
       settle(function _resolve2(value) {
         resolve2(value);
@@ -56855,40 +60299,40 @@ function xhrAdapter(config) {
         reject(err);
         done();
       }, response);
-      request2 = null;
+      request3 = null;
     }
-    if ("onloadend" in request2) {
-      request2.onloadend = onloadend;
+    if ("onloadend" in request3) {
+      request3.onloadend = onloadend;
     } else {
-      request2.onreadystatechange = function handleLoad() {
-        if (!request2 || request2.readyState !== 4) {
+      request3.onreadystatechange = function handleLoad() {
+        if (!request3 || request3.readyState !== 4) {
           return;
         }
-        if (request2.status === 0 && !(request2.responseURL && request2.responseURL.indexOf("file:") === 0)) {
+        if (request3.status === 0 && !(request3.responseURL && request3.responseURL.indexOf("file:") === 0)) {
           return;
         }
         setTimeout(onloadend);
       };
     }
-    request2.onabort = function handleAbort() {
-      if (!request2) {
+    request3.onabort = function handleAbort() {
+      if (!request3) {
         return;
       }
-      reject(new AxiosError_default("Request aborted", AxiosError_default.ECONNABORTED, config, request2));
-      request2 = null;
+      reject(new AxiosError_default("Request aborted", AxiosError_default.ECONNABORTED, config, request3));
+      request3 = null;
     };
-    request2.onerror = function handleError2() {
-      reject(new AxiosError_default("Network Error", AxiosError_default.ERR_NETWORK, config, request2));
-      request2 = null;
+    request3.onerror = function handleError2() {
+      reject(new AxiosError_default("Network Error", AxiosError_default.ERR_NETWORK, config, request3));
+      request3 = null;
     };
-    request2.ontimeout = function handleTimeout() {
+    request3.ontimeout = function handleTimeout() {
       let timeoutErrorMessage = config.timeout ? "timeout of " + config.timeout + "ms exceeded" : "timeout exceeded";
       const transitional2 = config.transitional || transitional_default;
       if (config.timeoutErrorMessage) {
         timeoutErrorMessage = config.timeoutErrorMessage;
       }
-      reject(new AxiosError_default(timeoutErrorMessage, transitional2.clarifyTimeoutError ? AxiosError_default.ETIMEDOUT : AxiosError_default.ECONNABORTED, config, request2));
-      request2 = null;
+      reject(new AxiosError_default(timeoutErrorMessage, transitional2.clarifyTimeoutError ? AxiosError_default.ETIMEDOUT : AxiosError_default.ECONNABORTED, config, request3));
+      request3 = null;
     };
     if (browser_default.isStandardBrowserEnv) {
       const xsrfValue = (config.withCredentials || isURLSameOrigin_default(fullPath)) && config.xsrfCookieName && cookies_default.read(config.xsrfCookieName);
@@ -56897,31 +60341,31 @@ function xhrAdapter(config) {
       }
     }
     requestData === void 0 && requestHeaders.setContentType(null);
-    if ("setRequestHeader" in request2) {
+    if ("setRequestHeader" in request3) {
       utils_default.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
-        request2.setRequestHeader(key, val);
+        request3.setRequestHeader(key, val);
       });
     }
     if (!utils_default.isUndefined(config.withCredentials)) {
-      request2.withCredentials = !!config.withCredentials;
+      request3.withCredentials = !!config.withCredentials;
     }
     if (responseType && responseType !== "json") {
-      request2.responseType = config.responseType;
+      request3.responseType = config.responseType;
     }
     if (typeof config.onDownloadProgress === "function") {
-      request2.addEventListener("progress", progressEventReducer(config.onDownloadProgress, true));
+      request3.addEventListener("progress", progressEventReducer(config.onDownloadProgress, true));
     }
-    if (typeof config.onUploadProgress === "function" && request2.upload) {
-      request2.upload.addEventListener("progress", progressEventReducer(config.onUploadProgress));
+    if (typeof config.onUploadProgress === "function" && request3.upload) {
+      request3.upload.addEventListener("progress", progressEventReducer(config.onUploadProgress));
     }
     if (config.cancelToken || config.signal) {
       onCanceled = (cancel) => {
-        if (!request2) {
+        if (!request3) {
           return;
         }
-        reject(!cancel || cancel.type ? new CanceledError_default(null, config, request2) : cancel);
-        request2.abort();
-        request2 = null;
+        reject(!cancel || cancel.type ? new CanceledError_default(null, config, request3) : cancel);
+        request3.abort();
+        request3 = null;
       };
       config.cancelToken && config.cancelToken.subscribe(onCanceled);
       if (config.signal) {
@@ -56933,7 +60377,7 @@ function xhrAdapter(config) {
       reject(new AxiosError_default("Unsupported protocol " + protocol + ":", AxiosError_default.ERR_BAD_REQUEST, config));
       return;
     }
-    request2.send(requestData || null);
+    request3.send(requestData || null);
   });
 }
 
@@ -57407,11 +60851,11 @@ var CancelToken = class {
       };
       return promise;
     };
-    executor(function cancel(message, config, request2) {
+    executor(function cancel(message, config, request3) {
       if (token.reason) {
         return;
       }
-      token.reason = new CanceledError_default(message, config, request2);
+      token.reason = new CanceledError_default(message, config, request3);
       resolvePromise(token.reason);
     });
   }
@@ -57532,7 +60976,7 @@ var createAxiosByinterceptors = (config) => {
   });
   return instance4;
 };
-var request = createAxiosByinterceptors();
+var request2 = createAxiosByinterceptors();
 function notify2(msg2, config) {
   logger_default.error(msg2);
   let auth = config.NTFY_AUTH;
@@ -57600,13 +61044,56 @@ async function getAllFiles(folders, ignorePath, ext, files) {
         const element2 = children2[index2];
         if (element2.children && element2.children.length != 0) {
           await getAllFiles(element2, ignorePath, ext, files);
-        } else if (element2.extension && element2.extension === ext) {
+        } else if (ext && ext.length > 0) {
+          console.log(ext, element2.extension, ext.contains(element2.extension));
+          if (element2.extension && ext.contains(element2.extension)) {
+            files.push(element2);
+          }
+        } else {
           files.push(element2);
         }
       }
     }
   }
   return files;
+}
+function getCleanTitle(msg2) {
+  if (msg2) {
+    return msg2.trim();
+  }
+  const count = (msg2.match(/-/g) || []).length;
+  let nameTitle = msg2;
+  if (nameTitle.length > 1) {
+    nameTitle = nameTitle.trim();
+  }
+  if (count == 0) {
+    if (msg2.includes("Untitled")) {
+      console.log("Untitled so returning empty space");
+      return " ";
+    } else {
+      console.log("No Dash so returning trimmed:", msg2);
+      return nameTitle.trim();
+    }
+  } else if (count == 1) {
+    console.log("Dash detected in:", msg2);
+    nameTitle = nameTitle.split("-").slice(1);
+    nameTitle = nameTitle[0];
+    return nameTitle.trim();
+  } else if (count > 1) {
+    const dateType = /(\d{4})([-])(\d{2})([-])(\d{2})/;
+    const isMatch = dateType.test(msg2);
+    if (isMatch && count == 2) {
+      console.log("Date detected! No other dash, return as is", msg2);
+      return nameTitle.trim();
+    } else {
+      console.log("Just front snippets with extra dash or date but also more dash", msg2);
+      nameTitle = nameTitle.split("-").slice(1);
+      nameTitle = nameTitle.join("-");
+      return nameTitle.trim();
+    }
+  } else {
+    console.log("Logic Error");
+  }
 }
 
 // src/utils/common.ts
@@ -57710,7 +61197,7 @@ async function setBanner(filepath, oldBanner, newBanner) {
 // src/utils/genBanner.ts
 var searchPicture = async (source, keyword) => {
   const res = await new Promise((resolve2, reject) => {
-    request.get(`https://api.ihave.cool/gen_image/from_keyword?origin=${source}&keyword=${keyword}`).then((res2) => {
+    request2.get(`https://api.ihave.cool/gen_image/from_keyword?origin=${source}&keyword=${keyword}`).then((res2) => {
       logger_default.log(res2);
       resolve2(res2);
     }).catch((error) => reject(error));
@@ -57719,6 +61206,15 @@ var searchPicture = async (source, keyword) => {
     return res.data;
   } else {
     return "";
+  }
+};
+var getLocalRandom = async (title, path) => {
+  const allImages = await getAllFiles(path, [], ["png", "jpg", "jpeg", "svg", "gif", "bmp", "webp"], []);
+  const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
+  if (!randomImage) {
+    return "";
+  } else {
+    return randomImage.path;
   }
 };
 
@@ -57805,6 +61301,7 @@ var EmojiWidget = class extends import_view.WidgetType {
 var emojiListPlugin = import_view.ViewPlugin.fromClass(EmojiListPlugin, pluginSpec);
 
 // src/main.ts
+var media = window.matchMedia("(prefers-color-scheme: dark)");
 var ObsidianManagerPlugin = class extends import_obsidian16.Plugin {
   constructor(app2, manifest) {
     super(app2, manifest);
@@ -58289,14 +61786,18 @@ ${todos_today.join("\n")}`;
       this.removeACheck(path || checkInDefaultPath, filename, time2, content);
     });
   }
-  async onunload() {
-    toggleBlast("0");
-    this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-    this.style.detach();
+  getLocalRandom(title, path) {
+    return getLocalRandom(title, this.app.vault.getAbstractFileByPath(path));
+  }
+  getCleanTitle(title) {
+    return getCleanTitle(title);
+  }
+  async getWeather(city) {
+    return "";
   }
   async setRandomBanner(path, origin) {
     const ignorePath = [];
-    const allFilePathNeededHandle = await getAllFiles(path, ignorePath, "md", []);
+    const allFilePathNeededHandle = await getAllFiles(path, ignorePath, ["md"], []);
     allFilePathNeededHandle.forEach(async (file) => {
       const hash = this.app.metadataCache.fileCache[file.path].hash;
       const frontmatter = this.app.metadataCache.metadataCache[hash].frontmatter;
@@ -58481,6 +61982,15 @@ ${todos_today.join("\n")}`;
     });
   }
   watchVault() {
+    const callback2 = () => {
+      if (media.matches) {
+        console.log("Dark mode act1ive");
+      } else {
+        console.log("Light mode 1active");
+      }
+    };
+    media.addEventListener("change", callback2);
+    this.register(() => media.removeEventListener("change", callback2));
     window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
     window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
     [
@@ -58497,6 +62007,11 @@ ${todos_today.join("\n")}`;
     ].forEach((eventRef) => {
       this.registerEvent(eventRef);
     });
+  }
+  async onunload() {
+    toggleBlast("0");
+    this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
+    this.style.detach();
   }
 };
 /*!
