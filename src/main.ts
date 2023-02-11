@@ -72,6 +72,7 @@ import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { Pomodoro, pomodoroSchema } from './schemas/spaces';
 import './main.scss';
 
+const media = window.matchMedia('(prefers-color-scheme: dark)');
 export default class ObsidianManagerPlugin extends Plugin {
     override app: ExtApp;
     pluginDataIO: PluginDataIO;
@@ -775,12 +776,6 @@ export default class ObsidianManagerPlugin extends Plugin {
         });
     }
 
-    override async onunload(): Promise<void> {
-        toggleBlast('0');
-        this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-        this.style.detach();
-    }
-
     public getLocalRandom(title: string, path: string) {
         return getLocalRandom(title, this.app.vault.getAbstractFileByPath(path));
     }
@@ -1070,6 +1065,19 @@ export default class ObsidianManagerPlugin extends Plugin {
     }
 
     private watchVault() {
+        // https://github.com/kepano/obsidian-system-dark-mode/blob/master/main.ts
+        // Watch for system changes to color theme
+        const callback = () => {
+            // xxx
+            if (media.matches) {
+                console.log('Dark mode act1ive');
+            } else {
+                console.log('Light mode 1active');
+            }
+        };
+        media.addEventListener('change', callback);
+        // Remove listener when we unload
+        this.register(() => media.removeEventListener('change', callback));
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
         [
@@ -1086,5 +1094,11 @@ export default class ObsidianManagerPlugin extends Plugin {
         ].forEach(eventRef => {
             this.registerEvent(eventRef);
         });
+    }
+
+    override async onunload(): Promise<void> {
+        toggleBlast('0');
+        this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
+        this.style.detach();
     }
 }

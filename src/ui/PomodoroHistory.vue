@@ -1,6 +1,7 @@
 <template>
     <n-config-provider
-        :theme="darkTheme"
+        :theme="theme"
+        :theme-overrides="theme.name === 'light' ? lightThemeOverrides : darkThemeOverrides"
         :locale="zhCN"
         :date-locale="dateZhCN"
         :breakpoints="{ xs: 0, s: 640, m: 1024, l: 1280, xl: 1536, xxl: 1920 }"
@@ -35,9 +36,9 @@
 
 <script setup lang="tsx">
 import { Ref, nextTick, onMounted, onUpdated, ref, toRefs } from 'vue';
-import { NConfigProvider, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
+import { NConfigProvider, GlobalThemeOverrides, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
 // theme
-import { createTheme, datePickerDark, inputDark } from 'naive-ui';
+import { createTheme, darkTheme, lightTheme, datePickerDark, inputDark } from 'naive-ui';
 // locale & dateLocale
 import { dateZhCN, zhCN } from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
@@ -54,7 +55,23 @@ import { selectDB } from '../utils/db/db';
 import type ObsidianManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 
-const darkTheme = createTheme([inputDark, datePickerDark]);
+// const darkTheme = createTheme([inputDark, datePickerDark]);
+let theme = ref(darkTheme);
+
+// TODO 需要重启窗口才能切换主题
+if(window.app.getTheme() === 'obsidian') {
+    theme.value = darkTheme;
+} else if(window.app.getTheme() === 'moonstone') {
+    theme.value = lightTheme;
+} else {
+    theme.value = lightTheme;
+}
+
+const lightThemeOverrides: GlobalThemeOverrides = {
+};
+
+const darkThemeOverrides: GlobalThemeOverrides = {
+};
 
 const props = defineProps<{
     plugin: ObsidianManagerPlugin;
@@ -72,7 +89,6 @@ const currentPomodoro: Ref<Pomodoro | null> = ref(null);
 const updateData = async (): Promise<void> => {
     history.value = (await selectDB(plugin.value.spaceDBInstance(), pomodoroDB)?.rows) || [];
     currentPomodoro.value = history.value.filter(pomodoro => pomodoro.status === 'ing')[0] || null;
-    
 };
 
 onMounted(async () => {
