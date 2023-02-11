@@ -2,6 +2,7 @@ import type { SettingModel } from 'model/settings';
 import type { Editor } from 'obsidian';
 import party from 'party-js';
 import type { DynamicSourceType } from 'party-js/lib/systems/sources';
+import t from '../i18n';
 
 let shakeTime = 0,
     shakeTimeMax = 0,
@@ -273,7 +274,7 @@ export function toggleShake(targetVal: SettingModel<boolean, boolean>) {
 }
 
 export function toggleBlast(targetEffect: string) {
-    if (Object.keys(powerMode).contains(targetEffect)) {
+    if (Object.keys(t.info.powerMode).contains(targetEffect)) {
         effect = targetEffect;
         isActive = true;
         if (!canvas) {
@@ -299,11 +300,3 @@ export function toggleBlast(targetEffect: string) {
         return;
     }
 }
-
-export const powerMode = {
-    '0': 'No Effect',
-    '1': 'Effect 1',
-    '2': 'Effect 2',
-    '3': 'Effect 3',
-    '4': 'Effect 4',
-};

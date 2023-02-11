@@ -14,8 +14,9 @@ import { DateTime, Later, Time } from 'model/time';
 import { App, PluginSettingTab, Plugin_2, TAbstractFile, TFile } from 'obsidian';
 import { getDailyNoteSettings } from 'obsidian-daily-notes-interface';
 import type { PluginDataIO } from 'data';
-import { effects, toggleCursorEffects } from 'render/CursorEffects';
-import { powerMode, toggleBlast } from 'render/Blast';
+import { toggleCursorEffects } from 'render/CursorEffects';
+import { toggleBlast } from 'render/Blast';
+import t from './i18n';
 export const TAG_RESCAN = 're-scan';
 
 class Settings {
@@ -54,12 +55,11 @@ class Settings {
         this.cursorEffectBuilder = this.settings
             .newSettingBuilder()
             .key('cursorEffect')
-            .name('Cursor Effect')
-            .desc('Select a mouse effect')
+            .name(t.setting.cursorEffect.name)
+            .desc(t.setting.cursorEffect.desc)
             .dropdown('none');
 
-        this.cursorEffectBuilder.addOption('none', 'none');
-        effects.forEach(f => this.cursorEffectBuilder.addOption(`${f}`, f));
+        Object.keys(t.info.effects).forEach(f => this.cursorEffectBuilder.addOption(`${t.info.effects[f]}`, f));
 
         this.cursorEffect = this.cursorEffectBuilder
             .onAnyValueChanged(context => {
@@ -70,11 +70,11 @@ class Settings {
         this.powerModeBuilder = this.settings
             .newSettingBuilder()
             .key('powerMode')
-            .name('Enable editor power mode')
-            .desc('Enable power mode effects?')
+            .name(t.setting.powerMode.name)
+            .desc(t.setting.powerMode.desc)
             .dropdown('0');
-        Object.keys(powerMode).forEach(f => {
-            this.powerModeBuilder.addOption(powerMode[f], f);
+        Object.keys(t.info.powerMode).forEach(f => {
+            this.powerModeBuilder.addOption(t.info.powerMode[f], f);
         });
         this.powerMode = this.powerModeBuilder
             .onAnyValueChanged(context => {
@@ -85,16 +85,16 @@ class Settings {
         this.shakeMode = this.settings
             .newSettingBuilder()
             .key('shakeMode')
-            .name('Shake Mode')
-            .desc('Enable editor shake mode?')
+            .name(t.setting.shakeMode.name)
+            .desc(t.setting.shakeMode.desc)
             .toggle(false)
             .build(new RawSerde());
 
         this.expectedTime = this.settings
             .newSettingBuilder()
             .key('expectedTime')
-            .name('Expected Time')
-            .desc('How many minutes do you want to set for a pomodoro?')
+            .name(t.setting.expectedTime.name)
+            .desc(t.setting.expectedTime.desc)
             .number(25)
             .build(new RawSerde());
 
@@ -273,13 +273,11 @@ class Settings {
             .toggle(false)
             .build(new RawSerde());
 
-        this.settings.newGroup('Beautiful Effects').addSettings(this.cursorEffect, this.powerMode, this.shakeMode);
+        this.settings.newGroup(t.setting.title.effects).addSettings(this.cursorEffect, this.powerMode, this.shakeMode);
 
-        this.settings.newGroup('Pomodoro(beta feature)').addSettings(this.expectedTime);
+        this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
 
-        this.settings.newGroup(
-            "!!!The following features are experimental!!! If you really need, recommend  you use uphy's obsidian-reminder and lumoe's obsidian-rollover-daily-todos plugin.",
-        );
+        this.settings.newGroup(t.setting.title.warning);
         this.settings
             .newGroup('Rollover TODOs')
             .addSettings(this.templateHeading, this.deleteOnComplete, this.removeEmptyTodos);

@@ -23,20 +23,6 @@ import {
     trailingCursor,
 } from 'cursor-effects';
 
-export const effects = [
-    'bubbleCursor',
-    'clockCursor',
-    'emojiCursor',
-    'fairyDustCursor',
-    'followingDotCursor',
-    'ghostCursor',
-    'rainbowCursor',
-    'snowflakeCursor',
-    'springyEmojiCursor',
-    'textFlag',
-    'trailingCursor',
-];
-
 const cursorEffects: any[] = [];
 
 function enableCursorEffect(effectName) {

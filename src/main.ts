@@ -70,6 +70,7 @@ import { DocumentDirectionSettings } from './render/DocumentDirection';
 import { emojiListPlugin } from './render/EmojiList';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { Pomodoro, pomodoroSchema } from './schemas/spaces';
+import t from './i18n';
 import './main.scss';
 
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -453,14 +454,14 @@ export default class ObsidianManagerPlugin extends Plugin {
 
     async customizeEditorMenu(menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo): Promise<void> {
         menu.addItem(item => {
-            item.setTitle('Set Random Banner For Current File')
+            item.setTitle(t.menu.setBannerForCurrent)
                 .setIcon('image')
                 .onClick(async => {
                     new ImageOriginModal(this.app, this, this.app.workspace.getActiveFile()).open();
                 });
         });
         menu.addItem(item => {
-            item.setTitle('Plan a pomodoro')
+            item.setTitle(t.menu.planPomodoro)
                 .setIcon('clock')
                 .onClick(async () => {
                     const cursorPos = editor.getCursor();
@@ -473,7 +474,7 @@ export default class ObsidianManagerPlugin extends Plugin {
                     task = task.replace('- [x] ', '');
                     task = task.replace('- [ ] ', '').trim();
                     if (!task) {
-                        task = 'Default task ' + Date.now();
+                        task = t.menu.defaultTask + Date.now();
                     }
                     this.startPomodoro(task);
                 });
@@ -517,7 +518,7 @@ export default class ObsidianManagerPlugin extends Plugin {
 
     async customizeFileMenu(menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf): Promise<void> {
         menu.addItem(item => {
-            item.setTitle('Set random banner for this path')
+            item.setTitle(t.menu.setBannerForTheFolder)
                 .setIcon('image')
                 .onClick(async () => {
                     new ImageOriginModal(this.app, this, file).open();
@@ -607,7 +608,7 @@ export default class ObsidianManagerPlugin extends Plugin {
                         this.updatePomodoro(pomodoro);
                         this.pomodoroTarget = null;
                     } else {
-                        Logger.error('更新失败', pomodoro);
+                        Logger.error('Update failed', pomodoro);
                     }
                 }
             }, 1 * 1000),
@@ -825,7 +826,7 @@ export default class ObsidianManagerPlugin extends Plugin {
     private setupCommands() {
         this.addCommand({
             id: 'awesome-brain-manager-check-in',
-            name: 'Habit Check In',
+            name: t.command['awesome-brain-manager-check-in'],
             callback: () => {
                 this.habitCheckIn();
             },
@@ -833,7 +834,7 @@ export default class ObsidianManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'awesome-brain-manager-remove-check-in',
-            name: 'Remove Habit Check In',
+            name: t.command['awesome-brain-manager-remove-check-in'],
             callback: () => {
                 this.removeHabitCheckIn();
             },
@@ -852,13 +853,13 @@ export default class ObsidianManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'awesome-brain-manager-rollover',
-            name: 'Rollover Todos Now',
+            name: t.command['awesome-brain-manager-rollover'],
             callback: () => this.rollover(undefined),
         });
 
         this.addCommand({
             id: 'awesome-brain-manager-undo',
-            name: 'Undo last rollover',
+            name: t.command['awesome-brain-manager-undo'],
             // 带条件的指令
             checkCallback: checking => {
                 // no history, don't allow undo
@@ -890,7 +891,7 @@ export default class ObsidianManagerPlugin extends Plugin {
 
     getDocumentDirection() {
         const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-        if (!view) return 'unknown';
+        if (!view) return t.info.unknown;
         const rtlEditors = view.contentEl.getElementsByClassName('is-rtl');
         if (rtlEditors.length > 0) return 'rtl';
         else return 'ltr';
@@ -1047,7 +1048,7 @@ export default class ObsidianManagerPlugin extends Plugin {
             const menu = new Menu();
             menu.addItem(item =>
                 item
-                    .setTitle('Show pomodoro history')
+                    .setTitle(t.menu.showPomodoroHistory)
                     .setIcon('alarm-clock')
                     .onClick(async () => {
                         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
@@ -1068,11 +1069,11 @@ export default class ObsidianManagerPlugin extends Plugin {
         // https://github.com/kepano/obsidian-system-dark-mode/blob/master/main.ts
         // Watch for system changes to color theme
         const callback = () => {
-            // xxx
+            // 监听主题跟随系统变化
             if (media.matches) {
-                console.log('Dark mode act1ive');
+                Logger.log('Dark mode active');
             } else {
-                console.log('Light mode 1active');
+                Logger.log('Light mode active');
             }
         };
         media.addEventListener('change', callback);

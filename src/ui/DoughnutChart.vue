@@ -5,11 +5,10 @@
 </template>
 
 <script setup lang="tsx">
-import { Ref, onMounted, onUpdated, ref, toRefs, nextTick } from 'vue';
+import { onMounted, onUpdated, ref, toRefs } from 'vue';
 import Chart, { ChartItem } from 'chart.js/auto';
-import { getTheDay } from '../utils/constants';
-
 import type { Pomodoro } from '../schemas/spaces';
+import t from '../i18n';
 
 const props = defineProps<{
     allPomodoro: Pomodoro[];
@@ -20,12 +19,10 @@ const doughnutChart = ref(null);
 let labels: string[] = [];
 let dateSet: number[] = [];
 const setDataSet = (raw: Pomodoro[]) => {
-    // const theDay = getTheDay();
-    // const data = raw.filter(pomodoro => pomodoro.start.startsWith(theDay));
-    const res = { 'No Tags': 0 };
+    const res = { [t.info.noTag]: 0 };
     raw.forEach(pomodoro => {
         if (!pomodoro.tags) {
-            res['No Tags']++;
+            res[t.info.noTag]++;
         } else {
             pomodoro.tags?.split(',').forEach(tag => {
                 if (res[tag] == undefined) {
@@ -48,7 +45,7 @@ onMounted(async () => {
         labels,
         datasets: [
             {
-                label: '专注类型',
+                label: t.info.taskType,
                 backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',

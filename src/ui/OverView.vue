@@ -1,22 +1,22 @@
 <template>
     <n-grid cols="1 320:2 640:4" responsive="self">
         <n-grid-item>
-            <n-card title="今日番茄" content-style="font-size: 16px;">{{
+            <n-card :title="t.info.todayNum" content-style="font-size: 16px;">{{
                 countPomodoro(allPomodoro, 'todayNum')
             }}</n-card>
         </n-grid-item>
         <n-grid-item>
-            <n-card title="今日专注时长" content-style="font-size: 16px;">{{
+            <n-card :title="t.info.todayTime" content-style="font-size: 16px;">{{
                 countPomodoro(allPomodoro, 'todayTime')
             }}</n-card>
         </n-grid-item>
         <n-grid-item>
-            <n-card title="总番茄" content-style="font-size: 16px;">{{
+            <n-card :title="t.info.totalNum" content-style="font-size: 16px;">{{
                 countPomodoro(allPomodoro, 'totalNum')
             }}</n-card>
         </n-grid-item>
         <n-grid-item>
-            <n-card title="总专注时长" content-style="font-size: 16px;">{{
+            <n-card :title="t.info.totalTime" content-style="font-size: 16px;">{{
                 countPomodoro(allPomodoro, 'totalTime')
             }}</n-card>
         </n-grid-item>
@@ -29,6 +29,7 @@ import { toRefs } from 'vue';
 import moment from 'moment';
 import { getTheDay } from '../utils/constants';
 import type { Pomodoro } from '../schemas/spaces';
+import t from '../i18n';
 
 const props = defineProps<{
     allPomodoro: Pomodoro[];

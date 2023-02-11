@@ -44,7 +44,7 @@
                 </template>
             </n-timeline-item>
         </n-timeline>
-        <n-empty v-else :description="'暂无时间线内容'">
+        <n-empty v-else :description="t.info.noTimeLine">
             <template #icon>
                 <n-icon>
                     <airplane />
@@ -57,14 +57,13 @@
 <script setup lang="ts">
 import { NDropdown, NEmpty, NIcon, NSpace, NTag, NTimeline, NTimelineItem, useMessage } from 'naive-ui';
 import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
-import { onUpdated, ref, toRefs } from 'vue';
+import { onUpdated, toRefs } from 'vue';
 import moment from 'moment';
-import { deleteFromDB, saveDBAndKeepAlive, updateDBConditionally } from '../utils/db/db';
 import type ObsidianManagerPlugin from '../main';
-import { Pomodoro, pomodoroSchema } from '../schemas/spaces';
-import { eventTypes } from '../types/types';
+import { Pomodoro } from '../schemas/spaces';
 import { PomodoroStatus } from '../utils/promotodo';
-import { pomodoroDB } from '../utils/constants';
+import t from '../i18n';
+
 const props = defineProps<{
     pomodoroList: Pomodoro[];
     plugin: ObsidianManagerPlugin;
@@ -77,28 +76,28 @@ const message = useMessage();
 const getOptions = currentStatus => {
     return [
         {
-            label: '▶️开始专注',
+            label: t.info.startTask,
             key: 'ing',
             show: !['done', 'cancelled', 'ing'].contains(currentStatus),
         },
         {
-            label: '⏸️暂停任务',
+            label: t.info.stopTask,
             key: 'break',
             show: !['done', 'cancelled', 'todo', 'break'].contains(currentStatus),
         },
         {
-            label: '✅完成任务',
+            label: t.info.finishTask,
             key: 'done',
             show: !['done', 'cancelled', 'todo', 'break'].contains(currentStatus),
         },
         {
-            label: '🔴放弃任务',
+            label: t.info.cancelTask,
             key: 'cancelled',
             show: !['done', 'cancelled'].contains(currentStatus),
         },
 
         {
-            label: '❗删除记录',
+            label: t.info.deleteTask,
             key: 'deleted',
         },
     ];
@@ -112,7 +111,7 @@ const handleSelect = (
         if (targetStatus == 'ing') {
             const ingPomodoro = pomodoroList.value.find(item => item.status === 'ing');
             if (ingPomodoro) {
-                message.error(`请先处理任务：${ingPomodoro.task}`);
+                message.error(`${t.info.handleThisFirst + ingPomodoro.task}`);
                 return;
             }
         }

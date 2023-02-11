@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { NEllipsis, NList, NListItem, NTooltip } from 'naive-ui';
+import { NEllipsis, NList, NListItem } from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
 import { colorSchema } from '../utils/constants';
 

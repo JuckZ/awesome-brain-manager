@@ -1,6 +1,7 @@
 import type ObsidianManagerPlugin from 'main';
 import { App, FuzzySuggestModal, Modal, Notice, Setting, SuggestModal, TAbstractFile } from 'obsidian';
 import type { Pomodoro } from 'schemas/spaces';
+import t from '../../i18n';
 
 interface Book {
     title: string;
@@ -90,7 +91,7 @@ export class PomodoroReminderModal extends Modal {
     onOpen() {
         const { contentEl } = this;
 
-        contentEl.createEl('h2', { text: '完成：' + this.pomodoro.task });
+        contentEl.createEl('h2', { text: t.info.done + this.pomodoro.task });
     }
 
     onClose() {

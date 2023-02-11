@@ -14,7 +14,7 @@
             >
                 <div class="radialTimeText">{{ time }}</div>
             </RadialProgress>
-            <n-result v-else status="418" title="无正在专注的任务" description="休息一下吧"> </n-result>
+            <n-result v-else status="418" :title="t.info.noDoingTask" :description="t.info.haveABreak"> </n-result>
         </n-space>
     </div>
 </template>
@@ -25,6 +25,7 @@ import { Ref, onMounted, onUnmounted, ref, toRefs } from 'vue';
 import { NResult, NSpace } from 'naive-ui';
 import moment from 'moment';
 import type { Pomodoro } from '../schemas/spaces';
+import t from '../i18n';
 
 const props = defineProps<{
     currentPomodoro: Pomodoro | null;

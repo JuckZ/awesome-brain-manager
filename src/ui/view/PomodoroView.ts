@@ -2,6 +2,7 @@ import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { App as VueApp, createApp } from 'vue';
 import type ObsidianManagerPlugin from 'main';
 import Title from '../Title';
+import t from '../../i18n';
 
 export const POMODORO_VIEW = 'pomodoro-view';
 
@@ -20,7 +21,7 @@ export class PomodoroView extends ItemView {
     }
 
     getDisplayText(): string {
-        return 'Pomodoro View';
+        return t.info.Pomodoro;
     }
 
     getIcon(): string {

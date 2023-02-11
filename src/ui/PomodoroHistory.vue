@@ -35,13 +35,10 @@
 </template>
 
 <script setup lang="tsx">
-import { Ref, nextTick, onMounted, onUpdated, ref, toRefs } from 'vue';
+import { Ref, onMounted, ref, toRefs } from 'vue';
 import { NConfigProvider, GlobalThemeOverrides, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
-// theme
 import { createTheme, darkTheme, lightTheme, zhCN, dateZhCN, enUS, dateEnUS, datePickerDark, inputDark } from 'naive-ui';
-// locale & dateLocale
 import type { Pomodoro } from '../schemas/spaces';
-import type { DBRows } from '../types/mdb';
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
 import ClockView from './ClockView.vue';
