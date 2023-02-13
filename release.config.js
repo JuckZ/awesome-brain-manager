@@ -14,6 +14,12 @@ module.exports = {
         '@semantic-release/changelog',
         '@semantic-release/npm',
         [
+            '@semantic-release/exec',
+            {
+                publishCmd: 'zip ${nextRelease.version}-dist.zip -r dest',
+            },
+        ],
+        [
             '@semantic-release/git',
             {
                 assets: [
@@ -24,6 +30,7 @@ module.exports = {
                     'versions.json',
                     'dest/styles.css',
                     'dest/main.js',
+                    '${nextRelease.version}-dist.zip',
                 ],
                 message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
             },
@@ -39,6 +46,7 @@ module.exports = {
                     { path: 'versions.json', label: 'versions.json' },
                     { path: 'dest/styles.css', label: 'styles.css' },
                     { path: 'dest/main.js', label: 'main.js' },
+                    { path: '${nextRelease.version}-dist.zip', label: '${nextRelease.version}-dist.zip' },
                 ],
             },
         ],
