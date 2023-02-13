@@ -50,7 +50,7 @@ It's not too long now. Just finish reading.🤣
 - 🔐 支持 obsidian 的核心价值观，没有隐私安全问题
 - ✈️ 将持续优化性能
 - 💪 基于Jest的覆盖率测试(将来)
-- 😁 欢迎[加入](https://github.com/JuckZ#-how-to-reach-me-)，共同开发
+- 😁 欢迎[加入](https://github.com/JuckZ#-%E5%A6%82%E4%BD%95%E8%81%94%E7%B3%BB%E6%88%91)，共同开发
 
 </details>
 
