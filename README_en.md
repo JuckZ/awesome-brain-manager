@@ -50,7 +50,7 @@ It's not too long now. Just finish reading.🤣
 - 🔐 Support the core values of obsidian without privacy and security issues
 - ✈️ Will continue to optimize performance
 - 💪 Jest-based coverage test (in the future)
-- 😁 Welcome to [join me](https://github.com/JuckZ#-how-to-reach-me-) and develop together
+- 😁 Welcome to [join me](https://github.com/JuckZ/JuckZ/blob/main/README_en.md#-how-to-reach-me) and develop together
 
 </details>
 
