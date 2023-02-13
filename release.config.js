@@ -16,7 +16,7 @@ module.exports = {
         [
             '@semantic-release/exec',
             {
-                publishCmd: 'zip release.zip -r dest',
+                publishCmd: 'cp test awesome-brain-manager -r && zip release.zip -r awesome-brain-manager',
             },
         ],
         [
