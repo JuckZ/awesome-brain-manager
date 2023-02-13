@@ -1,3 +1,11 @@
+## [1.3.3](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.2...1.3.3) (2023-02-13)
+
+
+### Bug Fixes
+
+* 1.zip rename ([e24891a](https://github.com/JuckZ/awesome-brain-manager/commit/e24891ac021de8c21b251f0758599ac0e16b103f))
+* 1.zip rename ([ad0d2b7](https://github.com/JuckZ/awesome-brain-manager/commit/ad0d2b70392894582438a7e0aa8a249e686b7bc2))
+
 ## [1.3.2](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.1...1.3.2) (2023-02-13)
 
 
