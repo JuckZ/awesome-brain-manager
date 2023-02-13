@@ -1,0 +1,59 @@
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/PomodoroListView.vue?type=style&index=0 */
+#pomodoroList {
+  background-color: none !important;
+}
+#pomodoroList .n-list-item {
+  padding: 0;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  opacity: 0.5;
+}
+#pomodoroList .n-list-item .n-list-item__main {
+  width: 0;
+  flex: 1;
+}
+
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/CalendarView.vue?type=style&index=0 */
+#calendarContainerInSelf[data-v-fa20c457] .n-calendar-header__extra .n-button-group .n-button {
+  max-width: max-content;
+}
+
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/ClockView.vue?type=style&index=0 */
+.radialTimeText[data-v-8dea1342] {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+/* sfc-style:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/PomodoroHistory.vue?type=style&index=0 */
+#historyViewContainer[data-v-81d758ef] {
+  padding: 5px 10px;
+}
+
+/* fakecss:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/components/Icon.esbuild-svelte-fake-css */
+.icon.svelte-1gcidq0 {
+  vertical-align: middle;
+}
+
+/* fakecss:/home/runner/work/awesome-brain-manager/awesome-brain-manager/src/ui/components/Reminder.esbuild-svelte-fake-css */
+main.svelte-ero3m8 {
+  padding: 1em;
+  margin: 0 auto;
+}
+.reminder-actions.svelte-ero3m8 {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.reminder-file.svelte-ero3m8 {
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.reminder-file.svelte-ero3m8:hover {
+  color: var(--text-normal);
+  text-decoration: underline;
+}
+.later-select.svelte-ero3m8 {
+  font-size: 14px;
+}
+
+/* src/main.scss */
