@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.1...1.3.2) (2023-02-13)
+
+
+### Bug Fixes
+
+* 1. add zip to release ([7ed3117](https://github.com/JuckZ/awesome-brain-manager/commit/7ed3117c4b5695b3dc78abd6eafe5b3563ff72d2))
+
 ## [1.3.1](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.0...1.3.1) (2023-02-11)
 
 
