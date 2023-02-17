@@ -119,6 +119,8 @@
     "jsonfile": "^6.1.0",
     "naive-ui": "^2.34.3",
     "obsidian-daily-notes-interface": "^0.9.4",
+    "openai": "^3.1.0",
+    "ora": "^6.1.2",
     "party-js": "^2.2.0",
     "rrule": "^2.7.1",
     "sql.js": "^1.8.0",

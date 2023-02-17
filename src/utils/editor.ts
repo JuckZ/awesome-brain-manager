@@ -1,21 +1,28 @@
 import { App, EditorPosition, MarkdownView } from 'obsidian';
 import { App as VueApp, createApp } from 'vue';
-import ObsidianManagerPlugin from 'main';
-import ChatView from '../ui/ChatView.vue';
+import AwesomeBrainManagerPlugin from 'main';
+import ChatViewContainer from '../ui/ChatViewContainer.vue';
 
 export const elId = 'chat-pop-over';
 export const chatEl = createEl('div', {
     attr: {
         id: elId,
-        style: 'position: relative;',
+        style: 'position: fixed;',
     },
 });
-// chatEl.style.visibility = 'hidden';
-// visible
-// TODO，动态挂载问题
-activeDocument.appendChild(chatEl);
-const chatViewVueApp = createApp(ChatView);
-chatViewVueApp.mount(`#${elId}`);
+
+export function loadChatEl() {
+    // chatEl.style.visibility = 'hidden';
+    // visible
+    document.body.appendChild(chatEl);
+    const chatViewVueApp = createApp(ChatViewContainer);
+    chatViewVueApp.mount(`#${elId}`);
+}
+
+export function unloadChatEl() {
+    document.body.removeChild(chatEl);
+}
+
 export function getEditorPositionFromIndex(content: string, index: number): EditorPosition {
     const substr = content.substr(0, index);
 
@@ -43,14 +50,15 @@ export function getModestate(app: App) {
 }
 
 export function changeChatPopover(app: App, e: MouseEvent) {
-    let cursor = getCoords(app.workspace.activeEditor?.editor);
-    console.log(cursor);
+    const editor = app.workspace.activeEditor?.editor;
+    if (!editor?.somethingSelected()) {
+        chatEl.toggleVisibility(false);
+        return;
+    }
+    chatEl.toggleVisibility(true);
+    const cursor = getCoords(editor);
     chatEl.style.top = `${cursor.top}px`;
     chatEl.style.left = `${cursor.left}px`;
-    // activeDocument.append(chatEl);
-    // e.targetNode?.appendChild(chatEl);
-    const parent = app.workspace.activeLeaf.view.containerEl.querySelector('.markdown-source-view');
-    parent?.insertAdjacentElement('beforebegin', chatEl);
 }
 
 export const getCoords = (editor: any) => {

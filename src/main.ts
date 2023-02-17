@@ -55,7 +55,7 @@ import {
     updateDBConditionally,
 } from 'utils/db/db';
 import { insertAfterHandler, setBanner } from 'utils/content';
-import { changeChatPopover, getEditorPositionFromIndex } from 'utils/editor';
+import { changeChatPopover, getEditorPositionFromIndex, loadChatEl, unloadChatEl } from 'utils/editor';
 import { getLocalRandom, searchPicture } from 'utils/genBanner';
 import { loadSQL } from 'utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from 'utils/promotodo';
@@ -77,7 +77,7 @@ import t from './i18n';
 import './main.scss';
 
 const media = window.matchMedia('(prefers-color-scheme: dark)');
-export default class ObsidianManagerPlugin extends Plugin {
+export default class AwesomeBrainManagerPlugin extends Plugin {
     override app: ExtApp;
     pluginDataIO: PluginDataIO;
     public docDirSettings = new DocumentDirectionSettings();
@@ -333,7 +333,7 @@ export default class ObsidianManagerPlugin extends Plugin {
         /*** Next, if it is a valid daily note, but we don't have daily notes enabled, we must alert the user ***/
         if (!this.isDailyNotesEnabled()) {
             new Notice(
-                'ObsidianManagerPlugin unable to rollover unfinished todos: Please enable Daily Notes, or Periodic Notes (with daily notes enabled).',
+                'AwesomeBrainManagerPlugin unable to rollover unfinished todos: Please enable Daily Notes, or Periodic Notes (with daily notes enabled).',
                 10000,
             );
         } else {
@@ -528,8 +528,8 @@ export default class ObsidianManagerPlugin extends Plugin {
         //     Logger.log(`Unable to find text "${clipboardText}" in current editor`);
         // } else {
         //     const end = start + clipboardText.length;
-        //     const startPos = ObsidianManagerPlugin.getEditorPositionFromIndex(text, start);
-        //     const endPos = ObsidianManagerPlugin.getEditorPositionFromIndex(text, end);
+        //     const startPos = AwesomeBrainManagerPlugin.getEditorPositionFromIndex(text, start);
+        //     const endPos = AwesomeBrainManagerPlugin.getEditorPositionFromIndex(text, end);
         //     editor.replaceRange(newLine, startPos, endPos);
         //     return;
         // }
@@ -1026,6 +1026,7 @@ export default class ObsidianManagerPlugin extends Plugin {
     }
 
     private setupUI() {
+        loadChatEl();
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
         });
@@ -1120,6 +1121,7 @@ export default class ObsidianManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
+        unloadChatEl();
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();

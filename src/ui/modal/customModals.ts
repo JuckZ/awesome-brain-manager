@@ -1,4 +1,4 @@
-import type ObsidianManagerPlugin from 'main';
+import type AwesomeBrainManagerPlugin from 'main';
 import { App, FuzzySuggestModal, Modal, Notice, Setting, SuggestModal, TAbstractFile } from 'obsidian';
 import type { Pomodoro } from 'schemas/spaces';
 import t from '../../i18n';
@@ -41,9 +41,9 @@ const ALL_BOOKS = [
 
 export class ImageOriginModal extends FuzzySuggestModal<ImageOrigin> {
     selectedPath: TAbstractFile | null;
-    plugin: ObsidianManagerPlugin;
+    plugin: AwesomeBrainManagerPlugin;
 
-    constructor(app: App, plugin: ObsidianManagerPlugin, path: TAbstractFile | null) {
+    constructor(app: App, plugin: AwesomeBrainManagerPlugin, path: TAbstractFile | null) {
         super(app);
         this.plugin = plugin;
         this.selectedPath = path;

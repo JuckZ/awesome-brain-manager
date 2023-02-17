@@ -2,7 +2,7 @@ import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { App as VueApp, createApp } from 'vue';
 import { selectDB } from 'utils/db/db';
 import type { Ledger } from 'schemas/spaces';
-import type ObsidianManagerPlugin from 'main';
+import type AwesomeBrainManagerPlugin from 'main';
 import { eventTypes } from 'types/types';
 import type { DBRows } from 'types/mdb';
 import PomodoroHistory from '../PomodoroHistory.vue';
@@ -11,10 +11,10 @@ export const Ledger_HISTORY_VIEW = 'Ledger-history-view';
 
 export class LedgerHistoryView extends ItemView {
     vueapp: VueApp;
-    plugin: ObsidianManagerPlugin;
+    plugin: AwesomeBrainManagerPlugin;
     hoverPopover: HoverPopover | null;
 
-    constructor(leaf: WorkspaceLeaf, plugin: ObsidianManagerPlugin) {
+    constructor(leaf: WorkspaceLeaf, plugin: AwesomeBrainManagerPlugin) {
         super(leaf);
         this.plugin = plugin;
     }

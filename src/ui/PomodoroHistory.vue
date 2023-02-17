@@ -48,7 +48,7 @@ import DoughnutChart from './DoughnutChart.vue';
 import LineChart from './LineChart.vue';
 import { pomodoroDB } from '../utils/constants';
 import { selectDB } from '../utils/db/db';
-import type ObsidianManagerPlugin from '../main';
+import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 
 // const darkTheme = createTheme([inputDark, datePickerDark]);
@@ -83,7 +83,7 @@ const darkThemeOverrides: GlobalThemeOverrides = {
 };
 
 const props = defineProps<{
-    plugin: ObsidianManagerPlugin;
+    plugin: AwesomeBrainManagerPlugin;
 }>();
 
 let H1Title = () => (

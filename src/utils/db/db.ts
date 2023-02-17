@@ -1,5 +1,5 @@
 import { dispatchDatabaseFileChanged } from 'dispatch/mdb';
-import type ObsidianManagerPlugin from 'main';
+import type AwesomeBrainManagerPlugin from 'main';
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 import type { Database, QueryExecResult, SqlJsStatic } from 'sql.js';
 import type { DBTable, DBTables } from 'types/mdb';
@@ -205,7 +205,7 @@ export const replaceDB = (db: Database, tables: DBTables) => {
     }
 };
 
-export const saveDBToPath = async (plugin: ObsidianManagerPlugin, path: string, tables: DBTables): Promise<boolean> => {
+export const saveDBToPath = async (plugin: AwesomeBrainManagerPlugin, path: string, tables: DBTables): Promise<boolean> => {
     const sqlJS = await plugin.sqlJS();
     //rewrite the entire table, useful for storing ranks and col order, not good for performance
     const db = await getDB(sqlJS, path);

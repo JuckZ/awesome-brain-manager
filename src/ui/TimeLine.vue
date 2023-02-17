@@ -59,14 +59,14 @@ import { NDropdown, NEmpty, NIcon, NSpace, NTag, NTimeline, NTimelineItem, useMe
 import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { onUpdated, toRefs } from 'vue';
 import moment from 'moment';
-import type ObsidianManagerPlugin from '../main';
+import type AwesomeBrainManagerPlugin from '../main';
 import { Pomodoro } from '../schemas/spaces';
 import { PomodoroStatus } from '../utils/promotodo';
 import t from '../i18n';
 
 const props = defineProps<{
     pomodoroList: Pomodoro[];
-    plugin: ObsidianManagerPlugin;
+    plugin: AwesomeBrainManagerPlugin;
 }>();
 
 const { pomodoroList, plugin } = toRefs(props);

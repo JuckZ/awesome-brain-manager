@@ -1,4 +1,4 @@
-import type ObsidianManagerPlugin from 'main';
+import type AwesomeBrainManagerPlugin from 'main';
 import { VaultItem, vaultSchema } from 'schemas/spaces';
 import { SpaceChange, eventTypes } from 'types/types';
 import { deleteFromDB, execQuery, insertIntoDB, updateDB } from 'utils/db/db';
@@ -14,7 +14,7 @@ export const dispatchSpaceDatabaseFileChanged = (type: SpaceChange) => {
     window.dispatchEvent(evt);
 };
 
-export const onFileCreated = async (plugin: ObsidianManagerPlugin, newPath: string, folder: boolean) => {
+export const onFileCreated = async (plugin: AwesomeBrainManagerPlugin, newPath: string, folder: boolean) => {
     const parent = getAbstractFileAtPath(app, newPath)?.parent?.path;
     const db = plugin.spaceDBInstance();
     insertIntoDB(db, {
@@ -34,7 +34,7 @@ export const onFileCreated = async (plugin: ObsidianManagerPlugin, newPath: stri
     dispatchSpaceDatabaseFileChanged('vault');
 };
 
-export const onFileDeleted = (plugin: ObsidianManagerPlugin, oldPath: string) => {
+export const onFileDeleted = (plugin: AwesomeBrainManagerPlugin, oldPath: string) => {
     const db = plugin.spaceDBInstance();
     deleteFromDB(db, 'vault', `path = '${sanitizeSQLStatement(oldPath)}'`);
     deleteFromDB(db, 'spaceItems', `path = '${sanitizeSQLStatement(oldPath)}'`);
@@ -42,7 +42,7 @@ export const onFileDeleted = (plugin: ObsidianManagerPlugin, oldPath: string) =>
     dispatchSpaceDatabaseFileChanged('vault');
 };
 
-export const onFileChanged = (plugin: ObsidianManagerPlugin, oldPath: string, newPath: string) => {
+export const onFileChanged = (plugin: AwesomeBrainManagerPlugin, oldPath: string, newPath: string) => {
     const newFolderPath = getFolderPathFromString(newPath);
     const db = plugin.spaceDBInstance();
     updateDB(
@@ -73,7 +73,7 @@ export const onFileChanged = (plugin: ObsidianManagerPlugin, oldPath: string, ne
     dispatchSpaceDatabaseFileChanged('vault');
 };
 
-export const onFolderChanged = (plugin: ObsidianManagerPlugin, oldPath: string, newPath: string) => {
+export const onFolderChanged = (plugin: AwesomeBrainManagerPlugin, oldPath: string, newPath: string) => {
     const newFolderPath = getFolderFromPath(app, newPath)?.parent.path;
     const db = plugin.spaceDBInstance();
     updateDB(
@@ -116,7 +116,7 @@ export const onFolderChanged = (plugin: ObsidianManagerPlugin, oldPath: string, 
     dispatchSpaceDatabaseFileChanged('vault');
 };
 
-export const onFolderDeleted = (plugin: ObsidianManagerPlugin, oldPath: string) => {
+export const onFolderDeleted = (plugin: AwesomeBrainManagerPlugin, oldPath: string) => {
     const db = plugin.spaceDBInstance();
     deleteFromDB(
         db,
