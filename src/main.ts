@@ -20,6 +20,7 @@ import {
     debounce,
     setIcon,
 } from 'obsidian';
+import { session } from 'electron';
 import moment from 'moment';
 import type { ExtApp, ExtTFile } from 'types';
 import { EditDetector, OneDay, Tag, UndoHistoryInstance } from 'types';
@@ -33,6 +34,8 @@ import { DATE_TIME_FORMATTER } from 'model/time';
 import { monkeyPatchConsole } from 'obsidian-hack/obsidian-debug-mobile';
 import { ImageOriginModal, PomodoroReminderModal } from 'ui/modal/customModals';
 import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from 'ui/view/PomodoroHistoryView';
+import { ChatModal } from 'ui/modal/ChatModal';
+import { CHAT_VIEW, ChartView } from 'ui/view/ChatView';
 import { codeEmoji } from 'render/Emoji';
 import { toggleCursorEffects } from 'render/CursorEffects';
 import { buildTagRules } from 'render/Tag';
@@ -52,7 +55,7 @@ import {
     updateDBConditionally,
 } from 'utils/db/db';
 import { insertAfterHandler, setBanner } from 'utils/content';
-import { getEditorPositionFromIndex } from 'utils/editor';
+import { changeChatPopover, getEditorPositionFromIndex } from 'utils/editor';
 import { getLocalRandom, searchPicture } from 'utils/genBanner';
 import { loadSQL } from 'utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from 'utils/promotodo';
@@ -456,8 +459,24 @@ export default class ObsidianManagerPlugin extends Plugin {
         menu.addItem(item => {
             item.setTitle(t.menu.setBannerForCurrent)
                 .setIcon('image')
-                .onClick(async => {
+                .onClick(async () => {
                     new ImageOriginModal(this.app, this, this.app.workspace.getActiveFile()).open();
+                });
+        });
+        menu.addItem(item => {
+            item.setTitle('百度一下')
+                .setIcon('image')
+                .onClick(async () => {
+                    window.open(`https://baidu.com/s?wd=${editor.getSelection()}`);
+                });
+        });
+        menu.addItem(item => {
+            item.setTitle('查看cookie')
+                .setIcon('image')
+                .onClick(async () => {
+                    // window.haha = session.defaultSession.cookies;
+                    // console.log(session);
+                    new ChatModal(this.app).open();
                 });
         });
         menu.addItem(item => {
@@ -1079,6 +1098,9 @@ export default class ObsidianManagerPlugin extends Plugin {
         media.addEventListener('change', callback);
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
+        this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
+            changeChatPopover(this.app, e);
+        });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
         [

@@ -59,6 +59,7 @@ export default {
             '4': 'HeartBeat',
         },
         Pomodoro: 'Pomodoro',
+        Chat: 'Chat',
         'Awesome Brain Manager': 'Awesome Brain Manager',
         unknown: 'unknown',
         ltr: 'LTR',
