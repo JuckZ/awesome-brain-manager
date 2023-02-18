@@ -20,31 +20,33 @@ import {
     debounce,
     setIcon,
 } from 'obsidian';
-import { session } from 'electron';
 import moment from 'moment';
-import type { ExtApp, ExtTFile } from 'types';
-import { EditDetector, OneDay, Tag, UndoHistoryInstance } from 'types';
-import { eventTypes } from 'types/types';
+import { EditDetector, OneDay, Tag, UndoHistoryInstance } from './types';
 import { getAllDailyNotes, getDailyNote, getDailyNoteSettings } from 'obsidian-daily-notes-interface';
-import { RemindersController } from 'controller';
-import { PluginDataIO } from 'data';
-import { Reminder, Reminders } from 'model/reminder';
-import { ReminderSettingTab, SETTINGS } from 'settings';
-import { DATE_TIME_FORMATTER } from 'model/time';
-import { monkeyPatchConsole } from 'obsidian-hack/obsidian-debug-mobile';
-import { ImageOriginModal, PomodoroReminderModal } from 'ui/modal/customModals';
-import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from 'ui/view/PomodoroHistoryView';
-import { ChatModal } from 'ui/modal/ChatModal';
-import { CHAT_VIEW, ChartView } from 'ui/view/ChatView';
-import { codeEmoji } from 'render/Emoji';
-import { toggleCursorEffects } from 'render/CursorEffects';
-import { buildTagRules } from 'render/Tag';
-import { ReminderModal } from 'ui/reminder';
-import Logger, { initLogger } from 'utils/logger';
-import { notify } from 'utils/request';
-import { getAllFiles, getCleanTitle, getNotePath } from 'utils/file';
-import { getWeather } from 'utils/weather';
-import { getTagsFromTask, getTaskContentFromTask } from 'utils/common';
+import type { Database } from 'sql.js';
+import type { EditorState } from '@codemirror/state';
+import { lineNumbers } from '@codemirror/view';
+import {
+    MAX_TIME_SINCE_CREATION,
+    checkInDefaultPath,
+    checkInList,
+    customSnippetPath,
+    pomodoroDB,
+} from './utils/constants';
+import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
+import { ImageOriginModal, PomodoroReminderModal } from './ui/modal/customModals';
+import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
+import { ChatModal } from './ui/modal/ChatModal';
+import { CHAT_VIEW, ChartView } from './ui/view/ChatView';
+import { codeEmoji } from './render/Emoji';
+import { toggleCursorEffects } from './render/CursorEffects';
+import { buildTagRules } from './render/Tag';
+import { ReminderModal } from './ui/reminder';
+import Logger, { initLogger } from './utils/logger';
+import { notify } from './utils/request';
+import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
+import { getWeather } from './utils/weather';
+import { getTagsFromTask, getTaskContentFromTask } from './utils/common';
 import {
     dbResultsToDBTables,
     deleteFromDB,
@@ -53,22 +55,19 @@ import {
     saveDBAndKeepAlive,
     selectDB,
     updateDBConditionally,
-} from 'utils/db/db';
-import { insertAfterHandler, setBanner } from 'utils/content';
-import { changeChatPopover, getEditorPositionFromIndex, loadChatEl, unloadChatEl } from 'utils/editor';
-import { getLocalRandom, searchPicture } from 'utils/genBanner';
-import { loadSQL } from 'utils/db/sqljs';
-import { PomodoroStatus, initiateDB } from 'utils/promotodo';
-import type { Database } from 'sql.js';
-import {
-    MAX_TIME_SINCE_CREATION,
-    checkInDefaultPath,
-    checkInList,
-    customSnippetPath,
-    pomodoroDB,
-} from 'utils/constants';
-import type { EditorState } from '@codemirror/state';
-import { lineNumbers } from '@codemirror/view';
+} from './utils/db/db';
+import { insertAfterHandler, setBanner } from './utils/content';
+import { changeChatPopover, getEditorPositionFromIndex, loadChatEl, unloadChatEl } from './utils/editor';
+import { getLocalRandom, searchPicture } from './utils/genBanner';
+import { loadSQL } from './utils/db/sqljs';
+import { PomodoroStatus, initiateDB } from './utils/promotodo';
+import { DATE_TIME_FORMATTER } from './model/time';
+import { ReminderSettingTab, SETTINGS } from './settings';
+import { Reminder, Reminders } from './model/reminder';
+import { PluginDataIO } from './data';
+import { RemindersController } from './controller';
+import { eventTypes } from './types/types';
+import type { ExtApp, ExtTFile } from './types';
 import { DocumentDirectionSettings } from './render/DocumentDirection';
 import { emojiListPlugin } from './render/EmojiList';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
@@ -467,7 +466,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             item.setTitle('百度一下')
                 .setIcon('image')
                 .onClick(async () => {
-                    window.open(`https://baidu.com/s?wd=${editor.getSelection()}`);
+                    console.log(123);
+                    // Logger.info('百度');
+                    // @ts-ignore
+                    const cookies = window.electron.remote.session.defaultSession.cookies;
+                    cookies.get({ url: 'https://openai.com' }).then(cookies => {
+                        console.log(cookies);
+                    });
                 });
         });
         menu.addItem(item => {

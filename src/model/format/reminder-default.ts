@@ -1,4 +1,4 @@
-import { DATE_TIME_FORMATTER, DateTime } from 'model/time';
+import { DATE_TIME_FORMATTER, DateTime } from '../../model/time';
 import type { Todo } from './markdown';
 import { ReminderFormatParameterKey, ReminderModel, TodoBasedReminderFormat } from './reminder-base';
 

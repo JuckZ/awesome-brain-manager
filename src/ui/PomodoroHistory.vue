@@ -96,7 +96,7 @@ const history: Ref<Pomodoro[]> = ref([]);
 const currentPomodoro: Ref<Pomodoro | null> = ref(null);
 
 const updateData = async (): Promise<void> => {
-    history.value = (await selectDB(plugin.value.spaceDBInstance(), pomodoroDB)?.rows) || [];
+    history.value = (await selectDB(plugin.value.spaceDBInstance(), pomodoroDB)?.rows as Pomodoro[]) || [];
     currentPomodoro.value = history.value.filter(pomodoro => pomodoro.status === 'ing')[0] || null;
 };
 

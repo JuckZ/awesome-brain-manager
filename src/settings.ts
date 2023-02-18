@@ -1,3 +1,5 @@
+import { App, PluginSettingTab, Plugin_2, TAbstractFile, TFile } from 'obsidian';
+import { getDailyNoteSettings } from 'obsidian-daily-notes-interface';
 import {
     ReminderFormatType,
     ReminderFormatTypes,
@@ -6,16 +8,14 @@ import {
     reminderPluginReminderFormat,
     setReminderFormatConfig,
     tasksPluginReminderFormat,
-} from 'model/format';
-import { ReminderFormatConfig, ReminderFormatParameterKey } from 'model/format/reminder-base';
-import type { SettingModel } from 'model/settings';
-import { LatersSerde, RawSerde, ReminderFormatTypeSerde, SettingTabModel, TimeSerde } from 'model/settings';
-import { DateTime, Later, Time } from 'model/time';
-import { App, PluginSettingTab, Plugin_2, TAbstractFile, TFile } from 'obsidian';
-import { getDailyNoteSettings } from 'obsidian-daily-notes-interface';
-import type { PluginDataIO } from 'data';
-import { toggleCursorEffects } from 'render/CursorEffects';
-import { toggleBlast } from 'render/Blast';
+} from './model/format';
+import { ReminderFormatConfig, ReminderFormatParameterKey } from './model/format/reminder-base';
+import type { SettingModel } from './model/settings';
+import { LatersSerde, RawSerde, ReminderFormatTypeSerde, SettingTabModel, TimeSerde } from './model/settings';
+import { DateTime, Later, Time } from './model/time';
+import type { PluginDataIO } from './data';
+import { toggleCursorEffects } from './render/CursorEffects';
+import { toggleBlast } from './render/Blast';
 import t from './i18n';
 export const TAG_RESCAN = 're-scan';
 

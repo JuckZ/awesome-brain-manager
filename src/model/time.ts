@@ -1,4 +1,4 @@
-import { ConstantReference, ReadOnlyReference } from 'model/ref';
+import { ConstantReference, ReadOnlyReference } from '../model/ref';
 import moment from 'moment';
 
 export class DateTime {

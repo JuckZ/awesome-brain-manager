@@ -1,6 +1,6 @@
 import { App, EditorPosition, MarkdownView } from 'obsidian';
 import { App as VueApp, createApp } from 'vue';
-import AwesomeBrainManagerPlugin from 'main';
+import AwesomeBrainManagerPlugin from '../main';
 import ChatViewContainer from '../ui/ChatViewContainer.vue';
 
 export const elId = 'chat-pop-over';

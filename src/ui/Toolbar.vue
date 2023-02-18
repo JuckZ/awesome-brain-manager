@@ -1,24 +1,33 @@
 <template>
     <div>
-        聊天历史在这里哦1
-        <div>
-            <div @click="clickHandle('bing')">问问bing chat</div>
-            <div @click="clickHandle('openAI')">问问openAI</div>
-            <div @click="clickHandle('chatGpt')">问问chatGPT</div>
-            <div @click="clickHandle('genImageWithChatGPT')">chatGPT生成图</div>
-            <div>百度一下</div>
-            <div>Google</div>
-        </div>
+        <div @click="clickHandle('openAI')">问问openAI</div>
+        <div @click="clickHandle('chatGpt')">问问chatGPT</div>
+        <div @click="clickHandle('genImageWithChatGPT')">chatGPT生成图</div>
+        <div>百度一下</div>
+        <div>Google</div>
+        <n-tooltip placement="bottom" trigger="hover">
+            <template #trigger>
+                <n-icon size="40" @click="clickHandle('bing')">
+                    <game-controller-outline />
+                </n-icon>
+            </template>
+            <span> 问问bing chat </span>
+        </n-tooltip>
+
+        <n-icon size="40" color="#0e7a0d">
+            <game-controller />
+        </n-icon>
+        <n-icon size="40" :component="GameController" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { Ref, onMounted, onUnmounted, ref, toRefs } from 'vue';
-import { NNotificationProvider, NSpace, useNotification } from 'naive-ui';
+import { NNotificationProvider, NTooltip, NIcon, NSpace, useNotification } from 'naive-ui';
 import t from '../i18n';
 import { chatWithBing, /**chatWithChatGPT,**/ chatWithOpenAI, genImageWithChatGPT } from '../utils/ThirdPartyService';
+import { GameControllerOutline, GameController } from '@vicons/ionicons5';
 import Title from './Title';
-import moment from 'moment';
 
 const props = defineProps<{
     keyword: string;
@@ -58,7 +67,7 @@ const conversation = (owner: string, content: string) => {
     });
 };
 onMounted(async () => {
-    console.log('onMounted' + moment().format('HH:mm:ss'));
+    console.log('onMounted');
 });
 
 onUnmounted(() => {

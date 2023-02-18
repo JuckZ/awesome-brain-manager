@@ -60,7 +60,7 @@ import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { onUpdated, toRefs } from 'vue';
 import moment from 'moment';
 import type AwesomeBrainManagerPlugin from '../main';
-import { Pomodoro } from '../schemas/spaces';
+import type { Pomodoro } from '../schemas/spaces';
 import { PomodoroStatus } from '../utils/promotodo';
 import t from '../i18n';
 

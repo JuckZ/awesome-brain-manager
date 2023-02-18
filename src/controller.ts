@@ -1,7 +1,7 @@
 import { MarkdownView, TAbstractFile, TFile, Vault, WorkspaceLeaf } from 'obsidian';
 
-import { Content } from 'model/content';
-import type { Reminder, Reminders } from 'model/reminder';
+import { Content } from './model/content';
+import type { Reminder, Reminders } from './model/reminder';
 import Logger from './utils/logger';
 
 export class RemindersController {

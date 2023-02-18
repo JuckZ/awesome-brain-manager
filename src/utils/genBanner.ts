@@ -1,5 +1,5 @@
 import type { AxiosResponse } from 'axios';
-import { request } from 'utils/request';
+import { request } from '../utils/request';
 import Logger from '../utils/logger';
 import { getAllFiles } from '../utils/file';
 

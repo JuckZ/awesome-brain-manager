@@ -1,10 +1,9 @@
-import type { ReadOnlyReference } from 'model/ref';
-import type { DateTime } from 'model/time';
 import { App, Modal } from 'obsidian';
-import { SETTINGS } from 'settings';
-import electron from 'electron';
 import type { Reminder } from '../model/reminder';
 import type { Later } from '../model/time';
+import { SETTINGS } from '../settings';
+import type { DateTime } from '../model/time';
+import type { ReadOnlyReference } from '../model/ref';
 import ReminderView from './components/Reminder.svelte';
 
 export class ReminderModal {
@@ -25,7 +24,8 @@ export class ReminderModal {
             this.showBuiltinReminder(reminder, onRemindMeLater, onDone, onMute, onOpenFile);
         } else {
             // Show system notification
-            const Notification = (electron as any).remote.Notification;
+            // @ts-ignore
+            const Notification = (window.electron as any).remote.Notification;
             const n = new Notification({
                 title: 'Obsidian Reminder',
                 body: reminder.title,
@@ -85,7 +85,8 @@ export class ReminderModal {
     }
 
     private isMobile() {
-        return electron === undefined;
+        // @ts-ignore
+        return window.electron === undefined;
     }
 }
 

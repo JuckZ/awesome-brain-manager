@@ -1,7 +1,7 @@
-import type { MarkdownDocument } from 'model/format/markdown';
-import type { ReadOnlyReference } from 'model/ref';
-import { Reminder } from 'model/reminder';
-import { DateTime } from 'model/time';
+import type { MarkdownDocument } from '../../model/format/markdown';
+import type { ReadOnlyReference } from '../../model/ref';
+import { Reminder } from '../../model/reminder';
+import { DateTime } from '../../model/time';
 import Logger from '../../utils/logger';
 import { Todo } from './markdown';
 

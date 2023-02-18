@@ -1,8 +1,8 @@
-import type { MarkdownDocument, Todo } from 'model/format/markdown';
-import { DATE_TIME_FORMATTER, DateTime } from 'model/time';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import { RRule } from 'rrule';
+import { DATE_TIME_FORMATTER, DateTime } from '../../model/time';
+import type { MarkdownDocument, Todo } from '../../model/format/markdown';
 import type { ReminderEdit, ReminderModel } from './reminder-base';
 import { ReminderFormatParameterKey, TodoBasedReminderFormat } from './reminder-base';
 import { MySymbol, Tokens, splitBySymbol } from './splitter';

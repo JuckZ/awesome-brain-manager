@@ -1,6 +1,6 @@
 import { inspect } from 'util';
 import chalk from 'chalk';
-import { ConstantReference, ReadOnlyReference } from 'model/ref';
+import { ConstantReference, ReadOnlyReference } from '../model/ref';
 
 chalk.level = 3;
 let debugEnable: ReadOnlyReference<boolean> = new ConstantReference(false);
@@ -10,7 +10,7 @@ export const initLogger = (debugEnableVal: ReadOnlyReference<boolean>) => {
 };
 
 // TODO 单例模式
-const printer = (args, chalkify) => {
+const printer = (args, chalkify) => {    
     if (!debugEnable.value) {
         return;
     }
@@ -28,7 +28,9 @@ const printer = (args, chalkify) => {
 
 class Logger {
     log(...args: any) {
-        printer(args, chalk.bgCyanBright.blackBright.bold);
+        console.log('-=-=-=-');
+        console.log(chalk.bgCyanBright.blackBright.bold)
+        // printer(args, chalk.bgCyanBright.blackBright.bold);
     }
     dir(...args: any) {
         printer(args, chalk.bgBlueBright.blackBright.bold);

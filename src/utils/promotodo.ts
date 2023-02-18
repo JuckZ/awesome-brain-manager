@@ -1,3 +1,5 @@
+import moment from 'moment';
+import type { Database } from 'sql.js';
 import {
     Pomodoro,
     Space,
@@ -7,9 +9,7 @@ import {
     spaceItemsSchema,
     spaceSchema,
     vaultSchema,
-} from 'schemas/spaces';
-import moment from 'moment';
-import type { Database } from 'sql.js';
+} from '../schemas/spaces';
 import Logger from '../utils/logger';
 import { deleteFromDB, insertIntoDB, replaceDB, selectDB, updateDB } from './db/db';
 

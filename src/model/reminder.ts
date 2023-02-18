@@ -1,5 +1,5 @@
-import type { ReadOnlyReference } from 'model/ref';
-import { DateTime, Time } from 'model/time';
+import type { ReadOnlyReference } from '../model/ref';
+import { DateTime, Time } from '../model/time';
 import Logger from '../utils/logger';
 
 export class Reminder {

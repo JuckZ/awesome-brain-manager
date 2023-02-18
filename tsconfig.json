@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*.ts", "types.d.ts", "src/utils/db/sqljs.js", "src/utils/db/sqljs.js"],
+  "include": ["src/**/*.ts", "types.d.ts", "src/utils/db/sqljs.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"],
   "compilerOptions": {
     // "esModuleInterop": true,
@@ -9,8 +9,8 @@
     // "inlineSources": true,
     "module": "ESNext",
     // "module": "commonjs",
-    "esModuleInterop": true,
     "target": "ES6",
+    "esModuleInterop": true,
     "allowJs": true,
     "checkJs": false,
     "jsx": "preserve",
@@ -20,7 +20,8 @@
     "outDir": "dist",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    // "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
     "importHelpers": true,
     "isolatedModules": false,
 	  "strictNullChecks": true,
