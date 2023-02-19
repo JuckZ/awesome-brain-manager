@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, onMounted, onUnmounted, ref, toRefs, onUpdated } from 'vue';
+import { onMounted, onUnmounted, toRefs, onUpdated } from 'vue';
 import t from '../i18n';
 import Title from './Title';
 

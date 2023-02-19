@@ -1,4 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Notice } from 'obsidian';
 import Logger from './logger';
 

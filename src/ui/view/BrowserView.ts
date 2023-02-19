@@ -1,5 +1,6 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
-import { App as VueApp, createApp, Ref } from 'vue';
+import { createApp } from 'vue';
+import type { App as VueApp, Ref } from 'vue';
 import type AwesomeBrainManagerPlugin from 'main';
 import BrowserViewComp from '../BrowserView.vue';
 import t from '../../i18n';
@@ -36,7 +37,7 @@ export class BrowserView extends ItemView {
         container.createEl('div', {
             attr: {
                 id: 'awesome-brain-manager-browser-view',
-                style: 'height: 100%; width: 100%'
+                style: 'height: 100%; width: 100%',
             },
         });
         this.vueapp = createApp(BrowserViewComp, { plugin: this.plugin, url: this.url });

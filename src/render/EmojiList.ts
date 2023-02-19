@@ -9,7 +9,7 @@ import {
     WidgetType,
 } from '@codemirror/view';
 
-import { EditorState, Extension, RangeSetBuilder, StateEffect, StateField, Transaction } from '@codemirror/state';
+import { RangeSetBuilder } from '@codemirror/state';
 
 import { syntaxTree } from '@codemirror/language';
 

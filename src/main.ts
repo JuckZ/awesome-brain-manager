@@ -20,7 +20,7 @@ import {
     debounce,
     setIcon,
 } from 'obsidian';
-import { ref, Ref } from 'vue';
+import { ref } from 'vue';
 import moment from 'moment';
 import { EditDetector, OneDay, Tag, UndoHistoryInstance } from './types';
 import { getAllDailyNotes, getDailyNote, getDailyNoteSettings } from 'obsidian-daily-notes-interface';
@@ -57,12 +57,6 @@ import {
     updateDBConditionally,
 } from './utils/db/db';
 import { insertAfterHandler, setBanner } from './utils/content';
-import {
-    changeToolbarPopover,
-    getEditorPositionFromIndex,
-    loadCustomViewContainer,
-    unloadCustomViewContainer,
-} from './utils/editor';
 import { getLocalRandom, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from './utils/promotodo';
@@ -76,7 +70,8 @@ import type { ExtApp, ExtTFile } from './types';
 import { DocumentDirectionSettings } from './render/DocumentDirection';
 import { emojiListPlugin } from './render/EmojiList';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
-import { Pomodoro, pomodoroSchema } from './schemas/spaces';
+import { pomodoroSchema } from './schemas/spaces';
+import type { Pomodoro } from './schemas/spaces';
 import t from './i18n';
 import './main.scss';
 
@@ -1111,7 +1106,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             );
             menu.showAtMouseEvent(event);
         });
-        loadCustomViewContainer(this);
     }
 
     private watchVault() {
@@ -1128,9 +1122,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         media.addEventListener('change', callback);
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
-        this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
-            changeToolbarPopover(this.app, e);
-        });
+        
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
         [
@@ -1150,7 +1142,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
-        unloadCustomViewContainer();
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();

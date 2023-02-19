@@ -80,9 +80,12 @@ export default defineConfig({
                 nodeResolve({
                     // browser: true
                 }),
-                nodePolyfills(/* options */),
+                nodePolyfills({
+                    sourceMap: true,
+                }),
             ],
             output: {
+                exports: 'named',
                 assetFileNames: assetInfo => {
                     if (assetInfo.name == 'style.css') {
                         return 'styles.css';

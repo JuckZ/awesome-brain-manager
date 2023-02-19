@@ -51,5 +51,5 @@ export const genImageWithChatGPT = async (keyword) => {
         n: 1,
     });
 
-    return completion.data.data[0].url;
+    return completion.data.data[0].url || '';
 };

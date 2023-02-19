@@ -11,7 +11,7 @@ import { Ref, onMounted, onUnmounted, watchEffect, ref, toRef, onBeforeUpdate, o
 import { NNotificationProvider, NSpace, useNotification } from 'naive-ui';
 import t from '../i18n';
 import Toolbar from './Toolbar.vue';
-import AwesomeBrainManagerPlugin from '../main';
+import type AwesomeBrainManagerPlugin from '../main';
 import type { EditorState } from '../utils/editor';
 
 defineProps<{

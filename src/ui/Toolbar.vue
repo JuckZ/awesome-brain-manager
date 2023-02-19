@@ -79,7 +79,7 @@ import ScanImage from './components/icon/ScanImage.vue';
 import type { ServiceName } from '../utils/ThirdPartyService';
 import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
 import type { EditorState } from '../utils/editor';
-import AwesomeBrainManagerPlugin from '../main';
+import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 
 const props = defineProps<{

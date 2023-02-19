@@ -21,7 +21,8 @@
 
 <script setup lang="ts">
 import RadialProgress from 'vue3-radial-progress';
-import { Ref, onMounted, onUnmounted, ref, toRefs } from 'vue';
+import { onMounted, onUnmounted, ref, toRefs } from 'vue';
+import type { Ref } from 'vue';
 import { NResult, NSpace } from 'naive-ui';
 import moment from 'moment';
 import type { Pomodoro } from '../schemas/spaces';

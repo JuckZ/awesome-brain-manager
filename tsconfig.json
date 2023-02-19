@@ -34,8 +34,7 @@
     ],
     "types": [
       "node",
-      "svelte",
-      "jest"
+      "svelte"
     ]
   }
 }
