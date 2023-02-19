@@ -3,43 +3,53 @@ import { BingChat } from 'bing-chat';
 import { Configuration, OpenAIApi } from 'openai';
 import { oraPromise } from 'ora';
 
-const api = new BingChat({ cookie: 'sdaf' });
+export type ServiceName = 'Bing' | 'OpenAI' | 'ChatGPT' | 'GenImageWithChatGPT' | 'Baidu' | 'Google';
+export const ServiceNames = {
+    Bing: 'Bing',
+    OpenAI: 'OpenAI',
+    ChatGPT: 'ChatGPT',
+    GenImageWithChatGPT: 'GenImageWithChatGPT',
+    Baidu: 'Baidu',
+    Google: 'Google',
+};
+const bingChatApi = new BingChat({ cookie: 'sdaf' });
 const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY || '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',
+    apiKey: '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',
 });
 const openai = new OpenAIApi(configuration);
 // const chatGptApi = new ChatGPTAPI({
-//     apiKey: process.env.OPENAI_API_KEY || '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',
+//     apiKey: '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',
 // });
 
-export const chatWithBing = async () => {
-    const prompt = 'Write a poem about cats.';
-    const res = await oraPromise(api.sendMessage(prompt), {
-        text: prompt,
+export const chatWithBing = async (keyword) => {
+    const res = await oraPromise(bingChatApi.sendMessage(keyword), {
+        text: keyword,
     });
 
     return res.text;
 };
 
-// export const chatWithChatGPT = async () => {
-//     const res = await chatGptApi.sendMessage('Hello world');
-//     return res.text || '';
-// };
+export const chatWithChatGPT = async (keyword) => {
+    // const res = await chatGptApi.sendMessage(keyword);
+    // return res.text || '';
+    return 'No implement'
+};
 
-export const chatWithOpenAI = async () => {
+export const chatWithOpenAI = async (keyword) => {
     const completion = await openai.createCompletion({
-        model: 'text-davinci-002',
-        prompt: 'Hello world',
+        model: 'text-davinci-003',
+        prompt: keyword,
     });
 
+    console.log(completion.data.choices[0].text);
     return completion.data.choices[0].text || '';
 };
 
-export const genImageWithChatGPT = async () => {
+export const genImageWithChatGPT = async (keyword) => {
     const completion = await openai.createImage({
-        prompt: 'Hello world',
+        prompt: keyword,
         n: 1,
     });
 
-    return completion.data.data;
+    return completion.data.data[0].url;
 };

@@ -29,6 +29,7 @@ export const eventTypes = {
     mdbChange: 'mkmd-mdb-change',
     spacesChange: 'mkmd-spaces-change',
     pomodoroChange: 'awesome-brain-manager-pomodoro-change',
+    calledFunction: 'called-function',
     updateSections: 'mkmd-update-sections',
     settingsChanged: 'mkmd-settings-changed',
     spawnPortal: 'mkmd-portal-spawn',

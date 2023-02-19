@@ -30,6 +30,7 @@ class Settings {
     cursorEffect: SettingModel<string, string>;
     powerMode: SettingModel<string, string>;
     shakeMode: SettingModel<boolean, boolean>;
+    toolbar: SettingModel<boolean, boolean>;
     reminderTime: SettingModel<string, Time>;
     useSystemNotification: SettingModel<boolean, boolean>;
     laters: SettingModel<string, Array<Later>>;
@@ -96,6 +97,14 @@ class Settings {
             .name(t.setting.expectedTime.name)
             .desc(t.setting.expectedTime.desc)
             .number(25)
+            .build(new RawSerde());
+
+        this.toolbar = this.settings
+            .newSettingBuilder()
+            .key('toolbar')
+            .name(t.setting.toolbar.name)
+            .desc(t.setting.toolbar.desc)
+            .toggle(false)
             .build(new RawSerde());
 
         this.reminderTime = this.settings
@@ -276,6 +285,8 @@ class Settings {
         this.settings.newGroup(t.setting.title.effects).addSettings(this.cursorEffect, this.powerMode, this.shakeMode);
 
         this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
+
+        this.settings.newGroup(t.setting.title.toolbar).addSettings(this.toolbar);
 
         this.settings.newGroup(t.setting.title.warning);
         this.settings

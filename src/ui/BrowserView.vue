@@ -1,21 +1,17 @@
 <template>
-    <div>
-        <webview
-            id="foo"
-            src="https://openai.com/api/login/"
-            style="display: inline-flex; width: 100%; height: 100%"
-        ></webview>
-    </div>
+    <webview class="abm-webview" allowpopups :src="url" autosize="on"></webview>
 </template>
 
 <script setup lang="ts">
-import { Ref, onMounted, onUnmounted, ref, toRefs } from 'vue';
+import { Ref, onMounted, onUnmounted, ref, toRefs, onUpdated } from 'vue';
 import t from '../i18n';
 import Title from './Title';
 
 const props = defineProps<{
-    keyword: string;
+    url: string;
 }>();
+
+const { url } = toRefs(props);
 
 onMounted(async () => {
     console.log('browser onMounted');
@@ -24,13 +20,24 @@ onMounted(async () => {
 onUnmounted(() => {
     console.log('browser onUnmounted');
 });
+
+onUpdated(() => {
+    console.log(url.value);
+});
 </script>
 
 <style scoped lang="scss">
-#chatHistory {
-    position: fixed;
-    top: 50px;
-    right: 20px;
-    color: yellow;
+.abm-webview {
+    width: 100%;
+    // height: 100%;
+    border: none;
+    background-color: white;
+    background-clip: content-box;
+}
+</style>
+
+<style>
+.view-content .abm-webview {
+    height: calc(100% - 32px);
 }
 </style>

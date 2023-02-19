@@ -28,9 +28,7 @@ const printer = (args, chalkify) => {
 
 class Logger {
     log(...args: any) {
-        console.log('-=-=-=-');
-        console.log(chalk.bgCyanBright.blackBright.bold)
-        // printer(args, chalk.bgCyanBright.blackBright.bold);
+        printer(args, chalk.bgCyanBright.blackBright.bold);
     }
     dir(...args: any) {
         printer(args, chalk.bgBlueBright.blackBright.bold);

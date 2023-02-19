@@ -1,6 +1,7 @@
 import { URL, fileURLToPath } from 'node:url';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import builtins from 'builtin-modules';
 
 import vue from '@vitejs/plugin-vue';
@@ -35,6 +36,7 @@ const imports: Record<string, string> = {
     '#supports-color': 'node_modules/supports-color/index.js',
 };
 
+// @rollup/plugin-node-resolve fix the chalk import problem
 const hashPackageResolver = {
     // Use a custom rollup resolver to emulate ESM-style imports
     // mappings in vite
@@ -71,8 +73,23 @@ export default defineConfig({
             },
             formats: ['umd'],
         },
+        minify: false,
+        // sourcemap: 'inline',
         rollupOptions: {
-            plugins: [nodePolyfills(/* options */)],
+            plugins: [
+                nodeResolve({
+                    // browser: true
+                }),
+                nodePolyfills(/* options */),
+            ],
+            output: {
+                assetFileNames: assetInfo => {
+                    if (assetInfo.name == 'style.css') {
+                        return 'styles.css';
+                    }
+                    return assetInfo.name;
+                },
+            },
             external: [
                 'obsidian',
                 'electron',
@@ -129,7 +146,7 @@ export default defineConfig({
                 find: '@',
                 replacement: fileURLToPath(new URL('./src', import.meta.url)),
             },
-            hashPackageResolver,
+            // hashPackageResolver,
         ],
     },
 });

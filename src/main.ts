@@ -20,6 +20,7 @@ import {
     debounce,
     setIcon,
 } from 'obsidian';
+import { ref, Ref } from 'vue';
 import moment from 'moment';
 import { EditDetector, OneDay, Tag, UndoHistoryInstance } from './types';
 import { getAllDailyNotes, getDailyNote, getDailyNoteSettings } from 'obsidian-daily-notes-interface';
@@ -36,8 +37,7 @@ import {
 import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
 import { ImageOriginModal, PomodoroReminderModal } from './ui/modal/customModals';
 import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
-import { ChatModal } from './ui/modal/ChatModal';
-import { CHAT_VIEW, ChartView } from './ui/view/ChatView';
+import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
 import { toggleCursorEffects } from './render/CursorEffects';
 import { buildTagRules } from './render/Tag';
@@ -57,7 +57,12 @@ import {
     updateDBConditionally,
 } from './utils/db/db';
 import { insertAfterHandler, setBanner } from './utils/content';
-import { changeChatPopover, getEditorPositionFromIndex, loadChatEl, unloadChatEl } from './utils/editor';
+import {
+    changeToolbarPopover,
+    getEditorPositionFromIndex,
+    loadCustomViewContainer,
+    unloadCustomViewContainer,
+} from './utils/editor';
 import { getLocalRandom, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from './utils/promotodo';
@@ -75,6 +80,7 @@ import { Pomodoro, pomodoroSchema } from './schemas/spaces';
 import t from './i18n';
 import './main.scss';
 
+export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
 export default class AwesomeBrainManagerPlugin extends Plugin {
     override app: ExtApp;
@@ -446,8 +452,12 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         }
     }
 
+    resizeHandle = debounce(() => Logger.log('resize'), 500, true);
+
     async customizeResize(): Promise<void> {
-        // Logger.log('resize');
+        // 防抖
+        this.resizeHandle();
+        
     }
 
     async customizeClick(evt: MouseEvent): Promise<void> {
@@ -463,25 +473,22 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 });
         });
         menu.addItem(item => {
-            item.setTitle('百度一下')
-                .setIcon('image')
+            item.setTitle('Query openAI')
+                .setIcon('bot')
                 .onClick(async () => {
-                    console.log(123);
+                    const evt = new CustomEvent(eventTypes.calledFunction, {
+                        detail: {
+                            type: 'OpenAI',
+                            keyword: editor.getSelection()
+                        }
+                    });
+                    window.dispatchEvent(evt);
                     // Logger.info('百度');
                     // @ts-ignore
-                    const cookies = window.electron.remote.session.defaultSession.cookies;
-                    cookies.get({ url: 'https://openai.com' }).then(cookies => {
-                        console.log(cookies);
-                    });
-                });
-        });
-        menu.addItem(item => {
-            item.setTitle('查看cookie')
-                .setIcon('image')
-                .onClick(async () => {
-                    // window.haha = session.defaultSession.cookies;
-                    // console.log(session);
-                    new ChatModal(this.app).open();
+                    // const cookies = window.electron.remote.session.defaultSession.cookies;
+                    // cookies.get({ url: 'https://openai.com' }).then(cookies => {
+                    //     console.log(cookies);
+                    // });
                 });
         });
         menu.addItem(item => {
@@ -604,7 +611,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             }
             this.watchVault();
             // this.startPeriodicTask();
-            this.startPomodoroTask();
+            // this.startPomodoroTask();
         });
     }
 
@@ -865,13 +872,19 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
 
         this.addCommand({
-            id: 'demo show',
-            name: 'demo show',
-            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 't' }],
+            id: 'query-openai',
+            name: 'Query openAI',
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
             // 带条件的编辑器指令
             // editorCheckCallback: (checking: boolean, editor: Editor, view: MarkdownView) => {}
             editorCallback: (editor: Editor, view: MarkdownView) => {
-                this.sayHello();
+                const evt = new CustomEvent(eventTypes.calledFunction, {
+                    detail: {
+                        type: 'OpenAI',
+                        keyword: editor.getSelection()
+                    }
+                });
+                window.dispatchEvent(evt);
             },
         });
 
@@ -911,6 +924,16 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         if (this.docDirSettings.rememberPerFile && this.currentFile && this.currentFile.path) {
             this.docDirSettings.fileDirections[this.currentFile.path] = newDirection;
         }
+    }
+
+    async openBrowser(url: string) {
+        OpenUrl.value = url;
+        this.app.workspace.detachLeavesOfType(BROWSER_VIEW);
+        await this.app.workspace.getLeaf(true).setViewState({
+            type: BROWSER_VIEW,
+            active: true,
+        });
+        this.app.workspace.revealLeaf(this.app.workspace.getLeavesOfType(BROWSER_VIEW)[0] as WorkspaceLeaf);
     }
 
     getDocumentDirection() {
@@ -1031,7 +1054,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     private setupUI() {
-        loadChatEl();
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
         });
@@ -1066,6 +1088,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // 设置选项卡
         this.addSettingTab(new ReminderSettingTab(this.app, this, this.pluginDataIO));
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
+        this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
         this.addTag(new Tag('yellow', 'blue', 'juck', { name: '' }, { fontFamily: '' }));
         this.addTag(new Tag('blue', 'yellow', 'juckz', { name: '' }, { fontFamily: '' }));
         // 左侧菜单，使用自定义图标
@@ -1088,6 +1111,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             );
             menu.showAtMouseEvent(event);
         });
+        loadCustomViewContainer(this);
     }
 
     private watchVault() {
@@ -1105,7 +1129,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
-            changeChatPopover(this.app, e);
+            changeToolbarPopover(this.app, e);
         });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
@@ -1126,7 +1150,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
-        unloadChatEl();
+        unloadCustomViewContainer();
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();

@@ -29,9 +29,14 @@ export default {
             name: 'Expected Time',
             desc: 'How many minutes do you want to set for a pomodoro?',
         },
+        toolbar: {
+            name: 'Toolbar',
+            desc: 'a toolbar',
+        },
         title: {
             effects: 'Beautiful Effects',
             pomodoro: 'Pomodoro(beta feature)',
+            toolbar: 'Toolbar',
             warning:
                 "!!!The following features are experimental!!! If you really need, recommend  you use uphy's obsidian-reminder and lumoe's obsidian-rollover-daily-todos plugin.",
         },
@@ -60,6 +65,7 @@ export default {
         },
         Pomodoro: 'Pomodoro',
         Chat: 'Chat',
+        Browser: 'Browser',
         'Awesome Brain Manager': 'Awesome Brain Manager',
         unknown: 'unknown',
         ltr: 'LTR',

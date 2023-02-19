@@ -1,27 +1,29 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
-import { App as VueApp, createApp } from 'vue';
+import { App as VueApp, createApp, Ref } from 'vue';
 import type AwesomeBrainManagerPlugin from 'main';
-import Title from '../Title';
+import BrowserViewComp from '../BrowserView.vue';
 import t from '../../i18n';
 
-export const CHAT_VIEW = 'chat-view';
+export const BROWSER_VIEW = 'browser-view';
 
-export class ChartView extends ItemView {
+export class BrowserView extends ItemView {
     vueapp: VueApp;
     plugin: AwesomeBrainManagerPlugin;
+    url: Ref<string>;
     hoverPopover: HoverPopover | null;
 
-    constructor(leaf: WorkspaceLeaf, plugin: AwesomeBrainManagerPlugin) {
+    constructor(leaf: WorkspaceLeaf, plugin: AwesomeBrainManagerPlugin, url: Ref<string>) {
         super(leaf);
         this.plugin = plugin;
+        this.url = url;
     }
 
     getViewType() {
-        return CHAT_VIEW;
+        return BROWSER_VIEW;
     }
 
     getDisplayText(): string {
-        return t.info.Chat;
+        return t.info.Browser;
     }
 
     getIcon(): string {
@@ -33,12 +35,12 @@ export class ChartView extends ItemView {
         container.empty();
         container.createEl('div', {
             attr: {
-                id: 'awesome-brain-manager-chat-view',
-                style: 'color: yellow',
+                id: 'awesome-brain-manager-browser-view',
+                style: 'height: 100%; width: 100%'
             },
         });
-        this.vueapp = createApp(Title, { plugin: this.plugin });
-        this.vueapp.mount('#awesome-brain-manager-chat-view');
+        this.vueapp = createApp(BrowserViewComp, { plugin: this.plugin, url: this.url });
+        this.vueapp.mount('#awesome-brain-manager-browser-view');
     }
 
     async onClose() {
