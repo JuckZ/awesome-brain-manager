@@ -1,3 +1,6 @@
+import type { MarkdownPostProcessorContext } from 'obsidian';
+import { createApp, VueApp } from 'vue/dist/vue.esm-bundler.js';
+import Title from '../ui/Title';
 import Logger from '../utils/logger';
 
 interface MContent {
@@ -167,4 +170,25 @@ export function insertSvgImage(el: HTMLElement, image: string) {
     }
 
     el.insertAdjacentHTML('beforeend', svg.documentElement.outerHTML);
+}
+
+export function registerVueComponent(vueApp: VueApp) {
+    // TODO 扫描并注册某个文件夹下所有的组件
+    vueApp.component('Title', Title);
+}
+
+export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {
+    const vueApp = createApp({
+        data() {
+            return {
+                message: `ignore this place`,
+            };
+        },
+        template: source,
+    });
+    // TODO 优化方向1，根据source进行有选择的注入组件，而非全部注入；优化方向2：只使用一个实例，通过定位等方式在不同元素上使用是否可行
+    registerVueComponent(vueApp);
+    const container = document.createElement('span');
+    vueApp.mount(container);
+    el.replaceChildren(container);
 }

@@ -3,7 +3,7 @@ import { debounce, request } from 'obsidian';
 import plantuml from 'plantuml-encoder';
 import { v4 as uuidv4 } from 'uuid';
 import type AwesomeBrainManagerPlugin from '../main';
-import { insertImageWithMap } from '../utils/content';
+import { insertImageWithMap, insertVueComponent } from '../utils/content';
 
 export default class Process {
     plugin: AwesomeBrainManagerPlugin;
@@ -11,6 +11,17 @@ export default class Process {
     constructor(plugin: AwesomeBrainManagerPlugin) {
         this.plugin = plugin;
     }
+
+    VueProcess = async (source, el, ctx) => {
+        const closestLeaf = ctx.containerEl.closest('.workspace-leaf-content') as HTMLElement;
+        console.log(source);
+        if (closestLeaf && closestLeaf.dataset['mode'] === 'source' && !el.closest('.cm-line')) {
+            console.log(closestLeaf.dataset['mode']);
+        } else {
+            // insertVueComponent(el, ctx, `<Markdown src={${JSON.stringify('```tsx\n' + source + '\n```')}}/>`);
+        }
+        insertVueComponent(el, ctx, source);
+    };
 
     UMLProcess = async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const debounceMap = new Map<string, Debouncer<[string, HTMLElement, MarkdownPostProcessorContext], any>>();

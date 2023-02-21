@@ -600,6 +600,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.setupCommands();
         this.registerMarkdownPostProcessor(codeEmoji);
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
+        this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
 
         this.spacesDBPath = normalizePath(app.vault.configDir + '/plugins/awesome-brain-manager/ObsidianManager.mdb');
         this.spaceDB = await getDB(await loadSQL(), this.spacesDBPath);
