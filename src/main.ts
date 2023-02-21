@@ -6,8 +6,7 @@ import {
     Tasks,
     WorkspaceWindow,
     normalizePath,
-} from 'obsidian';
-import {
+    request,
     App,
     Editor,
     MarkdownView,
@@ -20,6 +19,9 @@ import {
     debounce,
     setIcon,
 } from 'obsidian';
+
+import Replacer from './Replacer';
+import Process from './process/Process';
 import { ref } from 'vue';
 import moment from 'moment';
 import { EditDetector, OneDay, Tag, UndoHistoryInstance } from './types';
@@ -122,6 +124,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     style: HTMLStyleElement;
     spacesDBPath: string;
     spaceDB: Database;
+    replacer: Replacer;
+    process: Process;
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
@@ -129,6 +133,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.reminders = new Reminders(() => {
             this.pluginDataIO.changed = true;
         });
+        this.replacer = new Replacer(this);
+        this.process = new Process(this);
         this.undoHistory = [];
         this.undoHistoryTime = new Date();
         this.pluginDataIO = new PluginDataIO(this, this.reminders);
@@ -458,7 +464,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     async customizeResize(): Promise<void> {
         // 防抖
         this.resizeHandle();
-        
     }
 
     async customizeClick(evt: MouseEvent): Promise<void> {
@@ -480,8 +485,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     const evt = new CustomEvent(eventTypes.calledFunction, {
                         detail: {
                             type: 'OpenAI',
-                            keyword: editor.getSelection()
-                        }
+                            keyword: editor.getSelection(),
+                        },
                     });
                     window.dispatchEvent(evt);
                     // Logger.info('百度');
@@ -594,6 +599,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.setupUI();
         this.setupCommands();
         this.registerMarkdownPostProcessor(codeEmoji);
+        this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
 
         this.spacesDBPath = normalizePath(app.vault.configDir + '/plugins/awesome-brain-manager/ObsidianManager.mdb');
         this.spaceDB = await getDB(await loadSQL(), this.spacesDBPath);
@@ -812,8 +818,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     public utils = {
         getCleanTitle,
         getLocalRandom,
-        getWeather
-    }
+        getWeather,
+    };
 
     async setRandomBanner(path: TAbstractFile | null, origin: string): Promise<void> {
         // const ignorePath = ['Journal', 'Reading', 'MyObsidian', 'Archive'];
@@ -876,8 +882,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 const evt = new CustomEvent(eventTypes.calledFunction, {
                     detail: {
                         type: 'OpenAI',
-                        keyword: editor.getSelection()
-                    }
+                        keyword: editor.getSelection(),
+                    },
                 });
                 window.dispatchEvent(evt);
             },

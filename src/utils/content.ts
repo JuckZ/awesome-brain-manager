@@ -9,7 +9,7 @@ interface MContent {
 export async function insertAfterHandler(targetString: string, formatted: string, fileContent: string) {
     // const targetString: string = plugin.settings.InsertAfter;
     //eslint-disable-next-line
-  const targetRegex = new RegExp(`\s*${await escapeRegExp(targetString)}\s*`);
+    const targetRegex = new RegExp(`\s*${await escapeRegExp(targetString)}\s*`);
     const fileContentLines: string[] = getLinesInString(fileContent);
 
     const targetPosition = fileContentLines.findIndex(line => targetRegex.test(line));
@@ -123,4 +123,48 @@ export async function setBanner(filepath, oldBanner, newBanner) {
     const newContent = fileContents.replace(originalLine, `banner: '${newBanner}'`);
     await app.vault.adapter.write(filepath, newContent);
     return true;
+}
+
+export function insertImageWithMap(el: HTMLElement, image: string, map: string, encodedDiagram: string) {
+    el.empty();
+
+    const img = document.createElement('img');
+    if (image.startsWith('http')) {
+        img.src = image;
+    } else {
+        img.src = 'data:image/png;base64,' + image;
+    }
+    img.useMap = '#' + encodedDiagram;
+
+    if (map.contains('map')) {
+        el.innerHTML = map;
+        el.children[0].setAttr('name', encodedDiagram);
+    }
+
+    el.appendChild(img);
+}
+
+export function insertAsciiImage(el: HTMLElement, image: string) {
+    el.empty();
+
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    pre.appendChild(code);
+    code.setText(image);
+    el.appendChild(pre);
+}
+
+export function insertSvgImage(el: HTMLElement, image: string) {
+    el.empty();
+
+    const parser = new DOMParser();
+    const svg = parser.parseFromString(image, 'image/svg+xml');
+
+    const links = svg.getElementsByTagName('a');
+    for (let i = 0; i < links.length; i++) {
+        const link = links[i];
+        link.addClass('internal-link');
+    }
+
+    el.insertAdjacentHTML('beforeend', svg.documentElement.outerHTML);
 }
