@@ -1091,6 +1091,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.addSettingTab(new ReminderSettingTab(this.app, this, this.pluginDataIO));
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
+        this.addTag(new Tag('yellow', 'blue', 'review', { name: '' }, { fontFamily: '' }));
+        this.addTag(new Tag('yellow', 'blue', 'flashcards', { name: '' }, { fontFamily: '' }));
         this.addTag(new Tag('yellow', 'blue', 'juck', { name: '' }, { fontFamily: '' }));
         this.addTag(new Tag('blue', 'yellow', 'juckz', { name: '' }, { fontFamily: '' }));
         // 左侧菜单，使用自定义图标
