@@ -1,6 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
 export async function getWeather(city) {
+    return '';
     const key = 'dc0f31ac6f37484f88e3e7d45b84e403'; //尽量换成自己申请的key以免接口失效https://console.qweather.com
     let locationId = '';
     let windydesc = '';

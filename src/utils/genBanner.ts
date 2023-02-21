@@ -22,6 +22,7 @@ export const searchPicture = async (source: string, keyword: string): Promise<st
 };
 
 export const getLocalRandom = async (title, path: any) => {
+    path = window.app.vault.getAbstractFileByPath(path)
     const allImages = await getAllFiles(path, [], ['png', 'jpg', 'jpeg', 'svg', 'gif', 'bmp', 'webp'], []);
     const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
     if (!randomImage) {

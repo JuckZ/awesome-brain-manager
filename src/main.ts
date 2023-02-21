@@ -809,18 +809,12 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
-    public getLocalRandom(title: string, path: string) {
-        return getLocalRandom(title, this.app.vault.getAbstractFileByPath(path));
+    public utils = {
+        getCleanTitle,
+        getLocalRandom,
+        getWeather
     }
 
-    public getCleanTitle(title: string) {
-        return getCleanTitle(title);
-    }
-
-    public async getWeather(city: string) {
-        // return await getWeather(city);
-        return '';
-    }
     async setRandomBanner(path: TAbstractFile | null, origin: string): Promise<void> {
         // const ignorePath = ['Journal', 'Reading', 'MyObsidian', 'Archive'];
         const ignorePath = [];
