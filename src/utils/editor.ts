@@ -8,7 +8,6 @@ export const elId = 'custom-view-container';
 export const customEl = createEl('div', {
     attr: {
         id: elId,
-        style: 'position: fixed;',
     },
 });
 
