@@ -18,6 +18,7 @@ import {
     addIcon,
     debounce,
     setIcon,
+    MarkdownPreviewRenderer,
 } from 'obsidian';
 
 import Replacer from './Replacer';
@@ -37,7 +38,7 @@ import {
     pomodoroDB,
 } from './utils/constants';
 import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
-import { ImageOriginModal, PomodoroReminderModal } from './ui/modal/customModals';
+import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal/customModals';
 import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
 import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
@@ -126,6 +127,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     spaceDB: Database;
     replacer: Replacer;
     process: Process;
+    emojiPickerModal: EmojiPickerModal;
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
@@ -598,6 +600,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         await this.pluginDataIO.load();
         this.setupUI();
         this.setupCommands();
+        MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
         this.registerMarkdownPostProcessor(codeEmoji);
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
         this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
@@ -913,6 +916,25 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     // if (!checking) {
                     // 	new UndoModal(this).open();
                     // }
+                    return true;
+                }
+                return false;
+            },
+        });
+
+        this.addCommand({
+            id: 'awesome-brain-manager:open-emoji-picker',
+            name: t.command['awesome-brain-manager:open-emoji-picker'],
+            // 带条件的指令
+            checkCallback: (checking: boolean) => {
+                const leaf = this.app.workspace.activeLeaf;
+                if (leaf) {
+                    if (!checking) {
+                        if(!this.emojiPickerModal) {
+                            this.emojiPickerModal = new EmojiPickerModal(this.app);
+                        }
+                        this.emojiPickerModal.open();
+                    }
                     return true;
                 }
                 return false;

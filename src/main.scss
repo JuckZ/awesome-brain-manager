@@ -18,3 +18,32 @@
 // .book__author {
 //   color: var(--text-muted);
 // }
+
+// TODO 注意是否有样式穿透样式污染的问题
+img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+  display: inline-block;
+}
+
+#emoji-modal {
+  padding: 0px;
+  min-width: unset;
+  width: unset !important;
+}
+
+#emoji-modal > .modal-content {
+  margin-top: 0px;
+}
+
+#emoji-modal > button {
+  background-color: unset;
+  border: 0px !important;
+  box-shadow: 0px !important;
+}
+
+#emoji-modal > .modal-close-button {
+  visibility: hidden;
+}

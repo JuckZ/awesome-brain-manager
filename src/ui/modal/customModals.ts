@@ -1,6 +1,8 @@
 import type AwesomeBrainManagerPlugin from 'main';
 import { App, FuzzySuggestModal, Modal, Notice, Setting, SuggestModal, TAbstractFile } from 'obsidian';
-import type { Pomodoro } from 'schemas/spaces';
+import { Picker } from 'emoji-mart';
+import data from '@emoji-mart/data';
+import type { Pomodoro } from '../../schemas/spaces';
 import t from '../../i18n';
 
 interface Book {
@@ -92,6 +94,33 @@ export class PomodoroReminderModal extends Modal {
         const { contentEl } = this;
 
         contentEl.createEl('h2', { text: t.info.done + this.pomodoro.task });
+    }
+
+    onClose() {
+        const { contentEl } = this;
+        contentEl.empty();
+    }
+}
+
+export class EmojiPickerModal extends Modal {
+    constructor(app: App) {
+        super(app);
+    }
+
+    onSelect = (emoji: any) => {
+        const editor = this.app.workspace.activeEditor?.editor;
+        // BUG 光标问题
+        editor?.replaceRange(emoji.native, editor.getCursor());
+        this.close();
+    };
+
+    async onOpen() {
+        const { contentEl } = this;
+        const pickerOptions = { onEmojiSelect: this.onSelect, data, skin: 1, set: 'native', theme: 'light' };
+        const picker: any = new Picker(pickerOptions);
+        // for style
+        this.modalEl.id = 'emoji-modal';
+        contentEl.appendChild(picker);
     }
 
     onClose() {

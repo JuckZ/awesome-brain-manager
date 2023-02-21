@@ -11,6 +11,7 @@ export default {
         'awesome-brain-manager-remove-check-in': 'Remove Habit Check In',
         'awesome-brain-manager-rollover': 'Rollover Todos Now',
         'awesome-brain-manager-undo': 'Undo last rollover',
+        'awesome-brain-manager:open-emoji-picker': 'Open emoji picker'
     },
     setting: {
         cursorEffect: {

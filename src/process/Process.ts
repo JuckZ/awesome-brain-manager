@@ -1,5 +1,6 @@
-import type { Debouncer, MarkdownPostProcessorContext } from 'obsidian';
+import type { Debouncer, MarkdownPostProcessorContext, MarkdownPostProcessor } from 'obsidian';
 import { debounce, request } from 'obsidian';
+import twemoji from 'twemoji';
 import plantuml from 'plantuml-encoder';
 import { v4 as uuidv4 } from 'uuid';
 import type AwesomeBrainManagerPlugin from '../main';
@@ -11,6 +12,10 @@ export default class Process {
     constructor(plugin: AwesomeBrainManagerPlugin) {
         this.plugin = plugin;
     }
+
+    EmojiProcess: MarkdownPostProcessor = (el: HTMLElement) => {
+        twemoji.parse(el);
+    };
 
     VueProcess = async (source, el, ctx) => {
         const closestLeaf = ctx.containerEl.closest('.workspace-leaf-content') as HTMLElement;

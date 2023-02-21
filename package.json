@@ -134,6 +134,7 @@
     "@codemirror/language": "^6.4.0",
     "@codemirror/state": "^6.2.0",
     "@codemirror/view": "^6.7.3",
+    "@emoji-mart/data": "^1.1.2",
     "@vicons/ionicons5": "^0.12.0",
     "axios": "^1.1.3",
     "bing-chat": "^0.2.1",
@@ -143,6 +144,7 @@
     "chatgpt": "^4.4.1",
     "commander": "^9.4.1",
     "cursor-effects": "^1.0.8",
+    "emoji-mart": "^5.5.2",
     "jsonfile": "^6.1.0",
     "naive-ui": "^2.34.3",
     "obsidian-daily-notes-interface": "^0.9.4",
@@ -152,6 +154,7 @@
     "rrule": "^2.7.1",
     "sql.js": "^1.8.0",
     "svelte": "^3.53.1",
+    "twemoji": "^14.0.2",
     "vue": "^3.2.47",
     "vue-beautiful-chat": "^2.5.0",
     "vue3-radial-progress": "^1.1.1"
