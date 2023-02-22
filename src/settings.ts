@@ -49,6 +49,7 @@ class Settings {
     removeEmptyTodos: SettingModel<boolean, boolean>;
     debugEnable: SettingModel<boolean, boolean>;
     expectedTime: SettingModel<number, number>;
+    clickString: SettingModel<string, string>;
 
     constructor() {
         const reminderFormatSettings = new ReminderFormatSettings(this.settings);
@@ -97,6 +98,15 @@ class Settings {
             .name(t.setting.expectedTime.name)
             .desc(t.setting.expectedTime.desc)
             .number(25)
+            .build(new RawSerde());
+
+        this.clickString = this.settings
+            .newSettingBuilder()
+            .key('clickString')
+            .name('Show something on click')
+            .desc('input something you want to show, separated by commas')
+            .text('富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善')
+            .placeHolder('富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善')
             .build(new RawSerde());
 
         this.toolbar = this.settings
@@ -282,7 +292,7 @@ class Settings {
             .toggle(false)
             .build(new RawSerde());
 
-        this.settings.newGroup(t.setting.title.effects).addSettings(this.cursorEffect, this.powerMode, this.shakeMode);
+        this.settings.newGroup(t.setting.title.effects).addSettings(this.cursorEffect, this.clickString, this.powerMode, this.shakeMode);
 
         this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
 

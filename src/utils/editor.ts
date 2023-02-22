@@ -2,7 +2,7 @@ import { App, EditorPosition, Editor, MarkdownView } from 'obsidian';
 import { App as VueApp, createApp, ref, Ref } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import CustomViewContainer from '../ui/CustomViewContainer.vue';
-import { SETTINGS } from '../settings';
+import type { SettingModel } from 'model/settings';
 
 export const elId = 'custom-view-container';
 export const customEl = createEl('div', {
@@ -62,8 +62,8 @@ export function getModestate(app: App) {
     }
 }
 
-export function changeToolbarPopover(app: App, e: MouseEvent) {
-    if (!SETTINGS.toolbar.value) {
+export function changeToolbarPopover(app: App, e: MouseEvent, toolbarEnable: SettingModel<boolean, boolean>) {
+    if (!toolbarEnable.value) {
         return;
     }
     const editor = app.workspace.activeEditor?.editor;

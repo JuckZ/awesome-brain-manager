@@ -42,7 +42,7 @@ import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/
 import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
 import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
-import { toggleCursorEffects } from './render/CursorEffects';
+import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
 import { buildTagRules } from './render/Tag';
 import { ReminderModal } from './ui/reminder';
 import Logger, { initLogger } from './utils/logger';
@@ -1081,6 +1081,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         // this.registerEditorExtension(lineNumbers({ formatNumber: (lineNo: number, state: EditorState) => '' }));
         // this.registerEditorExtension(emojiListPlugin);
+        toggleMouseClickEffects(SETTINGS.clickString);
         toggleBlast(SETTINGS.powerMode.value);
         toggleShake(SETTINGS.shakeMode);
         toggleCursorEffects(SETTINGS.cursorEffect.value);
@@ -1155,7 +1156,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
-            changeToolbarPopover(this.app, e);
+            changeToolbarPopover(this.app, e, SETTINGS.toolbar);
         });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
