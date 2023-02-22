@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, toRefs, onUpdated } from 'vue';
+import Logger from '../utils/logger';
 import t from '../i18n';
 import Title from './Title';
 
@@ -14,15 +15,15 @@ const props = defineProps<{
 const { url } = toRefs(props);
 
 onMounted(async () => {
-    console.log('browser onMounted');
+    Logger.log('browser onMounted');
 });
 
 onUnmounted(() => {
-    console.log('browser onUnmounted');
+    Logger.log('browser onUnmounted');
 });
 
 onUpdated(() => {
-    console.log(url.value);
+    Logger.log(url.value);
 });
 </script>
 

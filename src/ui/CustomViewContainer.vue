@@ -1,7 +1,7 @@
 <template>
     <div id="customViewContainer">
         <NNotificationProvider :max="3">
-            <Toolbar :current-state="currentState" :plugin="plugin"/>
+            <Toolbar :current-state="currentState" :plugin="plugin" />
         </NNotificationProvider>
     </div>
 </template>
@@ -13,6 +13,7 @@ import t from '../i18n';
 import Toolbar from './Toolbar.vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import type { EditorState } from '../utils/editor';
+import Logger from '../utils/logger';
 
 defineProps<{
     plugin: AwesomeBrainManagerPlugin;
@@ -22,7 +23,7 @@ defineProps<{
 onMounted(async () => {});
 
 onUpdated(() => {
-    console.log('container updated');
+    Logger.log('container updated');
 });
 onUnmounted(() => {});
 </script>

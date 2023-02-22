@@ -1,5 +1,6 @@
 import { App, TFile, TFolder } from 'obsidian';
 import * as obsidian from 'obsidian';
+import Logger from './logger';
 
 export async function getNotePath(directory, filename) {
     if (!filename.endsWith('.md')) {
@@ -64,7 +65,6 @@ export async function getAllFiles(folders, ignorePath: string[], ext, files): Pr
                 if (element.children && element.children.length != 0) {
                     await getAllFiles(element, ignorePath, ext, files);
                 } else if (ext && ext.length > 0) {
-                    console.log(ext, element.extension, ext.contains(element.extension));
                     if (element.extension && ext.contains(element.extension)) {
                         files.push(element);
                     }
@@ -94,17 +94,17 @@ export function getCleanTitle(msg) {
     if (count == 0) {
         // DONE send back empty string if untitled
         if (msg.includes('Untitled')) {
-            console.log('Untitled so returning empty space');
+            Logger.log('Untitled so returning empty space');
             return ' ';
         } else {
-            console.log('No Dash so returning trimmed:', msg);
+            Logger.log('No Dash so returning trimmed:', msg);
             // TODO remove fullstop
             return nameTitle.trim();
         }
     }
     // if there is a dash in the title
     else if (count == 1) {
-        console.log('Dash detected in:', msg);
+        Logger.log('Dash detected in:', msg);
         nameTitle = nameTitle.split('-').slice(1);
         nameTitle = nameTitle[0];
         return nameTitle.trim();
@@ -116,18 +116,18 @@ export function getCleanTitle(msg) {
 
         if (isMatch && count == 2) {
             // since it has a date... and only has dashes for a date, return it.
-            console.log('Date detected! No other dash, return as is', msg);
+            Logger.log('Date detected! No other dash, return as is', msg);
 
             return nameTitle.trim();
         } else {
             // it may contain date but also a front snippet OR it does not contain date and just multiple dashes
-            console.log('Just front snippets with extra dash or date but also more dash', msg);
+            Logger.log('Just front snippets with extra dash or date but also more dash', msg);
 
             nameTitle = nameTitle.split('-').slice(1);
             nameTitle = nameTitle.join('-');
             return nameTitle.trim();
         }
     } else {
-        console.log('Logic Error');
+        Logger.log('Logic Error');
     }
 }

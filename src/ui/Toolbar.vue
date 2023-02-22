@@ -81,6 +81,7 @@ import { customTitle, customContent, customAvatar, customDescription } from './C
 import type { EditorState } from '../utils/editor';
 import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
+import Logger from '../utils/Logger';
 
 const props = defineProps<{
     plugin: AwesomeBrainManagerPlugin;
@@ -96,7 +97,7 @@ let oldSelection = '';
 // watch(
 //     () => selection,
 //     (selection, preSelection) => {
-//         console.log(selection, preSelection);
+//         Logger.log(selection, preSelection);
 //         if (selection && selection !== preSelection) {
 //             isShow.value = true;
 //         } else {
@@ -165,18 +166,18 @@ const calledFunctionHandler = e => {
 };
 onMounted(async () => {
     window.removeEventListener(eventTypes.calledFunction, calledFunctionHandler);
-    console.log('toolbar onMounted');
+    Logger.log('toolbar onMounted');
     window.addEventListener(eventTypes.calledFunction, calledFunctionHandler);
 });
 
 // TODO  重启插件不会触发
 onUnmounted(() => {
-    console.log('onUnmounted');
+    Logger.log('onUnmounted');
     window.removeEventListener(eventTypes.calledFunction, calledFunctionHandler);
 });
 
 onUpdated(() => {
-    console.log('Toolbar updated');
+    Logger.log('Toolbar updated');
 });
 </script>
 
