@@ -7,11 +7,17 @@ import { treeUtil } from '../common';
 import Logger from '../../utils/logger';
 
 const { uniq } = treeUtil;
+
+let appCtx;
+export const initialDBCtx = (app) => {
+	appCtx = app;
+}
+
 export const getDBFile = async (path: string) => {
-    if (!(await app.vault.adapter.exists(normalizePath(path)))) {
+    if (!(await appCtx.vault.adapter.exists(normalizePath(path)))) {
         return null;
     }
-    const file = await (app.vault.adapter as FileSystemAdapter).readBinary(normalizePath(path));
+    const file = await (appCtx.vault.adapter as FileSystemAdapter).readBinary(normalizePath(path));
     return file;
 };
 
@@ -34,7 +40,7 @@ export const saveAndCloseDB = async (db: Database, path: string) => {
 };
 
 export const saveDBFile = async (path: string, binary: ArrayBuffer) => {
-    const file = (app.vault.adapter as FileSystemAdapter).writeBinary(normalizePath(path), binary);
+    const file = (appCtx.vault.adapter as FileSystemAdapter).writeBinary(normalizePath(path), binary);
     return file;
 };
 

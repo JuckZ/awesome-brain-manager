@@ -36,6 +36,7 @@ import {
     dbResultsToDBTables,
     deleteFromDB,
     getDB,
+    initialDBCtx,
     insertIntoDB,
     saveDBAndKeepAlive,
     selectDB,
@@ -43,7 +44,7 @@ import {
 } from './utils/db/db';
 import { insertAfterHandler, setBanner } from './utils/content';
 import { changeToolbarPopover, loadCustomViewContainer, unloadCustomViewContainer } from './utils/editor';
-import { getLocalRandom, searchPicture } from './utils/genBanner';
+import { getLocalRandomImg, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from './utils/pomotodo';
 import { AwesomeBrainSettingTab, SETTINGS } from './settings';
@@ -291,7 +292,10 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
         this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
 
-        this.spacesDBPath = normalizePath(app.vault.configDir + '/plugins/awesome-brain-manager/ObsidianManager.mdb');
+        this.spacesDBPath = normalizePath(
+            this.app.vault.configDir + '/plugins/awesome-brain-manager/ObsidianManager.mdb',
+        );
+        initialDBCtx(this.app);
         this.spaceDB = await getDB(await loadSQL(), this.spacesDBPath);
         const tables = dbResultsToDBTables(
             this.spaceDBInstance().exec(
@@ -369,24 +373,24 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     private async addACheck(path, filename, time, content) {
         const normalizedPath = await getNotePath(path, filename);
         const todayMoment = moment();
-        const fileContents = await app.vault.adapter.read(normalizedPath);
-        const newFileContent = await insertAfterHandler(
-            '## 打卡',
-            `- [ ] ${time} ${content} ⏳ ${todayMoment.format('YYYY-MM-DD')}`,
-            fileContents,
-        );
-		// TODO https://github.com/obsidianmd/obsidian-api/blob/bceb489fc25ceba5973119d6e57759d64850f90d/obsidian.d.ts#L749-L752
-		// recommend the new app.adapter.process API, which is atomic,
-        await app.vault.adapter.write(normalizedPath, newFileContent.content);
+        this.app.vault.adapter.process(normalizedPath, fileContents => {
+            const newFileContent = insertAfterHandler(
+                '## 打卡',
+                `- [ ] ${time} ${content} ⏳ ${todayMoment.format('YYYY-MM-DD')}`,
+                fileContents,
+            );
+            return newFileContent.content;
+        });
     }
 
     private async removeACheck(path, filename, time, content) {
         const normalizedPath = await getNotePath(path, filename);
         const todayMoment = moment();
-        const fileContents = await app.vault.adapter.read(normalizedPath);
-        const originalLine = `- [ ] ${time} ${content} ⏳ ${todayMoment.format('YYYY-MM-DD')}`;
-        const newContent = fileContents.replace(originalLine, '');
-        await app.vault.adapter.write(normalizedPath, newContent);
+        this.app.vault.adapter.process(normalizedPath, fileContents => {
+            const originalLine = `\n- [ ] ${time} ${content} ⏳ ${todayMoment.format('YYYY-MM-DD')}`;
+            const newContent = fileContents.replace(originalLine, '');
+            return newContent;
+        });
     }
 
     private async habitCheckIn() {
@@ -405,7 +409,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     public utils = {
         getCleanTitle,
-        getLocalRandom,
+        getLocalRandom: (title, path) => {
+            getLocalRandomImg(this.app, title, path);
+        },
         getWeather,
     };
 
@@ -413,7 +419,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // const ignorePath = ['Journal', 'Reading', 'MyObsidian', 'Archive'];
         const ignorePath = [];
         // FIXME 找到并使用更高性能api this.app.vault.getMarkdownFiles();
-        const allFilePathNeededHandle: TFile[] = await getAllFiles(path, ignorePath, ['md'], []);
+        const allFilePathNeededHandle: TFile[] = await getAllFiles(this.app, path, ignorePath, ['md'], []);
         // allFilePathNeededHandle = allFilePathNeededHandle.filter(file => {
         //     const banner =
         //         this.app.metadataCache.metadataCache[this.app.metadataCache.fileCache[file.path].hash].frontmatter

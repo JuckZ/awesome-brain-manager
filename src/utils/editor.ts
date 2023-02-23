@@ -37,18 +37,6 @@ export function unloadCustomViewContainer() {
     document.body.removeChild(customEl);
 }
 
-export function getModestate(app: App) {
-    const activePane = app.workspace.getActiveViewOfType(MarkdownView);
-    if (activePane) {
-        const currentmode = activePane?.getMode();
-        if (currentmode == 'preview') {
-            return false;
-        } else if (currentmode == 'source') {
-            return true;
-        } else return false;
-    }
-}
-
 export function changeToolbarPopover(app: App, e: MouseEvent, toolbarEnable: SettingModel<boolean, boolean>) {
     if (!toolbarEnable.value) {
         return;

@@ -9,10 +9,10 @@ interface MContent {
 }
 
 //credit to chhoumann, original code from: https://github.com/chhoumann/quickadd
-export async function insertAfterHandler(targetString: string, formatted: string, fileContent: string) {
+export function insertAfterHandler(targetString: string, formatted: string, fileContent: string) {
     // const targetString: string = plugin.settings.InsertAfter;
     //eslint-disable-next-line
-    const targetRegex = new RegExp(`\s*${await escapeRegExp(targetString)}\s*`);
+    const targetRegex = new RegExp(`\s*${escapeRegExp(targetString)}\s*`);
     const fileContentLines: string[] = getLinesInString(fileContent);
 
     const targetPosition = fileContentLines.findIndex(line => targetRegex.test(line));
@@ -43,9 +43,9 @@ export async function insertAfterHandler(targetString: string, formatted: string
 
         if (endOfSectionIndex == -1) endOfSectionIndex = targetPosition;
 
-        return await insertTextAfterPositionInBody(formatted, fileContent, endOfSectionIndex, foundNextHeader);
+        return insertTextAfterPositionInBody(formatted, fileContent, endOfSectionIndex, foundNextHeader);
     } else {
-        return await insertTextAfterPositionInBody(
+        return insertTextAfterPositionInBody(
             formatted,
             fileContent,
             fileContentLines.length - 1,
@@ -56,8 +56,8 @@ export async function insertAfterHandler(targetString: string, formatted: string
 }
 
 // https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
-export async function escapeRegExp(text: any) {
-    return await text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+export function escapeRegExp(text: any) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
 //credit to chhoumann, original code from: https://github.com/chhoumann/quickadd/blob/7536a120701a626ef010db567cea7cf3018e6c82/src/utility.ts#L130
@@ -76,12 +76,12 @@ export function getLinesInString(input: string) {
     return lines;
 }
 
-export async function insertTextAfterPositionInBody(
+export function insertTextAfterPositionInBody(
     text: string,
     body: string,
     pos: number,
     found?: boolean,
-): Promise<MContent> {
+): MContent {
     if (pos === -1) {
         return {
             content: `${body}\n${text}`,
@@ -118,13 +118,13 @@ export async function insertTextAfterPositionInBody(
 }
 
 export async function setBanner(filepath, oldBanner, newBanner) {
-    const fileContents = await app.vault.adapter.read(filepath);
+    const fileContents = await this.app.vault.adapter.read(filepath);
     let originalLine = `banner: '${oldBanner}'`;
     if (!fileContents.contains(originalLine)) {
         originalLine = `banner: "${oldBanner}"`;
     }
     const newContent = fileContents.replace(originalLine, `banner: '${newBanner}'`);
-    await app.vault.adapter.write(filepath, newContent);
+    await this.app.vault.adapter.write(filepath, newContent);
     return true;
 }
 

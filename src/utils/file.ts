@@ -36,21 +36,7 @@ async function ensureFolderExists(path) {
     }
 }
 
-export const getAbstractFileAtPath = (app: App, path: string) => {
-    return app.vault.getAbstractFileByPath(path);
-};
-
-export const getFolderFromPath = (app: App, path: string): TFolder | null => {
-    if (!path) return null;
-    const file = path.slice(-1) == '/' ? path.substring(0, path.length - 1) : path;
-    const afile = getAbstractFileAtPath(app, file);
-    if (!afile) return null;
-    return afile instanceof TFolder ? afile : afile.parent;
-};
-
-export const getFolderPathFromString = (file: string) => getFolderFromPath(app, file)?.path;
-
-export async function getAllFiles(folders, ignorePath: string[], ext, files): Promise<TFile[]> {
+export async function getAllFiles(app, folders, ignorePath: string[], ext, files): Promise<TFile[]> {
     const ignoreMatch = ignorePath.find(item => folders.path.startsWith(item));
     if (!ignoreMatch) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -62,7 +48,7 @@ export async function getAllFiles(folders, ignorePath: string[], ext, files): Pr
             for (let index = 0; index < children.length; index++) {
                 const element = children[index];
                 if (element.children && element.children.length != 0) {
-                    await getAllFiles(element, ignorePath, ext, files);
+                    await getAllFiles(app, element, ignorePath, ext, files);
                 } else if (ext && ext.length > 0) {
                     if (element.extension && ext.contains(element.extension)) {
                         files.push(element);
