@@ -35,8 +35,10 @@
 </template>
 
 <script setup lang="tsx">
-import { Ref, onMounted, ref, toRefs, onUnmounted } from 'vue';
-import { NConfigProvider, GlobalThemeOverrides, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
+import { onMounted, ref, toRefs, onUnmounted } from 'vue';
+import type { Ref } from 'vue';
+import { NConfigProvider, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
+import type { GlobalThemeOverrides } from 'naive-ui';
 import {
     createTheme,
     darkTheme,

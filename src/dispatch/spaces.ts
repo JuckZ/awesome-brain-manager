@@ -1,6 +1,8 @@
 import type AwesomeBrainManagerPlugin from 'main';
-import { VaultItem, vaultSchema } from 'schemas/spaces';
-import { SpaceChange, eventTypes } from 'types/types';
+import type { VaultItem, } from 'schemas/spaces';
+import { vaultSchema } from 'schemas/spaces';
+import { eventTypes } from 'types/types';
+import type { SpaceChange, } from 'types/types';
 import { deleteFromDB, execQuery, insertIntoDB, updateDB } from 'utils/db/db';
 import { getAbstractFileAtPath, getFolderFromPath, getFolderPathFromString } from 'utils/file';
 import { sanitizeSQLStatement } from 'utils/sanitize';

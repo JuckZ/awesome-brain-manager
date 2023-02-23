@@ -1,5 +1,6 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
-import { App as VueApp, createApp } from 'vue';
+import { createApp } from 'vue';
+import type { App as VueApp } from 'vue';
 import { selectDB } from 'utils/db/db';
 import type { Ledger } from 'schemas/spaces';
 import type AwesomeBrainManagerPlugin from 'main';

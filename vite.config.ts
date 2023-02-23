@@ -63,13 +63,15 @@ export default defineConfig({
         // emptyOutDir: true,
         lib: {
             // Could also be a dictionary or array of multiple entry points
-            entry: resolve(__dirname, 'src/main.ts'),
+            entry: [resolve(__dirname, 'src/main.ts')],
             name: 'AwesomeBrainManager',
             // the proper extensions will be added
             fileName: (format: ModuleFormat, entryName: string) => {
                 if (format === 'umd') {
                     return 'main.js';
-                }
+                } else {
+					return entryName;
+				}
             },
             formats: ['umd'],
         },
@@ -87,6 +89,7 @@ export default defineConfig({
             output: {
                 exports: 'named',
                 assetFileNames: assetInfo => {
+                    console.error(assetInfo.name);
                     if (assetInfo.name == 'style.css') {
                         return 'styles.css';
                     }

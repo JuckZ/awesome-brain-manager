@@ -1,5 +1,7 @@
-import { App, EditorPosition, Editor, MarkdownView } from 'obsidian';
-import { App as VueApp, createApp, ref, Ref } from 'vue';
+import { App, Editor, MarkdownView } from 'obsidian';
+import type {  EditorPosition } from 'obsidian';
+import { createApp, ref } from 'vue';
+import type { App as VueApp, Ref } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import CustomViewContainer from '../ui/CustomViewContainer.vue';
 import type { SettingModel } from 'model/settings';

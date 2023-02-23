@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, onMounted, onUnmounted, watchEffect, ref, toRef, onBeforeUpdate, onUpdated } from 'vue';
+import { onMounted, onUnmounted, watchEffect, ref, toRef, onBeforeUpdate, onUpdated } from 'vue';
 import { NNotificationProvider, NSpace, useNotification } from 'naive-ui';
 import t from '../i18n';
 import Toolbar from './Toolbar.vue';

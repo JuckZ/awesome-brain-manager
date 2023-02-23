@@ -1,4 +1,5 @@
-import { MarkdownPostProcessorContext, MarkdownRenderChild } from 'obsidian';
+import type { MarkdownPostProcessorContext } from 'obsidian';
+import { MarkdownRenderChild } from 'obsidian';
 
 export class Emoji extends MarkdownRenderChild {
     static ALL_EMOJIS: Record<string, string> = {

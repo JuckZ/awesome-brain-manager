@@ -1,4 +1,5 @@
-import { App, Command, TFile } from 'obsidian';
+import { App, TFile } from 'obsidian';
+import type { Command } from 'obsidian';
 import type { ReadOnlyReference } from 'model/ref';
 
 export class ExtApp extends App {
@@ -52,22 +53,17 @@ export class UndoHistoryInstance {
 }
 
 export class Tag {
-    color = 'var(--white)';
-    bgColor = 'var(--stag1-bg)';
+    color: string;
+    bgColor: string;
     type: string;
-    icon: {
-        name: string;
-    };
-    font: {
-        fontFamily: 'var(--font-family-special-tag)';
-        size: 'calc(var(--font-size-tag) - 0.3em)';
-    };
-    constructor(colorVal: string, bgColorVal: string, typeVal: string, iconVal, fontVal) {
-        this.color = colorVal;
-        this.bgColor = bgColorVal;
+    icon: string;
+    font: string;
+    constructor(colorVal: string, bgColorVal: string, typeVal: string, iconVal: string, fontVal: string) {
         this.type = typeVal;
-        this.icon = iconVal;
-        this.font = fontVal;
+        this.color = colorVal || `var(--tag-${typeVal}-color)`;
+        this.bgColor = bgColorVal || `var(--tag-${typeVal}-bg)`;
+        this.icon = iconVal || `var(--tag-${typeVal}-content)`;
+        this.font = fontVal || `var(--font-family-special-tag)`;
     }
 }
 

@@ -5,8 +5,10 @@
 </template>
 
 <script setup lang="tsx">
-import { Ref, onMounted, onUpdated, ref, toRefs } from 'vue';
-import Chart, { ChartItem } from 'chart.js/auto';
+import { onMounted, onUpdated, ref, toRefs } from 'vue';
+import type { Ref } from 'vue';
+import Chart from 'chart.js/auto';
+import type { ChartItem } from 'chart.js/auto';
 import type { Pomodoro } from '../schemas/spaces';
 import t from '../i18n';
 

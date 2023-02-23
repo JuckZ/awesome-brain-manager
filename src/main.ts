@@ -1,7 +1,4 @@
 import {
-    EditorPosition,
-    MarkdownFileInfo,
-    PluginManifest,
     TAbstractFile,
     Tasks,
     WorkspaceWindow,
@@ -20,6 +17,7 @@ import {
     setIcon,
     MarkdownPreviewRenderer,
 } from 'obsidian';
+import type { EditorPosition, MarkdownFileInfo, PluginManifest } from 'obsidian';
 
 import Replacer from './Replacer';
 import Process from './process/Process';
@@ -1112,12 +1110,16 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.addSettingTab(new ReminderSettingTab(this.app, this, this.pluginDataIO));
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
-        this.addTag(new Tag('white', 'red', 'principle', { name: '' }, { fontFamily: '' }));
-        this.addTag(new Tag('red', 'blue', 'abandon', { name: '' }, { fontFamily: '' }));
-        this.addTag(new Tag('yellow', 'blue', 'review', { name: '' }, { fontFamily: '' }));
-        this.addTag(new Tag('yellow', 'blue', 'flashcards', { name: '' }, { fontFamily: '' }));
-        this.addTag(new Tag('yellow', 'blue', 'juck', { name: '' }, { fontFamily: '' }));
-        this.addTag(new Tag('blue', 'yellow', 'juckz', { name: '' }, { fontFamily: '' }));
+
+        // ⏱️🌱❓🕯️🚬⚠️🚀🏳️🏴🚩🚧🛞🧭🎲🔧📏📐✂️📌
+        this.addTag(new Tag('blue', '#ac6700', 'inprogress', ' 🕯️', "'Lucida Handwriting', 'Segoe UI Emoji'"));
+        this.addTag(new Tag('white', 'red', 'principle', ' 📏', ''));
+        this.addTag(new Tag('white', 'red', 'abandon', ' 🏁', ''));
+        this.addTag(new Tag('white', 'red', 'review', ' 🌱', ''));
+        this.addTag(new Tag('white', 'red', 'flashcards', ' 🌱', ''));
+        this.addTag(new Tag('white', 'red', 'juck', ' 👨‍💻', ''));
+        this.addTag(new Tag('white', 'red', 'juckz', ' 👨‍💻', ''));
+
         // 左侧菜单，使用自定义图标
         this.addRibbonIcon('settings-2', 'Awesome Brain Manager', event => {
             const menu = new Menu();

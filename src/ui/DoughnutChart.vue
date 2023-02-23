@@ -6,7 +6,8 @@
 
 <script setup lang="tsx">
 import { onMounted, onUpdated, ref, toRefs } from 'vue';
-import Chart, { ChartItem } from 'chart.js/auto';
+import Chart from 'chart.js/auto';
+import type { ChartItem } from 'chart.js/auto';
 import type { Pomodoro } from '../schemas/spaces';
 import t from '../i18n';
 

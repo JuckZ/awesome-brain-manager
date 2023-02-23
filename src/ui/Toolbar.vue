@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, onMounted, onUnmounted, ref, reactive, onUpdated, toRefs, watch, watchEffect } from 'vue';
+import { onMounted, onUnmounted, ref, reactive, onUpdated, toRefs, watch, watchEffect } from 'vue';
 import { NNotificationProvider, NTooltip, NIcon, NSpace, useNotification } from 'naive-ui';
 import t from '../i18n';
 import {
@@ -81,7 +81,7 @@ import { customTitle, customContent, customAvatar, customDescription } from './C
 import type { EditorState } from '../utils/editor';
 import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
-import Logger from '../utils/Logger';
+import Logger from '../utils/logger';
 
 const props = defineProps<{
     plugin: AwesomeBrainManagerPlugin;

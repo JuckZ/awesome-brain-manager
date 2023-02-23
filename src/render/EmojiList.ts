@@ -1,13 +1,6 @@
-import {
-    Decoration,
-    DecorationSet,
-    EditorView,
-    PluginSpec,
-    PluginValue,
-    ViewPlugin,
-    ViewUpdate,
-    WidgetType,
-} from '@codemirror/view';
+import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType } from '@codemirror/view';
+
+import type { DecorationSet, PluginSpec, PluginValue } from '@codemirror/view';
 
 import { RangeSetBuilder } from '@codemirror/state';
 

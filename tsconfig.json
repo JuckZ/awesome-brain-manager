@@ -23,8 +23,9 @@
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "importHelpers": true,
-    "isolatedModules": false,
-	  "strictNullChecks": true,
+    "isolatedModules": true,
+	"skipLibCheck": true,
+	"strictNullChecks": true,
     "lib": [
       "DOM",
       "ES5",
@@ -34,6 +35,7 @@
     ],
     "types": [
       "node",
+	  "vite/client",
       "svelte"
     ]
   }
