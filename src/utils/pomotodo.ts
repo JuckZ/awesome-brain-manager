@@ -1,19 +1,13 @@
 import type { Database } from 'sql.js';
 import {
     pomodoroSchema,
-    spaceItemsSchema,
-    spaceSchema,
-    vaultSchema,
 } from '../schemas/spaces';
 import type { Pomodoro } from '../schemas/spaces';
 import Logger from '../utils/logger';
-import { deleteFromDB, insertIntoDB, replaceDB, selectDB, updateDB } from './db/db';
+import { replaceDB } from './db/db';
 
 export const initiateDB = (db: Database) => {
     replaceDB(db, {
-        vault: vaultSchema,
-        spaces: spaceSchema,
-        spaceItems: spaceItemsSchema,
         pomodoro: pomodoroSchema,
     });
 };

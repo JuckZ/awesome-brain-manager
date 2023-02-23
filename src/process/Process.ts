@@ -27,6 +27,7 @@ export default class Process {
         insertVueComponent(el, ctx, source);
     };
 
+	// https://github.com/joethei/obsidian-plantuml
     UMLProcess = async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const debounceMap = new Map<string, Debouncer<[string, HTMLElement, MarkdownPostProcessorContext], any>>();
         const processor = async (source: string, el: HTMLElement, _: MarkdownPostProcessorContext) => {

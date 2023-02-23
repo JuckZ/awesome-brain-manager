@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView } from 'obsidian';
+import type { App, Editor } from 'obsidian';
 import { createApp, ref } from 'vue';
 import type { Ref } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';

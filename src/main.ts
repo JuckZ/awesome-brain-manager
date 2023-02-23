@@ -51,7 +51,6 @@ import { AwesomeBrainSettingTab, SETTINGS } from './settings';
 import { PluginDataIO } from './data';
 import { eventTypes, Tag } from './types/types';
 import type { ExtApp } from './types/types';
-import { DocumentDirectionSettings } from './render/DocumentDirection';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { pomodoroSchema } from './schemas/spaces';
 import type { Pomodoro } from './schemas/spaces';
@@ -63,9 +62,6 @@ const media = window.matchMedia('(prefers-color-scheme: dark)');
 export default class AwesomeBrainManagerPlugin extends Plugin {
     override app: ExtApp;
     pluginDataIO: PluginDataIO;
-    public docDirSettings = new DocumentDirectionSettings();
-    private undoHistory: any[];
-    private undoHistoryTime: Date;
     private pomodoroTarget: Pomodoro | null;
     quickPreviewFunction: (file: TFile, data: string) => any;
     resizeFunction: () => any;
@@ -104,8 +100,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.replacer = new Replacer(this);
         this.process = new Process(this);
-        this.undoHistory = [];
-        this.undoHistoryTime = new Date();
         this.pluginDataIO = new PluginDataIO(this);
         this.bindFunction();
         initLogger(SETTINGS.debugEnable);

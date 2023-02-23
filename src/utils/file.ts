@@ -1,4 +1,4 @@
-import { App, TFile, TFolder, normalizePath } from 'obsidian';
+import { TFile, normalizePath } from 'obsidian';
 import Logger from './logger';
 
 export async function getNotePath(directory, filename) {

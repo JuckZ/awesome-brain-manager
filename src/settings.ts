@@ -1,3 +1,4 @@
+// https://github.com/uphy/obsidian-reminder/blob/master/src/settings.ts
 import { App, PluginSettingTab, Plugin_2 } from 'obsidian';
 import type { SettingModel } from './model/settings';
 import { RawSerde, SettingTabModel } from './model/settings';
@@ -5,7 +6,6 @@ import type { PluginDataIO } from './data';
 import { toggleCursorEffects } from './render/CursorEffects';
 import { toggleBlast } from './render/Blast';
 import t from './i18n';
-export const TAG_RESCAN = 're-scan';
 
 class Settings {
     settings: SettingTabModel = new SettingTabModel();

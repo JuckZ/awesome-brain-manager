@@ -1,3 +1,4 @@
+// https://github.com/Make-md/makemd/blob/main/src/utils/db/db.ts
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 import type { Database, QueryExecResult, SqlJsStatic } from 'sql.js';
 import type { DBTable, DBTables } from 'types/mdb';
