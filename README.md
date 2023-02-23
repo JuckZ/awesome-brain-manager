@@ -45,8 +45,8 @@ It's not too long now. Just finish reading.🤣
 <details open>
   <summary><h2>🤔 1. 为什么选择 Awesome Brain Manager </h2></summary>
   
-- 🎨 会加入越来越多的精心设计，你的 obsidian 会与众不同
-- ✨ 会加入越来越多的功能；在未来，仅一个插件，也能够满足大部分需求
+- 🎨 精心设计，你的 obsidian 会与众不同
+- ✨ 丰富功能；一个插件，也能够满足很多需求
 - 🔐 支持 obsidian 的核心价值观，没有隐私安全问题
 - ✈️ 将持续优化性能
 - 💪 基于Jest的覆盖率测试(将来)

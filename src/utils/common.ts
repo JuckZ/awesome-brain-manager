@@ -10,3 +10,7 @@ export function getTagsFromTask(task: string): string[] {
 export function randomColor() {
     return 'rgb(' + ~~(Math.random() * 255) + ',' + ~~(Math.random() * 255) + ',' + ~~(Math.random() * 255) + ')';
 }
+
+export const treeUtil = {
+    uniq: (a: any[]) => [...new Set(a)],
+};

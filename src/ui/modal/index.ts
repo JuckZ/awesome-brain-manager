@@ -1,5 +1,5 @@
 import type AwesomeBrainManagerPlugin from 'main';
-import { App, FuzzySuggestModal, Modal, Notice, Setting, SuggestModal, TAbstractFile } from 'obsidian';
+import { App, FuzzySuggestModal, Modal, Notice, SuggestModal, TAbstractFile } from 'obsidian';
 import { Picker } from 'emoji-mart';
 import data from '@emoji-mart/data';
 import type { Pomodoro } from '../../schemas/spaces';

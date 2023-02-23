@@ -1,12 +1,11 @@
-import { App, TFile, TFolder } from 'obsidian';
-import * as obsidian from 'obsidian';
+import { App, TFile, TFolder, normalizePath } from 'obsidian';
 import Logger from './logger';
 
 export async function getNotePath(directory, filename) {
     if (!filename.endsWith('.md')) {
         filename += '.md';
     }
-    const path = obsidian.normalizePath(join(directory, filename));
+    const path = normalizePath(join(directory, filename));
     await ensureFolderExists(path);
     return path;
 }

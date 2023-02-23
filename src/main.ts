@@ -21,7 +21,7 @@ import { ref } from 'vue';
 import type { Database } from 'sql.js';
 import { checkInDefaultPath, checkInList, customSnippetPath, pomodoroDB } from './utils/constants';
 import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
-import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal/customModals';
+import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal';
 import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
 import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
@@ -375,6 +375,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             `- [ ] ${time} ${content} ⏳ ${todayMoment.format('YYYY-MM-DD')}`,
             fileContents,
         );
+		// TODO https://github.com/obsidianmd/obsidian-api/blob/bceb489fc25ceba5973119d6e57759d64850f90d/obsidian.d.ts#L749-L752
+		// recommend the new app.adapter.process API, which is atomic,
         await app.vault.adapter.write(normalizedPath, newFileContent.content);
     }
 
@@ -451,7 +453,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
 
         this.addCommand({
-            id: 'awesome-brain-manager-remove-check-in',
+            id: 'remove-check-in',
             name: t.command['awesome-brain-manager-remove-check-in'],
             callback: () => {
                 this.removeHabitCheckIn();
@@ -476,31 +478,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
 
         this.addCommand({
-            id: 'awesome-brain-manager-undo',
-            name: t.command['awesome-brain-manager-undo'],
-            // 带条件的指令
-            checkCallback: checking => {
-                // no history, don't allow undo
-                if (this.undoHistory.length > 0) {
-                    const now = moment();
-                    const lastUse = moment(this.undoHistoryTime);
-                    const diff = now.diff(lastUse, 'seconds');
-                    // 2+ mins since use: don't allow undo
-                    if (diff > 2 * 60) {
-                        return false;
-                    }
-                    // if (!checking) {
-                    // 	new UndoModal(this).open();
-                    // }
-                    return true;
-                }
-                return false;
-            },
-        });
-
-        this.addCommand({
-            id: 'awesome-brain-manager:open-emoji-picker',
-            name: t.command['awesome-brain-manager:open-emoji-picker'],
+            id: 'open-emoji-picker',
+            name: t.command['open-emoji-picker'],
             // 带条件的指令
             checkCallback: (checking: boolean) => {
                 const leaf = this.app.workspace.activeLeaf;
@@ -555,7 +534,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
         });
-        // this.registerEditorExtension(lineNumbers({ formatNumber: (lineNo: number, state: EditorState) => '' }));
         // this.registerEditorExtension(emojiListPlugin);
         toggleMouseClickEffects(SETTINGS.clickString);
         toggleBlast(SETTINGS.powerMode.value);

@@ -3,9 +3,10 @@ import type { Database, QueryExecResult, SqlJsStatic } from 'sql.js';
 import type { DBTable, DBTables } from 'types/mdb';
 import type AwesomeBrainManagerPlugin from '../../main';
 import { sanitizeSQLStatement } from '../../utils/sanitize';
-import { uniq } from '../tree';
+import { treeUtil } from '../common';
 import Logger from '../../utils/logger';
 
+const { uniq } = treeUtil;
 export const getDBFile = async (path: string) => {
     if (!(await app.vault.adapter.exists(normalizePath(path)))) {
         return null;

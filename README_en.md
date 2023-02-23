@@ -45,8 +45,8 @@ It's not too long now. Just finish reading.🤣
 <details open>
   <summary><h2>🤔 1. Why Awesome Brain Manager </h2></summary>
   
-- 🎨 More and more elaborate designs will be added, and your obsidian will be different
-- ✨ More and more features will be added; In the future, only one plugin can meet your most requirements
+- 🎨 Designed carefully, your obsidian will be unique
+- ✨ Rich features; A plugin can also meet many requirements
 - 🔐 Support the core values of obsidian without privacy and security issues
 - ✈️ Will continue to optimize performance
 - 💪 Jest-based coverage test (in the future)
