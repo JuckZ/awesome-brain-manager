@@ -1100,7 +1100,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
-        // ⏱️🌱🚬⚠️🚀🏳️🏴🚩🚧🛞🧭🎲🔧📏📐✂️📌
+        // ⏱️🌱🚬⚠️🚀🏳️🏴🚩🚧🛞🧭🎲🔧📏📐✂️📌⚒️🛠️📬📥🐞
         this.addTag(new Tag('white', '#ac6700', 'inprogress', ' 🕯️', "'Lucida Handwriting', 'Segoe UI Emoji'"));
         this.addTag(new Tag('white', '#bd1919', 'important', ' ', ''));
         this.addTag(new Tag('white', '#565656d8', 'ideas', ' 💡', ''));
@@ -1112,6 +1112,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.addTag(new Tag('white', '#eaffd0', 'flashcards', ' 🌱', ''));
         this.addTag(new Tag('white', '#a6e3e9', 'juck', ' 👨‍💻', ''));
         this.addTag(new Tag('white', '#a6e3e9', 'juckz', ' 👨‍💻', ''));
+		this.addTag(new Tag('white', '#a6e3e9', 'todo', ' 📥', ''));
+		this.addTag(new Tag('white', '#e23e57', 'bug', ' 🐛', ''));
+		this.addTag(new Tag('white', '#f9ed69', 'fixme', ' 🛠️', ''));
 
         // 左侧菜单，使用自定义图标
         this.addRibbonIcon('settings-2', 'Awesome Brain Manager', event => {
