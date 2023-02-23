@@ -1,0 +1,280 @@
+/**
+awesome-brain color scheme start
+**/
+body.color-scheme-options-awesome .theme-light,
+body.color-scheme-options-awesome.theme-light {
+	--background-primary: var(--background-primary-bg-4-bt, #efe9d9);
+	--background-primary-alt: var(--background-primary-alt-bg-4-bt, #ffdece);
+	--background-secondary: var(--background-secondary-bg-4-bt, #efe9d9);
+	--background-secondary-alt: var(--background-secondary-alt-bg-4-bt, #efe9d9);
+
+	--background-4-sliding-panel: #efe9d9;
+	--background-mobile-drawer-1: #efe9d9;
+	--background-mobile-drawer-2: #efe9d9;
+	--graph-control-bg: #efe9d9;
+
+	--background-modifier-border: rgba(0, 0, 0, 0.1);
+	--background-modifier-form-field: #ffdece;
+	--background-modifier-form-field-highlighted: #f5a7a2;
+	--background-modifier-box-shadow: rgba(0, 0, 0, 0.1);
+	--background-modifier-success: #ffdece;
+	--background-modifier-error: #f5a7a2;
+	--background-modifier-error-rgb: 230, 135, 135;
+	--background-modifier-error-hover: #fefcf9;
+	--background-modifier-cover: rgba(0, 0, 0, 0.2);
+
+	--text-normal: #37291a;
+	--text-muted: #37291a;
+	--text-faint: #37291a;
+	--accent-strong: #37291a;
+	--text-error: #f5a7a2;
+	--text-error-hover: #fefcf9;
+
+	--text-highlight-bg-h: 4;
+	--text-highlight-bg-s: 81%;
+	--text-highlight-bg-l: 80%;
+	--text-highlight-bg-a: 0.847;
+	--text-highlight-bg: hsla(var(--text-highlight-bg-h),
+			var(--text-highlight-bg-s),
+			var(--text-highlight-bg-l),
+			var(--text-highlight-bg-a));
+	--text-selection: #f39ba044;
+
+	--interactive-accent-rgb: 245, 167, 162;
+	--accent-h: 4;
+	--accent-s: 81%;
+	--accent-l: 80%;
+	--panel-border-color: #fd355a;
+	--search-text: #37291a;
+	--folder-title: #37291a;
+
+	--gray-1: #c4c4c4;
+	--gray-2: #7c8595;
+	--red: #fd355a;
+	--red-1: #980000;
+	--green: #40916c;
+	--darkgreen: #004f2d;
+	--blue: #69a2ee;
+	--darkblue: #5981f0;
+	--purple: #8673b4;
+	--aqua: #4dd8ef;
+	--yellow: #ffc727;
+	--light-yellow: #e5e79c;
+	--orange: #f19c79;
+	--light-purple: #d3d6fe;
+	--blue-green: #16bcc0;
+
+	--search-result-file-title-color: #980000;
+
+	--color-specification: #fd355a;
+	--list-ul-block-color: #f5a7a2;
+	--list-ul-disc-color: #fd355a;
+	--list-ul-hover: #980000;
+	--list-ol-block-color: #f5a7a2;
+	--list-ol-number-color: #f5a7a2;
+	--list-ol-hover: #980000;
+	--stag1: #fd355a;
+	--stag2: #fd355a;
+	--stag3: #fd355a;
+	--tag1: #56cfc7c7;
+	--tag2: #eca1bcda;
+	--tag3: #e6d00d;
+	--tag4: #40916c;
+	--tag5: #68c7a4;
+
+	--h1-color: var(--print-h1-color, #f39ba0);
+	--h2-color: var(--print-h2-color, #f39ba0);
+	--h3-color: var(--print-h3-color, #f39ba0);
+	--h4-color: var(--print-h4-color, #f39ba0);
+	--h5-color: var(--print-h5-color, #f39ba0);
+	--h6-color: var(--print-h6-color, #f39ba0);
+
+	--graph-text-color: #37291a;
+	--graph-tag: #ffdece;
+	--graph-attach: #f5a7a2;
+	--graph-circle: #fd355c;
+	--graph-line: #fea2c2;
+	--graph-unresolved: #e87659;
+	--graph-arrow: #980000;
+	--mermaid-active-task-color: #f5a7a2;
+	--mermaid-seq-dia-color: #ffdece;
+	--table-background-color: #ffdece;
+	--table-background-color-odd: #ffdece;
+	--table-border-color: #fd355a;
+	--table-thead-background-color: #f5a7a2;
+	--table-hover-color: #f5a7a2;
+	--table-hover-thead-color: #f5a7a2;
+	--table-hover-raw-color: #ffdece;
+	--calendar-week-color: #f5a7a2;
+	--calendar-week-hover: #ffdece;
+	--calendar-week-background-color: #ffdece;
+	--day-planner-pie: #f5a7a2;
+	--day-planner-timeline: #ffdece;
+	--day-planner-line: #fd355a;
+	--day-planner-dot: #ffdece;
+	--day-planner-item-hover: #f5a7a2;
+	--event-item-color1: #f39ba063;
+	--event-item-color2: #f39ba091;
+	--event-item-color3: #f39ba0c4;
+	--event-item-color4: #f39ba0;
+	--event-item-color5: #d08489;
+	--event-item-color6: #b27175;
+	--event-item-color7: #d08489;
+	--event-item-color8: #f39ba0;
+	--event-item-color9: #f39ba0c4;
+	--event-item-color10: #f39ba091;
+
+	--note-important: #fd355a;
+	--note-cloze: #fd355a;
+	--stickies-color-1: #e46969;
+	--stickies-color-2: #f5a7a2;
+	--tape-color: #acacac65;
+	--header-color: #f5a7a2;
+
+	--color-view-header-gradient-1: #efe9d933;
+	--color-view-header-gradient-2: #efe9d933;
+
+	--table-color-calendar-2: rgb(214, 118, 146);
+	--table-color-rgb: 214, 118, 146;
+	--scrollbar-thumb: #f39ba050;
+	--scrollbar-thumb-active: #f39ba0;
+}
+
+body.color-scheme-options-awesome.all-dark .print.theme-light,
+body.color-scheme-options-awesome.theme-dark {
+	--background-primary: var(--background-primary-bg-4-bt, #212121);
+	--background-primary-alt: var(--background-primary-alt-bg-4-bt, #f937590d);
+	--background-secondary: var(--background-secondary-bg-4-bt, #242424);
+	--background-secondary-alt: var(--background-secondary-alt-bg-4-bt, #191919);
+
+	--background-modifier-border: #191919;
+	--background-modifier-form-field: #f39ba0;
+	--background-modifier-form-field-highlighted: #e5c7a9;
+	--background-modifier-box-shadow: #292929;
+	--background-modifier-success: #f93759;
+	--background-modifier-error: #f93759;
+	--background-modifier-error-rgb: #f93759;
+	--background-modifier-error-hover: #f93758;
+	--background-modifier-cover: rgba(0, 0, 0, 0.3);
+
+	--text-normal: #efe9d9;
+	--text-muted: #efe9d9;
+	--text-faint: #efe9d9;
+	--accent-strong: #efe9d9;
+	--text-em-color: #f93759;
+	--text-error: #f93759;
+	--text-error-hover: #f93759;
+
+	--text-highlight-bg-h: 357;
+	--text-highlight-bg-s: 79%;
+	--text-highlight-bg-l: 78%;
+	--text-highlight-bg-a: 0.847;
+	--text-highlight-bg: hsla(var(--text-highlight-bg-h),
+			var(--text-highlight-bg-s),
+			var(--text-highlight-bg-l),
+			var(--text-highlight-bg-a));
+	--text-selection: #e5c7a94a;
+
+	--accent-h: 357;
+	--accent-s: 79%;
+	--accent-l: 78%;
+	--interactive-accent-rgb: 243, 155, 160;
+
+	--panel-border-color: #f93759;
+	--search-text: #fff;
+	--folder-title: #fff;
+
+	--gray-1: #c9b0b0;
+	--gray-2: #b4b1c6;
+	--red: #ff9090;
+	--red-1: #f93759;
+	--orange: #f28d61;
+	--green: #00ffc7;
+	--darkgreen: #1bbc9b;
+	--aqua: #30daff;
+	--purple: #b073ff;
+	--blue: #00a3b9;
+	--darkblue: #0040ff;
+	--yellow: #fcdc00;
+	--light-yellow: #ffd26c;
+
+	--search-result-file-title-color: #f39ba0;
+
+	--color-specification: #f93759;
+	--background-blockquote-dark: #292929;
+	--list-ul-block-color: #f39ba0;
+	--list-ul-disc-color: #f93759;
+	--list-ul-hover: #ffebec;
+	--list-ol-block-color: #f39ba0;
+	--list-ol-number-color: #ffccbc;
+	--list-ol-hover: #ffebec;
+	--stag1: #f39ba0;
+	--stag2: #ffccbc;
+	--stag3: #ffebec;
+	--tag1: #028588;
+	--tag2: #40916c;
+	--tag3: #69a2ee;
+	--tag4: #c47a5e;
+	--tag5: #004f2d;
+
+	--h1-color: var(--print-h1-color, #ffccbc);
+	--h2-color: var(--print-h2-color, #ffccbc);
+	--h3-color: var(--print-h3-color, #ffccbc);
+	--h4-color: var(--print-h4-color, #ffccbc);
+	--h5-color: var(--print-h5-color, #ffccbc);
+	--h6-color: var(--print-h6-color, #ffccbc);
+
+	--graph-text-color: #efe9d9;
+	--graph-tag: #f39ba0;
+	--graph-attach: #ffebec;
+	--graph-circle: #f39ba0;
+	--graph-line: #ffc3bc;
+	--graph-unresolved: #ffccbc;
+	--graph-arrow: #ffc3bc;
+	--mermaid-active-task-color: #f39ba4;
+	--mermaid-seq-dia-color: #ffebec;
+	--table-background-color: #212121;
+	--table-background-color-odd: transparent;
+	--table-border-color: #ffebec;
+	--table-thead-background-color: #f39ba0ad;
+	--table-hover-raw-color: #292929;
+	--table-hover-color: #ffccbc0a;
+	--table-hover-thead-color: #f39ba0;
+	--calendar-week-color: #ffccbc;
+	--calendar-week-hover: #f39ba0;
+	--calendar-week-background-color: transparent;
+	--day-planner-pie: #ffccbc;
+	--day-planner-timeline: #ff9b7c;
+	--day-planner-line: #f39ba0;
+	--day-planner-dot: #ffebec;
+	--day-planner-item-hover: #f39ba0;
+	--event-item-color9: #ffc3bc;
+	--event-item-color8: #ffbcbc;
+	--event-item-color10: #ffccbc;
+	--event-item-color7: #ffbcc4;
+	--event-item-color6: #ffbcbc;
+	--event-item-color5: #ffc3bc;
+	--event-item-color4: #ffccbc;
+	--event-item-color3: #ffd4bc;
+	--event-item-color2: #ffdcbc;
+	--event-item-color1: #ffe4bc;
+
+	--note-important: #f93759;
+	--note-cloze: #f93759;
+	--stickies-color-1: #f39ba0;
+	--stickies-color-2: #ffebec;
+	--tape-color: #ffccbc47;
+	--header-color: #f39ba0;
+
+	--color-view-header-gradient-1: #21212122;
+	--color-view-header-gradient-2: #21212122;
+
+	--table-color-calendar-2: rgb(215, 86, 125);
+	--table-color-rgb: 215, 86, 125;
+	--scrollbar-thumb: #e2bdbd50;
+	--scrollbar-thumb-active: #e2bdbd;
+}
+
+/**
+awesome-brain color scheme end
+**/

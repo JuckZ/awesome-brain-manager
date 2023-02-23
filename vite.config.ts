@@ -89,7 +89,6 @@ export default defineConfig({
             output: {
                 exports: 'named',
                 assetFileNames: assetInfo => {
-                    console.error(assetInfo.name);
                     if (assetInfo.name == 'style.css') {
                         return 'styles.css';
                     }

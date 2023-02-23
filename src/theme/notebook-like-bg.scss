@@ -1,0 +1,49 @@
+/**
+notebook like bg start
+**/
+body.all-dark .print.theme-light,
+.theme-dark {
+    --bg-color-notebook: #2a2825;
+    --grid-notebook-line-color-1: #c7c7c71f;
+    --grid-notebook-line-color-2: #74747440;
+}
+
+.theme-light {
+    --bg-color-notebook: #fef9f1;
+    --grid-notebook-line-color-1: #c7c7c740;
+    --grid-notebook-line-color-2: #afafaf40;
+}
+
+body:is(.notebook-liked-markdown-page-grid-notebook-1,
+    .notebook-liked-markdown-page-grid-notebook-2,
+    .notebook-liked-markdown-page-dotted-notebook-1,
+    .notebook-liked-markdown-page-dotted-notebook-2) .setting-item[data-id='bg-color-notebook'],
+body.notebook-liked-markdown-page-grid-notebook-1 .setting-item[data-id='grid-notebook-line-color-1'],
+body.notebook-liked-markdown-page-grid-notebook-2 .setting-item[data-id='grid-notebook-line-color-2'],
+body:is(.notebook-liked-markdown-page-dotted-notebook-1,
+    .notebook-liked-markdown-page-dotted-notebook-2) .setting-item[data-id='dotted-notebook-dot-color'] {
+    display: block !important;
+}
+
+body.background-notebook-liked-switch.notebook-liked-markdown-page-grid-notebook-1 .markdown-reading-view .markdown-rendered,
+body.background-notebook-liked-switch.notebook-liked-markdown-page-grid-notebook-1 .markdown-source-view.mod-cm6 .cm-scroller {
+    background: var(--bg-color-notebook);
+    background-image: linear-gradient(90deg, var(--grid-notebook-line-color-1) 3%, transparent 0),
+        linear-gradient(var(--grid-notebook-line-color-1) 3%, transparent 0);
+    background-size: 20px 20px;
+}
+
+/*https://www.jianshu.com/p/2b713844cfe9*/
+body.background-notebook-liked-switch.notebook-liked-markdown-page-grid-notebook-2 .markdown-reading-view .markdown-rendered,
+body.background-notebook-liked-switch.notebook-liked-markdown-page-grid-notebook-2 .markdown-source-view.mod-cm6 .cm-scroller {
+    background: var(--bg-color-notebook);
+    background-image: linear-gradient(var(--grid-notebook-line-color-2) 1px, transparent 0),
+        linear-gradient(90deg, var(--grid-notebook-line-color-2) 1px, transparent 0),
+        linear-gradient(var(--grid-notebook-line-color-1) 1px, transparent 0),
+        linear-gradient(90deg, var(--grid-notebook-line-color-1) 1px, transparent 0);
+    background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
+}
+
+/**
+notebook like bg end
+**/

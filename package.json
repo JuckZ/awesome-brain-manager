@@ -28,7 +28,7 @@
     "d": "vite build -w",
     "dev": "vite && ",
     "build": "run-p type-check build-only",
-	"d:theme": "sass --watch ./src/theme.scss ../juckz.github.io/blogs/.obsidian/themes/\"Awesome Brain Manager\"/theme.css",
+	"d:theme": "sass --watch ./src/theme/index.scss ../juckz.github.io/blogs/.obsidian/themes/\"Awesome Brain Manager\"/theme.css",
     "preview": "vite preview",
     "test": "vitest",
     "test:unit": "vitest --environment jsdom --root src/",

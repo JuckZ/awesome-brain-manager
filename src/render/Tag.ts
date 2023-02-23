@@ -12,7 +12,7 @@ export function buildTagRules(tag: Tag) {
           font-weight: lighter;
           color: ${tag.color} !important;
           background-color: ${tag.bgColor} !important;
-          font-size: var(--colorful-tag-font-size);
+          font-size: var(--font-size-tag);
           filter: hue-rotate(0) !important;
         }`,
     ];

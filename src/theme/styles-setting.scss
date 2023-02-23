@@ -1,0 +1,361 @@
+/* ─────────────────────────────────────────────────── */
+/* Plugin Compatibility info for the Obsidian Hub */
+/* ─────────────────────────────────────────────────── */
+
+/* @plugins
+core:
+- file-explorer
+- graph
+community:
+- awesome-brain-manager
+*/
+
+/* @settings
+name: 🌈Awesome Brain Plugin Settings
+id: awesome-brain-plugin
+settings:
+  -
+    id: color-scheme-options
+    title: 1. Color Scheme
+    title.zh: 1. 整体配色
+    type: class-select
+    allowEmpty: false
+    default: color-scheme-options-default
+    hub: ignore
+    options:
+      -
+        label: Default
+        value: color-scheme-options-default
+      -
+        label: Awesome
+        value: color-scheme-options-awesome
+      -
+        label: Nord
+        value: color-scheme-options-nord
+      -
+        label: Atom
+        value: color-scheme-options-atom
+      -
+        label: Macos
+        value: color-scheme-options-macos
+  -
+    id: clutter-free-headings
+    title: 2. Clutter Free Headings
+    title.zh: 2. 编辑状态使用H1 H2 替代「#」(显示标题级别)
+    description: Adapted from https://github.com/deathau/obsidian-snippets/blob/main/clutter-free-headings.css
+    type: class-toggle
+    default: false
+  -
+    id: style-options-for-other-plugins
+    title: 3. For Plugins
+    title.zh: 3. 插件样式
+    type: heading
+    level: 1
+    collapsed: true
+  -
+    id: style-options-for-admonition-plugin-header
+    title: 3.1 Admonition&Callout Style
+    type: heading
+    level: 2
+    collapsed: true
+  -
+    id: style-options-for-admonition-plugin
+    title: Admonition special style support
+    title.zh: 是否开启Admonition特别样式支持
+    type: class-toggle
+    default: true
+    description : 目前支持ad类型：blank 全透明框🔸hibox 🔸flex 自动隐藏框❗使用方法❗下面以thm类型为例，在admonition插件的设置页面中，类型填 thm，标题填 定理，图标选择hand-point-right，颜色自己选比如浅绿色，添加成功后，在正文中使用代码块```ad-thm 即可激活。其他类型以此类推。
+  -
+    id: background-settings
+    title: 4. Background Images
+    title.zh: 4. 背景设置
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: background-settings-workplace
+    title: 4.1 Workplace Background Image
+    title.zh: 4.1 工作页面背景
+    type: heading
+    level: 2
+    collapsed: false
+  -
+    id: background-notebook-liked-switch
+    title: Toggle Notebook-liked Background
+    title.zh: 开启类笔记背景
+    type: class-toggle
+    default: true
+  -
+    id: notebook-liked-markdown-page-options
+    title: Notebook-liked Background
+    title.zh: 类笔记背景
+    type: class-select
+    allowEmpty: false
+    default: notebook-liked-markdown-page-grid-notebook-2
+    options:
+      -
+        label: Grid notebook 1 (@CZ-15/YZ-10)
+        value: notebook-liked-markdown-page-grid-notebook-1
+      -
+        label: Grid notebook 2
+        value: notebook-liked-markdown-page-grid-notebook-2
+  -
+    id: background-secondary
+    title: Background Secondary
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#f2f3f5'
+    default-dark: '#161616'
+  -
+    id: background-secondary-alt
+    title: Background Secondary (alt)
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#e3e5e8'
+    default-dark: '#000000'
+  -
+    id: background-modifier-border
+    title: 'Background Modifier: Border'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#dddddd'
+    default-dark: '#333333'
+  -
+    id: background-modifier-form-field
+    title: 'Background Modifier: Form Field'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#ffffffff'
+    default-dark: '#0000004d'
+  -
+    id: background-modifier-form-field-highlighted
+    title: 'Background Modifier: Form Field (highlighted)'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#ffffffff'
+    default-dark: '#00000038'
+  -
+    id: background-modifier-box-shadow
+    title: 'Background Modifier: Box Shadow'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#0000001a'
+    default-dark: '#0000004d'
+  -
+    id: background-modifier-success
+    title: 'Background Modifier: Success'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#A4E7C3'
+    default-dark: '#197300'
+  -
+    id: background-modifier-error
+    title: 'Background Modifier: Error'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    alt-format:
+      -
+        id: background-modifier-error-rgb
+        format: rgb-values
+    default-light: '#990000'
+    default-dark: '#3d0000'
+  -
+    id: background-modifier-error-hover
+    title: 'Background Modifier: Error (hover)'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#bb0000'
+    default-dark: '#470000'
+  -
+    id: background-modifier-cover
+    title: 'Background Modifier: Cover'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#000000cc'
+    default-dark: '#000000cc'
+  - 
+    id: heading-colors-text
+    title: Text Colors
+    type: heading
+    level: 1
+    collapsed: true
+  -
+    id: text-accent
+    title: 'Text: Accent'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#705dcf'
+    default-dark: '#7f6df2'
+  -
+    id: text-accent-hover
+    title: 'Text: Accent (hover)'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#7a6ae6'
+    default-dark: '#8875ff'
+  -
+    id: text-normal
+    title: 'Text: Normal'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#2e3338'
+    default-dark: '#dcddde'
+  -
+    id: text-muted
+    title: 'Text: Muted'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#888888'
+    default-dark: '#999999'
+  -
+    id: text-faint
+    title: 'Text: Faint'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#999999'
+    default-dark: '#666666'
+  -
+    id: text-error
+    title: 'Text: Error'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#800000'
+    default-dark: '#ff3333'
+  -
+    id: text-error-hover
+    title: 'Text: Error (hover)'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#990000'
+    default-dark: '#990000'
+  -
+    id: text-highlight-bg
+    title: 'Text: Highlight Background'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#ffff0066'
+    default-dark: '#ffff0066'
+  -
+    id: text-highlight-bg-active
+    title: 'Text: Highlight Background (active)'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#ff800066'
+    default-dark: '#ff800066'
+  -
+    id: text-selection
+    title: 'Text: Selection Background'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#cce6fffc'
+    default-dark: '#17304dfc'
+  -
+    id: text-selection
+    title: 'Text: On Accent'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#f2f2f2'
+    default-dark: '#dcddde'
+  
+  - 
+    id: heading-colors-interactive
+    title: Interactive Colors
+    type: heading
+    level: 1
+    collapsed: true
+  -
+    id: interactive-normal
+    title: 'Interactive: Normal'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#f2f3f5'
+    default-dark: '#2a2a2a'
+  -
+    id: interactive-hover
+    title: 'Interactive: Hover'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#e9e9e9'
+    default-dark: '#303030'
+  -
+    id: interactive-accent
+    title: 'Interactive: Accent'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    alt-format:
+      -
+        id: interactive-accent-rgb
+        format: rgb-values
+    default-light: '#7b6cd9'
+    default-dark: '#483699'
+  -
+    id: interactive-accent-hover
+    title: 'Interactive: Accent (hover)'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#8273e6'
+    default-dark: '#4d3ca6'
+  -
+    id: interactive-success
+    title: 'Interactive: Success'
+    type: variable-themed-color
+    opacity: false
+    format: hex
+    default-light: '#197300'
+    default-dark: '#197300'
+  - 
+    id: heading-colors-scrollbar
+    title: Scrollbar Colors
+    type: heading
+    level: 1
+    collapsed: true
+  -
+    id: scrollbar-bg
+    title: 'Scrollbar: Background'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#0000000d'
+    default-dark: '#ffffff0d'
+  -
+    id: scrollbar-thumb-bg
+    title: 'Scrollbar: Thumb Background'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#0000001a'
+    default-dark: '#ffffff1a'
+  -
+    id: scrollbar-active-thumb-bg
+    title: 'Scrollbar: Active Thumb Background'
+    type: variable-themed-color
+    opacity: true
+    format: rgb
+    default-light: '#00000033'
+    default-dark: '#ffffff33'
+*/
