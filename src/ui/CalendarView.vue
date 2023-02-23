@@ -16,7 +16,7 @@
 import { NCalendar } from 'naive-ui';
 import { ref, toRefs } from 'vue';
 import { useMessage } from 'naive-ui';
-import { addDays, isYesterday } from 'date-fns/esm';
+import { addDays } from 'date-fns/esm';
 import type { Pomodoro } from '../schemas/spaces';
 import PomodoroListView from './PomodoroListView.vue';
 

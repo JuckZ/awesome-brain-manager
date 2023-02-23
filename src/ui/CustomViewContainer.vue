@@ -7,9 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watchEffect, ref, toRef, onBeforeUpdate, onUpdated } from 'vue';
-import { NNotificationProvider, NSpace, useNotification } from 'naive-ui';
-import t from '../i18n';
+import { onMounted, onUnmounted, onUpdated } from 'vue';
+import { NNotificationProvider } from 'naive-ui';
 import Toolbar from './Toolbar.vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import type { EditorState } from '../utils/editor';

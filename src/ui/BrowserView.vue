@@ -5,8 +5,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, toRefs, onUpdated } from 'vue';
 import Logger from '../utils/logger';
-import t from '../i18n';
-import Title from './Title';
 
 const props = defineProps<{
     url: string;

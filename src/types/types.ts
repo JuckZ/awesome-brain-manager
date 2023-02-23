@@ -1,5 +1,5 @@
 import type { EditorView } from '@codemirror/view';
-import type { TAbstractFile, TFile } from 'obsidian';
+import type { TFile } from 'obsidian';
 
 export interface SectionTree {
     section: string;

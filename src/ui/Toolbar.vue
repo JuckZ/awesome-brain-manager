@@ -59,9 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, reactive, onUpdated, toRefs, watch, watchEffect } from 'vue';
-import { NNotificationProvider, NTooltip, NIcon, NSpace, useNotification } from 'naive-ui';
-import t from '../i18n';
+import { onMounted, onUnmounted, ref, onUpdated, toRefs, watchEffect } from 'vue';
+import { NTooltip, NIcon, useNotification } from 'naive-ui';
 import {
     ServiceNames,
     chatWithBing,
@@ -76,7 +75,6 @@ import ChatGPT from './components/icon/ChatGPT.vue';
 import Google from './components/icon/Google.vue';
 import ScanImage from './components/icon/ScanImage.vue';
 
-import type { ServiceName } from '../utils/ThirdPartyService';
 import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
 import type { EditorState } from '../utils/editor';
 import type AwesomeBrainManagerPlugin from '../main';

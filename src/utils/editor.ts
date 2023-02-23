@@ -1,7 +1,6 @@
 import { App, Editor, MarkdownView } from 'obsidian';
-import type {  EditorPosition } from 'obsidian';
 import { createApp, ref } from 'vue';
-import type { App as VueApp, Ref } from 'vue';
+import type { Ref } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import CustomViewContainer from '../ui/CustomViewContainer.vue';
 import type { SettingModel } from 'model/settings';
@@ -36,20 +35,6 @@ export function loadCustomViewContainer(plugin: AwesomeBrainManagerPlugin) {
 
 export function unloadCustomViewContainer() {
     document.body.removeChild(customEl);
-}
-
-export function getEditorPositionFromIndex(content: string, index: number): EditorPosition {
-    const substr = content.substr(0, index);
-
-    let l = 0;
-    let offset = -1;
-    let r = -1;
-    for (; (r = substr.indexOf('\n', r + 1)) !== -1; l++, offset = r);
-    offset += 1;
-
-    const ch = content.substr(offset, index - offset).length;
-
-    return { line: l, ch: ch };
 }
 
 export function getModestate(app: App) {

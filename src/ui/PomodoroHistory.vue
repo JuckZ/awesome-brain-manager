@@ -40,15 +40,12 @@ import type { Ref } from 'vue';
 import { NConfigProvider, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
 import type { GlobalThemeOverrides } from 'naive-ui';
 import {
-    createTheme,
     darkTheme,
     lightTheme,
     zhCN,
     dateZhCN,
     enUS,
     dateEnUS,
-    datePickerDark,
-    inputDark,
 } from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
 import CalendarView from './CalendarView.vue';

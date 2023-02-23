@@ -38,8 +38,6 @@ export default {
             effects: 'Beautiful Effects',
             pomodoro: 'Pomodoro(beta feature)',
             toolbar: 'Toolbar',
-            warning:
-                "!!!The following features are experimental!!! If you really need, recommend  you use uphy's obsidian-reminder and lumoe's obsidian-rollover-daily-todos plugin.",
         },
     },
     info: {

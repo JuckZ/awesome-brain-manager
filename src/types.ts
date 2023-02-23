@@ -32,26 +32,6 @@ export class ExtTFile extends TFile {
     override basename!: string;
 }
 
-export class OneDay {
-    file!: TFile;
-    oldContent = '';
-
-    constructor(protected fileVal: TFile, protected oldContentVal: string) {
-        this.file = fileVal;
-        this.oldContent = oldContentVal;
-    }
-}
-
-export class UndoHistoryInstance {
-    previousDay!: OneDay;
-    today!: OneDay;
-
-    constructor(protected previousDayVal: OneDay, protected todayVal: OneDay) {
-        this.previousDay = previousDayVal;
-        this.today = todayVal;
-    }
-}
-
 export class Tag {
     color: string;
     bgColor: string;
@@ -64,26 +44,5 @@ export class Tag {
         this.bgColor = bgColorVal || `var(--tag-${typeVal}-bg)`;
         this.icon = iconVal || `var(--tag-${typeVal}-content)`;
         this.font = fontVal || `var(--font-family-special-tag)`;
-    }
-}
-
-export class EditDetector {
-    private lastModified?: Date;
-
-    constructor(private editDetectionSec: ReadOnlyReference<number>) {}
-
-    fileChanged() {
-        this.lastModified = new Date();
-    }
-
-    isEditing(): boolean {
-        if (this.editDetectionSec.value <= 0) {
-            return false;
-        }
-        if (this.lastModified == null) {
-            return false;
-        }
-        const elapsedSec = (new Date().getTime() - this.lastModified.getTime()) / 1000;
-        return elapsedSec < this.editDetectionSec.value;
     }
 }

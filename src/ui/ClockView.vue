@@ -24,7 +24,7 @@ import RadialProgress from 'vue3-radial-progress';
 import { onMounted, onUnmounted, ref, toRefs } from 'vue';
 import type { Ref } from 'vue';
 import { NResult, NSpace } from 'naive-ui';
-import moment from 'moment';
+import { moment } from 'obsidian';
 import type { Pomodoro } from '../schemas/spaces';
 import t from '../i18n';
 

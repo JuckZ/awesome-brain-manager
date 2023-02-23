@@ -31,8 +31,6 @@ export default {
         title: {
             effects: '鼠标、按键特效',
             pomodoro: '番茄钟(beta version)',
-            warning:
-                '!!!以下功能在实验阶段!!! 如果你确实需要，推荐使用 obsidian-reminder 和 obsidian-rollover-daily-todos插件.',
         },
     },
     info: {

@@ -70,14 +70,6 @@ onMounted(async () => {
     };
 
     var options = {
-        // resizeDelay: 100,
-        // transitions: {
-        //     resize: {
-        //         animation: {
-        //             duration: 200,
-        //         },
-        //     },
-        // },
         maintainAspectRatio: false,
         responsive: true,
         scales: {
