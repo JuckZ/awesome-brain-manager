@@ -1,97 +1,52 @@
-import type { EditorView } from '@codemirror/view';
-import type { TFile } from 'obsidian';
-
-export interface SectionTree {
-    section: string;
-    children: string[];
-    collapsed: boolean;
-    def?: string;
-    sticker?: string;
-}
-
-export interface StringTree {
-    node: string;
-    children: StringTree[];
-    isFolder: boolean;
-}
-
-export interface StringTreePath extends StringTree {
-    path: string;
-}
+import { App } from 'obsidian';
+import type { Command } from 'obsidian';
 
 export const eventTypes = {
-    selectedFileChange: 'mkmd-selected-file-change',
-    activeFileChange: 'mkmd-active-file-change',
-    refreshView: 'mkmd-refresh-view',
-    revealFile: 'mkmd-reveal-file',
-    tagsChange: 'mkmd-tags-change',
-    vaultChange: 'mkmd-vault-change',
-    mdbChange: 'mkmd-mdb-change',
-    spacesChange: 'mkmd-spaces-change',
     pomodoroChange: 'awesome-brain-manager-pomodoro-change',
     calledFunction: 'called-function',
-    updateSections: 'mkmd-update-sections',
-    settingsChanged: 'mkmd-settings-changed',
-    spawnPortal: 'mkmd-portal-spawn',
-    loadPortal: 'mkmd-portal-load',
-    openFilePortal: 'mkmd-portal-file',
-    focusPortal: 'mkmd-portal-focus',
 };
 
-export type VaultChange = 'create' | 'delete' | 'rename' | 'modify' | 'collapse';
-export type PortalType = 'none' | 'doc' | 'block' | 'callout' | 'flow' | 'context';
-export type SpaceChange = 'sticker' | 'space' | 'vault';
+export type GlobalChange = 'file-create' | 'file-remove' | 'file-rename';
 
-export class SpaceChangeEvent extends Event {
+export class AwesomeGlobalEvent extends Event {
     detail: {
-        changeType: SpaceChange;
+        type: GlobalChange;
     };
 }
 
-export class CustomVaultChangeEvent extends Event {
-    detail: {
-        file: TFile;
-        changeType: VaultChange;
-        oldPath: string;
+export class ExtApp extends App {
+    internalPlugins: any;
+    plugins: {
+        getPluginFolder(): string;
+        getPlugin(id: string): {
+            settings: any;
+        };
+    };
+    commands: {
+        commands: { [id: string]: Command };
+        editorCommands: { [id: string]: Command };
+        findCommand(id: string): Command;
+        executeCommandById(id: string): void;
+        listCommands(): Command[];
+    };
+    customCss: {
+        getSnippetPath(file: string): string;
+        readSnippets(): void;
+        setCssEnabledStatus(snippet: string, enabled: boolean): void;
     };
 }
 
-export class LoadPortalEvent extends Event {
-    detail: {
-        el: HTMLElement;
-        view: EditorView;
-        id: string;
-    };
+export class Tag {
+    color: string;
+    bgColor: string;
+    type: string;
+    icon: string;
+    font: string;
+    constructor(colorVal: string, bgColorVal: string, typeVal: string, iconVal: string, fontVal: string) {
+        this.type = typeVal;
+        this.color = colorVal || `var(--tag-${typeVal}-color)`;
+        this.bgColor = bgColorVal || `var(--tag-${typeVal}-bg)`;
+        this.icon = iconVal || `var(--tag-${typeVal}-content)`;
+        this.font = fontVal || `var(--font-family-special-tag)`;
+    }
 }
-
-export class SpawnPortalEvent extends Event {
-    detail: {
-        el: HTMLElement;
-        file: string;
-        ref?: string;
-        from?: number;
-        to?: number;
-        type: PortalType;
-        id: string;
-    };
-}
-
-export class OpenFilePortalEvent extends Event {
-    detail: {
-        file: string;
-        source: string;
-    };
-}
-
-export class FocusPortalEvent extends Event {
-    detail: {
-        id: string;
-        parent: boolean;
-        top: boolean;
-    };
-}
-
-export type TransactionRange = {
-    from: number;
-    to: number;
-};

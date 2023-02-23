@@ -2,7 +2,6 @@ import { FileSystemAdapter, normalizePath } from 'obsidian';
 import type { Database, QueryExecResult, SqlJsStatic } from 'sql.js';
 import type { DBTable, DBTables } from 'types/mdb';
 import type AwesomeBrainManagerPlugin from '../../main';
-import { dispatchDatabaseFileChanged } from '../../dispatch/mdb';
 import { sanitizeSQLStatement } from '../../utils/sanitize';
 import { uniq } from '../tree';
 import Logger from '../../utils/logger';
@@ -215,7 +214,6 @@ export const saveDBToPath = async (
     const db = await getDB(sqlJS, path);
     replaceDB(db, tables);
     await saveDBFile(path, db.export().buffer);
-    dispatchDatabaseFileChanged(path);
     db.close();
     return true;
 };

@@ -18,8 +18,6 @@ import type { MarkdownFileInfo, PluginManifest } from 'obsidian';
 import Replacer from './Replacer';
 import Process from './process/Process';
 import { ref } from 'vue';
-import { moment } from 'obsidian';
-import { Tag } from './types';
 import type { Database } from 'sql.js';
 import { checkInDefaultPath, checkInList, customSnippetPath, pomodoroDB } from './utils/constants';
 import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
@@ -47,11 +45,11 @@ import { insertAfterHandler, setBanner } from './utils/content';
 import { changeToolbarPopover, loadCustomViewContainer, unloadCustomViewContainer } from './utils/editor';
 import { getLocalRandom, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
-import { PomodoroStatus, initiateDB } from './utils/promotodo';
+import { PomodoroStatus, initiateDB } from './utils/pomotodo';
 import { AwesomeBrainSettingTab, SETTINGS } from './settings';
 import { PluginDataIO } from './data';
-import { eventTypes } from './types/types';
-import type { ExtApp } from './types';
+import { eventTypes, Tag } from './types/types';
+import type { ExtApp } from './types/types';
 import { DocumentDirectionSettings } from './render/DocumentDirection';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { pomodoroSchema } from './schemas/spaces';
@@ -132,10 +130,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         const sqljs = await loadSQL();
         // Logger.timeEnd("Loading SQlite");
         return sqljs;
-    }
-
-    mdbChange(e: any) {
-        Logger.log(this, e);
     }
 
     pomodoroChange(e: any) {
@@ -238,9 +232,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                         },
                     });
                     window.dispatchEvent(evt);
-                    // Logger.info('百度');
-                    // @ts-ignore
-                    // const cookies = window.electron.remote.session.defaultSession.cookies;
+                    // const cookies = electron.remote.session.defaultSession.cookies;
                     // cookies.get({ url: 'https://openai.com' }).then(cookies => {
                     //     console.log(cookies);
                     // });
@@ -646,7 +638,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             changeToolbarPopover(this.app, e, SETTINGS.toolbar);
         });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
-        window.addEventListener(eventTypes.mdbChange, this.mdbChange.bind(this));
         [
             this.app.workspace.on('click', this.clickFunction),
             this.app.workspace.on('resize', this.resizeFunction),

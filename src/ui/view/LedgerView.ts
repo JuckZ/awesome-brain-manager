@@ -2,9 +2,7 @@ import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { App as VueApp } from 'vue';
 import { selectDB } from 'utils/db/db';
-import type { Ledger } from 'schemas/spaces';
 import type AwesomeBrainManagerPlugin from 'main';
-import { eventTypes } from 'types/types';
 import type { DBRows } from 'types/mdb';
 import PomodoroHistory from '../PomodoroHistory.vue';
 

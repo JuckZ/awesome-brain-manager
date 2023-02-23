@@ -1,4 +1,3 @@
-import { moment } from 'obsidian';
 import type { Database } from 'sql.js';
 import {
     pomodoroSchema,

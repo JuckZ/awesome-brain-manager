@@ -61,7 +61,7 @@ import { onUpdated, toRefs } from 'vue';
 import { moment } from 'obsidian';
 import type AwesomeBrainManagerPlugin from '../main';
 import type { Pomodoro } from '../schemas/spaces';
-import { PomodoroStatus } from '../utils/promotodo';
+import { PomodoroStatus } from '../utils/pomotodo';
 import t from '../i18n';
 
 const props = defineProps<{
