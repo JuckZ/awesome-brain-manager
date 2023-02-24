@@ -117,17 +117,6 @@ export function insertTextAfterPositionInBody(
     }
 }
 
-export async function setBanner(filepath, oldBanner, newBanner) {
-    const fileContents = await this.app.vault.adapter.read(filepath);
-    let originalLine = `banner: '${oldBanner}'`;
-    if (!fileContents.contains(originalLine)) {
-        originalLine = `banner: "${oldBanner}"`;
-    }
-    const newContent = fileContents.replace(originalLine, `banner: '${newBanner}'`);
-    await this.app.vault.adapter.write(filepath, newContent);
-    return true;
-}
-
 export function insertImageWithMap(el: HTMLElement, image: string, map: string, encodedDiagram: string) {
     el.empty();
 

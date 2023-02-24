@@ -42,7 +42,7 @@ import {
     selectDB,
     updateDBConditionally,
 } from './utils/db/db';
-import { insertAfterHandler, setBanner } from './utils/content';
+import { insertAfterHandler } from './utils/content';
 import { changeToolbarPopover, loadCustomViewContainer, unloadCustomViewContainer } from './utils/editor';
 import { getLocalRandomImg, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
@@ -438,7 +438,14 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             const title = frontmatter?.title;
             const newBanner = await searchPicture(origin, title);
             if (newBanner) {
-                await setBanner(file.path, banner, newBanner);
+                this.app.vault.adapter.process(normalizePath(file.path), fileContents => {
+                    let originalLine = `banner: '${banner}'`;
+                    if (!fileContents.contains(originalLine)) {
+                        originalLine = `banner: "${banner}"`;
+                    }
+                    const newContent = fileContents.replace(originalLine, `banner: '${newBanner}'`);
+                    return newContent;
+                });
             }
         });
     }

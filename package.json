@@ -136,7 +136,6 @@
     "@codemirror/view": "^6.7.3",
     "@emoji-mart/data": "^1.1.2",
     "@vicons/ionicons5": "^0.12.0",
-    "axios": "^1.1.3",
     "bing-chat": "^0.2.1",
     "boxen": "^5.1.2",
     "chalk": "^5.2.0",
