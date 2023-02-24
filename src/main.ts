@@ -404,7 +404,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     public utils = {
         getCleanTitle,
         getLocalRandom: (title, path) => {
-            getLocalRandomImg(this.app, title, path);
+            return getLocalRandomImg(this.app, title, path);
         },
         getWeather,
     };
