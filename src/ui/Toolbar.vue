@@ -61,13 +61,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, onUpdated, toRefs, watchEffect } from 'vue';
 import { NTooltip, NIcon, useNotification } from 'naive-ui';
-import {
-    ServiceNames,
-    chatWithBing,
-    chatWithChatGPT,
-    chatWithOpenAI,
-    genImageWithChatGPT,
-} from '../utils/ThirdPartyService';
+import { ServiceNames, chatWith } from '../api';
 import OpenAI from './components/icon/OpenAI.vue';
 import Baidu from './components/icon/Baidu.vue';
 import Bing from './components/icon/Bing.vue';
@@ -128,16 +122,10 @@ const clickHandle = async (type: string, keyword: string) => {
     isShow.value = false;
     switch (type) {
         case ServiceNames.Bing:
-            conversation(type, await chatWithBing(keyword));
-            break;
         case ServiceNames.OpenAI:
-            conversation(type, await chatWithOpenAI(keyword));
-            break;
         case ServiceNames.ChatGPT:
-            conversation(type, await chatWithChatGPT(keyword));
-            break;
         case ServiceNames.GenImageWithChatGPT:
-            conversation(type, await genImageWithChatGPT(keyword));
+            conversation(type, await chatWith(type, keyword));
             break;
         case ServiceNames.Baidu:
             plugin.value.openBrowser(`https://baidu.com/s?wd=${keyword}`);

@@ -28,7 +28,6 @@ import { codeEmoji } from './render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
 import { buildTagRules } from './render/Tag';
 import Logger, { initLogger } from './utils/logger';
-import { notify } from './utils/request';
 import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
 import { getWeather } from './utils/weather';
 import { getTagsFromTask, getTaskContentFromTask } from './utils/common';
