@@ -7,11 +7,10 @@ export default {
         showPomodoroHistory: 'Show pomodoro history',
     },
     command: {
-        'awesome-brain-manager-check-in': 'Habit Check In',
-        'awesome-brain-manager-remove-check-in': 'Remove Habit Check In',
-        'awesome-brain-manager-rollover': 'Rollover Todos Now',
-        'awesome-brain-manager-undo': 'Undo last rollover',
-        'awesome-brain-manager:open-emoji-picker': 'Open emoji picker'
+        'check-in': 'Habit Check In',
+        'remove-check-in': 'Remove Habit Check In',
+		'query-openai': 'Query openAI',
+        'open-emoji-picker': 'Open emoji picker'
     },
     setting: {
         cursorEffect: {

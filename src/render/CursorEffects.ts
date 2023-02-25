@@ -82,35 +82,32 @@ function disableCursorEffect() {
     cursorEffects.forEach(emo => emo.destroy());
 }
 
-export function toggleMouseClickEffects(text: SettingModel<string, string>) {
+export function toggleMouseClickEffects(e: MouseEvent, text: SettingModel<string, string>) {
     if (!text) {
         return;
     }
     let text_idx = 0;
-    window.onclick = function (event) {
-        
-        const textList = text.value.split(',');
-        var heart = document.createElement('b');
-        document.body.appendChild(heart).innerHTML = textList[text_idx];
+    const textList = text.value.split(',');
+        var ele = document.createElement('b');
+        document.body.appendChild(ele).innerHTML = textList[text_idx];
         text_idx = (text_idx + 1) % textList.length;
 
         let f = 16, // 字体大小
-            x = event.clientX - f / 2, // 横坐标
-            y = event.clientY - f, // 纵坐标
+            x = e.clientX - f / 2, // 横坐标
+            y = e.clientY - f, // 纵坐标
             color = randomColor(), // 随机颜色
             a = 1, // 透明度
             s = 1.2; // 放大缩小
         let timer = setInterval(function () {
             //添加定时器
             if (a <= 0) {
-                document.body.removeChild(heart);
+                document.body.removeChild(ele);
                 clearInterval(timer);
             } else {
-                heart.style.cssText = `font-size:${f}px;position: fixed;color:${color};left:${x}px;top:${y}px;opacity:${a};transform:scale(${s});`;
+                ele.style.cssText = `pointer-events: none;font-size:${f}px;position: fixed;color:${color};left:${x}px;top:${y}px;opacity:${a};transform:scale(${s});`;
                 y--;
                 a -= 0.016;
                 s += 0.002;
             }
         }, 15);
-    };
 }

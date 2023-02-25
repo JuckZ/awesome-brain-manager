@@ -451,8 +451,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     private setupCommands() {
         this.addCommand({
-            id: 'awesome-brain-manager-check-in',
-            name: t.command['awesome-brain-manager-check-in'],
+            id: 'check-in',
+            name: t.command['check-in'],
             callback: () => {
                 this.habitCheckIn();
             },
@@ -460,7 +460,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'remove-check-in',
-            name: t.command['awesome-brain-manager-remove-check-in'],
+            name: t.command['remove-check-in'],
             callback: () => {
                 this.removeHabitCheckIn();
             },
@@ -468,7 +468,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'query-openai',
-            name: 'Query openAI',
+			name: t.command['query-openai'],
             hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
             // 带条件的编辑器指令
             // editorCheckCallback: (checking: boolean, editor: Editor, view: MarkdownView) => {}
@@ -488,8 +488,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             name: t.command['open-emoji-picker'],
             // 带条件的指令
             checkCallback: (checking: boolean) => {
-                const leaf = this.app.workspace.activeLeaf;
-                if (leaf) {
+                const activeFile = this.app.workspace.getActiveFile();
+                if (activeFile) {
                     if (!checking) {
                         if (!this.emojiPickerModal) {
                             this.emojiPickerModal = new EmojiPickerModal(this.app);
@@ -541,7 +541,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
         });
         // this.registerEditorExtension(emojiListPlugin);
-        toggleMouseClickEffects(SETTINGS.clickString);
         toggleBlast(SETTINGS.powerMode.value);
         toggleShake(SETTINGS.shakeMode);
         toggleCursorEffects(SETTINGS.cursorEffect.value);
@@ -620,6 +619,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
             changeToolbarPopover(this.app, e, SETTINGS.toolbar);
+        });
+		this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
+			toggleMouseClickEffects(e, SETTINGS.clickString);
         });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         [

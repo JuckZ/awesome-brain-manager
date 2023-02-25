@@ -6,10 +6,10 @@ export default {
         defaultTask: '默认任务：',
     },
     command: {
-        'awesome-brain-manager-check-in': '习惯打卡',
-        'awesome-brain-manager-remove-check-in': '移除习惯打卡',
-        'awesome-brain-manager-rollover': '将未完成任务记录到今天',
-        'awesome-brain-manager-undo': '撤销"将未完成任务记录到今天"的操作',
+        'check-in': '习惯打卡',
+        'remove-check-in': '移除习惯打卡',
+		'query-openai': '询问OpenAI',
+		'open-emoji-picker': '输入表情'
     },
     setting: {
         cursorEffect: {

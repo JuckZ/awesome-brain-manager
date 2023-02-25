@@ -25,8 +25,8 @@
     }
   },
   "scripts": {
-    "d": "vite build -w",
-    "dev": "vite",
+    "d": "vite",
+    "dev": "vite build -w",
     "build": "run-p type-check build-only",
     "d:theme": "sass --watch ./src/theme/index.scss ../juckz.github.io/blogs/.obsidian/themes/\"Awesome Brain Manager\"/theme.css",
     "preview": "vite preview",
