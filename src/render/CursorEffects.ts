@@ -82,11 +82,12 @@ function disableCursorEffect() {
     cursorEffects.forEach(emo => emo.destroy());
 }
 
+let text_idx = 0;
+
 export function toggleMouseClickEffects(e: MouseEvent, text: SettingModel<string, string>) {
     if (!text) {
         return;
     }
-    let text_idx = 0;
     const textList = text.value.split(',');
         var ele = document.createElement('b');
         document.body.appendChild(ele).innerHTML = textList[text_idx];
