@@ -53,6 +53,7 @@ import type { ExtApp } from './types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { pomodoroSchema } from './schemas/spaces';
 import type { Pomodoro } from './schemas/spaces';
+import { notify } from './api';
 import t from './i18n';
 import './main.scss';
 
@@ -213,6 +214,20 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 .setIcon('image')
                 .onClick(async () => {
                     new ImageOriginModal(this.app, this, this.app.workspace.getActiveFile()).open();
+                });
+        });
+        menu.addItem(item => {
+            item.setTitle('Notify this to ntfy')
+                .setIcon('bell')
+                .onClick(async () => {
+                    const cursorPos = editor.getCursor();
+                    let content = editor.getSelection();
+                    if (!content) {
+                        if (cursorPos) {
+                            content = editor.getLine(cursorPos.line);
+                        }
+                    }
+					notify(content)
                 });
         });
         menu.addItem(item => {
@@ -468,7 +483,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'query-openai',
-			name: t.command['query-openai'],
+            name: t.command['query-openai'],
             hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
             // 带条件的编辑器指令
             // editorCheckCallback: (checking: boolean, editor: Editor, view: MarkdownView) => {}
@@ -620,8 +635,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
             changeToolbarPopover(this.app, e, SETTINGS.toolbar);
         });
-		this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
-			toggleMouseClickEffects(e, SETTINGS.clickString);
+        this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
+            toggleMouseClickEffects(e, SETTINGS.clickString);
         });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         [

@@ -17,9 +17,12 @@ class Settings {
     powerMode: SettingModel<string, string>;
     shakeMode: SettingModel<boolean, boolean>;
     toolbar: SettingModel<boolean, boolean>;
-    debugEnable: SettingModel<boolean, boolean>;
     expectedTime: SettingModel<number, number>;
     clickString: SettingModel<string, string>;
+    debugEnable: SettingModel<boolean, boolean>;
+    serverHost: SettingModel<string, string>;
+    ntfyServerHost: SettingModel<string, string>;
+    ntfyToken: SettingModel<string, string>;
 
     constructor() {
         this.cursorEffectBuilder = this.settings
@@ -74,7 +77,6 @@ class Settings {
             .name('Show something on click')
             .desc('input something you want to show, separated by commas')
             .text('富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善')
-            .placeHolder('富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善')
             .build(new RawSerde());
 
         this.toolbar = this.settings
@@ -93,6 +95,30 @@ class Settings {
             .toggle(false)
             .build(new RawSerde());
 
+        this.serverHost = this.settings
+            .newSettingBuilder()
+            .key('serverHost')
+            .name('Server Host')
+            .desc('input your server address')
+            .text('https://vercel.ihave.cool')
+            .build(new RawSerde());
+
+        this.ntfyServerHost = this.settings
+            .newSettingBuilder()
+            .key('ntfyServerHost')
+            .name('Ntfy Server Host')
+            .desc('input your ntfy server address, or use the ntfy official address by default')
+            .text('https://ntfy.sh/change_to_your_topic_name')
+            .build(new RawSerde());
+
+        this.ntfyToken = this.settings
+            .newSettingBuilder()
+            .key('ntfyToken')
+            .name('Ntfy Token')
+            .desc('input your ntfy token')
+            .text('')
+            .build(new RawSerde());
+
         this.settings
             .newGroup(t.setting.title.effects)
             .addSettings(this.cursorEffect, this.clickString, this.powerMode, this.shakeMode);
@@ -101,7 +127,8 @@ class Settings {
 
         this.settings.newGroup(t.setting.title.toolbar).addSettings(this.toolbar);
 
-        this.settings.newGroup('Advanced').addSettings(this.debugEnable);
+        this.settings.newGroup('Notification').addSettings(this.ntfyServerHost, this.ntfyToken);
+        this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable);
     }
 
     public forEach(consumer: (setting: SettingModel<any, any>) => void) {
