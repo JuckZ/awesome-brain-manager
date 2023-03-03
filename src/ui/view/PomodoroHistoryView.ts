@@ -31,9 +31,8 @@ export class PomodoroHistoryView extends ItemView {
     }
 
     async onOpen(): Promise<void> {
-        const container = this.containerEl.children[1];
-        container.empty();
-        container.createEl(
+        this.containerEl.empty();
+        this.containerEl.createEl(
             'div',
             {
                 cls: 'my-plugin-view',
@@ -42,10 +41,12 @@ export class PomodoroHistoryView extends ItemView {
                 },
             },
             el => {
-                this.vueapp = createApp(PomodoroHistory, {
-                    plugin: this.plugin,
+                el.onNodeInserted(() => {
+                    this.vueapp = createApp(PomodoroHistory, {
+                        plugin: this.plugin,
+                    });
+                    this.vueapp.mount(el);
                 });
-                this.vueapp.mount(el);
             },
         );
     }

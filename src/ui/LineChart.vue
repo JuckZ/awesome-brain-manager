@@ -102,8 +102,6 @@ onMounted(async () => {
             intersect: false,
         },
     };
-    // TODO Bug 通过document.getElementById无法获取元素
-    // Logger.log(document.getElementById('awesome-brain-manager-pomodoro-history-view'));
     chart = new Chart(lineChart.value as unknown as ChartItem, {
         type: 'line',
         options: options,
