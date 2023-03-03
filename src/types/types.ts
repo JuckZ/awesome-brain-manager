@@ -1,5 +1,5 @@
-import { App } from 'obsidian';
-import type { Command } from 'obsidian';
+import { App, type Command } from 'obsidian';
+import { ref, type Ref } from 'vue';
 
 export const eventTypes = {
     pomodoroChange: 'awesome-brain-manager-pomodoro-change',
@@ -50,3 +50,5 @@ export class Tag {
         this.font = fontVal || `var(--font-family-special-tag)`;
     }
 }
+
+export type EditorState = { position: { top: number; bottom: number; left: number; right: number }; selection: string };

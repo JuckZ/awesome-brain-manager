@@ -1,9 +1,9 @@
 import type { App, Editor } from 'obsidian';
-import { createApp, ref } from 'vue';
-import type { Ref } from 'vue';
+import { createApp } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import CustomViewContainer from '../ui/CustomViewContainer.vue';
 import type { SettingModel } from 'model/settings';
+import pinia, { useEditorStore } from '@/stores';
 
 export const elId = 'custom-view-container';
 export const customEl = createEl('div', {
@@ -12,24 +12,12 @@ export const customEl = createEl('div', {
     },
 });
 
-export type EditorState = { position: { top: number; bottom: number; left: number; right: number }; selection: string };
-
-export const currentState: Ref<EditorState> = ref({
-    position: {
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    selection: '',
-});
-
 export function loadCustomViewContainer(plugin: AwesomeBrainManagerPlugin) {
     document.body.appendChild(customEl);
     const customViewVueApp = createApp(CustomViewContainer, {
         plugin,
-        currentState,
     });
+	customViewVueApp.use(pinia)
     customViewVueApp.mount(`#${elId}`);
 }
 
@@ -43,9 +31,9 @@ export function changeToolbarPopover(app: App, e: MouseEvent, toolbarEnable: Set
     }
     const editor = app.workspace.activeEditor?.editor;
     if (!editor) return;
-    let selected = editor.getSelection();
-    currentState.value.selection = selected;
-    currentState.value.position = getCoords(editor);
+	console.log('232323');
+	useEditorStore().updatePosition(getCoords(editor))
+	useEditorStore().updateSelection(editor.getSelection())
 }
 
 export const getCoords = (editor: Editor): { left: number; top: number; right: number; bottom: number } => {

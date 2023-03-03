@@ -53,7 +53,7 @@ export default defineConfig({
                     if (assetInfo.name == 'style.css') {
                         return 'styles.css';
                     }
-                    return assetInfo.name;
+                    return assetInfo.name || '';
                 },
             },
             external: [

@@ -68,19 +68,21 @@ import Bing from './components/icon/Bing.vue';
 import ChatGPT from './components/icon/ChatGPT.vue';
 import Google from './components/icon/Google.vue';
 import ScanImage from './components/icon/ScanImage.vue';
+import { useEditorStore } from '../stores';
+import { storeToRefs } from 'pinia';
 
 import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
-import type { EditorState } from '../utils/editor';
 import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 import Logger from '../utils/logger';
 
 const props = defineProps<{
     plugin: AwesomeBrainManagerPlugin;
-    currentState: EditorState;
 }>();
 
-const { currentState, plugin } = toRefs(props);
+const store = useEditorStore();
+const { editorState: currentState } = storeToRefs(store);
+const { plugin } = toRefs(props);
 const isShow = ref(false);
 const notification = useNotification();
 let oldSelection = '';
