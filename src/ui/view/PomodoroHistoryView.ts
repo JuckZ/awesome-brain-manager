@@ -31,8 +31,9 @@ export class PomodoroHistoryView extends ItemView {
     }
 
     async onOpen(): Promise<void> {
-        this.containerEl.empty();
-        this.containerEl.createEl(
+		const container = this.containerEl.children[1];
+        container.empty();
+        container.createEl(
             'div',
             {
                 cls: 'my-plugin-view',

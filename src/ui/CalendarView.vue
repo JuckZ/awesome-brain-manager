@@ -1,7 +1,7 @@
 <template>
     <div id="calendarContainerInSelf">
         <n-calendar
-            v-model:value="value"
+            v-model:value="timestampNow"
             #="{ year, month, date }"
             :is-date-disabled="isDateDisabled"
             @update:value="handleUpdateValue"
@@ -16,7 +16,7 @@
 import { NCalendar } from 'naive-ui';
 import { ref, toRefs } from 'vue';
 import { useMessage } from 'naive-ui';
-import { addDays } from 'date-fns/esm';
+import { moment } from 'obsidian';
 import type { Pomodoro } from '../schemas/spaces';
 import PomodoroListView from './PomodoroListView.vue';
 
@@ -27,7 +27,7 @@ const props = defineProps<{
 const { allPomodoro } = toRefs(props);
 
 const message = useMessage();
-const value = ref(addDays(Date.now(), 0).valueOf());
+const timestampNow = ref(moment().valueOf())
 
 const handleUpdateValue = (_: number, { year, month, date }: { year: number; month: number; date: number }) => {
     message.success(`${year}-${month}-${date}`);

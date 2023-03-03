@@ -37,6 +37,9 @@
       "node",
 	  "vite/client",
       "svelte"
-    ]
+    ],
+	"paths": {
+		"@/*": ["./src/*"],
+	}
   }
 }
