@@ -6,6 +6,7 @@ import type { PluginDataIO } from './data';
 import { toggleCursorEffects } from './render/CursorEffects';
 import { toggleBlast } from './render/Blast';
 import t from './i18n';
+import { editorUtil } from './utils/editor';
 
 class Settings {
     settings: SettingTabModel = new SettingTabModel();
@@ -19,6 +20,7 @@ class Settings {
     toolbar: SettingModel<boolean, boolean>;
     expectedTime: SettingModel<number, number>;
     clickString: SettingModel<string, string>;
+    customTag: SettingModel<string, string>;
     debugEnable: SettingModel<boolean, boolean>;
     serverHost: SettingModel<string, string>;
     ntfyServerHost: SettingModel<string, string>;
@@ -75,8 +77,36 @@ class Settings {
             .newSettingBuilder()
             .key('clickString')
             .name('Show something on click')
-            .desc('input something you want to show, separated by commas')
-            .text('富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善')
+            .desc('Something you want to show when mousekey down, separated by commas')
+            .text('')
+            .build(new RawSerde());
+
+        // ⏱️🌱🚬⚠️🚀🏳️🏴🚩🚧🛞🧭🎲🔧📏📐✂️📌⚒️🛠️📬📥🐞
+        const defaultTag = [
+            ['white', '#ac6700', 'inprogress', ' 🕯️', "'Lucida Handwriting', 'Segoe UI Emoji'"],
+            ['white', '#bd1919', 'important', ' ', ''],
+            ['white', '#565656d8', 'ideas', ' 💡', ''],
+            ['white', '#6640ae', 'questions', ' ❓', ''],
+            ['white', '#058c1c', 'complete', ' ', ''],
+            ['red', '#ffb6b9', 'principle', ' 📌', ''],
+            ['white', '#323232', 'abandon', ' 🏁', ''],
+            ['white', '#eaffd0', 'review', ' 🌱', ''],
+            ['white', '#eaffd0', 'flashcards', ' 🌱', ''],
+            ['white', '#a6e3e9', 'juck', ' 👨‍💻', ''],
+            ['white', '#a6e3e9', 'juckz', ' 👨‍💻', ''],
+            ['white', '#a6e3e9', 'todo', ' 📥', ''],
+            ['white', '#e23e57', 'bug', ' 🐛', ''],
+            ['white', '#f9ed69', 'fixme', ' 🛠️', ''],
+        ];
+        this.customTag = this.settings
+            .newSettingBuilder()
+            .key('customTag')
+            .name('Custom Tag')
+            .desc('Customized label configuration')
+            .text(JSON.stringify(defaultTag))
+            .onAnyValueChanged(context => {
+                editorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
+            })
             .build(new RawSerde());
 
         this.toolbar = this.settings
@@ -121,7 +151,7 @@ class Settings {
 
         this.settings
             .newGroup(t.setting.title.effects)
-            .addSettings(this.cursorEffect, this.clickString, this.powerMode, this.shakeMode);
+            .addSettings(this.cursorEffect, this.clickString, this.customTag, this.powerMode, this.shakeMode);
 
         this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
 

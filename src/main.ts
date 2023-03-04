@@ -26,7 +26,6 @@ import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHi
 import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
-import { buildTagRules } from './render/Tag';
 import Logger, { initLogger } from './utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
 import { getWeather } from './utils/weather';
@@ -42,13 +41,13 @@ import {
     updateDBConditionally,
 } from './utils/db/db';
 import { insertAfterHandler } from './utils/content';
-import { changeToolbarPopover, loadCustomViewContainer, unloadCustomViewContainer } from './utils/editor';
+import { editorUtil } from './utils/editor';
 import { getLocalRandomImg, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from './utils/pomotodo';
 import { AwesomeBrainSettingTab, SETTINGS } from './settings';
 import { PluginDataIO } from './data';
-import { eventTypes, Tag } from './types/types';
+import { eventTypes } from './types/types';
 import type { ExtApp } from './types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { pomodoroSchema } from './schemas/spaces';
@@ -120,7 +119,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.vaultRenameFunction = this.customizeVaultRename.bind(this);
     }
 
-    async sqlJS() {
+	async sqlJS() {
         // Logger.time("Loading SQlite");
         const sqljs = await loadSQL();
         // Logger.timeEnd("Loading SQlite");
@@ -166,13 +165,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     get snippetPath() {
         return this.app.customCss.getSnippetPath(customSnippetPath);
-    }
-
-    addTag(tag: Tag) {
-        if (!tag) return;
-        const rules = buildTagRules(tag);
-        rules.forEach(rule => this.style.sheet?.insertRule(rule, this.style.sheet.cssRules.length));
-        this.updateSnippet();
     }
 
     generateCssString() {
@@ -227,7 +219,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                             content = editor.getLine(cursorPos.line);
                         }
                     }
-					notify(content)
+                    notify(content);
                 });
         });
         menu.addItem(item => {
@@ -293,6 +285,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();
+        editorUtil.init(this);
         this.setupUI();
         this.setupCommands();
         MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
@@ -579,21 +572,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
-        // ⏱️🌱🚬⚠️🚀🏳️🏴🚩🚧🛞🧭🎲🔧📏📐✂️📌⚒️🛠️📬📥🐞
-        this.addTag(new Tag('white', '#ac6700', 'inprogress', ' 🕯️', "'Lucida Handwriting', 'Segoe UI Emoji'"));
-        this.addTag(new Tag('white', '#bd1919', 'important', ' ', ''));
-        this.addTag(new Tag('white', '#565656d8', 'ideas', ' 💡', ''));
-        this.addTag(new Tag('white', '#6640ae', 'questions', ' ❓', ''));
-        this.addTag(new Tag('white', '#058c1c', 'complete', ' ', ''));
-        this.addTag(new Tag('red', '#ffb6b9', 'principle', ' 📌', ''));
-        this.addTag(new Tag('white', '#323232', 'abandon', ' 🏁', ''));
-        this.addTag(new Tag('white', '#eaffd0', 'review', ' 🌱', ''));
-        this.addTag(new Tag('white', '#eaffd0', 'flashcards', ' 🌱', ''));
-        this.addTag(new Tag('white', '#a6e3e9', 'juck', ' 👨‍💻', ''));
-        this.addTag(new Tag('white', '#a6e3e9', 'juckz', ' 👨‍💻', ''));
-        this.addTag(new Tag('white', '#a6e3e9', 'todo', ' 📥', ''));
-        this.addTag(new Tag('white', '#e23e57', 'bug', ' 🐛', ''));
-        this.addTag(new Tag('white', '#f9ed69', 'fixme', ' 🛠️', ''));
+        editorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
 
         // 左侧菜单，使用自定义图标
         this.addRibbonIcon('settings-2', 'Awesome Brain Manager', event => {
@@ -615,7 +594,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             );
             menu.showAtMouseEvent(event);
         });
-        loadCustomViewContainer(this);
     }
 
     private watchVault() {
@@ -633,7 +611,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
-            changeToolbarPopover(this.app, e, SETTINGS.toolbar);
+            editorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
         });
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
@@ -656,7 +634,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
-        unloadCustomViewContainer();
+        editorUtil.unloadCustomViewContainer();
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();
