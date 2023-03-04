@@ -1,7 +1,7 @@
 <template>
     <div id="customViewContainer">
         <NNotificationProvider :max="3">
-            <Toolbar :plugin="plugin" />
+            <Toolbar />
         </NNotificationProvider>
     </div>
 </template>
@@ -10,12 +10,7 @@
 import { onMounted, onUnmounted, onUpdated } from 'vue';
 import { NNotificationProvider } from 'naive-ui';
 import Toolbar from './Toolbar.vue';
-import type AwesomeBrainManagerPlugin from '../main';
 import Logger from '../utils/logger';
-
-defineProps<{
-    plugin: AwesomeBrainManagerPlugin;
-}>();
 
 onMounted(async () => {});
 

@@ -1,4 +1,3 @@
-import { Notice } from 'obsidian';
 import { request } from '../utils/request';
 import Logger from '../utils/logger';
 import { SETTINGS } from '../settings';
@@ -22,7 +21,7 @@ export const chatWith = async (type: string, keyword: string) => {
     return res;
 };
 
-export const notify = (msg: any) => {
+export const notifyNtfy = (msg: any) => {
     const headers = {};
     if (SETTINGS.ntfyToken.value) {
         headers['Authorization'] = `Basic ${SETTINGS.ntfyToken.value}`;

@@ -76,13 +76,8 @@ import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 import Logger from '../utils/logger';
 
-const props = defineProps<{
-    plugin: AwesomeBrainManagerPlugin;
-}>();
-
 const store = useEditorStore();
 const { editorState: currentState } = storeToRefs(store);
-const { plugin } = toRefs(props);
 const isShow = ref(false);
 const notification = useNotification();
 let oldSelection = '';
@@ -130,10 +125,22 @@ const clickHandle = async (type: string, keyword: string) => {
             conversation(type, await chatWith(type, keyword));
             break;
         case ServiceNames.Baidu:
-            plugin.value.openBrowser(`https://baidu.com/s?wd=${keyword}`);
+			const baiduSearchEvent = new CustomEvent(eventTypes.openBrowser, {
+				detail: {
+					url: `https://baidu.com/s?wd=${keyword}`
+				}
+			});
+			console.log('ererer');
+			
+			window.dispatchEvent(baiduSearchEvent);
             break;
         case ServiceNames.Google:
-            plugin.value.openBrowser(`https://www.google.com/search?q=${keyword}`);
+			const googleSearchEvent = new CustomEvent(eventTypes.openBrowser, {
+				detail: {
+					url: `https://www.google.com/search?q=${keyword}`
+				}
+			});
+			window.dispatchEvent(googleSearchEvent);
             break;
         default:
             return;

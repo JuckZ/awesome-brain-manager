@@ -1,9 +1,7 @@
 import type { Editor } from 'obsidian';
-import { createApp } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
-import CustomViewContainer from '../ui/CustomViewContainer.vue';
 import type { SettingModel } from 'model/settings';
-import pinia, { useEditorStore } from '@/stores';
+import { customViewVueApp, useEditorStore } from '@/stores';
 import { buildTagRules } from '../render/Tag';
 import { Tag, type ExtApp } from '@/types/types';
 
@@ -28,10 +26,6 @@ export class EditorUtils {
                 id: elId,
             },
         });
-        const customViewVueApp = createApp(CustomViewContainer, {
-            plugin: this.plugin,
-        });
-        customViewVueApp.use(pinia);
         customViewVueApp.mount(`#${elId}`);
         this.loaded = true;
     }

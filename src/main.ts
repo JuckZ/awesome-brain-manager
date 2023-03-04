@@ -41,7 +41,6 @@ import {
     updateDBConditionally,
 } from './utils/db/db';
 import { insertAfterHandler } from './utils/content';
-import { editorUtil } from './utils/editor';
 import { getLocalRandomImg, searchPicture } from './utils/genBanner';
 import { loadSQL } from './utils/db/sqljs';
 import { PomodoroStatus, initiateDB } from './utils/pomotodo';
@@ -52,9 +51,11 @@ import type { ExtApp } from './types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
 import { pomodoroSchema } from './schemas/spaces';
 import type { Pomodoro } from './schemas/spaces';
-import { notify } from './api';
+import { notifyNtfy } from './api';
 import t from './i18n';
 import './main.scss';
+import { NotifyUtil } from './utils/notify';
+// import { editorUtil } from './utils/editor';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -119,7 +120,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.vaultRenameFunction = this.customizeVaultRename.bind(this);
     }
 
-	async sqlJS() {
+    async sqlJS() {
         // Logger.time("Loading SQlite");
         const sqljs = await loadSQL();
         // Logger.timeEnd("Loading SQlite");
@@ -129,6 +130,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     pomodoroChange(e: any) {
         this.refreshPomodoroTarget();
     }
+	openBrowserHandle(e: CustomEvent) {
+		this.openBrowser(e.detail.url)
+	}
 
     spaceDBInstance() {
         return this.spaceDB;
@@ -200,63 +204,92 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         Logger.log('customizeClick');
     }
 
-    async customizeEditorMenu(menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo): Promise<void> {
-        menu.addItem(item => {
-            item.setTitle(t.menu.setBannerForCurrent)
-                .setIcon('image')
-                .onClick(async () => {
+    getMenus() {
+        return [
+            {
+                title: t.menu.setBannerForCurrent,
+                icon: 'image',
+                clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     new ImageOriginModal(this.app, this, this.app.workspace.getActiveFile()).open();
-                });
-        });
-        menu.addItem(item => {
-            item.setTitle('Notify this to ntfy')
-                .setIcon('bell')
-                .onClick(async () => {
-                    const cursorPos = editor.getCursor();
-                    let content = editor.getSelection();
-                    if (!content) {
-                        if (cursorPos) {
-                            content = editor.getLine(cursorPos.line);
-                        }
-                    }
-                    notify(content);
-                });
-        });
-        menu.addItem(item => {
-            item.setTitle('Query openAI')
-                .setIcon('bot')
-                .onClick(async () => {
+                },
+            },
+            {
+                title: 'Notify this to ntfy',
+                icon: 'bell',
+                clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    notifyNtfy(this.getCurrentSelection(editor));
+                },
+            },
+            {
+                title: 'Notify this to system',
+                icon: 'bell',
+                clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    NotifyUtil.systemNotify(this.getCurrentSelection(editor));
+                },
+            },
+            {
+                title: 'Query openAI',
+                icon: 'bot',
+                clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     const evt = new CustomEvent(eventTypes.calledFunction, {
                         detail: {
                             type: 'OpenAI',
-                            keyword: editor.getSelection(),
+                            keyword: this.getCurrentSelection(editor),
                         },
                     });
                     window.dispatchEvent(evt);
-                    // const cookies = electron.remote.session.defaultSession.cookies;
-                    // cookies.get({ url: 'https://openai.com' }).then(cookies => {
-                    //     console.log(cookies);
-                    // });
-                });
-        });
-        menu.addItem(item => {
-            item.setTitle(t.menu.planPomodoro)
-                .setIcon('clock')
-                .onClick(async () => {
-                    const cursorPos = editor.getCursor();
-                    let task = editor.getSelection();
-                    if (!task) {
-                        if (cursorPos) {
-                            task = editor.getLine(cursorPos.line);
-                        }
-                    }
+                },
+            },
+            {
+                title: t.menu.planPomodoro,
+                icon: 'clock',
+                clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    let task = this.getCurrentSelection(editor);
                     task = task.replace('- [x] ', '');
                     task = task.replace('- [ ] ', '').trim();
                     if (!task) {
                         task = t.menu.defaultTask + Date.now();
                     }
                     this.startPomodoro(task);
-                });
+                },
+            },
+            {
+                title: t.menu.showPomodoroHistory,
+                icon: 'alarm-clock',
+                clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
+                    await this.app.workspace.getLeaf(true).setViewState({
+                        type: POMODORO_HISTORY_VIEW,
+                        active: true,
+                    });
+                    this.app.workspace.revealLeaf(
+                        this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
+                    );
+                },
+            },
+        ];
+    }
+
+    getCurrentSelection(editor: Editor) {
+        const cursorPos = editor.getCursor();
+        let content = editor.getSelection();
+        if (!content) {
+            if (cursorPos) {
+                content = editor.getLine(cursorPos.line);
+            }
+        }
+        return content;
+    }
+
+    async customizeEditorMenu(menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo): Promise<void> {
+        this.getMenus().forEach(menuMeta => {
+            menu.addItem(item => {
+                item.setTitle(menuMeta.title)
+                    .setIcon(menuMeta.icon)
+                    .onClick(async () => {
+                        menuMeta.clickFn(menu, editor, info);
+                    });
+            });
         });
     }
     async customizeEditorChange(editor: Editor, info: MarkdownView | MarkdownFileInfo): Promise<void> {
@@ -285,7 +318,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();
-        editorUtil.init(this);
+        // editorUtil.init(this);
+        NotifyUtil.init(this);
         this.setupUI();
         this.setupCommands();
         MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
@@ -474,6 +508,14 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             },
         });
 
+		this.addCommand({
+            id: 'query-baidu',
+            name: t.command['query-baidu'] || '百度一下',
+            editorCallback: (editor: Editor, view: MarkdownView) => {
+                this.openBrowser(`https://baidu.com/s?wd=${editor.getSelection()}`)
+            },
+        });
+
         this.addCommand({
             id: 'query-openai',
             name: t.command['query-openai'],
@@ -521,29 +563,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.app.workspace.revealLeaf(this.app.workspace.getLeavesOfType(BROWSER_VIEW)[0] as WorkspaceLeaf);
     }
 
-    // Returns true if a replacement was made
-    replacePageStyleByString(searchString: string, newStyle: string, addIfNotFound: boolean) {
-        let alreadyExists = false;
-        const style = this.findPageStyle(searchString);
-        if (style) {
-            if (style.getText() === searchString) alreadyExists = true;
-            else style.setText(newStyle);
-        } else if (addIfNotFound) {
-            const style = document.createElement('style');
-            style.textContent = newStyle;
-            document.head.appendChild(style);
-        }
-        return style && !alreadyExists;
-    }
-
-    findPageStyle(regex: string) {
-        const styles = document.head.getElementsByTagName('style');
-        for (const style of styles) {
-            if (style.getText().match(regex)) return style;
-        }
-        return null;
-    }
-
     private setupUI() {
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
@@ -572,26 +591,25 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
-        editorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
+        // editorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
 
         // 左侧菜单，使用自定义图标
         this.addRibbonIcon('settings-2', 'Awesome Brain Manager', event => {
             const menu = new Menu();
-            menu.addItem(item =>
-                item
-                    .setTitle(t.menu.showPomodoroHistory)
-                    .setIcon('alarm-clock')
-                    .onClick(async () => {
-                        this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-                        await this.app.workspace.getLeaf(true).setViewState({
-                            type: POMODORO_HISTORY_VIEW,
-                            active: true,
+            this.getMenus().forEach(menuMeta => {
+                menu.addItem(item => {
+                    item.setTitle(menuMeta.title)
+                        .setIcon(menuMeta.icon)
+                        .onClick(async () => {
+                            // TODO 参数校验优化
+                            menuMeta.clickFn(
+                                menu,
+                                this.app.workspace.activeEditor?.editor as Editor,
+                                this.app.workspace.activeEditor as MarkdownFileInfo,
+                            );
                         });
-                        this.app.workspace.revealLeaf(
-                            this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
-                        );
-                    }),
-            );
+                });
+            });
             menu.showAtMouseEvent(event);
         });
     }
@@ -611,12 +629,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
-            editorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
+            // editorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
         });
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
         });
         window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
+        window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
         [
             this.app.workspace.on('click', this.clickFunction),
             this.app.workspace.on('resize', this.resizeFunction),
@@ -634,7 +653,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
-        editorUtil.unloadCustomViewContainer();
+        // editorUtil.unloadCustomViewContainer();
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();

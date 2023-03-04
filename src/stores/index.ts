@@ -1,8 +1,11 @@
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { usePomodoroStore } from '@/stores/pomodoro';
 import { useEditorStore } from '@/stores/editor';
 
-const pinia = createPinia();
+import CustomViewContainer from '../ui/CustomViewContainer.vue';
 
-export { usePomodoroStore, useEditorStore };
-export default pinia;
+const customViewVueApp = createApp(CustomViewContainer);
+
+customViewVueApp.use(createPinia())
+export { usePomodoroStore, useEditorStore, customViewVueApp };

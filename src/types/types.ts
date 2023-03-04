@@ -1,8 +1,9 @@
 import { App, type Command } from 'obsidian';
-import { ref, type Ref } from 'vue';
 
+// TODO namespace?
 export const eventTypes = {
-    pomodoroChange: 'awesome-brain-manager-pomodoro-change',
+	openBrowser: 'open-browser',
+    pomodoroChange: 'pomodoro-change',
     calledFunction: 'called-function',
 };
 

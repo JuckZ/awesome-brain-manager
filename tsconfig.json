@@ -1,9 +1,8 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*.ts", "types.d.ts", "src/utils/db/sqljs.ts"],
+  "include": ["src/**/*.ts", "types.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"],
   "compilerOptions": {
-    // "esModuleInterop": true,
     "baseUrl": "./src/",
     // "inlineSourceMap": true,
     // "inlineSources": true,

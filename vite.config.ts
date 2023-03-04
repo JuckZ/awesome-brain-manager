@@ -29,13 +29,13 @@ export default defineConfig({
                 if (format === 'umd') {
                     return 'main.js';
                 } else {
-					return entryName;
-				}
+                    return entryName;
+                }
             },
             formats: ['umd'],
         },
         // minify: prod ? true: false,
-        minify: true,
+        minify: false,
         // sourcemap: prod ? false: true,
         sourcemap: true,
         rollupOptions: {
@@ -59,7 +59,7 @@ export default defineConfig({
             external: [
                 'obsidian',
                 'electron',
-				'moment',
+                'moment',
                 '@codemirror/autocomplete',
                 '@codemirror/collab',
                 '@codemirror/commands',
