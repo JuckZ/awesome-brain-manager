@@ -1,9 +1,7 @@
-import type { ReadOnlyReference } from 'model/ref';
-import { Reference } from 'model/ref';
-import { Later, Time, parseLaters } from 'model/time';
 import { AbstractTextComponent, Setting } from 'obsidian';
+import type { ReadOnlyReference } from '../model/ref';
+import { Reference } from '../model/ref';
 import Logger from '../utils/logger';
-import { ReminderFormatType, ReminderFormatTypes } from './format';
 
 class SettingRegistry {
     private settingContexts: Array<SettingContext> = [];
@@ -431,40 +429,11 @@ export class SettingTabModel {
     }
 }
 
-export class TimeSerde implements Serde<string, Time> {
-    unmarshal(rawValue: string): Time {
-        return Time.parse(rawValue);
-    }
-    marshal(value: Time): string {
-        return value.toString();
-    }
-}
-
 export class RawSerde<R> implements Serde<R, R> {
     unmarshal(rawValue: R): R {
         return rawValue;
     }
     marshal(value: R): R {
         return value;
-    }
-}
-
-export class LatersSerde implements Serde<string, Array<Later>> {
-    unmarshal(rawValue: string): Later[] {
-        return parseLaters(rawValue);
-    }
-    marshal(value: Later[]): string {
-        return value.map(v => v.label).join('\n');
-    }
-}
-
-export class ReminderFormatTypeSerde implements Serde<string, ReminderFormatType> {
-    unmarshal(rawValue: string): ReminderFormatType {
-        const format = ReminderFormatTypes.find(format => format.name === rawValue)!;
-        // TODO return undefined when it is not found
-        return format;
-    }
-    marshal(value: ReminderFormatType): string {
-        return value.name;
     }
 }

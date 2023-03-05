@@ -1,0 +1,10 @@
+// https://github.com/whyt-byte/Blue-Topaz_Obsidian-css/pull/165/commits/b0e63c4863d758b34314c15d2cbc0efc7752915c
+.markdown-preview-view.fullwidth.is-readable-line-width .markdown-preview-sizer,
+.markdown-source-view.is-readable-line-width.fullwidth .CodeMirror,
+.is-readable-line-width.fullwidth .markdown-preview-section,
+.is-readable-line-width.fullwidth .markdown-preview-section>div,
+.markdown-preview-view.is-readable-line-width.fullwidth .markdown-preview-section {
+	width: 100% !important;
+	max-width: 100%;
+	/* margin: 0 auto; */
+}

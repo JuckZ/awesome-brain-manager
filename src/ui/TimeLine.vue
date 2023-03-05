@@ -58,15 +58,15 @@
 import { NDropdown, NEmpty, NIcon, NSpace, NTag, NTimeline, NTimelineItem, useMessage } from 'naive-ui';
 import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { onUpdated, toRefs } from 'vue';
-import moment from 'moment';
-import type ObsidianManagerPlugin from '../main';
-import { Pomodoro } from '../schemas/spaces';
-import { PomodoroStatus } from '../utils/promotodo';
+import { moment } from 'obsidian';
+import type AwesomeBrainManagerPlugin from '../main';
+import type { Pomodoro } from '../schemas/spaces';
+import { PomodoroStatus } from '../utils/pomotodo';
 import t from '../i18n';
 
 const props = defineProps<{
     pomodoroList: Pomodoro[];
-    plugin: ObsidianManagerPlugin;
+    plugin: AwesomeBrainManagerPlugin;
 }>();
 
 const { pomodoroList, plugin } = toRefs(props);

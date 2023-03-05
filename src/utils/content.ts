@@ -1,3 +1,6 @@
+import type { MarkdownPostProcessorContext } from 'obsidian';
+import { createApp, VueApp } from 'vue/dist/vue.esm-bundler.js';
+import Title from '../ui/Title';
 import Logger from '../utils/logger';
 
 interface MContent {
@@ -6,10 +9,10 @@ interface MContent {
 }
 
 //credit to chhoumann, original code from: https://github.com/chhoumann/quickadd
-export async function insertAfterHandler(targetString: string, formatted: string, fileContent: string) {
+export function insertAfterHandler(targetString: string, formatted: string, fileContent: string) {
     // const targetString: string = plugin.settings.InsertAfter;
     //eslint-disable-next-line
-  const targetRegex = new RegExp(`\s*${await escapeRegExp(targetString)}\s*`);
+    const targetRegex = new RegExp(`\s*${escapeRegExp(targetString)}\s*`);
     const fileContentLines: string[] = getLinesInString(fileContent);
 
     const targetPosition = fileContentLines.findIndex(line => targetRegex.test(line));
@@ -40,9 +43,9 @@ export async function insertAfterHandler(targetString: string, formatted: string
 
         if (endOfSectionIndex == -1) endOfSectionIndex = targetPosition;
 
-        return await insertTextAfterPositionInBody(formatted, fileContent, endOfSectionIndex, foundNextHeader);
+        return insertTextAfterPositionInBody(formatted, fileContent, endOfSectionIndex, foundNextHeader);
     } else {
-        return await insertTextAfterPositionInBody(
+        return insertTextAfterPositionInBody(
             formatted,
             fileContent,
             fileContentLines.length - 1,
@@ -53,8 +56,8 @@ export async function insertAfterHandler(targetString: string, formatted: string
 }
 
 // https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
-export async function escapeRegExp(text: any) {
-    return await text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+export function escapeRegExp(text: any) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
 //credit to chhoumann, original code from: https://github.com/chhoumann/quickadd/blob/7536a120701a626ef010db567cea7cf3018e6c82/src/utility.ts#L130
@@ -73,12 +76,12 @@ export function getLinesInString(input: string) {
     return lines;
 }
 
-export async function insertTextAfterPositionInBody(
+export function insertTextAfterPositionInBody(
     text: string,
     body: string,
     pos: number,
     found?: boolean,
-): Promise<MContent> {
+): MContent {
     if (pos === -1) {
         return {
             content: `${body}\n${text}`,
@@ -114,13 +117,67 @@ export async function insertTextAfterPositionInBody(
     }
 }
 
-export async function setBanner(filepath, oldBanner, newBanner) {
-    const fileContents = await app.vault.adapter.read(filepath);
-    let originalLine = `banner: '${oldBanner}'`;
-    if (!fileContents.contains(originalLine)) {
-        originalLine = `banner: "${oldBanner}"`;
+export function insertImageWithMap(el: HTMLElement, image: string, map: string, encodedDiagram: string) {
+    el.empty();
+
+    const img = document.createElement('img');
+    if (image.startsWith('http')) {
+        img.src = image;
+    } else {
+        img.src = 'data:image/png;base64,' + image;
     }
-    const newContent = fileContents.replace(originalLine, `banner: '${newBanner}'`);
-    await app.vault.adapter.write(filepath, newContent);
-    return true;
+    img.useMap = '#' + encodedDiagram;
+
+    if (map.contains('map')) {
+        el.innerHTML = map;
+        el.children[0].setAttr('name', encodedDiagram);
+    }
+
+    el.appendChild(img);
+}
+
+export function insertAsciiImage(el: HTMLElement, image: string) {
+    el.empty();
+
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    pre.appendChild(code);
+    code.setText(image);
+    el.appendChild(pre);
+}
+
+export function insertSvgImage(el: HTMLElement, image: string) {
+    el.empty();
+
+    const parser = new DOMParser();
+    const svg = parser.parseFromString(image, 'image/svg+xml');
+
+    const links = svg.getElementsByTagName('a');
+    for (let i = 0; i < links.length; i++) {
+        const link = links[i];
+        link.addClass('internal-link');
+    }
+
+    el.insertAdjacentHTML('beforeend', svg.documentElement.outerHTML);
+}
+
+export function registerVueComponent(vueApp: VueApp) {
+    // TODO 扫描并注册某个文件夹下所有的组件
+    vueApp.component('Title', Title);
+}
+
+export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {
+    const vueApp = createApp({
+        data() {
+            return {
+                message: `ignore this place`,
+            };
+        },
+        template: source,
+    });
+    // TODO 优化方向1，根据source进行有选择的注入组件，而非全部注入；优化方向2：只使用一个实例，通过定位等方式在不同元素上使用是否可行
+    registerVueComponent(vueApp);
+    const container = document.createElement('span');
+    vueApp.mount(container);
+    el.replaceChildren(container);
 }

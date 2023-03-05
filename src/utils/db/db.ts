@@ -1,17 +1,24 @@
-import { dispatchDatabaseFileChanged } from 'dispatch/mdb';
-import type ObsidianManagerPlugin from 'main';
+// https://github.com/Make-md/makemd/blob/main/src/utils/db/db.ts
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 import type { Database, QueryExecResult, SqlJsStatic } from 'sql.js';
 import type { DBTable, DBTables } from 'types/mdb';
-import { sanitizeSQLStatement } from 'utils/sanitize';
-import { uniq } from '../tree';
+import type AwesomeBrainManagerPlugin from '../../main';
+import { sanitizeSQLStatement } from '../../utils/sanitize';
+import { treeUtil } from '../common';
 import Logger from '../../utils/logger';
 
+const { uniq } = treeUtil;
+
+let appCtx;
+export const initialDBCtx = (app) => {
+	appCtx = app;
+}
+
 export const getDBFile = async (path: string) => {
-    if (!(await app.vault.adapter.exists(normalizePath(path)))) {
+    if (!(await appCtx.vault.adapter.exists(normalizePath(path)))) {
         return null;
     }
-    const file = await (app.vault.adapter as FileSystemAdapter).readBinary(normalizePath(path));
+    const file = await (appCtx.vault.adapter as FileSystemAdapter).readBinary(normalizePath(path));
     return file;
 };
 
@@ -34,7 +41,7 @@ export const saveAndCloseDB = async (db: Database, path: string) => {
 };
 
 export const saveDBFile = async (path: string, binary: ArrayBuffer) => {
-    const file = (app.vault.adapter as FileSystemAdapter).writeBinary(normalizePath(path), binary);
+    const file = (appCtx.vault.adapter as FileSystemAdapter).writeBinary(normalizePath(path), binary);
     return file;
 };
 
@@ -205,13 +212,16 @@ export const replaceDB = (db: Database, tables: DBTables) => {
     }
 };
 
-export const saveDBToPath = async (plugin: ObsidianManagerPlugin, path: string, tables: DBTables): Promise<boolean> => {
+export const saveDBToPath = async (
+    plugin: AwesomeBrainManagerPlugin,
+    path: string,
+    tables: DBTables,
+): Promise<boolean> => {
     const sqlJS = await plugin.sqlJS();
     //rewrite the entire table, useful for storing ranks and col order, not good for performance
     const db = await getDB(sqlJS, path);
     replaceDB(db, tables);
     await saveDBFile(path, db.export().buffer);
-    dispatchDatabaseFileChanged(path);
     db.close();
     return true;
 };

@@ -1,3 +1,4 @@
+// https://github.com/chinchang/code-blast-codemirror
 import type { SettingModel } from 'model/settings';
 import type { Editor } from 'obsidian';
 import party from 'party-js';

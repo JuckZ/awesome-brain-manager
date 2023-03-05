@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { NCard, NGrid, NGridItem } from 'naive-ui';
 import { toRefs } from 'vue';
-import moment from 'moment';
+import { moment } from 'obsidian';
 import { getTheDay } from '../utils/constants';
 import type { Pomodoro } from '../schemas/spaces';
 import t from '../i18n';

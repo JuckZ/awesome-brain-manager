@@ -22,6 +22,8 @@ import {
     // An elasticish trail of cursors that will nip to wherever your mouse is
     trailingCursor,
 } from 'cursor-effects';
+import type { SettingModel } from 'model/settings';
+import { randomColor } from '../utils/common';
 
 const cursorEffects: any[] = [];
 
@@ -78,4 +80,35 @@ export function toggleCursorEffects(target: string) {
 
 function disableCursorEffect() {
     cursorEffects.forEach(emo => emo.destroy());
+}
+
+let text_idx = 0;
+
+export function toggleMouseClickEffects(e: MouseEvent, text: SettingModel<string, string>) {
+    if (!text) {
+        return;
+    }
+    const textList = text.value.split(',');
+        var ele = document.createElement('b');
+        document.body.appendChild(ele).innerHTML = textList[text_idx];
+        text_idx = (text_idx + 1) % textList.length;
+
+        let f = 16, // 字体大小
+            x = e.clientX - f / 2, // 横坐标
+            y = e.clientY - f, // 纵坐标
+            color = randomColor(), // 随机颜色
+            a = 1, // 透明度
+            s = 1.2; // 放大缩小
+        let timer = setInterval(function () {
+            //添加定时器
+            if (a <= 0) {
+                document.body.removeChild(ele);
+                clearInterval(timer);
+            } else {
+                ele.style.cssText = `pointer-events: none;font-size:${f}px;position: fixed;color:${color};left:${x}px;top:${y}px;opacity:${a};transform:scale(${s});`;
+                y--;
+                a -= 0.016;
+                s += 0.002;
+            }
+        }, 15);
 }

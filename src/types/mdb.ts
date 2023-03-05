@@ -1,3 +1,4 @@
+// https://github.com/Make-md/makemd/blob/main/src/types/mdb.ts
 export type DBRow = Record<string, string>;
 export type DBRows = DBRow[];
 export type DBTable = {

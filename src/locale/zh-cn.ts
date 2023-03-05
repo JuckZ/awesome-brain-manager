@@ -4,12 +4,13 @@ export default {
         setBannerForTheFolder: '切换当前路径下文件的banner图',
         planPomodoro: '规划一个番茄钟',
         defaultTask: '默认任务：',
+        showPomodoro: '展示番茄钟',
     },
     command: {
-        'awesome-brain-manager-check-in': '习惯打卡',
-        'awesome-brain-manager-remove-check-in': '移除习惯打卡',
-        'awesome-brain-manager-rollover': '将未完成任务记录到今天',
-        'awesome-brain-manager-undo': '撤销"将未完成任务记录到今天"的操作',
+        'check-in': '习惯打卡',
+        'remove-check-in': '移除习惯打卡',
+        'query-openai': '询问OpenAI',
+        'open-emoji-picker': '输入表情',
     },
     setting: {
         cursorEffect: {
@@ -31,8 +32,6 @@ export default {
         title: {
             effects: '鼠标、按键特效',
             pomodoro: '番茄钟(beta version)',
-            warning:
-                '!!!以下功能在实验阶段!!! 如果你确实需要，推荐使用 obsidian-reminder 和 obsidian-rollover-daily-todos插件.',
         },
     },
     info: {

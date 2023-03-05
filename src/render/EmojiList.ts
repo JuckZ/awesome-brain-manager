@@ -1,15 +1,8 @@
-import {
-    Decoration,
-    DecorationSet,
-    EditorView,
-    PluginSpec,
-    PluginValue,
-    ViewPlugin,
-    ViewUpdate,
-    WidgetType,
-} from '@codemirror/view';
+import { Decoration, EditorView, ViewPlugin, ViewUpdate, WidgetType } from '@codemirror/view';
 
-import { EditorState, Extension, RangeSetBuilder, StateEffect, StateField, Transaction } from '@codemirror/state';
+import type { DecorationSet, PluginSpec, PluginValue } from '@codemirror/view';
+
+import { RangeSetBuilder } from '@codemirror/state';
 
 import { syntaxTree } from '@codemirror/language';
 

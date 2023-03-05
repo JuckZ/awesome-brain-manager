@@ -1,4 +1,3 @@
-export const MAX_TIME_SINCE_CREATION = 5000; // 5 seconds
 export const checkInDefaultPath = 'Journal/Habit';
 export const checkInList = [
     {

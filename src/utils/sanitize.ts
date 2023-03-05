@@ -1,3 +1,4 @@
+// https://github.com/Make-md/makemd/blob/main/src/utils/sanitize.ts
 export const sanitizeTableName = (name: string) => {
   return name?.replace(/[^a-z0-9+]+/gi, "");
 };

@@ -1,0 +1,26 @@
+/**
+blockquote start
+**/
+:is(.markdown-preview-view, .markdown-rendered) blockquote {
+    padding: 0.5em 0.5em 0.5em 0.6em;
+    border-right-width: 0;
+    border-left: solid;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 5px;
+    border-color: var(--theme-color);
+    background-color: var(--background-blockquote);
+    border-radius: var(--radius-s);
+    margin-inline-start: 2.5%;
+    margin-inline-end: 2.5%;
+}
+
+:is(.markdown-preview-view, .markdown-rendered) blockquote p {
+    margin-left: 1px;
+    margin-right: 0;
+    font-size: var(--font-size-preview-blockquote);
+}
+
+/**
+blockquote end
+**/

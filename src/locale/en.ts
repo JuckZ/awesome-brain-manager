@@ -4,13 +4,13 @@ export default {
         setBannerForTheFolder: 'Set random banner for this path',
         planPomodoro: 'Plan a pomodoro',
         defaultTask: 'Default task: ',
-        showPomodoroHistory: 'Show pomodoro history',
+        showPomodoro: 'Show pomodoro',
     },
     command: {
-        'awesome-brain-manager-check-in': 'Habit Check In',
-        'awesome-brain-manager-remove-check-in': 'Remove Habit Check In',
-        'awesome-brain-manager-rollover': 'Rollover Todos Now',
-        'awesome-brain-manager-undo': 'Undo last rollover',
+        'check-in': 'Habit Check In',
+        'remove-check-in': 'Remove Habit Check In',
+		'query-openai': 'Query openAI',
+        'open-emoji-picker': 'Open emoji picker'
     },
     setting: {
         cursorEffect: {
@@ -29,11 +29,14 @@ export default {
             name: 'Expected Time',
             desc: 'How many minutes do you want to set for a pomodoro?',
         },
+        toolbar: {
+            name: 'Toolbar',
+            desc: 'a toolbar',
+        },
         title: {
             effects: 'Beautiful Effects',
             pomodoro: 'Pomodoro(beta feature)',
-            warning:
-                "!!!The following features are experimental!!! If you really need, recommend  you use uphy's obsidian-reminder and lumoe's obsidian-rollover-daily-todos plugin.",
+            toolbar: 'Toolbar',
         },
     },
     info: {
@@ -59,6 +62,8 @@ export default {
             '4': 'HeartBeat',
         },
         Pomodoro: 'Pomodoro',
+        Chat: 'Chat',
+        Browser: 'Browser',
         'Awesome Brain Manager': 'Awesome Brain Manager',
         unknown: 'unknown',
         ltr: 'LTR',

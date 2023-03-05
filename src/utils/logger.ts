@@ -1,6 +1,7 @@
 import { inspect } from 'util';
 import chalk from 'chalk';
-import { ConstantReference, ReadOnlyReference } from 'model/ref';
+import { ConstantReference } from '../model/ref';
+import type { ReadOnlyReference } from '../model/ref';
 
 chalk.level = 3;
 let debugEnable: ReadOnlyReference<boolean> = new ConstantReference(false);

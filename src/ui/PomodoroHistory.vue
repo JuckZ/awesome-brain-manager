@@ -35,9 +35,18 @@
 </template>
 
 <script setup lang="tsx">
-import { Ref, onMounted, ref, toRefs } from 'vue';
-import { NConfigProvider, GlobalThemeOverrides, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
-import { createTheme, darkTheme, lightTheme, zhCN, dateZhCN, enUS, dateEnUS, datePickerDark, inputDark } from 'naive-ui';
+import { onMounted, ref, toRefs, onUnmounted } from 'vue';
+import type { Ref } from 'vue';
+import { NConfigProvider, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
+import type { GlobalThemeOverrides } from 'naive-ui';
+import {
+    darkTheme,
+    lightTheme,
+    zhCN,
+    dateZhCN,
+    enUS,
+    dateEnUS,
+} from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
@@ -48,7 +57,7 @@ import DoughnutChart from './DoughnutChart.vue';
 import LineChart from './LineChart.vue';
 import { pomodoroDB } from '../utils/constants';
 import { selectDB } from '../utils/db/db';
-import type ObsidianManagerPlugin from '../main';
+import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 
 // const darkTheme = createTheme([inputDark, datePickerDark]);
@@ -59,10 +68,10 @@ let language = window.localStorage.getItem('language') || 'en';
 
 // TODO 需要重启窗口才能切换主题
 // @ts-ignore
-if(window.app.getTheme() === 'obsidian') {
+if (window.app.getTheme() === 'obsidian') {
     theme.value = darkTheme;
     // @ts-ignore
-} else if(window.app.getTheme() === 'moonstone') {
+} else if (window.app.getTheme() === 'moonstone') {
     theme.value = lightTheme;
 } else {
     theme.value = lightTheme;
@@ -76,14 +85,12 @@ if (language === 'zh') {
     dateLocale.value = dateEnUS;
 }
 
-const lightThemeOverrides: GlobalThemeOverrides = {
-};
+const lightThemeOverrides: GlobalThemeOverrides = {};
 
-const darkThemeOverrides: GlobalThemeOverrides = {
-};
+const darkThemeOverrides: GlobalThemeOverrides = {};
 
 const props = defineProps<{
-    plugin: ObsidianManagerPlugin;
+    plugin: AwesomeBrainManagerPlugin;
 }>();
 
 let H1Title = () => (
@@ -96,14 +103,19 @@ const history: Ref<Pomodoro[]> = ref([]);
 const currentPomodoro: Ref<Pomodoro | null> = ref(null);
 
 const updateData = async (): Promise<void> => {
-    history.value = (await selectDB(plugin.value.spaceDBInstance(), pomodoroDB)?.rows) || [];
+    history.value = ((await selectDB(plugin.value.spaceDBInstance(), pomodoroDB)?.rows) as Pomodoro[]) || [];
     currentPomodoro.value = history.value.filter(pomodoro => pomodoro.status === 'ing')[0] || null;
 };
 
 onMounted(async () => {
+    window.removeEventListener(eventTypes.pomodoroChange, updateData, false);
     updateData();
+    window.addEventListener(eventTypes.pomodoroChange, updateData);
 });
-addEventListener(eventTypes.pomodoroChange, updateData);
+
+onUnmounted(() => {
+    window.removeEventListener(eventTypes.pomodoroChange, updateData, false);
+});
 </script>
 
 <style scoped lang="scss">

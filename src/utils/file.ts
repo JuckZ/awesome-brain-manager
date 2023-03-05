@@ -1,11 +1,11 @@
-import { App, TFile, TFolder } from 'obsidian';
-import * as obsidian from 'obsidian';
+import { TFile, normalizePath } from 'obsidian';
+import Logger from './logger';
 
 export async function getNotePath(directory, filename) {
     if (!filename.endsWith('.md')) {
         filename += '.md';
     }
-    const path = obsidian.normalizePath(join(directory, filename));
+    const path = normalizePath(join(directory, filename));
     await ensureFolderExists(path);
     return path;
 }
@@ -36,21 +36,7 @@ async function ensureFolderExists(path) {
     }
 }
 
-export const getAbstractFileAtPath = (app: App, path: string) => {
-    return app.vault.getAbstractFileByPath(path);
-};
-
-export const getFolderFromPath = (app: App, path: string): TFolder | null => {
-    if (!path) return null;
-    const file = path.slice(-1) == '/' ? path.substring(0, path.length - 1) : path;
-    const afile = getAbstractFileAtPath(app, file);
-    if (!afile) return null;
-    return afile instanceof TFolder ? afile : afile.parent;
-};
-
-export const getFolderPathFromString = (file: string) => getFolderFromPath(app, file)?.path;
-
-export async function getAllFiles(folders, ignorePath: string[], ext, files): Promise<TFile[]> {
+export async function getAllFiles(app, folders, ignorePath: string[], ext, files): Promise<TFile[]> {
     const ignoreMatch = ignorePath.find(item => folders.path.startsWith(item));
     if (!ignoreMatch) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -62,9 +48,8 @@ export async function getAllFiles(folders, ignorePath: string[], ext, files): Pr
             for (let index = 0; index < children.length; index++) {
                 const element = children[index];
                 if (element.children && element.children.length != 0) {
-                    await getAllFiles(element, ignorePath, ext, files);
+                    await getAllFiles(app, element, ignorePath, ext, files);
                 } else if (ext && ext.length > 0) {
-                    console.log(ext, element.extension, ext.contains(element.extension));
                     if (element.extension && ext.contains(element.extension)) {
                         files.push(element);
                     }
@@ -94,17 +79,17 @@ export function getCleanTitle(msg) {
     if (count == 0) {
         // DONE send back empty string if untitled
         if (msg.includes('Untitled')) {
-            console.log('Untitled so returning empty space');
+            Logger.log('Untitled so returning empty space');
             return ' ';
         } else {
-            console.log('No Dash so returning trimmed:', msg);
+            Logger.log('No Dash so returning trimmed:', msg);
             // TODO remove fullstop
             return nameTitle.trim();
         }
     }
     // if there is a dash in the title
     else if (count == 1) {
-        console.log('Dash detected in:', msg);
+        Logger.log('Dash detected in:', msg);
         nameTitle = nameTitle.split('-').slice(1);
         nameTitle = nameTitle[0];
         return nameTitle.trim();
@@ -116,18 +101,18 @@ export function getCleanTitle(msg) {
 
         if (isMatch && count == 2) {
             // since it has a date... and only has dashes for a date, return it.
-            console.log('Date detected! No other dash, return as is', msg);
+            Logger.log('Date detected! No other dash, return as is', msg);
 
             return nameTitle.trim();
         } else {
             // it may contain date but also a front snippet OR it does not contain date and just multiple dashes
-            console.log('Just front snippets with extra dash or date but also more dash', msg);
+            Logger.log('Just front snippets with extra dash or date but also more dash', msg);
 
             nameTitle = nameTitle.split('-').slice(1);
             nameTitle = nameTitle.join('-');
             return nameTitle.trim();
         }
     } else {
-        console.log('Logic Error');
+        Logger.log('Logic Error');
     }
 }

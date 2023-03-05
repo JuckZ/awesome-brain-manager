@@ -1,136 +1,163 @@
 {
-  "name": "awesome-brain-manager",
-  "version": "1.3.5",
-  "description": "This is a sample plugin for Obsidian (https://obsidian.md)",
-  "main": "main.js",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -e $GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "{src,__mocks__,bin}/**/*.ts": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "@commitlint/prompt"
-    }
-  },
-  "scripts": {
-    "dev": "node esbuild.config.mjs",
-    "commit": "git-cz",
-    "format:check": "prettier --list-different {src,__mocks__,bin}/**/*.ts",
-    "format:write": "prettier --write {src,__mocks__,bin}/**/*.ts",
-    "start:help": "ts-node ./src/bin/order.bin.ts -h",
-    "start:example": "ts-node ./src/bin/order.bin.ts pizza beer",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "report:coverage": "npm run test:coverage && codecov",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-    "lint": "eslint ./src --fix && tsc --noEmit --pretty && svelte-check",
-    "semantic-release": "semantic-release",
-    "version": "node version-bump.mjs",
-    "prepare": "husky install"
-  },
-  "bin": {
-    "example": "./dest/bin/order.bin.ts"
-  },
-  "files": [
-    "dest"
-  ],
-  "keywords": [
-    "reminder",
-    "notification",
-    "ntfy",
-    "awesome-brain-manager",
-    "Obsidian-plugin",
-    "Obsidian"
-  ],
-  "author": "Juck",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/JuckZ/awesome-brain-manager/issues"
-  },
-  "homepage": "https://github.com/JuckZ/awesome-brain-manager#readme",
-  "devDependencies": {
-    "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-conventional": "^17.2.0",
-    "@commitlint/prompt": "^17.2.0",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/commit-analyzer": "^9.0.2",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.6",
-    "@semantic-release/npm": "^9.0.1",
-    "@semantic-release/release-notes-generator": "^10.0.3",
-    "@the_tree/esbuild-plugin-vue3": "^0.3.1",
-    "@tsconfig/svelte": "^3.0.0",
-    "@types/jest": "^29.2.2",
-    "@types/node": "^16.11.6",
-    "@types/sql.js": "^1.4.4",
-    "@typescript-eslint/eslint-plugin": "5.29.0",
-    "@typescript-eslint/parser": "5.29.0",
-    "builtin-modules": "3.3.0",
-    "codecov": "^3.8.3",
-    "commitizen": "^4.2.5",
-    "dotenv": "^16.0.3",
-    "electron": "^21.2.3",
-    "esbuild": "0.14.47",
-    "esbuild-copy-static-files": "^0.1.0",
-    "esbuild-plugin-vue-next": "^0.1.4",
-    "esbuild-plugin-wat": "^0.2.7",
-    "esbuild-sass-plugin": "^2.4.0",
-    "esbuild-svelte": "^0.7.3",
-    "eslint": "^8.27.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.9.0",
-    "husky": "^8.0.2",
-    "jest": "^29.3.1",
-    "lint-staged": "^13.0.3",
-    "moment": "^2.29.1",
-    "obsidian": "^1.1.1",
-    "prettier": "^2.7.1",
-    "semantic-release": "^19.0.5",
-    "svelte-check": "^2.9.2",
-    "svelte-jester": "^2.3.2",
-    "svelte-preprocess": "^4.10.7",
-    "ts-jest": "^29.0.3",
-    "ts-node": "^10.9.1",
-    "tslib": "2.4.0",
-    "typescript": "4.7.4"
-  },
-  "dependencies": {
-    "@codemirror/language": "^6.4.0",
-    "@codemirror/state": "^6.2.0",
-    "@codemirror/view": "^6.7.3",
-    "@vicons/ionicons5": "^0.12.0",
-    "axios": "^1.1.3",
-    "boxen": "^5.1.2",
-    "chart.js": "^4.2.0",
-    "commander": "^9.4.1",
-    "cursor-effects": "^1.0.8",
-    "jsonfile": "^6.1.0",
-    "naive-ui": "^2.34.3",
-    "obsidian-daily-notes-interface": "^0.9.4",
-    "party-js": "^2.2.0",
-    "rrule": "^2.7.1",
-    "sql.js": "^1.8.0",
-    "svelte": "^3.53.1",
-    "vue": "^3.2.45",
-    "vue3-radial-progress": "^1.1.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:JuckZ/awesome-brain-manager.git"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "tag": "latest"
-  }
+	"name": "awesome-brain-manager",
+	"version": "1.3.5",
+	"description": "A plugin that tries to solve all the trivial problems most people usually encountered in obsidian.",
+	"exports": "./main.js",
+	"engines": {
+		"node": ">=14.16"
+	},
+	"type": "module",
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged",
+			"commit-msg": "commitlint -e $GIT_PARAMS"
+		}
+	},
+	"lint-staged": {
+		"{src,__mocks__,bin}/**/*.ts": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "@commitlint/prompt"
+		}
+	},
+	"scripts": {
+		"d": "vite",
+		"dev": "vite build -w",
+		"build": "run-p type-check build-only",
+		"d:theme": "sass --watch ./src/theme/index.scss ../juckz.github.io/blogs/.obsidian/themes/\"Awesome Brain Manager\"/theme.css",
+		"preview": "vite preview",
+		"test": "vitest",
+		"test:unit": "vitest --environment jsdom --root src/",
+		"test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
+		"test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
+		"test:coverage": "vitest run --coverage",
+		"report:coverage": "npm run test:coverage && codecov",
+		"build-only": "vite build",
+		"type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
+		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore && tsc --noEmit --pretty && svelte-check",
+		"commit": "git-cz",
+		"format:check": "prettier --list-different {src,__mocks__,bin}/**/*.ts",
+		"format:write": "prettier --write {src,__mocks__,bin}/**/*.ts",
+		"start:help": "ts-node ./src/bin/order.bin.ts -h",
+		"start:example": "ts-node ./src/bin/order.bin.ts pizza beer",
+		"semantic-release": "semantic-release",
+		"version": "node version-bump.mjs",
+		"prepare": "husky install"
+	},
+	"bin": {
+		"example": "./dest/bin/order.bin.ts"
+	},
+	"files": [
+		"dest"
+	],
+	"keywords": [
+		"reminder",
+		"notification",
+		"ntfy",
+		"awesome-brain-manager",
+		"Obsidian-plugin",
+		"Obsidian"
+	],
+	"author": "Juck",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/JuckZ/awesome-brain-manager/issues"
+	},
+	"homepage": "https://github.com/JuckZ/awesome-brain-manager#readme",
+	"devDependencies": {
+		"@commitlint/cli": "^17.2.0",
+		"@commitlint/config-conventional": "^17.2.0",
+		"@commitlint/prompt": "^17.4.4",
+		"@rollup/plugin-node-resolve": "^15.0.1",
+		"@semantic-release/changelog": "^6.0.1",
+		"@semantic-release/commit-analyzer": "^9.0.2",
+		"@semantic-release/exec": "^6.0.3",
+		"@semantic-release/git": "^10.0.1",
+		"@semantic-release/github": "^8.0.6",
+		"@semantic-release/npm": "^9.0.1",
+		"@semantic-release/release-notes-generator": "^10.0.3",
+		"@sveltejs/vite-plugin-svelte": "^2.0.2",
+		"@tsconfig/svelte": "^3.0.0",
+		"@types/jsdom": "^21.1.0",
+		"@types/node": "^16.11.6",
+		"@types/plantuml-encoder": "^1.4.0",
+		"@types/sql.js": "^1.4.4",
+		"@typescript-eslint/eslint-plugin": "5.29.0",
+		"@typescript-eslint/parser": "5.29.0",
+		"@vitejs/plugin-vue": "^4.0.0",
+		"@vitejs/plugin-vue-jsx": "^3.0.0",
+		"@vitest/coverage-c8": "^0.29.2",
+		"@vue/eslint-config-prettier": "^7.0.0",
+		"@vue/eslint-config-typescript": "^11.0.2",
+		"@vue/test-utils": "^2.2.10",
+		"@vue/tsconfig": "^0.1.3",
+		"builtin-modules": "3.3.0",
+		"codecov": "^3.8.3",
+		"commitizen": "^4.3.0",
+		"compare-versions": "^6.0.0-rc.1",
+		"cypress": "^12.7.0",
+		"dotenv": "^16.0.3",
+		"eslint": "^8.27.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-cypress": "^2.12.1",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-vue": "^9.9.0",
+		"husky": "^8.0.2",
+		"jsdom": "^21.1.0",
+		"lint-staged": "^13.0.3",
+		"npm-run-all": "^4.1.5",
+		"obsidian": "^1.1.1",
+		"plantuml-encoder": "^1.4.0",
+		"prettier": "^2.7.1",
+		"rollup": "^3.18.0",
+		"rollup-plugin-polyfill-node": "^0.12.0",
+		"sass": "^1.58.2",
+		"semantic-release": "^20.1.1",
+		"start-server-and-test": "^1.15.4",
+		"svelte-check": "^2.9.2",
+		"svelte-preprocess": "^4.10.7",
+		"ts-node": "^10.9.1",
+		"tslib": "2.4.0",
+		"typescript": "4.7.4",
+		"uuid": "^9.0.0",
+		"vite": "^4.1.2",
+		"vite-plugin-static-copy": "^0.13.0",
+		"vite-plugin-top-level-await": "^1.2.4",
+		"vite-plugin-wasm": "^3.2.1",
+		"vitest": "^0.29.2",
+		"vue-tsc": "^1.1.2"
+	},
+	"dependencies": {
+		"@codemirror/language": "^6.4.0",
+		"@codemirror/state": "^6.2.0",
+		"@codemirror/view": "^6.7.3",
+		"@emoji-mart/data": "^1.1.2",
+		"@vicons/ionicons5": "^0.12.0",
+		"boxen": "^5.1.2",
+		"chalk": "^5.2.0",
+		"chart.js": "^4.2.0",
+		"commander": "^9.4.1",
+		"cursor-effects": "^1.0.8",
+		"emoji-mart": "^5.5.2",
+		"jsonfile": "^6.1.0",
+		"naive-ui": "^2.34.3",
+		"ora": "^6.1.2",
+		"party-js": "^2.2.0",
+		"pinia": "^2.0.32",
+		"rrule": "^2.7.1",
+		"sql.js": "^1.8.0",
+		"svelte": "^3.53.1",
+		"twemoji": "^14.0.2",
+		"vue": "^3.2.47",
+		"vue3-radial-progress": "^1.1.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:JuckZ/awesome-brain-manager.git"
+	}
 }
