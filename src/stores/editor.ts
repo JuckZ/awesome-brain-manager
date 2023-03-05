@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
+
 import { reactive, ref } from 'vue';
 import type { EditorState } from '../types/types';
 
-export const useEditorStore = defineStore('pomodoro', () => {
+export const useEditorStore = defineStore('editor', () => {
     const totalTask = ref(0);
 
     const editorState: EditorState = reactive({

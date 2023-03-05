@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, onUpdated, toRefs, watchEffect } from 'vue';
+import { onMounted, onUnmounted, ref, onUpdated, watchEffect } from 'vue';
 import { NTooltip, NIcon, useNotification } from 'naive-ui';
 import { ServiceNames, chatWith } from '../api';
 import OpenAI from './components/icon/OpenAI.vue';
@@ -72,12 +72,10 @@ import { useEditorStore } from '../stores';
 import { storeToRefs } from 'pinia';
 
 import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
-import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
 import Logger from '../utils/logger';
 
-const store = useEditorStore();
-const { editorState: currentState } = storeToRefs(store);
+const { editorState: currentState } = storeToRefs(useEditorStore());
 const isShow = ref(false);
 const notification = useNotification();
 let oldSelection = '';
@@ -125,22 +123,20 @@ const clickHandle = async (type: string, keyword: string) => {
             conversation(type, await chatWith(type, keyword));
             break;
         case ServiceNames.Baidu:
-			const baiduSearchEvent = new CustomEvent(eventTypes.openBrowser, {
-				detail: {
-					url: `https://baidu.com/s?wd=${keyword}`
-				}
-			});
-			console.log('ererer');
-			
-			window.dispatchEvent(baiduSearchEvent);
+            const baiduSearchEvent = new CustomEvent(eventTypes.openBrowser, {
+                detail: {
+                    url: `https://baidu.com/s?wd=${keyword}`,
+                },
+            });
+            window.dispatchEvent(baiduSearchEvent);
             break;
         case ServiceNames.Google:
-			const googleSearchEvent = new CustomEvent(eventTypes.openBrowser, {
-				detail: {
-					url: `https://www.google.com/search?q=${keyword}`
-				}
-			});
-			window.dispatchEvent(googleSearchEvent);
+            const googleSearchEvent = new CustomEvent(eventTypes.openBrowser, {
+                detail: {
+                    url: `https://www.google.com/search?q=${keyword}`,
+                },
+            });
+            window.dispatchEvent(googleSearchEvent);
             break;
         default:
             return;
