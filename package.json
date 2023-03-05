@@ -27,7 +27,8 @@
 	"scripts": {
 		"d": "vite",
 		"dev": "vite build -w",
-		"build": "run-p type-check build-only",
+		"build": "pnpm run build-only",
+		"build:check": "run-p type-check build-only",
 		"d:theme": "sass --watch ./src/theme/index.scss ../juckz.github.io/blogs/.obsidian/themes/\"Awesome Brain Manager\"/theme.css",
 		"preview": "vite preview",
 		"test": "vitest",
@@ -70,7 +71,7 @@
 	"homepage": "https://github.com/JuckZ/awesome-brain-manager#readme",
 	"devDependencies": {
 		"@commitlint/cli": "^17.2.0",
-		"@commitlint/config-conventional": "^17.2.0",
+		"@commitlint/config-conventional": "^17.4.4",
 		"@commitlint/prompt": "^17.4.4",
 		"@rollup/plugin-node-resolve": "^15.0.1",
 		"@semantic-release/changelog": "^6.0.1",
