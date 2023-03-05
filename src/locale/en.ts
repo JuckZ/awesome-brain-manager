@@ -4,7 +4,7 @@ export default {
         setBannerForTheFolder: 'Set random banner for this path',
         planPomodoro: 'Plan a pomodoro',
         defaultTask: 'Default task: ',
-        showPomodoroHistory: 'Show pomodoro history',
+        showPomodoro: 'Show pomodoro',
     },
     command: {
         'check-in': 'Habit Check In',

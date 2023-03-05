@@ -4,12 +4,13 @@ export default {
         setBannerForTheFolder: '切换当前路径下文件的banner图',
         planPomodoro: '规划一个番茄钟',
         defaultTask: '默认任务：',
+        showPomodoro: '展示番茄钟',
     },
     command: {
         'check-in': '习惯打卡',
         'remove-check-in': '移除习惯打卡',
-		'query-openai': '询问OpenAI',
-		'open-emoji-picker': '输入表情'
+        'query-openai': '询问OpenAI',
+        'open-emoji-picker': '输入表情',
     },
     setting: {
         cursorEffect: {

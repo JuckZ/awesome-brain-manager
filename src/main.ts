@@ -215,7 +215,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             },
             {
                 title: 'Notify this to ntfy',
-                icon: 'bell',
+                icon: 'megaphone',
                 clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     notifyNtfy(this.getCurrentSelection(editor));
                 },
@@ -242,7 +242,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             },
             {
                 title: t.menu.planPomodoro,
-                icon: 'clock',
+                icon: 'send',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     let task = this.getCurrentSelection(editor);
                     task = task.replace('- [x] ', '');
@@ -254,7 +254,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             },
             {
-                title: t.menu.showPomodoroHistory,
+                title: t.menu.showPomodoro,
                 icon: 'alarm-clock',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
@@ -265,6 +265,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     this.app.workspace.revealLeaf(
                         this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
                     );
+                },
+            },
+			{
+                title: 'Reveal current file in navigation',
+                icon: 'navigation',
+                clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    this.app.commands.executeCommandById('file-explorer:reveal-active-file')
                 },
             },
         ];
@@ -455,19 +462,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         const ignorePath = [];
         // FIXME 找到并使用更高性能api this.app.vault.getMarkdownFiles();
         const allFilePathNeededHandle: TFile[] = await getAllFiles(this.app, path, ignorePath, ['md'], []);
-        // allFilePathNeededHandle = allFilePathNeededHandle.filter(file => {
-        //     const banner =
-        //         this.app.metadataCache.metadataCache[this.app.metadataCache.fileCache[file.path].hash].frontmatter
-        //             ?.banner;
-        //     return (
-        //         banner &&
-        //         typeof banner == 'string' &&
-        //         (banner.startsWith('https://dummyimage') ||
-        //             banner.startsWith('https://images.unsplash') ||
-        //             banner.startsWith('https://pixabay.com') ||
-        //             banner.startsWith('/'))
-        //     );
-        // });
         allFilePathNeededHandle.forEach(async file => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
