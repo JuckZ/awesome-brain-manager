@@ -42,7 +42,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install
-        run: pnpm -D i
+        run: pnpm i
 
       - name: Test
         run: pnpm run report:coverage
