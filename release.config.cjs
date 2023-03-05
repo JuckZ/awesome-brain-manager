@@ -1,4 +1,4 @@
-export default {
+const config = {
     branches: [
         '+([0-9])?(.{+([0-9]),x}).x',
         'master',
@@ -52,3 +52,5 @@ export default {
         ],
     ],
 };
+
+export default config;
