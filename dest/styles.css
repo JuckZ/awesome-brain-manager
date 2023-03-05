@@ -1,0 +1,69 @@
+#pomodoroList {
+  background-color: none !important;
+}
+#pomodoroList .n-list-item {
+  padding: 0;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  opacity: 0.5;
+}
+#pomodoroList .n-list-item .n-list-item__main {
+  width: 0;
+  flex: 1;
+}#calendarContainerInSelf[data-v-f9512bea] .n-calendar-header__extra .n-button-group .n-button {
+  max-width: max-content;
+}.radialTimeText[data-v-3ec4b569] {
+  font-size: 32px;
+  font-weight: 600;
+}#historyViewContainer[data-v-7e5e66b3] {
+  padding: 5px 10px;
+}.abm-webview[data-v-e1af09a3] {
+  width: 100%;
+  border: none;
+  background-color: white;
+  background-clip: content-box;
+}
+.view-content .abm-webview {
+    height: calc(100% - 32px);
+}
+#abmToolbar[data-v-6048c325] {
+  padding: 6px;
+  border: 1px solid #d4d4d4;
+  border-radius: 7px;
+  position: fixed;
+  background-color: rgb(250, 250, 250);
+}
+#abmToolbar[data-v-6048c325] .n-icon {
+  cursor: pointer;
+  margin: 5px;
+  opacity: 0.6;
+}
+#abmToolbar[data-v-6048c325] .n-icon:hover {
+  opacity: 1;
+}img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+  display: inline-block;
+}
+
+#emoji-modal {
+  padding: 0px;
+  min-width: unset;
+  width: unset !important;
+}
+
+#emoji-modal > .modal-content {
+  margin-top: 0px;
+}
+
+#emoji-modal > button {
+  background-color: unset;
+  border: 0px !important;
+  box-shadow: 0px !important;
+}
+
+#emoji-modal > .modal-close-button {
+  visibility: hidden;
+}

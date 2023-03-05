@@ -1,3 +1,34 @@
+# [1.4.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.5...1.4.0) (2023-03-05)
+
+
+### Bug Fixes
+
+* 1. https://github.com/obsidianmd/obsidian-releases/pull/1647 ([bd9ed43](https://github.com/JuckZ/awesome-brain-manager/commit/bd9ed4395579750744e27b01fca87f42303f070e))
+* 1.createEl异步创建，onNodeInserted回调中才能get到该元素 ([9f4fa80](https://github.com/JuckZ/awesome-brain-manager/commit/9f4fa8012ac88b747e1801b922896d7acd1a3678))
+* 1.return ([5bcd1dc](https://github.com/JuckZ/awesome-brain-manager/commit/5bcd1dceea6db4b11b45a35094bd1745abffe39a))
+* 1.typecheck feat: 1.add theme.scss(from blue topaz theme) ([ea94373](https://github.com/JuckZ/awesome-brain-manager/commit/ea9437335645f4b574d30648c6c57bc9f9460269))
+* 1.构建库模式，不允许pinia动态修改process.env，因为会导致手机端报错 process not found: https://cn.vitejs.dev/guide/build.html#library-mode ([6e71794](https://github.com/JuckZ/awesome-brain-manager/commit/6e71794a2d39776dc2f9bb755f1bddac50ab8c93))
+
+
+### Features
+
+* 1. base framework for chatGPT and bing chat 2. rename plugin name ([73d2c57](https://github.com/JuckZ/awesome-brain-manager/commit/73d2c5750921db9488fe37e25b1d1f70a058f57b))
+* 1.add font ([ca113ee](https://github.com/JuckZ/awesome-brain-manager/commit/ca113ee024f894f6a774a17e4a01b840c88185aa))
+* 1.add some tags 2. add https://github.com/mgmeyers/obsidian-style-settings/blob/main/obsidian-default-theme.css ([f1e5eca](https://github.com/JuckZ/awesome-brain-manager/commit/f1e5ecaa002281582f7cf38aa6d2aba2110871c2))
+* 1.add tags: review, flashcards ([0a6da0c](https://github.com/JuckZ/awesome-brain-manager/commit/0a6da0c44e563ef06ae077bd454f5361f4445e97))
+* 1.click effect: show a string ([761902e](https://github.com/JuckZ/awesome-brain-manager/commit/761902eade63c6381b676d355cad5b9c4bc53176))
+* 1.desktop support ([10a2afe](https://github.com/JuckZ/awesome-brain-manager/commit/10a2afe434288380dbbb48304c0754818aeef785))
+* 1.emoji picker support ([e1368d2](https://github.com/JuckZ/awesome-brain-manager/commit/e1368d2b0c2d4270c45782f6dc7bf57ca2f01e03))
+* 1.fullwidth support fix: 1.variable scope ([dd18cf4](https://github.com/JuckZ/awesome-brain-manager/commit/dd18cf401a06f9b4b35e3bb53070a4845cb4488d))
+* 1.lots of work ([456ee92](https://github.com/JuckZ/awesome-brain-manager/commit/456ee920964271bc4ba54fa357ff1a4048a02cf0))
+* 1.moment typefile 2.NotifyUtil refactor: 1.something ([d9729d0](https://github.com/JuckZ/awesome-brain-manager/commit/d9729d012817289827962af2bf1673c53d08fe1d))
+* 1.move some api outside ([5fb7be5](https://github.com/JuckZ/awesome-brain-manager/commit/5fb7be5b085adec3b26946f600e5027a6d616dbe))
+* 1.ntfy support 2.server host config ([8939289](https://github.com/JuckZ/awesome-brain-manager/commit/89392893dd0080860c8d6f677425080af1ed7ed4))
+* 1.pinia support 2.change to pnpm fix: 1.scroll not working in PomodoroHistoryView ([b96d837](https://github.com/JuckZ/awesome-brain-manager/commit/b96d837f129fd1fd32c2eef46160c0d3577480c8))
+* 1.scss project structure ([3be6c30](https://github.com/JuckZ/awesome-brain-manager/commit/3be6c300d59b133f503f8c4b39c675b7ab9b0a5b))
+* 1.support vue codeblock ([2b7d66f](https://github.com/JuckZ/awesome-brain-manager/commit/2b7d66f980a7143265ade884a4c9ad7c92bc203b))
+* **menu:** add Reveal current file in navigation menu ([51ac849](https://github.com/JuckZ/awesome-brain-manager/commit/51ac849dbd96b33306f4e0cb4c4b02fefdce03b2))
+
 ## [1.3.5](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.4...1.3.5) (2023-02-13)
 
 
