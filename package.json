@@ -158,9 +158,5 @@
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:JuckZ/awesome-brain-manager.git"
-	},
-	"publishConfig": {
-		"registry": "https://registry.npmjs.org/",
-		"tag": "latest"
 	}
 }
