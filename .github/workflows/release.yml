@@ -14,22 +14,44 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.14.x
-          cache: 'npm'
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+        
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install
-        run: npm -D i
+        run: pnpm i
+
       - name: Test
-        run: npm run report:coverage
+        run: pnpm run report:coverage
       - name: Build
         id: build
         run: |
-          npm run build --if-present
+          pnpm run build
           cp manifest.json dest
-    #   - name: Upload coverage reports to Codecov
-    #     uses: codecov/codecov-action@v3
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
