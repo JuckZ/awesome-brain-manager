@@ -49,7 +49,7 @@ jobs:
       - name: Build
         id: build
         run: |
-          pnpm run build --if-present
+          pnpm run build
           cp manifest.json dest
 
       - name: Release
