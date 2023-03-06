@@ -55,7 +55,7 @@ import { notifyNtfy } from './api';
 import t from './i18n';
 import './main.scss';
 import { NotifyUtil } from './utils/notify';
-import { editorUtil } from './utils/editor';
+import { EditorUtil } from './utils/editor';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -318,7 +318,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();
-        editorUtil.init(this);
+        EditorUtil.init(this);
         NotifyUtil.init(this);
         this.setupUI();
         this.setupCommands();
@@ -577,7 +577,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
-        editorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
+        EditorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
 
         // 左侧菜单，使用自定义图标
         this.addRibbonIcon('settings-2', 'Awesome Brain Manager', event => {
@@ -615,7 +615,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'selectionchange', async (e: MouseEvent) => {
-            editorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
+            console.log('selectionchange');
+            
+            EditorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
         });
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
@@ -639,7 +641,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
-        editorUtil.unloadCustomViewContainer();
+        EditorUtil.unload();
+        NotifyUtil.onload();
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();

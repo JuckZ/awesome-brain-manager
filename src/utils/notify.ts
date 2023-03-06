@@ -34,6 +34,10 @@ export class NotifyUtils {
         });
     }
 
+    onload() {
+        document.body.removeChild(this.audioEle)
+    }
+
     playNoticeAudio() {
         if (this.audioEle.currentSrc !== SETTINGS.noticeAudio.value) {
             this.audioEle.src = SETTINGS.noticeAudio.value;

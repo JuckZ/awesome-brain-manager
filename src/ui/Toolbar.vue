@@ -79,7 +79,6 @@ import { getNumberFromStr } from '../utils/common';
 const { editorState: currentState } = storeToRefs(useEditorStore());
 const isShow = ref(false);
 const notification = useNotification();
-let oldSelection = '';
 
 // TODO 优化性能，还有实现方式
 // watch(
@@ -142,7 +141,10 @@ function getElementViewTop(element) {
 }
 
 const getComputedStyle = () => {
-    const activeLine = activeDocument.querySelector(".cm-focused .cm-active.cm-line") as Element
+    if (!isShow.value) {
+        return;
+    }
+    const activeLine = activeDocument.querySelector('.cm-focused .cm-active.cm-line') as Element;
     const getTop = () => {
         let topOffset = 20;
         let lineHeight = activeLine?.getCssPropertyValue('line-height') || activeLine?.getCssPropertyValue('height');

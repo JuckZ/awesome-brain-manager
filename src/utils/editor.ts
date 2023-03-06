@@ -36,7 +36,7 @@ export class EditorUtils {
         this.loaded = true;
     }
 
-    unloadCustomViewContainer() {
+    unload() {
         if (this.ele) {
             document.body.removeChild(this.ele);
         }
@@ -48,7 +48,7 @@ export class EditorUtils {
             return;
         }
         if (!this.loaded) {
-            editorUtil.loadCustomViewContainer();
+            EditorUtil.loadCustomViewContainer();
         }
         const editor = this.app.workspace.activeEditor?.editor;
         if (!editor) return;
@@ -84,4 +84,4 @@ export class EditorUtils {
     };
 }
 
-export const editorUtil = new EditorUtils();
+export const EditorUtil = new EditorUtils();

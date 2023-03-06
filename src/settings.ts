@@ -6,7 +6,7 @@ import type { PluginDataIO } from './data';
 import { toggleCursorEffects } from './render/CursorEffects';
 import { toggleBlast } from './render/Blast';
 import t from './i18n';
-import { editorUtil } from './utils/editor';
+import { EditorUtil } from './utils/editor';
 
 class Settings {
     settings: SettingTabModel = new SettingTabModel();
@@ -107,7 +107,7 @@ class Settings {
             .desc('Customized label configuration')
             .text(JSON.stringify(defaultTag))
             .onAnyValueChanged(context => {
-                editorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
+                EditorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
             })
             .build(new RawSerde());
 
