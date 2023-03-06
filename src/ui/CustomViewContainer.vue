@@ -1,7 +1,9 @@
 <template>
     <div id="customViewContainer">
         <NNotificationProvider :max="3">
-            <Toolbar />
+            <Teleport to="body" disable="false">
+                <Toolbar />
+            </Teleport>
         </NNotificationProvider>
     </div>
 </template>

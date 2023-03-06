@@ -50,8 +50,13 @@ export class EditorUtils {
         }
         const editor = this.app.workspace.activeEditor?.editor;
         if (!editor) return;
-        useEditorStore().updatePosition(this.getCoords(editor));
-        useEditorStore().updateSelection(editor.getSelection());
+        const position = this.getCoords(editor);
+        const activeNode = document.elementFromPoint(position.left, position.top);
+        if (activeNode) {
+            useEditorStore().updateCurrentEle(activeNode);
+            useEditorStore().updatePosition(position);
+            useEditorStore().updateSelection(editor.getSelection());
+        }
     }
 
     getCoords(editor: Editor): { left: number; top: number; right: number; bottom: number } {

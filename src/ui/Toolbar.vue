@@ -74,6 +74,7 @@ import { storeToRefs } from 'pinia';
 import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
 import { eventTypes } from '../types/types';
 import Logger from '../utils/logger';
+import { getNumberFromStr } from '../utils/common';
 
 const { editorState: currentState } = storeToRefs(useEditorStore());
 const isShow = ref(false);
@@ -106,10 +107,66 @@ watchEffect(() => {
     oldSelection = currentVal;
 });
 
+function getElementViewLeft(element) {
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
+
+    while (current !== null) {
+        actualLeft += current.offsetLeft;
+        current = current.offsetParent;
+    }
+
+    if (document.compatMode == 'BackCompat') {
+        var elementScrollLeft = document.body.scrollLeft;
+    } else {
+        var elementScrollLeft = document.documentElement.scrollLeft;
+    }
+
+    return actualLeft - elementScrollLeft;
+}
+
+function getElementViewTop(element) {
+    var actualTop = element.offsetTop;
+    var current = element.offsetParent;
+
+    while (current !== null) {
+        actualTop += current.offsetTop;
+        current = current.offsetParent;
+    }
+
+    if (document.compatMode == 'BackCompat') {
+        var elementScrollTop = document.body.scrollTop;
+    } else {
+        var elementScrollTop = document.documentElement.scrollTop;
+    }
+
+    return actualTop - elementScrollTop;
+}
+
 const getComputedStyle = () => {
+    const activeNode = document.elementFromPoint(currentState.value.position.left, currentState.value.position.top);
+    const getTop = () => {
+        let topOffset = 20;
+        let lineHeight = activeNode?.getCssPropertyValue('line-height');
+        if (lineHeight && lineHeight !== '0') {
+            topOffset = getNumberFromStr(lineHeight)[0] || 20;
+        }
+        return currentState.value.position.top + topOffset;
+    };
+    const getLeft = () => {
+        const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content') as any;
+
+        if (activeDoc.innerWidth < 400) {
+            return getElementViewLeft(activeNode);
+        }
+        return currentState.value.position.left + 4;
+    };
+
     return {
-        top: `${currentState.value.position.top + 20}px`,
-        left: `${currentState.value.position.left + 5}px`,
+        top: `${getTop()}px`,
+        left: `${getLeft()}px`,
+        width: 'max-content',
+        'max-width': '390px'
     };
 };
 

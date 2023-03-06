@@ -2,7 +2,7 @@ import { App, type Command } from 'obsidian';
 
 // TODO namespace?
 export const eventTypes = {
-	openBrowser: 'open-browser',
+    openBrowser: 'open-browser',
     pomodoroChange: 'pomodoro-change',
     calledFunction: 'called-function',
 };
@@ -52,4 +52,8 @@ export class Tag {
     }
 }
 
-export type EditorState = { position: { top: number; bottom: number; left: number; right: number }; selection: string };
+export type EditorState = {
+    currentEle: Element;
+    position: { top: number; bottom: number; left: number; right: number };
+    selection: string;
+};
