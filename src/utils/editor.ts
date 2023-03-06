@@ -2,18 +2,18 @@ import type { Editor } from 'obsidian';
 import { createApp, type App } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import type { SettingModel } from 'model/settings';
-import CustomViewContainer from '../ui/CustomViewContainer.vue';
+import AppVue from '../ui/App.vue';
 import { buildTagRules } from '../render/Tag';
 import { Tag, type ExtApp } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
 
-export const elId = 'custom-view-container';
+export const appContainerId = 'app-container';
 export class EditorUtils {
     plugin: AwesomeBrainManagerPlugin;
     app: ExtApp;
     ele: HTMLDivElement;
     loaded: boolean = false;
-    customViewVueApp: App;
+    appViewVueApp: App;
     oldSelection: string;
     currentSelection: string;
 
@@ -24,12 +24,12 @@ export class EditorUtils {
         this.app = plugin.app;
         this.ele = document.body.createEl('div', {
             attr: {
-                id: elId,
+                id: appContainerId,
             },
         });
-        this.customViewVueApp = createApp(CustomViewContainer);
-        this.customViewVueApp.use(pinia);
-        this.customViewVueApp.mount(`#${elId}`);
+        this.appViewVueApp = createApp(AppVue);
+        this.appViewVueApp.use(pinia);
+        this.appViewVueApp.mount(`#${appContainerId}`);
     }
 
     unload() {
@@ -47,12 +47,12 @@ export class EditorUtils {
         if (!editor) return;
         const position = this.getCoords(editor);
         const activeNode = document.elementFromPoint(position.left, position.top);
-        this.currentSelection = editor.getSelection()
+        this.currentSelection = editor.getSelection();
         if (this.oldSelection === this.currentSelection) {
-            return
+            return;
         }
         if (activeNode) {
-            this.oldSelection = editor.getSelection()
+            this.oldSelection = editor.getSelection();
             useEditorStore().updateCurrentEle(activeNode);
             useEditorStore().updatePosition(position);
             useEditorStore().updateSelection(editor.getSelection());

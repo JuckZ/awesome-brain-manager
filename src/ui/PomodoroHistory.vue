@@ -35,11 +35,21 @@
 </template>
 
 <script setup lang="tsx">
-import { onMounted, ref, toRefs, onUnmounted, watchEffect } from 'vue';
-import type { Ref } from 'vue';
-import { NConfigProvider, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
-import type { GlobalThemeOverrides } from 'naive-ui';
-import { darkTheme, lightTheme, zhCN, dateZhCN, enUS, dateEnUS } from 'naive-ui';
+import { onMounted, ref, toRefs, onUnmounted, watchEffect, type Ref } from 'vue';
+import {
+    darkTheme,
+    lightTheme,
+    zhCN,
+    dateZhCN,
+    enUS,
+    dateEnUS,
+    NConfigProvider,
+    NMessageProvider,
+    NSpace,
+    NGrid,
+    NGridItem,
+    type GlobalThemeOverrides,
+} from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
@@ -68,7 +78,7 @@ const props = defineProps<{
     plugin: AwesomeBrainManagerPlugin;
 }>();
 
-const { systemState } = storeToRefs(useSystemStore())
+const { systemState } = storeToRefs(useSystemStore());
 
 watchEffect(() => {
     if (systemState.value.theme === 'dark') {
