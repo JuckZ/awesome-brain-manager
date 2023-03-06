@@ -367,8 +367,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 }
                 const pomodoroStatus = new PomodoroStatus(pomodoro);
                 if (pomodoroStatus.isOutTime()) {
+                    NotifyUtil.playNoticeAudio();
                     if (SETTINGS.systemNoticeEnable.value) {
-                        NotifyUtil.playNoticeAudio();
                         NotifyUtil.nativeSystemNotify('Pomodoro task done: ', pomodoro.task);
                     } else {
                         new PomodoroReminderModal(this.app, pomodoro).open();
@@ -614,7 +614,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         media.addEventListener('change', callback);
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
-        this.registerDomEvent(activeDocument, 'mouseup', async (e: MouseEvent) => {
+        this.registerDomEvent(activeDocument, 'selectionchange', async (e: MouseEvent) => {
             editorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
         });
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {

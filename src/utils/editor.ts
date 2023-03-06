@@ -14,6 +14,8 @@ export class EditorUtils {
     ele: HTMLDivElement;
     loaded: boolean = false;
     customViewVueApp: App;
+    oldSelection: string;
+    currentSelection: string;
 
     constructor() {}
 
@@ -52,7 +54,12 @@ export class EditorUtils {
         if (!editor) return;
         const position = this.getCoords(editor);
         const activeNode = document.elementFromPoint(position.left, position.top);
+        this.currentSelection = editor.getSelection()
+        if (this.oldSelection === this.currentSelection) {
+            return
+        }
         if (activeNode) {
+            this.oldSelection = editor.getSelection()
             useEditorStore().updateCurrentEle(activeNode);
             useEditorStore().updatePosition(position);
             useEditorStore().updateSelection(editor.getSelection());

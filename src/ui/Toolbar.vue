@@ -98,13 +98,11 @@ let oldSelection = '';
 // );
 
 watchEffect(() => {
-    const currentVal = currentState.value.selection;
-    if (currentVal && currentVal != oldSelection) {
+    if(currentState.value.selection) {
         isShow.value = true;
     } else {
         isShow.value = false;
     }
-    oldSelection = currentVal;
 });
 
 function getElementViewLeft(element) {
@@ -156,7 +154,7 @@ const getComputedStyle = () => {
     const getLeft = () => {
         const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content') as any;
 
-        if (activeDoc.innerWidth < 400) {
+        if (activeDoc.innerWidth < 250) {
             return getElementViewLeft(activeNode);
         }
         return currentState.value.position.left + 4;
