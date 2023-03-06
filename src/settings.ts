@@ -23,6 +23,8 @@ class Settings {
     customTag: SettingModel<string, string>;
     debugEnable: SettingModel<boolean, boolean>;
     serverHost: SettingModel<string, string>;
+    systemNoticeEnable: SettingModel<boolean, boolean>;
+    noticeAudio: SettingModel<string, string>;
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
 
@@ -133,11 +135,32 @@ class Settings {
             .text('https://vercel.ihave.cool')
             .build(new RawSerde());
 
+        this.systemNoticeEnable = this.settings
+            .newSettingBuilder()
+            .key('systemNoticeEnable')
+            .name('Enable systemNotice')
+            .desc('Enable systemNotice?')
+            .toggle(false)
+            .build(new RawSerde());
+
+        const ding =
+            'https://cdn.freesound.org/sounds/573/573381-7411b311-d148-41f2-8812-7572170a00b6?filename=573381__ammaro__ding.wav';
+        // const roraUrl = 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3'
+        this.noticeAudio = this.settings
+            .newSettingBuilder()
+            .key('noticeAudio')
+            .name('Notice Audio')
+            .desc('input your notice voice url, or mute if the fill value is empty')
+            .text(ding)
+            .build(new RawSerde());
+
         this.ntfyServerHost = this.settings
             .newSettingBuilder()
             .key('ntfyServerHost')
             .name('Ntfy Server Host')
-            .desc('input your ntfy server address, or use the ntfy official address by default')
+            .desc(
+                'Change value to your ntfy server address, or use the ntfy official address https://ntfy.sh/change_to_your_topic_name, or disable if empty. Notice: Please learn how to use it from official documents to ensure information security!!!',
+            )
             .text('https://ntfy.sh/change_to_your_topic_name')
             .build(new RawSerde());
 
@@ -157,7 +180,9 @@ class Settings {
 
         this.settings.newGroup(t.setting.title.toolbar).addSettings(this.toolbar);
 
-        this.settings.newGroup('Notification').addSettings(this.ntfyServerHost, this.ntfyToken);
+        this.settings
+            .newGroup('Notification')
+            .addSettings(this.systemNoticeEnable, this.noticeAudio, this.ntfyServerHost, this.ntfyToken);
         this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable);
     }
 

@@ -130,9 +130,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     pomodoroChange(e: any) {
         this.refreshPomodoroTarget();
     }
-	openBrowserHandle(e: CustomEvent) {
-		this.openBrowser(e.detail.url)
-	}
+    openBrowserHandle(e: CustomEvent) {
+        this.openBrowser(e.detail.url);
+    }
 
     spaceDBInstance() {
         return this.spaceDB;
@@ -221,13 +221,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             },
             {
-                title: 'Notify this to system',
-                icon: 'bell',
-                clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    NotifyUtil.systemNotify(this.getCurrentSelection(editor));
-                },
-            },
-            {
                 title: 'Query openAI',
                 icon: 'bot',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
@@ -267,11 +260,11 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     );
                 },
             },
-			{
+            {
                 title: 'Reveal current file in navigation',
                 icon: 'navigation',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    this.app.commands.executeCommandById('file-explorer:reveal-active-file')
+                    this.app.commands.executeCommandById('file-explorer:reveal-active-file');
                 },
             },
         ];
@@ -353,7 +346,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 monkeyPatchConsole(this);
             }
             this.watchVault();
-            // this.startPomodoroTask();
+            this.startPomodoroTask();
         });
     }
 
@@ -374,8 +367,15 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 }
                 const pomodoroStatus = new PomodoroStatus(pomodoro);
                 if (pomodoroStatus.isOutTime()) {
-                    // TODO 弹窗，响铃，结束该任务
-                    new PomodoroReminderModal(this.app, pomodoro).open();
+                    if (SETTINGS.systemNoticeEnable.value) {
+                        NotifyUtil.playNoticeAudio();
+                        NotifyUtil.nativeSystemNotify('Pomodoro task done: ', pomodoro.task);
+                    } else {
+                        new PomodoroReminderModal(this.app, pomodoro).open();
+                    }
+                    if (SETTINGS.ntfyServerHost.value) {
+                        notifyNtfy('Pomodoro task done: ' + pomodoro.task);
+                    }
                     const changed = pomodoroStatus.changeState('done');
                     if (changed) {
                         this.updatePomodoro(pomodoro);

@@ -5,18 +5,15 @@ import type { SettingModel } from 'model/settings';
 import CustomViewContainer from '../ui/CustomViewContainer.vue';
 import { buildTagRules } from '../render/Tag';
 import { Tag, type ExtApp } from '@/types/types';
-import pinia, { useEditorStore } from '@/stores'
+import pinia, { useEditorStore } from '@/stores';
 
 export const elId = 'custom-view-container';
-
-
-
 export class EditorUtils {
     plugin: AwesomeBrainManagerPlugin;
     app: ExtApp;
     ele: HTMLDivElement;
     loaded: boolean = false;
-	customViewVueApp: App;
+    customViewVueApp: App;
 
     constructor() {}
 
@@ -31,8 +28,8 @@ export class EditorUtils {
                 id: elId,
             },
         });
-		this.customViewVueApp = createApp(CustomViewContainer);
-		this.customViewVueApp.use(pinia)
+        this.customViewVueApp = createApp(CustomViewContainer);
+        this.customViewVueApp.use(pinia);
         this.customViewVueApp.mount(`#${elId}`);
         this.loaded = true;
     }
