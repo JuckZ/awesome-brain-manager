@@ -22,9 +22,6 @@ export class EditorUtils {
     init(plugin: AwesomeBrainManagerPlugin) {
         this.plugin = plugin;
         this.app = plugin.app;
-    }
-
-    loadCustomViewContainer() {
         this.ele = document.body.createEl('div', {
             attr: {
                 id: elId,
@@ -33,23 +30,19 @@ export class EditorUtils {
         this.customViewVueApp = createApp(CustomViewContainer);
         this.customViewVueApp.use(pinia);
         this.customViewVueApp.mount(`#${elId}`);
-        this.loaded = true;
     }
 
     unload() {
         if (this.ele) {
             document.body.removeChild(this.ele);
         }
-        this.loaded = false;
     }
 
     changeToolbarPopover(e: MouseEvent, toolbarEnable: SettingModel<boolean, boolean>) {
         if (!toolbarEnable.value) {
             return;
         }
-        if (!this.loaded) {
-            EditorUtil.loadCustomViewContainer();
-        }
+
         const editor = this.app.workspace.activeEditor?.editor;
         if (!editor) return;
         const position = this.getCoords(editor);

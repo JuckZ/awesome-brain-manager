@@ -56,6 +56,7 @@ import t from './i18n';
 import './main.scss';
 import { NotifyUtil } from './utils/notify';
 import { EditorUtil } from './utils/editor';
+import { useSystemStore } from '@/stores';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -98,7 +99,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
         this.app = app as ExtApp;
-
         this.replacer = new Replacer(this);
         this.process = new Process(this);
         this.pluginDataIO = new PluginDataIO(this);
@@ -557,6 +557,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     private setupUI() {
+        useSystemStore().updateLanguage(window.localStorage.getItem('language') || 'en')
+        useSystemStore().updateTheme(document.body.classList.contains('theme-dark') ? 'dark' : 'light');
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
         });
@@ -623,9 +625,26 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 LoggerUtil.log('Light mode active');
             }
         };
+
+        const classChangeCallback: MutationCallback = (mutationsList, observer) => {
+            mutationsList.forEach(mutation => {
+                const currentTheme = useSystemStore().systemState.theme;
+                if (currentTheme === 'dark' && document.body.classList.contains('theme-light')) {
+                    useSystemStore().updateTheme('light');
+                }
+                if (currentTheme === 'light' && document.body.classList.contains('theme-dark')) {
+                    useSystemStore().updateTheme('dark');
+                }
+            });
+        };
+        const mutationObserver = new MutationObserver(classChangeCallback);
+        mutationObserver.observe(document.body, { attributeFilter: ['class'], subtree: false });
         media.addEventListener('change', callback);
-        // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
+        this.register(() => mutationObserver.disconnect());
+        // window.addEventListener('languagechange', () => {
+        //     console.log('languagechange event detected!');
+        // });
         this.registerDomEvent(activeDocument, 'selectionchange', async (e: MouseEvent) => {
             EditorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
         });

@@ -84,8 +84,12 @@ function disableCursorEffect() {
 
 let text_idx = 0;
 
+function outOfAera(e: MouseEvent) {
+    return !activeDocument.querySelector('.cm-focused .cm-content')?.contains(e.targetNode)
+}
+
 export function toggleMouseClickEffects(e: MouseEvent, text: SettingModel<string, string>) {
-    if (!text) {
+    if (!text || outOfAera(e)) {
         return;
     }
     const textList = text.value.split(',');

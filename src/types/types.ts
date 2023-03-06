@@ -57,3 +57,8 @@ export type EditorState = {
     position: { top: number; bottom: number; left: number; right: number };
     selection: string;
 };
+
+export type SystemState = {
+    language: string;
+    theme: string;
+}

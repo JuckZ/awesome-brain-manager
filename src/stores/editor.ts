@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import type { EditorState } from '../types/types';
 
 export const useEditorStore = defineStore('editor', () => {
-    const totalTask = ref(0);
 
     const editorState: EditorState = reactive({
         currentEle: null as unknown as Element,
@@ -17,9 +16,6 @@ export const useEditorStore = defineStore('editor', () => {
         selection: '',
     });
 
-    function increment() {
-        totalTask.value++;
-    }
     function updatePosition(position) {
         editorState.position = position;
     }
@@ -34,8 +30,6 @@ export const useEditorStore = defineStore('editor', () => {
     return {
         editorState,
         totalTime: 0,
-        totalTask,
-        increment,
         updatePosition,
         updateSelection,
         updateCurrentEle,

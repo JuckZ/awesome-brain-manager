@@ -35,18 +35,11 @@
 </template>
 
 <script setup lang="tsx">
-import { onMounted, ref, toRefs, onUnmounted } from 'vue';
+import { onMounted, ref, toRefs, onUnmounted, watchEffect } from 'vue';
 import type { Ref } from 'vue';
 import { NConfigProvider, NMessageProvider, NSpace, NGrid, NGridItem } from 'naive-ui';
 import type { GlobalThemeOverrides } from 'naive-ui';
-import {
-    darkTheme,
-    lightTheme,
-    zhCN,
-    dateZhCN,
-    enUS,
-    dateEnUS,
-} from 'naive-ui';
+import { darkTheme, lightTheme, zhCN, dateZhCN, enUS, dateEnUS } from 'naive-ui';
 import type { Pomodoro } from '../schemas/spaces';
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
@@ -59,31 +52,13 @@ import { pomodoroDB } from '../utils/constants';
 import { selectDB } from '../utils/db/db';
 import type AwesomeBrainManagerPlugin from '../main';
 import { eventTypes } from '../types/types';
+import { useSystemStore } from '../stores';
+import { storeToRefs } from 'pinia';
 
 // const darkTheme = createTheme([inputDark, datePickerDark]);
 let theme = ref(darkTheme);
 let locale = ref(zhCN);
 let dateLocale = ref(dateZhCN);
-let language = window.localStorage.getItem('language') || 'en';
-
-// TODO 需要重启窗口才能切换主题
-// @ts-ignore
-if (window.app.getTheme() === 'obsidian') {
-    theme.value = darkTheme;
-    // @ts-ignore
-} else if (window.app.getTheme() === 'moonstone') {
-    theme.value = lightTheme;
-} else {
-    theme.value = lightTheme;
-}
-// TODO 可以单独设置语言
-if (language === 'zh') {
-    locale.value = zhCN;
-    dateLocale.value = dateZhCN;
-} else {
-    locale.value = enUS;
-    dateLocale.value = dateEnUS;
-}
 
 const lightThemeOverrides: GlobalThemeOverrides = {};
 
@@ -93,6 +68,22 @@ const props = defineProps<{
     plugin: AwesomeBrainManagerPlugin;
 }>();
 
+const { systemState } = storeToRefs(useSystemStore())
+
+watchEffect(() => {
+    if (systemState.value.theme === 'dark') {
+        theme.value = darkTheme;
+    } else {
+        theme.value = lightTheme;
+    }
+    if (systemState.value.language === 'zh') {
+        locale.value = zhCN;
+        dateLocale.value = dateZhCN;
+    } else {
+        locale.value = enUS;
+        dateLocale.value = dateEnUS;
+    }
+});
 let H1Title = () => (
     <h1>
         <Title></Title>
