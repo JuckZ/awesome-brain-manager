@@ -219,7 +219,6 @@ const calledFunctionHandler = e => {
 };
 onMounted(async () => {
     window.removeEventListener(eventTypes.calledFunction, calledFunctionHandler);
-    LoggerUtil.log('toolbar onMounted');
     window.addEventListener(eventTypes.calledFunction, calledFunctionHandler);
 });
 
@@ -230,7 +229,7 @@ onUnmounted(() => {
 });
 
 onUpdated(() => {
-    LoggerUtil.log('Toolbar updated');
+    // LoggerUtil.log('Toolbar updated');
 });
 </script>
 

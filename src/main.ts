@@ -194,7 +194,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.app.customCss.readSnippets();
     }
 
-    resizeHandle = debounce(() => LoggerUtil.log('resize'), 500, true);
+    resizeHandle = debounce(
+        () => {
+            // LoggerUtil.log('resize')
+        },
+        500,
+        true,
+    );
 
     async customizeResize(): Promise<void> {
         // 防抖
@@ -202,7 +208,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     async customizeClick(evt: MouseEvent): Promise<void> {
-        LoggerUtil.log('customizeClick');
+        // LoggerUtil.log('customizeClick');
     }
 
     getMenus() {
@@ -576,10 +582,10 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // 设置选项卡
         this.addSettingTab(new AwesomeBrainSettingTab(this.app, this, this.pluginDataIO));
         this.registerView(POMODORO_HISTORY_VIEW, leaf => {
-            if(!this.pomodoroHistoryView) {
-                this.pomodoroHistoryView = new PomodoroHistoryView(leaf, this)
+            if (!this.pomodoroHistoryView) {
+                this.pomodoroHistoryView = new PomodoroHistoryView(leaf, this);
             }
-            return this.pomodoroHistoryView
+            return this.pomodoroHistoryView;
         });
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
@@ -621,8 +627,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // Remove listener when we unload
         this.register(() => media.removeEventListener('change', callback));
         this.registerDomEvent(activeDocument, 'selectionchange', async (e: MouseEvent) => {
-            console.log('selectionchange');
-            
             EditorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
         });
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
