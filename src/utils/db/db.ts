@@ -5,7 +5,7 @@ import type { DBTable, DBTables } from 'types/mdb';
 import type AwesomeBrainManagerPlugin from '../../main';
 import { sanitizeSQLStatement } from '../../utils/sanitize';
 import { treeUtil } from '../common';
-import Logger from '../../utils/logger';
+import LoggerUtil from '../../utils/logger';
 
 const { uniq } = treeUtil;
 
@@ -51,7 +51,7 @@ export const getAllTables = async (sqlJS: SqlJsStatic, path: string): Promise<st
     try {
         tables = db.exec("SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';");
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
         return [];
     }
     const tableNames: string[] = tables[0].values.map(a => a[0]) as string[];
@@ -88,10 +88,10 @@ export const updateDBConditionally = (db: Database, tables: DBTables, condition:
         .join('; ');
     // Run the query without returning anything
     try {
-        Logger.log(sqlstr);
+        LoggerUtil.log(sqlstr);
         db.exec(sqlstr);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 
@@ -126,7 +126,7 @@ export const updateDB = (db: Database, tables: DBTables, updateCol: string, upda
     try {
         db.exec(sqlstr);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 
@@ -136,7 +136,7 @@ export const execQuery = (db: Database, sqlstr: string) => {
     try {
         db.exec(sqlstr);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 
@@ -146,7 +146,7 @@ export const deleteFromDB = (db: Database, table: string, condition: string) => 
     try {
         db.exec(sqlstr);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 
@@ -156,7 +156,7 @@ export const dropTable = (db: Database, table: string) => {
     try {
         db.exec(sqlstr);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 
@@ -176,7 +176,7 @@ export const insertIntoDB = (db: Database, tables: DBTables) => {
     try {
         db.exec(`BEGIN TRANSACTION; ${sqlstr} COMMIT;`);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 
@@ -208,7 +208,7 @@ export const replaceDB = (db: Database, tables: DBTables) => {
     try {
         db.exec(sqlstr);
     } catch (e) {
-        Logger.log(e);
+        LoggerUtil.log(e);
     }
 };
 

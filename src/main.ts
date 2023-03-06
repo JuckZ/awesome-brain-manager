@@ -26,7 +26,7 @@ import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHi
 import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
-import Logger, { initLogger } from './utils/logger';
+import LoggerUtil, { initLogger } from './utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
 import { getWeather } from './utils/weather';
 import { getTagsFromTask, getTaskContentFromTask } from './utils/common';
@@ -63,6 +63,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     override app: ExtApp;
     pluginDataIO: PluginDataIO;
     private pomodoroTarget: Pomodoro | null;
+    private pomodoroHistoryView: PomodoroHistoryView | null;
     quickPreviewFunction: (file: TFile, data: string) => any;
     resizeFunction: () => any;
     clickFunction: (evt: MouseEvent) => any;
@@ -121,9 +122,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     async sqlJS() {
-        // Logger.time("Loading SQlite");
+        // LoggerUtil.time("Loading SQlite");
         const sqljs = await loadSQL();
-        // Logger.timeEnd("Loading SQlite");
+        // LoggerUtil.timeEnd("Loading SQlite");
         return sqljs;
     }
 
@@ -164,7 +165,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         saveDBAndKeepAlive(this.spaceDB, this.spacesDBPath);
         const evt = new CustomEvent(eventTypes.pomodoroChange);
         window.dispatchEvent(evt);
-        Logger.log(selectDB(this.spaceDBInstance(), pomodoroDB));
+        LoggerUtil.log(selectDB(this.spaceDBInstance(), pomodoroDB));
     }
 
     get snippetPath() {
@@ -193,7 +194,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.app.customCss.readSnippets();
     }
 
-    resizeHandle = debounce(() => Logger.log('resize'), 500, true);
+    resizeHandle = debounce(() => LoggerUtil.log('resize'), 500, true);
 
     async customizeResize(): Promise<void> {
         // 防抖
@@ -201,7 +202,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     async customizeClick(evt: MouseEvent): Promise<void> {
-        Logger.log('customizeClick');
+        LoggerUtil.log('customizeClick');
     }
 
     getMenus() {
@@ -381,7 +382,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                         this.updatePomodoro(pomodoro);
                         this.pomodoroTarget = null;
                     } else {
-                        Logger.error('Update failed', pomodoro);
+                        LoggerUtil.error('Update failed', pomodoro);
                     }
                 }
             }, 1 * 1000),
@@ -574,7 +575,12 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // addIcon('circle', '<circle cx="50" cy="50" r="50" fill="currentColor" />');
         // 设置选项卡
         this.addSettingTab(new AwesomeBrainSettingTab(this.app, this, this.pluginDataIO));
-        this.registerView(POMODORO_HISTORY_VIEW, leaf => new PomodoroHistoryView(leaf, this));
+        this.registerView(POMODORO_HISTORY_VIEW, leaf => {
+            if(!this.pomodoroHistoryView) {
+                this.pomodoroHistoryView = new PomodoroHistoryView(leaf, this)
+            }
+            return this.pomodoroHistoryView
+        });
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
         EditorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
@@ -606,9 +612,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         const callback = () => {
             // 监听主题跟随系统变化
             if (media.matches) {
-                Logger.log('Dark mode active');
+                LoggerUtil.log('Dark mode active');
             } else {
-                Logger.log('Light mode active');
+                LoggerUtil.log('Light mode active');
             }
         };
         media.addEventListener('change', callback);

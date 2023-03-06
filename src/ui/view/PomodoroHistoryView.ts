@@ -27,7 +27,7 @@ export class PomodoroHistoryView extends ItemView {
     }
 
     getIcon(): string {
-        return 'clock';
+        return 'alarm-clock';
     }
 
     async onOpen(): Promise<void> {

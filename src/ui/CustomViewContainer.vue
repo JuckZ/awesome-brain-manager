@@ -12,12 +12,12 @@
 import { onMounted, onUnmounted, onUpdated } from 'vue';
 import { NNotificationProvider } from 'naive-ui';
 import Toolbar from './Toolbar.vue';
-import Logger from '../utils/logger';
+import LoggerUtil from '../utils/logger';
 
 onMounted(async () => {});
 
 onUpdated(() => {
-    Logger.log('container updated');
+    LoggerUtil.log('container updated');
 });
 onUnmounted(() => {});
 </script>

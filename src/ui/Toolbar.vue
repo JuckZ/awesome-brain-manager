@@ -73,7 +73,7 @@ import { storeToRefs } from 'pinia';
 
 import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
 import { eventTypes } from '../types/types';
-import Logger from '../utils/logger';
+import LoggerUtil from '../utils/logger';
 import { getNumberFromStr } from '../utils/common';
 
 const { editorState: currentState } = storeToRefs(useEditorStore());
@@ -84,7 +84,7 @@ const notification = useNotification();
 // watch(
 //     () => selection,
 //     (selection, preSelection) => {
-//         Logger.log(selection, preSelection);
+//         LoggerUtil.log(selection, preSelection);
 //         if (selection && selection !== preSelection) {
 //             isShow.value = true;
 //         } else {
@@ -219,18 +219,18 @@ const calledFunctionHandler = e => {
 };
 onMounted(async () => {
     window.removeEventListener(eventTypes.calledFunction, calledFunctionHandler);
-    Logger.log('toolbar onMounted');
+    LoggerUtil.log('toolbar onMounted');
     window.addEventListener(eventTypes.calledFunction, calledFunctionHandler);
 });
 
 // TODO  重启插件不会触发
 onUnmounted(() => {
-    Logger.log('onUnmounted');
+    LoggerUtil.log('onUnmounted');
     window.removeEventListener(eventTypes.calledFunction, calledFunctionHandler);
 });
 
 onUpdated(() => {
-    Logger.log('Toolbar updated');
+    LoggerUtil.log('Toolbar updated');
 });
 </script>
 

@@ -21,7 +21,7 @@ export default class Process {
     VueProcess = async (source, el, ctx) => {
         const closestLeaf = ctx.containerEl.closest('.workspace-leaf-content') as HTMLElement;
         if (closestLeaf && closestLeaf.dataset['mode'] === 'source' && !el.closest('.cm-line')) {
-            // Logger.log(closestLeaf.dataset['mode']);
+            // LoggerUtil.log(closestLeaf.dataset['mode']);
         } else {
             // insertVueComponent(el, ctx, `<Markdown src={${JSON.stringify('```tsx\n' + source + '\n```')}}/>`);
         }

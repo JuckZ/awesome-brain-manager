@@ -1,7 +1,7 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
 import { createApp, VueApp } from 'vue/dist/vue.esm-bundler.js';
 import Title from '../ui/Title';
-import Logger from '../utils/logger';
+import LoggerUtil from '../utils/logger';
 
 interface MContent {
     content: string;
@@ -22,7 +22,7 @@ export function insertAfterHandler(targetString: string, formatted: string, file
         //     return await createInsertAfterIfNotFound(formatted);
         // }
 
-        Logger.log('unable to find insert after line in file.');
+        LoggerUtil.log('unable to find insert after line in file.');
     }
 
     const nextHeaderPositionAfterTargetPosition = fileContentLines

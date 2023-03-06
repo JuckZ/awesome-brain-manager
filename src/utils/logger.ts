@@ -54,3 +54,7 @@ class Logger {
 const LoggerUtil = new Proxy(new Logger(), console);
 
 export default LoggerUtil;
+
+export {
+    LoggerUtil
+};

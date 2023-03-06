@@ -1,7 +1,7 @@
 import { AbstractTextComponent, Setting } from 'obsidian';
 import type { ReadOnlyReference } from '../model/ref';
 import { Reference } from '../model/ref';
-import Logger from '../utils/logger';
+import LoggerUtil from '../utils/logger';
 
 class SettingRegistry {
     private settingContexts: Array<SettingContext> = [];
@@ -60,7 +60,7 @@ class SettingContext {
 
     private setText(el: HTMLElement, text: string | null) {
         if (!el) {
-            Logger.error('element not created');
+            LoggerUtil.error('element not created');
             return;
         }
         if (text === null) {

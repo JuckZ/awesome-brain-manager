@@ -1,5 +1,5 @@
 import { request } from '../utils/request';
-import Logger from '../utils/logger';
+import LoggerUtil from '../utils/logger';
 import { getAllFiles } from '../utils/file';
 
 export const searchPicture = async (source: string, keyword: string): Promise<string> => {
