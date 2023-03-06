@@ -98,7 +98,7 @@ let oldSelection = '';
 // );
 
 watchEffect(() => {
-    if(currentState.value.selection) {
+    if (currentState.value.selection) {
         isShow.value = true;
     } else {
         isShow.value = false;
@@ -142,10 +142,10 @@ function getElementViewTop(element) {
 }
 
 const getComputedStyle = () => {
-    const activeNode = document.elementFromPoint(currentState.value.position.left, currentState.value.position.top);
+    const activeLine = activeDocument.querySelector(".cm-focused .cm-active.cm-line") as Element
     const getTop = () => {
         let topOffset = 20;
-        let lineHeight = activeNode?.getCssPropertyValue('line-height');
+        let lineHeight = activeLine?.getCssPropertyValue('line-height') || activeLine?.getCssPropertyValue('height');
         if (lineHeight && lineHeight !== '0') {
             topOffset = getNumberFromStr(lineHeight)[0] || 20;
         }
@@ -155,16 +155,21 @@ const getComputedStyle = () => {
         const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content') as any;
 
         if (activeDoc.innerWidth < 250) {
-            return getElementViewLeft(activeNode);
+            return getElementViewLeft(activeLine);
+        } else {
+            // FIXME hack value
+            const contentWidth = activeLine.clientWidth || 0;
+            const limit = getElementViewLeft(activeLine) + contentWidth - 200;
+            const expect = currentState.value.position.left + 4;
+            return expect > limit ? limit : expect;
         }
-        return currentState.value.position.left + 4;
     };
 
     return {
         top: `${getTop()}px`,
         left: `${getLeft()}px`,
         width: 'max-content',
-        'max-width': '390px'
+        'max-width': '240px',
     };
 };
 
@@ -232,7 +237,7 @@ onUpdated(() => {
     padding: 6px;
     border: 1px solid #d4d4d4;
     border-radius: 7px;
-    position: fixed;
+    position: absolute;
     background-color: rgb(250, 250, 250);
 }
 #abmToolbar :deep(.n-icon) {
