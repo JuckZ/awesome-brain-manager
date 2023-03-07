@@ -1,10 +1,10 @@
 import chalk from 'chalk';
+import { beforeAll, describe, expect, it } from 'vitest';
 import * as sut from '../file-access';
-import { describe, it, beforeAll, expect } from 'vitest';
 
 describe('file access', () => {
     beforeAll(() => {
-        console.log(chalk.yellow.bold('Hello world!'))
+        console.log(chalk.yellow.bold('Hello world!'));
     });
 
     it('should log an error message if something went wrong', () => {

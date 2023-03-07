@@ -4,7 +4,6 @@ import { reactive } from 'vue';
 import type { EditorState } from '../types/types';
 
 export const useEditorStore = defineStore('editor', () => {
-
     const editorState: EditorState = reactive({
         currentEle: null as unknown as Element,
         position: {

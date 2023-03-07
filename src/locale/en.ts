@@ -9,8 +9,8 @@ export default {
     command: {
         'check-in': 'Habit Check In',
         'remove-check-in': 'Remove Habit Check In',
-		'query-openai': 'Query openAI',
-        'open-emoji-picker': 'Open emoji picker'
+        'query-openai': 'Query openAI',
+        'open-emoji-picker': 'Open emoji picker',
     },
     setting: {
         cursorEffect: {

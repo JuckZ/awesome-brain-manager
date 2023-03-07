@@ -1,10 +1,10 @@
 import type { Editor } from 'obsidian';
-import { createApp, type App } from 'vue';
-import type AwesomeBrainManagerPlugin from '../main';
+import { type App, createApp } from 'vue';
 import type { SettingModel } from 'model/settings';
+import type AwesomeBrainManagerPlugin from '../main';
 import AppVue from '../ui/App.vue';
 import { buildTagRules } from '../render/Tag';
-import { Tag, type ExtApp } from '@/types/types';
+import { type ExtApp, Tag } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
 
 export const appContainerId = 'app-container';
@@ -12,7 +12,7 @@ export class EditorUtils {
     plugin: AwesomeBrainManagerPlugin;
     app: ExtApp;
     ele: HTMLDivElement;
-    loaded: boolean = false;
+    loaded = false;
     appViewVueApp: App;
     oldSelection: string;
     currentSelection: string;
@@ -72,6 +72,7 @@ export class EditorUtils {
 
     getCoords(editor: Editor): { left: number; top: number; right: number; bottom: number } {
         const cursorPos = editor.getCursor();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         return editor.coordsAtPos(cursorPos);
     }

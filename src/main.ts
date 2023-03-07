@@ -1,24 +1,24 @@
 import {
-    TAbstractFile,
-    Tasks,
-    WorkspaceWindow,
-    normalizePath,
     App,
     Editor,
+    MarkdownPreviewRenderer,
     MarkdownView,
     Menu,
     Plugin,
+    TAbstractFile,
     TFile,
+    Tasks,
     WorkspaceLeaf,
+    WorkspaceWindow,
     debounce,
-    MarkdownPreviewRenderer,
+    normalizePath,
 } from 'obsidian';
 import type { MarkdownFileInfo, PluginManifest } from 'obsidian';
 
-import Replacer from './Replacer';
-import Process from './process/Process';
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
+import Replacer from './Replacer';
+import Process from './process/Process';
 import { checkInDefaultPath, checkInList, customSnippetPath } from './utils/constants';
 import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
 import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal';
@@ -253,7 +253,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         onCodeMirrorChange(editor);
     }
 
-    async customizeEditorPaste(evt: ClipboardEvent, editor: Editor, markdownView: MarkdownView): Promise<void> {}
+    async customizeEditorPaste(evt: ClipboardEvent, editor: Editor, markdownView: MarkdownView): Promise<void> {
+        // LoggerUtil.log('');
+    }
 
     async customizeFileMenu(menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf): Promise<void> {
         menu.addItem(item => {
@@ -265,13 +267,21 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
-    async customizeVaultCreate(file: TAbstractFile): Promise<void> {}
+    async customizeVaultCreate(file: TAbstractFile): Promise<void> {
+        // LoggerUtil.log('');
+    }
 
-    async customizeVaultModify(file: TAbstractFile): Promise<void> {}
+    async customizeVaultModify(file: TAbstractFile): Promise<void> {
+        // LoggerUtil.log('');
+    }
 
-    async customizeVaultDelete(file: TAbstractFile): Promise<void> {}
+    async customizeVaultDelete(file: TAbstractFile): Promise<void> {
+        // LoggerUtil.log('');
+    }
 
-    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {}
+    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {
+        // LoggerUtil.log('');
+    }
 
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();

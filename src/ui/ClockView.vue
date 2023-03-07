@@ -25,8 +25,8 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { NResult, NSpace } from 'naive-ui';
 import { moment } from 'obsidian';
-import { usePomodoroStore } from '../stores';
 import { storeToRefs } from 'pinia';
+import { usePomodoroStore } from '../stores';
 import t from '../i18n';
 
 const time: Ref<string> = ref('');

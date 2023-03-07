@@ -1,7 +1,7 @@
+import { defineStore } from 'pinia';
+import { type Ref, ref } from 'vue';
 import type { Pomodoro } from '@/schemas/spaces';
 import { DBUtil } from '@/utils/db/db';
-import { defineStore } from 'pinia';
-import { ref, type Ref } from 'vue';
 
 // TODO 将数据持久化，优化性能 注意不同设备之间的持久化策略
 export const usePomodoroStore = defineStore('pomodoro', () => {

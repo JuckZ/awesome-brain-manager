@@ -1,5 +1,5 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
-import { createApp, VueApp } from 'vue/dist/vue.esm-bundler.js';
+import { VueApp, createApp } from 'vue/dist/vue.esm-bundler.js';
 import Title from '../ui/Title';
 import LoggerUtil from '../utils/logger';
 
@@ -45,12 +45,7 @@ export function insertAfterHandler(targetString: string, formatted: string, file
 
         return insertTextAfterPositionInBody(formatted, fileContent, endOfSectionIndex, foundNextHeader);
     } else {
-        return insertTextAfterPositionInBody(
-            formatted,
-            fileContent,
-            fileContentLines.length - 1,
-            foundNextHeader,
-        );
+        return insertTextAfterPositionInBody(formatted, fileContent, fileContentLines.length - 1, foundNextHeader);
     }
     // return insertTextAfterPositionInBody(formatted, fileContent, targetPosition);
 }
@@ -76,12 +71,7 @@ export function getLinesInString(input: string) {
     return lines;
 }
 
-export function insertTextAfterPositionInBody(
-    text: string,
-    body: string,
-    pos: number,
-    found?: boolean,
-): MContent {
+export function insertTextAfterPositionInBody(text: string, body: string, pos: number, found?: boolean): MContent {
     if (pos === -1) {
         return {
             content: `${body}\n${text}`,
@@ -170,7 +160,7 @@ export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorCo
     const vueApp = createApp({
         data() {
             return {
-                message: `ignore this place`,
+                message: 'ignore this place',
             };
         },
         template: source,

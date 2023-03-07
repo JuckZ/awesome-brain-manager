@@ -10,7 +10,7 @@ export const searchPicture = async (source: string, keyword: string): Promise<st
             method: 'get',
         }).then(res => resolve(res));
     });
-	return res || '';
+    return res || '';
 };
 
 export const getLocalRandomImg = async (app, title, path: any) => {

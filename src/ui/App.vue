@@ -23,23 +23,23 @@
 
 <script setup lang="ts">
 import {
-    darkTheme,
-    lightTheme,
-    zhCN,
-    dateZhCN,
-    enUS,
-    dateEnUS,
+    type GlobalThemeOverrides,
     NConfigProvider,
     NMessageProvider,
-    NSpace,
     NNotificationProvider,
-    type GlobalThemeOverrides,
+    NSpace,
+    darkTheme,
+    dateEnUS,
+    dateZhCN,
+    enUS,
+    lightTheme,
+    zhCN,
 } from 'naive-ui';
 import { onMounted, onUnmounted, onUpdated, ref, watchEffect } from 'vue';
-import Toolbar from './Toolbar.vue';
+import { storeToRefs } from 'pinia';
 import LoggerUtil from '../utils/logger';
 import { useSystemStore } from '../stores';
-import { storeToRefs } from 'pinia';
+import Toolbar from './Toolbar.vue';
 
 let theme = ref(darkTheme);
 let locale = ref(zhCN);

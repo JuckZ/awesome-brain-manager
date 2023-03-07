@@ -35,7 +35,7 @@ export class NotifyUtils {
     }
 
     onload() {
-        document.body.removeChild(this.audioEle)
+        document.body.removeChild(this.audioEle);
     }
 
     playNoticeAudio() {
@@ -49,7 +49,7 @@ export class NotifyUtils {
         new Notification(title, {
             body: content,
             icon: this.options.icon,
-            silent: true
+            silent: true,
         });
     }
     systemNotify(title: string, content: string) {

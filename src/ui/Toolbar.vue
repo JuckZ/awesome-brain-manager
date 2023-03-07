@@ -1,5 +1,5 @@
 <template>
-    <div id="abmToolbar" v-show="isShow" :style="getComputedStyle()">
+    <div v-show="isShow" id="abmToolbar" :style="getComputedStyle()">
         <n-tooltip placement="bottom" trigger="hover">
             <template #trigger>
                 <n-icon size="24" :component="OpenAI" @click="clickHandle(ServiceNames.OpenAI, currentState.selection)">
@@ -59,22 +59,22 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, onUpdated, watchEffect } from 'vue';
-import { NTooltip, NIcon, useNotification } from 'naive-ui';
+import { onMounted, onUnmounted, onUpdated, ref, watchEffect } from 'vue';
+import { NIcon, NTooltip, useNotification } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 import { ServiceNames, chatWith } from '../api';
+import { useEditorStore } from '../stores';
+import { eventTypes } from '../types/types';
+import LoggerUtil from '../utils/logger';
+import { getNumberFromStr } from '../utils/common';
 import OpenAI from './components/icon/OpenAI.vue';
 import Baidu from './components/icon/Baidu.vue';
 import Bing from './components/icon/Bing.vue';
 import ChatGPT from './components/icon/ChatGPT.vue';
 import Google from './components/icon/Google.vue';
 import ScanImage from './components/icon/ScanImage.vue';
-import { useEditorStore } from '../stores';
-import { storeToRefs } from 'pinia';
 
-import { customTitle, customContent, customAvatar, customDescription } from './CustomContent';
-import { eventTypes } from '../types/types';
-import LoggerUtil from '../utils/logger';
-import { getNumberFromStr } from '../utils/common';
+import { customAvatar, customContent, customDescription, customTitle } from './CustomContent';
 
 const { editorState: currentState } = storeToRefs(useEditorStore());
 const isShow = ref(false);
@@ -184,7 +184,7 @@ const clickHandle = async (type: string, keyword: string) => {
         case ServiceNames.GenImageWithChatGPT:
             conversation(type, await chatWith(type, keyword));
             break;
-        case ServiceNames.Baidu:
+        case ServiceNames.Baidu: {
             const baiduSearchEvent = new CustomEvent(eventTypes.openBrowser, {
                 detail: {
                     url: `https://baidu.com/s?wd=${keyword}`,
@@ -192,7 +192,9 @@ const clickHandle = async (type: string, keyword: string) => {
             });
             window.dispatchEvent(baiduSearchEvent);
             break;
-        case ServiceNames.Google:
+        }
+
+        case ServiceNames.Google: {
             const googleSearchEvent = new CustomEvent(eventTypes.openBrowser, {
                 detail: {
                     url: `https://www.google.com/search?q=${keyword}`,
@@ -200,6 +202,8 @@ const clickHandle = async (type: string, keyword: string) => {
             });
             window.dispatchEvent(googleSearchEvent);
             break;
+        }
+
         default:
             return;
     }

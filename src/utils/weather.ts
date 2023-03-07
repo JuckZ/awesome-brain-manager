@@ -47,7 +47,7 @@ async function getWWeather(city) {
 }
 // 和风天气入口获取天气信息
 async function getQWeather(locationId, key) {
-    let days = 1;
+    const days = 1;
     const weatherUrl = `https://devapi.qweather.com/v7/weather/3d?location=${locationId}&key=${key}`;
     const wUrl = new URL(weatherUrl);
     const res = await request({
@@ -150,8 +150,8 @@ async function urlGet(url) {
     return res;
 }
 async function getpos(key) {
-    let resultStr = await urlGet('http://whois.pconline.com.cn/ipJson.jsp?json=true');
-    let resultObj = JSON.parse(resultStr) as { city: string; cityCode: string };
+    const resultStr = await urlGet('http://whois.pconline.com.cn/ipJson.jsp?json=true');
+    const resultObj = JSON.parse(resultStr) as { city: string; cityCode: string };
     const city = resultObj.cityCode;
     return await searchCity(city, key);
 }

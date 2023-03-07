@@ -48,7 +48,7 @@ export class Tag {
         this.color = colorVal || `var(--tag-${typeVal}-color)`;
         this.bgColor = bgColorVal || `var(--tag-${typeVal}-bg)`;
         this.icon = iconVal || `var(--tag-${typeVal}-content)`;
-        this.font = fontVal || `var(--font-family-special-tag)`;
+        this.font = fontVal || 'var(--font-family-special-tag)';
     }
 }
 
@@ -61,4 +61,4 @@ export type EditorState = {
 export type SystemState = {
     language: string;
     theme: string;
-}
+};
