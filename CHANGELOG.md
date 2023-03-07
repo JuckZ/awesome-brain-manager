@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.6.0...1.7.0) (2023-03-07)
+
+
+### Bug Fixes
+
+* 暂停或者取消任务时应该暂停时钟 ([f14c970](https://github.com/JuckZ/awesome-brain-manager/commit/f14c9705dbd2de9dd53061bae023b8386b8172a7))
+
+
+### Features
+
+* 1.支持类似0.5这样的浮点数番茄钟时长 2. ([3cc8daf](https://github.com/JuckZ/awesome-brain-manager/commit/3cc8daf712849a5b1c522df42e96662a600903a2))
+
 # [1.6.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.5.0...1.6.0) (2023-03-07)
 
 
