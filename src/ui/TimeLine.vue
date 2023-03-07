@@ -55,19 +55,45 @@
 <script setup lang="ts">
 import { NDropdown, NEmpty, NIcon, NSpace, NTag, NTimeline, NTimelineItem, useMessage } from 'naive-ui';
 import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
-import { onUpdated, toRefs } from 'vue';
+import { onUpdated, ref, toRefs, watchEffect } from 'vue';
 import { moment } from 'obsidian';
+import { storeToRefs } from 'pinia';
 import type { Pomodoro } from '../schemas/spaces';
 import { PomodoroStatus } from '../utils/pomotodo';
 import t from '../i18n';
 import { usePomodoroStore } from '../stores';
+const { pomodoroHistory } = storeToRefs(usePomodoroStore());
 
-const props = defineProps<{
-    pomodoroList: Pomodoro[];
-}>();
+const pomodoroList = ref([] as Pomodoro[]);
 
-const { pomodoroList } = toRefs(props);
+const props = withDefaults(
+    defineProps<{
+        time: { year: number; month: number; date: number };
+    }>(),
+    {
+        time: () => {
+            const timeStr = moment().format('YYYY-MM-DD').split('-');
+            return {
+                year: parseInt(timeStr[0]),
+                month: parseInt(timeStr[1]),
+                date: parseInt(timeStr[2]),
+            };
+        },
+    },
+);
+
+const { time } = toRefs(props);
 const message = useMessage();
+
+watchEffect(() => {
+    pomodoroList.value = pomodoroHistory.value.filter(item =>
+        item.createTime.startsWith(
+            `${time.value.year}-${time.value.month.toString().padStart(2, '0')}-${time.value.date
+                .toString()
+                .padStart(2, '0')}`,
+        ),
+    );
+});
 
 const formatDuration = (duration: number) => {
     return moment.utc(moment.duration(duration, 'milliseconds').asMilliseconds()).format('HH:mm:ss');

@@ -145,7 +145,6 @@ export class DBUtils {
             .join('; ');
         // Run the query without returning anything
         try {
-            LoggerUtil.log(sqlstr);
             db.exec(sqlstr);
         } catch (e) {
             LoggerUtil.log(e);

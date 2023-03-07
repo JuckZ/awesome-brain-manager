@@ -1,42 +1,29 @@
 <template>
     <div id="calendarContainerInSelf">
-        <n-calendar
+        <NCalendar
             v-model:value="timestampNow"
-            #="{ year, month, date }"
             :is-date-disabled="isDateDisabled"
             @update:value="handleUpdateValue"
             @panel-change="handlePanelChange"
         >
-            {{ year }}
-            <PomodoroListView :pomodoro-list="getPomodoro(year, month, date)" />
-        </n-calendar>
+            <template #header="{ year, month }">
+                {{ `${year}-${month}` }}
+            </template>
+            <template #default="{ year, month, date }"> <PomodoroListView :time="{ year, month, date }" /></template>
+        </NCalendar>
     </div>
 </template>
 
 <script setup lang="ts">
-import { NCalendar, useMessage } from 'naive-ui';
-import { ref, toRefs } from 'vue';
+import { NCalendar } from 'naive-ui';
+import { ref } from 'vue';
 import { moment } from 'obsidian';
-import type { Pomodoro } from '../schemas/spaces';
 import PomodoroListView from './PomodoroListView.vue';
-
-const props = defineProps<{
-    allPomodoro: Pomodoro[];
-}>();
 
 const emit = defineEmits(['focus-change']);
 
-const { allPomodoro } = toRefs(props);
-
-const message = useMessage();
 const now = moment();
 const timestampNow = ref(now.valueOf());
-const getPomodoro = (year: number, month: number, date: number) => {
-    const theDay = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
-    return allPomodoro.value.filter(pomodoro => {
-        return pomodoro.start && pomodoro.start.startsWith(theDay);
-    });
-};
 
 const handleUpdateValue = (_: number, { year, month, date }: { year: number; month: number; date: number }) => {
     emit('focus-change', { year, month, date });
