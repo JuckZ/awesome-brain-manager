@@ -13,7 +13,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { ModuleFormat } from 'rollup';
 
-const prod = process.argv[2] === 'production';
+const prod = process.argv[3] !== '-w';
 const dir = process.env.OUTDIR ? process.env.OUTDIR : 'dest';
 
 // https://vitejs.dev/config/
@@ -34,10 +34,8 @@ export default defineConfig({
             },
             formats: ['umd'],
         },
-        // minify: prod ? true: false,
-        minify: false,
-        // sourcemap: prod ? false: true,
-        sourcemap: true,
+        minify: prod ? true : false,
+        sourcemap: prod ? false : true,
         rollupOptions: {
             plugins: [
                 nodeResolve({
@@ -76,21 +74,13 @@ export default defineConfig({
         },
     },
     define: {
-        'process.env.NODE_ENV': '"production"'
+        'process.env.NODE_ENV': '"production"',
     },
     plugins: [
         viteStaticCopy({
             targets: [
                 {
                     src: '.hotreload',
-                    dest: '',
-                },
-                {
-                    src: 'manifest.json',
-                    dest: '',
-                },
-                {
-                    src: 'versions.json',
                     dest: '',
                 },
             ],

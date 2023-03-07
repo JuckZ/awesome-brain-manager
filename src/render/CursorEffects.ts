@@ -22,8 +22,8 @@ import {
     // An elasticish trail of cursors that will nip to wherever your mouse is
     trailingCursor,
 } from 'cursor-effects';
-import type { SettingModel } from 'model/settings';
 import { randomColor } from '../utils/common';
+import type { SettingModel } from 'model/settings';
 
 const cursorEffects: any[] = [];
 
@@ -84,31 +84,35 @@ function disableCursorEffect() {
 
 let text_idx = 0;
 
+function outOfAera(e: MouseEvent) {
+    return !activeDocument.querySelector('.cm-focused .cm-content')?.contains(e.targetNode);
+}
+
 export function toggleMouseClickEffects(e: MouseEvent, text: SettingModel<string, string>) {
-    if (!text) {
+    if (!text || outOfAera(e)) {
         return;
     }
     const textList = text.value.split(',');
-        var ele = document.createElement('b');
-        document.body.appendChild(ele).innerHTML = textList[text_idx];
-        text_idx = (text_idx + 1) % textList.length;
+    const ele = document.createElement('b');
+    document.body.appendChild(ele).innerHTML = textList[text_idx];
+    text_idx = (text_idx + 1) % textList.length;
 
-        let f = 16, // 字体大小
-            x = e.clientX - f / 2, // 横坐标
-            y = e.clientY - f, // 纵坐标
-            color = randomColor(), // 随机颜色
-            a = 1, // 透明度
-            s = 1.2; // 放大缩小
-        let timer = setInterval(function () {
-            //添加定时器
-            if (a <= 0) {
-                document.body.removeChild(ele);
-                clearInterval(timer);
-            } else {
-                ele.style.cssText = `pointer-events: none;font-size:${f}px;position: fixed;color:${color};left:${x}px;top:${y}px;opacity:${a};transform:scale(${s});`;
-                y--;
-                a -= 0.016;
-                s += 0.002;
-            }
-        }, 15);
+    const f = 16, // 字体大小
+        x = e.clientX - f / 2, // 横坐标
+        color = randomColor(); // 随机颜色
+    let y = e.clientY - f, // 纵坐标
+        a = 1, // 透明度
+        s = 1.2; // 放大缩小
+    const timer = setInterval(function () {
+        //添加定时器
+        if (a <= 0) {
+            document.body.removeChild(ele);
+            clearInterval(timer);
+        } else {
+            ele.style.cssText = `pointer-events: none;font-size:${f}px;position: fixed;color:${color};left:${x}px;top:${y}px;opacity:${a};transform:scale(${s});`;
+            y--;
+            a -= 0.016;
+            s += 0.002;
+        }
+    }, 15);
 }

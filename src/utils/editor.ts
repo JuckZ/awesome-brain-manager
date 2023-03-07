@@ -1,64 +1,76 @@
 import type { Editor } from 'obsidian';
-import { createApp, type App } from 'vue';
+import { type App, createApp } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
-import type { SettingModel } from 'model/settings';
-import CustomViewContainer from '../ui/CustomViewContainer.vue';
+import AppVue from '../ui/App.vue';
 import { buildTagRules } from '../render/Tag';
-import { Tag, type ExtApp } from '@/types/types';
-import pinia, { useEditorStore } from '@/stores'
+import type { SettingModel } from 'model/settings';
+import { type ExtApp, Tag } from '@/types/types';
+import pinia, { useEditorStore } from '@/stores';
 
-export const elId = 'custom-view-container';
-
-
-
+export const appContainerId = 'app-container';
 export class EditorUtils {
     plugin: AwesomeBrainManagerPlugin;
     app: ExtApp;
     ele: HTMLDivElement;
-    loaded: boolean = false;
-	customViewVueApp: App;
-
-    constructor() {}
+    loaded = false;
+    appViewVueApp: App;
+    oldSelection: string;
+    currentSelection: string;
 
     init(plugin: AwesomeBrainManagerPlugin) {
         this.plugin = plugin;
         this.app = plugin.app;
-    }
-
-    loadCustomViewContainer() {
         this.ele = document.body.createEl('div', {
             attr: {
-                id: elId,
+                id: appContainerId,
             },
         });
-		this.customViewVueApp = createApp(CustomViewContainer);
-		this.customViewVueApp.use(pinia)
-        this.customViewVueApp.mount(`#${elId}`);
-        this.loaded = true;
+        this.appViewVueApp = createApp(AppVue);
+        this.appViewVueApp.use(pinia);
+        this.appViewVueApp.mount(`#${appContainerId}`);
     }
 
-    unloadCustomViewContainer() {
+    static getCurrentSelection(editor: Editor) {
+        const cursorPos = editor.getCursor();
+        let content = editor.getSelection();
+        if (!content) {
+            if (cursorPos) {
+                content = editor.getLine(cursorPos.line);
+            }
+        }
+        return content;
+    }
+
+    unload() {
         if (this.ele) {
             document.body.removeChild(this.ele);
         }
-        this.loaded = false;
     }
 
     changeToolbarPopover(e: MouseEvent, toolbarEnable: SettingModel<boolean, boolean>) {
         if (!toolbarEnable.value) {
             return;
         }
-        if (!this.loaded) {
-            editorUtil.loadCustomViewContainer();
-        }
+
         const editor = this.app.workspace.activeEditor?.editor;
         if (!editor) return;
-        useEditorStore().updatePosition(this.getCoords(editor));
-        useEditorStore().updateSelection(editor.getSelection());
+        const position = this.getCoords(editor);
+        const activeNode = document.elementFromPoint(position.left, position.top);
+        this.currentSelection = editor.getSelection();
+        if (this.oldSelection === this.currentSelection) {
+            return;
+        }
+        if (activeNode) {
+            this.oldSelection = editor.getSelection();
+            useEditorStore().updateCurrentEle(activeNode);
+            useEditorStore().updatePosition(position);
+            useEditorStore().updateSelection(editor.getSelection());
+        }
     }
 
     getCoords(editor: Editor): { left: number; top: number; right: number; bottom: number } {
         const cursorPos = editor.getCursor();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         return editor.coordsAtPos(cursorPos);
     }
@@ -75,4 +87,4 @@ export class EditorUtils {
     };
 }
 
-export const editorUtil = new EditorUtils();
+export const EditorUtil = new EditorUtils();

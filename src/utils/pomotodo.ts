@@ -1,16 +1,5 @@
-import type { Database } from 'sql.js';
-import {
-    pomodoroSchema,
-} from '../schemas/spaces';
 import type { Pomodoro } from '../schemas/spaces';
-import Logger from '../utils/logger';
-import { replaceDB } from './db/db';
-
-export const initiateDB = (db: Database) => {
-    replaceDB(db, {
-        pomodoro: pomodoroSchema,
-    });
-};
+import LoggerUtil from '../utils/logger';
 
 export class PomodoroStatus {
     private pomodoro: Pomodoro;
@@ -76,7 +65,7 @@ export class PomodoroStatus {
         if (['done', 'cancelled', 'ing'].contains(currentStatus)) {
             return false;
         } else {
-            Logger.log('开始任务');
+            LoggerUtil.log('开始任务');
             this.setStart();
             this.setState(targetStatus);
             return true;
@@ -88,7 +77,7 @@ export class PomodoroStatus {
         if (['cancelled', 'break', 'todo', 'break'].contains(currentStatus)) {
             return false;
         } else {
-            Logger.log('完成任务');
+            LoggerUtil.log('完成任务');
             this.setEnd();
             this.setSpend();
             this.setState(targetStatus);
@@ -97,7 +86,7 @@ export class PomodoroStatus {
     }
 
     todoFun(targetStatus) {
-        Logger.log('加入任务');
+        LoggerUtil.log('加入任务');
         this.setState(targetStatus);
         return true;
     }
@@ -107,7 +96,7 @@ export class PomodoroStatus {
         if (['done', 'cancelled'].contains(oldStatus)) {
             return false;
         } else {
-            Logger.log('放弃任务');
+            LoggerUtil.log('放弃任务');
             this.setSpend();
             this.setEnd();
             this.setState(targetStatus);
@@ -120,7 +109,7 @@ export class PomodoroStatus {
         if (['done', 'cancelled', 'todo', 'break'].contains(oldStatus)) {
             return false;
         } else {
-            Logger.log('暂停任务');
+            LoggerUtil.log('暂停任务');
             // 统计并记录spend
             this.setSpend();
             this.setBreakNum();

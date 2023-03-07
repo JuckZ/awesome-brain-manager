@@ -52,7 +52,7 @@ const setDataSet = (raw: Pomodoro[]) => {
     const month = now.getMonth() + 1;
     const date = now.getDate();
     const theDay = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
-    const data = raw.filter(pomodoro => pomodoro.start.startsWith(theDay));
+    const data = raw.filter(pomodoro => pomodoro.start && pomodoro.start.startsWith(theDay));
     const todayStartVal: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     const todayDoneVal: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     data.map(pomodoro => {

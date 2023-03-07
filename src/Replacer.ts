@@ -43,6 +43,7 @@ export default class Replacer {
             }
             let alias = file.basename;
             if (filetype === 'png') {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 const url = this.plugin.app.getObsidianUrl(file);
                 if (split[1]) {
@@ -60,18 +61,22 @@ export default class Replacer {
      */
     public getFullPath(path: string) {
         if (path.length === 0) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             return this.plugin.app.vault.adapter.getFullPath('');
         }
         const file = this.plugin.app.vault.getAbstractFileByPath(path);
 
         if (!file) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             return this.plugin.app.vault.adapter.getFullPath('');
         }
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         const folder = this.plugin.app.vault.getDirectParent(file);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         return this.plugin.app.vault.adapter.getFullPath(folder.path);
     }

@@ -21,21 +21,20 @@
 
 <script setup lang="ts">
 import RadialProgress from 'vue3-radial-progress';
-import { onMounted, onUnmounted, ref, toRefs } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { NResult, NSpace } from 'naive-ui';
 import { moment } from 'obsidian';
-import type { Pomodoro } from '../schemas/spaces';
+import { storeToRefs } from 'pinia';
+import { usePomodoroStore } from '../stores';
 import t from '../i18n';
 
-const props = defineProps<{
-    currentPomodoro: Pomodoro | null;
-}>();
-const { currentPomodoro } = toRefs(props);
 const time: Ref<string> = ref('');
 const currentSpend: Ref<number> = ref(0);
 const expectedTime: Ref<number> = ref(0);
 let timerID;
+
+const { currentPomodoro } = storeToRefs(usePomodoroStore());
 
 function updateTime() {
     const pomodoro = currentPomodoro.value;

@@ -1,9 +1,9 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { App as VueApp } from 'vue';
-import type AwesomeBrainManagerPlugin from 'main';
 import PomodoroHistory from '../PomodoroHistory.vue';
 import t from '../../i18n';
+import type AwesomeBrainManagerPlugin from 'main';
 
 export const POMODORO_HISTORY_VIEW = 'pomodoro-history-view';
 
@@ -27,11 +27,11 @@ export class PomodoroHistoryView extends ItemView {
     }
 
     getIcon(): string {
-        return 'clock';
+        return 'alarm-clock';
     }
 
     async onOpen(): Promise<void> {
-		const container = this.containerEl.children[1];
+        const container = this.containerEl.children[1];
         container.empty();
         container.createEl(
             'div',
@@ -43,9 +43,7 @@ export class PomodoroHistoryView extends ItemView {
             },
             el => {
                 el.onNodeInserted(() => {
-                    this.vueapp = createApp(PomodoroHistory, {
-                        plugin: this.plugin,
-                    });
+                    this.vueapp = createApp(PomodoroHistory);
                     this.vueapp.mount(el);
                 });
             },

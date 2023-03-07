@@ -14,3 +14,8 @@ export function randomColor() {
 export const treeUtil = {
     uniq: (a: any[]) => [...new Set(a)],
 };
+
+export function getNumberFromStr(str: string) {
+    const nums = str.match(/\d+(.\d+)?/g);
+    return nums?.map(num => parseFloat(num)) || [];
+}

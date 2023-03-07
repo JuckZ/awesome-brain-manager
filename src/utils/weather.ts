@@ -1,8 +1,9 @@
-/* eslint-disable */
-// @ts-nocheck
+// https://github.com/PKM-er/Blue-topaz-example/blob/1d196ba3802dc9d37e83d48a7ea974f8d5c538f1/88-Template/script/fetchhomepage.js#L194
+
+import { request } from './request';
 export async function getWeather(city) {
-    return '';
-    const key = 'dc0f31ac6f37484f88e3e7d45b84e403'; //尽量换成自己申请的key以免接口失效https://console.qweather.com
+    //尽量换成自己申请的key以免接口失效https://console.qweather.com
+    const key = 'dc0f31ac6f37484f88e3e7d45b84e403';
     let locationId = '';
     let windydesc = '';
     if (city) {
@@ -14,6 +15,7 @@ export async function getWeather(city) {
         city = location.name;
     }
     const weather = await getQWeather(locationId, key);
+    let today;
     if (weather == '-1') {
         return await getWWeather(city);
     } else {
@@ -26,8 +28,8 @@ export async function getWeather(city) {
             //小风
             windydesc = '清风徐徐';
         } else windydesc = '有' + today.windDirDay + '风出没，风力' + today.windScaleDay + '级';
-        const today = weather[0];
-        const desc = `${city} ${today.textDay}，${today.tempMin}~${today.tempMax}℃ ${
+        today = weather[0];
+        const desc = `${city} ${today.textDay}, ${today.tempMin}~${today.tempMax}℃ ${
             air.category
         } ${windydesc}${today.moonPhase.replace(/[\u4e00-\u9fa5]/g, '')}`;
         return desc;
@@ -45,7 +47,7 @@ async function getWWeather(city) {
 }
 // 和风天气入口获取天气信息
 async function getQWeather(locationId, key) {
-    days = 1;
+    const days = 1;
     const weatherUrl = `https://devapi.qweather.com/v7/weather/3d?location=${locationId}&key=${key}`;
     const wUrl = new URL(weatherUrl);
     const res = await request({
@@ -137,8 +139,8 @@ async function urlGet(url) {
     const res = await request({
         url: finalURL.href,
         method: 'GET',
-        cache: 'no-cache',
         headers: {
+            'Cache-Control': 'no-cache',
             'Content-Type': 'application/json;charset=gb2312',
             'User-Agent':
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.100.4758.11 Safari/537.36',
@@ -148,9 +150,9 @@ async function urlGet(url) {
     return res;
 }
 async function getpos(key) {
-    let result = await urlGet('http://whois.pconline.com.cn/ipJson.jsp?json=true');
-    result = JSON.parse(result);
-    const city = result.cityCode;
+    const resultStr = await urlGet('http://whois.pconline.com.cn/ipJson.jsp?json=true');
+    const resultObj = JSON.parse(resultStr) as { city: string; cityCode: string };
+    const city = resultObj.cityCode;
     return await searchCity(city, key);
 }
 //查询城市ID

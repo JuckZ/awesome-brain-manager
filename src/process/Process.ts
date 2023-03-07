@@ -1,11 +1,11 @@
-import type { Debouncer, MarkdownPostProcessorContext, MarkdownPostProcessor } from 'obsidian';
+import type { Debouncer, MarkdownPostProcessor, MarkdownPostProcessorContext } from 'obsidian';
 import { debounce } from 'obsidian';
 import twemoji from 'twemoji';
 import plantuml from 'plantuml-encoder';
 import { v4 as uuidv4 } from 'uuid';
 import type AwesomeBrainManagerPlugin from '../main';
 import { insertImageWithMap, insertVueComponent } from '../utils/content';
-import { request } from '../utils/request'
+import { request } from '../utils/request';
 
 export default class Process {
     plugin: AwesomeBrainManagerPlugin;
@@ -21,18 +21,18 @@ export default class Process {
     VueProcess = async (source, el, ctx) => {
         const closestLeaf = ctx.containerEl.closest('.workspace-leaf-content') as HTMLElement;
         if (closestLeaf && closestLeaf.dataset['mode'] === 'source' && !el.closest('.cm-line')) {
-            // Logger.log(closestLeaf.dataset['mode']);
+            // LoggerUtil.log(closestLeaf.dataset['mode']);
         } else {
             // insertVueComponent(el, ctx, `<Markdown src={${JSON.stringify('```tsx\n' + source + '\n```')}}/>`);
         }
         insertVueComponent(el, ctx, source);
     };
 
-	// https://github.com/joethei/obsidian-plantuml
+    // https://github.com/joethei/obsidian-plantuml
     UMLProcess = async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const debounceMap = new Map<string, Debouncer<[string, HTMLElement, MarkdownPostProcessorContext], any>>();
         const processor = async (source: string, el: HTMLElement, _: MarkdownPostProcessorContext) => {
-            let url = 'https://www.plantuml.com/plantuml';
+            const url = 'https://www.plantuml.com/plantuml';
             const imageUrlBase = url + '/png/';
 
             const encodedDiagram = plantuml.encode(source);

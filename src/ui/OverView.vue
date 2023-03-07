@@ -38,7 +38,7 @@ const { allPomodoro } = toRefs(props);
 
 const countPomodoro = (pomodoroList: Pomodoro[], dimension: 'todayNum' | 'todayTime' | 'totalNum' | 'totalTime') => {
     const theDay = getTheDay();
-    const pomodoroTheDay = pomodoroList.filter(pomodoro => pomodoro.start.startsWith(theDay));
+    const pomodoroTheDay = pomodoroList.filter(pomodoro => pomodoro.start && pomodoro.start.startsWith(theDay));
     const pomodoroTimeTotal = pomodoroList.reduce((a, b) => a + parseFloat(b.spend), 0);
     const pomodoroTimeTheDay = pomodoroTheDay.reduce((a, b) => a + parseFloat(b.spend), 0);
     const todayDuration = moment.duration(pomodoroTimeTheDay, 'milliseconds');

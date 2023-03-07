@@ -21,6 +21,7 @@
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
+    "importsNotUsedAsValues": "remove",
     "importHelpers": true,
     "isolatedModules": true,
 	"skipLibCheck": true,

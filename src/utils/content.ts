@@ -1,7 +1,7 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
-import { createApp, VueApp } from 'vue/dist/vue.esm-bundler.js';
-import Title from '../ui/Title';
-import Logger from '../utils/logger';
+import { VueApp, createApp } from 'vue/dist/vue.esm-bundler.js';
+import TestTitle from '../ui/TestTitle';
+import LoggerUtil from '../utils/logger';
 
 interface MContent {
     content: string;
@@ -22,7 +22,7 @@ export function insertAfterHandler(targetString: string, formatted: string, file
         //     return await createInsertAfterIfNotFound(formatted);
         // }
 
-        Logger.log('unable to find insert after line in file.');
+        LoggerUtil.log('unable to find insert after line in file.');
     }
 
     const nextHeaderPositionAfterTargetPosition = fileContentLines
@@ -45,12 +45,7 @@ export function insertAfterHandler(targetString: string, formatted: string, file
 
         return insertTextAfterPositionInBody(formatted, fileContent, endOfSectionIndex, foundNextHeader);
     } else {
-        return insertTextAfterPositionInBody(
-            formatted,
-            fileContent,
-            fileContentLines.length - 1,
-            foundNextHeader,
-        );
+        return insertTextAfterPositionInBody(formatted, fileContent, fileContentLines.length - 1, foundNextHeader);
     }
     // return insertTextAfterPositionInBody(formatted, fileContent, targetPosition);
 }
@@ -76,12 +71,7 @@ export function getLinesInString(input: string) {
     return lines;
 }
 
-export function insertTextAfterPositionInBody(
-    text: string,
-    body: string,
-    pos: number,
-    found?: boolean,
-): MContent {
+export function insertTextAfterPositionInBody(text: string, body: string, pos: number, found?: boolean): MContent {
     if (pos === -1) {
         return {
             content: `${body}\n${text}`,
@@ -163,14 +153,14 @@ export function insertSvgImage(el: HTMLElement, image: string) {
 
 export function registerVueComponent(vueApp: VueApp) {
     // TODO 扫描并注册某个文件夹下所有的组件
-    vueApp.component('Title', Title);
+    vueApp.component('TestTitle', TestTitle);
 }
 
 export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {
     const vueApp = createApp({
         data() {
             return {
-                message: `ignore this place`,
+                message: 'ignore this place',
             };
         },
         template: source,

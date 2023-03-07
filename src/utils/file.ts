@@ -1,5 +1,5 @@
 import { TFile, normalizePath } from 'obsidian';
-import Logger from './logger';
+import LoggerUtil from './logger';
 
 export async function getNotePath(directory, filename) {
     if (!filename.endsWith('.md')) {
@@ -79,17 +79,17 @@ export function getCleanTitle(msg) {
     if (count == 0) {
         // DONE send back empty string if untitled
         if (msg.includes('Untitled')) {
-            Logger.log('Untitled so returning empty space');
+            LoggerUtil.log('Untitled so returning empty space');
             return ' ';
         } else {
-            Logger.log('No Dash so returning trimmed:', msg);
+            LoggerUtil.log('No Dash so returning trimmed:', msg);
             // TODO remove fullstop
             return nameTitle.trim();
         }
     }
     // if there is a dash in the title
     else if (count == 1) {
-        Logger.log('Dash detected in:', msg);
+        LoggerUtil.log('Dash detected in:', msg);
         nameTitle = nameTitle.split('-').slice(1);
         nameTitle = nameTitle[0];
         return nameTitle.trim();
@@ -101,18 +101,18 @@ export function getCleanTitle(msg) {
 
         if (isMatch && count == 2) {
             // since it has a date... and only has dashes for a date, return it.
-            Logger.log('Date detected! No other dash, return as is', msg);
+            LoggerUtil.log('Date detected! No other dash, return as is', msg);
 
             return nameTitle.trim();
         } else {
             // it may contain date but also a front snippet OR it does not contain date and just multiple dashes
-            Logger.log('Just front snippets with extra dash or date but also more dash', msg);
+            LoggerUtil.log('Just front snippets with extra dash or date but also more dash', msg);
 
             nameTitle = nameTitle.split('-').slice(1);
             nameTitle = nameTitle.join('-');
             return nameTitle.trim();
         }
     } else {
-        Logger.log('Logic Error');
+        LoggerUtil.log('Logic Error');
     }
 }

@@ -1,5 +1,5 @@
 import { request } from '../utils/request';
-import Logger from '../utils/logger';
+import LoggerUtil from '../utils/logger';
 import { SETTINGS } from '../settings';
 
 export type ServiceName = 'Bing' | 'OpenAI' | 'ChatGPT' | 'GenImageWithChatGPT' | 'Baidu' | 'Google';
@@ -32,6 +32,6 @@ export const notifyNtfy = (msg: any) => {
         body: msg,
         headers,
     })
-        .then(res => Logger.log('Ntfy sent the message successfully'))
-        .catch(error => Logger.error('Please check the ntfy configuration first'));
+        .then(res => LoggerUtil.log('Ntfy sent the message successfully'))
+        .catch(error => LoggerUtil.error('Please check the ntfy configuration first'));
 };

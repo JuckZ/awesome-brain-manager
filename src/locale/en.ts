@@ -9,8 +9,8 @@ export default {
     command: {
         'check-in': 'Habit Check In',
         'remove-check-in': 'Remove Habit Check In',
-		'query-openai': 'Query openAI',
-        'open-emoji-picker': 'Open emoji picker'
+        'query-openai': 'Query openAI',
+        'open-emoji-picker': 'Open emoji picker',
     },
     setting: {
         cursorEffect: {
@@ -80,11 +80,11 @@ export default {
         todayTime: 'Today time',
         totalTime: 'Total time',
         noTimeLine: 'No timeline content',
-        startTask: '▶️ Start',
+        startTask: '🚀 Start',
         stopTask: '⏸️ Stop',
         finishTask: '✅ Finish',
-        cancelTask: '🔴 Cancel',
-        deleteTask: '❗ Delete',
+        cancelTask: '❎ Cancel',
+        deleteTask: '🗑️ Delete',
         handleThisFirst: 'Please handle this unfinished task: ',
     },
 };

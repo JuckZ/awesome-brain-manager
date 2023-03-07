@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, toRefs, onUpdated } from 'vue';
-import Logger from '../utils/logger';
+import { onMounted, onUnmounted, onUpdated, toRefs } from 'vue';
+import LoggerUtil from '../utils/logger';
 
 const props = defineProps<{
     url: string;
@@ -13,15 +13,15 @@ const props = defineProps<{
 const { url } = toRefs(props);
 
 onMounted(async () => {
-    Logger.log('browser onMounted');
+    LoggerUtil.log('browser onMounted');
 });
 
 onUnmounted(() => {
-    Logger.log('browser onUnmounted');
+    LoggerUtil.log('browser onUnmounted');
 });
 
 onUpdated(() => {
-    Logger.log(url.value);
+    LoggerUtil.log(url.value);
 });
 </script>
 

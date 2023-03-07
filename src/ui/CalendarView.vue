@@ -1,36 +1,45 @@
 <template>
     <div id="calendarContainerInSelf">
-        <n-calendar
+        <NCalendar
             v-model:value="timestampNow"
-            #="{ year, month, date }"
             :is-date-disabled="isDateDisabled"
             @update:value="handleUpdateValue"
+            @panel-change="handlePanelChange"
         >
-            {{ year }}
-            <PomodoroListView :pomodoro-list="getPomodoro(year, month, date)" />
-        </n-calendar>
+            <template #header="{ year, month }">
+                {{ `${year}-${month}` }}
+            </template>
+            <template #default="{ year, month, date }">
+                <PomodoroListView :active-time="activeTime" :time="{ year, month, date }"
+            /></template>
+        </NCalendar>
     </div>
 </template>
 
 <script setup lang="ts">
 import { NCalendar } from 'naive-ui';
-import { ref, toRefs } from 'vue';
-import { useMessage } from 'naive-ui';
+import { Ref, ref } from 'vue';
 import { moment } from 'obsidian';
-import type { Pomodoro } from '../schemas/spaces';
 import PomodoroListView from './PomodoroListView.vue';
 
-const props = defineProps<{
-    allPomodoro: Pomodoro[];
-}>();
+const emit = defineEmits(['focus-change']);
 
-const { allPomodoro } = toRefs(props);
-
-const message = useMessage();
-const timestampNow = ref(moment().valueOf())
+const now = moment();
+const timestampNow = ref(now.valueOf());
+const activeTime: Ref<{ year: number; month: number; date: number }> = ref({
+    year: now.year(),
+    month: now.month(),
+    date: now.date(),
+});
 
 const handleUpdateValue = (_: number, { year, month, date }: { year: number; month: number; date: number }) => {
-    message.success(`${year}-${month}-${date}`);
+    activeTime.value = { year, month, date };
+    emit('focus-change', activeTime.value);
+    // message.success(`${year}-${month}-${date}`);
+};
+
+const handlePanelChange = ({ year, month }: { year: number; month: number }) => {
+    // message.success(`${year}-${month}`);
 };
 
 const isDateDisabled = (timestamp: number) => {
@@ -38,13 +47,6 @@ const isDateDisabled = (timestamp: number) => {
     //     return true;
     // }
     return false;
-};
-
-const getPomodoro = (year: number, month: number, date: number) => {
-    const theDay = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
-    return allPomodoro.value.filter(pomodoro => {
-        return pomodoro.start.startsWith(theDay);
-    });
 };
 </script>
 

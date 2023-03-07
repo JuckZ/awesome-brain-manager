@@ -7,6 +7,7 @@ module.exports = {
     extends: [
         'plugin:vue/base',
         'eslint:recommended',
+        'plugin:import/recommended',
         'plugin:vue/vue3-recommended',
         'plugin:vue/essential',
         'plugin:@typescript-eslint/recommended',
@@ -18,10 +19,13 @@ module.exports = {
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
+        activeDocument: 'readonly',
     },
     parser: 'vue-eslint-parser',
     parserOptions: {
         parser: '@typescript-eslint/parser',
+        tsconfigRootDir: './',
+        // project: './tsconfig.json',
         ecmaVersion: 6,
         sourceType: 'module',
         ecmaFeatures: {
@@ -30,6 +34,10 @@ module.exports = {
     },
     plugins: ['@typescript-eslint', 'import'],
     rules: {
+        // TODO
+        'import/no-unresolved': 'error',
+        'vue/multi-word-component-names': 1,
+        'vue/no-v-model-argument': 'off',
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single', { avoidEscape: true }],
         '@typescript-eslint/no-unused-vars': 0, // Configured in tsconfig instead.
@@ -53,5 +61,16 @@ module.exports = {
                 ignoreDeclarationSort: true,
             },
         ],
+    },
+    settings: {
+        'import/parsers': {
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: true,
+                project: ['tsconfig.json', 'other-packages/*/tsconfig.json'],
+            },
+        },
     },
 };
