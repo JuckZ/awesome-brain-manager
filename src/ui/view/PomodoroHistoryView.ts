@@ -1,9 +1,9 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { App as VueApp } from 'vue';
-import type AwesomeBrainManagerPlugin from 'main';
 import PomodoroHistory from '../PomodoroHistory.vue';
 import t from '../../i18n';
+import type AwesomeBrainManagerPlugin from 'main';
 
 export const POMODORO_HISTORY_VIEW = 'pomodoro-history-view';
 

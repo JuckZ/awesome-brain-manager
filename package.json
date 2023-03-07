@@ -39,7 +39,7 @@
 		"report:coverage": "npm run test:coverage && codecov",
 		"build-only": "vite build",
 		"type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
-		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore && tsc --noEmit --pretty && svelte-check",
+		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .eslintignore && tsc --noEmit --pretty && svelte-check",
 		"commit": "git-cz",
 		"format:check": "prettier --list-different {src,__mocks__,bin}/**/*.ts",
 		"format:write": "prettier --write {src,__mocks__,bin}/**/*.ts",

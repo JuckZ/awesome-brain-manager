@@ -113,10 +113,11 @@ function getElementViewLeft(element) {
         current = current.offsetParent;
     }
 
+    let elementScrollLeft;
     if (document.compatMode == 'BackCompat') {
-        var elementScrollLeft = document.body.scrollLeft;
+        elementScrollLeft = document.body.scrollLeft;
     } else {
-        var elementScrollLeft = document.documentElement.scrollLeft;
+        elementScrollLeft = document.documentElement.scrollLeft;
     }
 
     return actualLeft - elementScrollLeft;
@@ -131,10 +132,11 @@ function getElementViewTop(element) {
         current = current.offsetParent;
     }
 
+    let elementScrollTop;
     if (document.compatMode == 'BackCompat') {
-        var elementScrollTop = document.body.scrollTop;
+        elementScrollTop = document.body.scrollTop;
     } else {
-        var elementScrollTop = document.documentElement.scrollTop;
+        elementScrollTop = document.documentElement.scrollTop;
     }
 
     return actualTop - elementScrollTop;

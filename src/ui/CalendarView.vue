@@ -14,9 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import { NCalendar } from 'naive-ui';
+import { NCalendar, useMessage } from 'naive-ui';
 import { ref, toRefs } from 'vue';
-import { useMessage } from 'naive-ui';
 import { moment } from 'obsidian';
 import type { Pomodoro } from '../schemas/spaces';
 import PomodoroListView from './PomodoroListView.vue';

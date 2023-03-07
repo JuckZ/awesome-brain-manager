@@ -1,9 +1,9 @@
 import type { Editor } from 'obsidian';
 import { type App, createApp } from 'vue';
-import type { SettingModel } from 'model/settings';
 import type AwesomeBrainManagerPlugin from '../main';
 import AppVue from '../ui/App.vue';
 import { buildTagRules } from '../render/Tag';
+import type { SettingModel } from 'model/settings';
 import { type ExtApp, Tag } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
 
@@ -16,8 +16,6 @@ export class EditorUtils {
     appViewVueApp: App;
     oldSelection: string;
     currentSelection: string;
-
-    constructor() {}
 
     init(plugin: AwesomeBrainManagerPlugin) {
         this.plugin = plugin;

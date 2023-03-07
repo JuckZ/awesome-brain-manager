@@ -66,12 +66,9 @@ const lightThemeOverrides: GlobalThemeOverrides = {};
 
 const darkThemeOverrides: GlobalThemeOverrides = {};
 
-onMounted(async () => {});
-
 onUpdated(() => {
     LoggerUtil.log('app updated');
 });
-onUnmounted(() => {});
 </script>
 
 <style scoped lang="scss"></style>

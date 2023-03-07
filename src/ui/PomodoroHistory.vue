@@ -54,7 +54,7 @@ import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
 import ClockView from './ClockView.vue';
 import TimeLine from './TimeLine.vue';
-import Title from './Title';
+import TestTitle from './TestTitle';
 import DoughnutChart from './DoughnutChart.vue';
 import LineChart from './LineChart.vue';
 import { useSystemStore, usePomodoroStore } from '../stores';
@@ -91,7 +91,7 @@ watchEffect(() => {
 });
 let H1Title = () => (
     <h1>
-        <Title></Title>
+        <TestTitle></TestTitle>
     </h1>
 );
 

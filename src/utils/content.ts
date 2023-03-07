@@ -1,6 +1,6 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
 import { VueApp, createApp } from 'vue/dist/vue.esm-bundler.js';
-import Title from '../ui/Title';
+import TestTitle from '../ui/TestTitle';
 import LoggerUtil from '../utils/logger';
 
 interface MContent {
@@ -153,7 +153,7 @@ export function insertSvgImage(el: HTMLElement, image: string) {
 
 export function registerVueComponent(vueApp: VueApp) {
     // TODO 扫描并注册某个文件夹下所有的组件
-    vueApp.component('Title', Title);
+    vueApp.component('TestTitle', TestTitle);
 }
 
 export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {

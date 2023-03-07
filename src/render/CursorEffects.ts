@@ -22,8 +22,8 @@ import {
     // An elasticish trail of cursors that will nip to wherever your mouse is
     trailingCursor,
 } from 'cursor-effects';
-import type { SettingModel } from 'model/settings';
 import { randomColor } from '../utils/common';
+import type { SettingModel } from 'model/settings';
 
 const cursorEffects: any[] = [];
 

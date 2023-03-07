@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, onUpdated } from 'vue';
-import { toRefs } from 'vue';
+import { onMounted, onUnmounted, onUpdated, toRefs } from 'vue';
 import LoggerUtil from '../utils/logger';
 
 const props = defineProps<{

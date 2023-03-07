@@ -1,9 +1,9 @@
 // https://github.com/chinchang/code-blast-codemirror
-import type { SettingModel } from 'model/settings';
 import type { Editor } from 'obsidian';
 import party from 'party-js';
 import type { DynamicSourceType } from 'party-js/lib/systems/sources';
 import t from '../i18n';
+import type { SettingModel } from 'model/settings';
 
 let shakeTime = 0,
     shakeTimeMax = 0,

@@ -2,3 +2,5 @@ npm node_modules
 build
 main.js
 lib
+src/utils/db/sqljs
+moment.d.ts
