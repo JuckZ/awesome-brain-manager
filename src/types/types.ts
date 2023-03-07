@@ -31,6 +31,7 @@ export class ExtApp extends App {
         listCommands(): Command[];
     };
     customCss: {
+        getSnippetsFolder(): string;
         getSnippetPath(file: string): string;
         readSnippets(): void;
         setCssEnabledStatus(snippet: string, enabled: boolean): void;

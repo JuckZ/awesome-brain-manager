@@ -149,8 +149,15 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         if (await this.app.vault.adapter.exists(this.snippetPath)) {
             await this.app.vault.adapter.write(this.snippetPath, this.generateCssString());
         } else {
+            const snippetsPath = this.app.customCss.getSnippetsFolder();
+            const pathExist = await this.app.vault.adapter.exists(snippetsPath);
+            if (!pathExist) {
+                this.app.vault.adapter.mkdir(snippetsPath);
+                await this.app.vault.create(this.snippetPath, this.generateCssString());
+            }
             await this.app.vault.create(this.snippetPath, this.generateCssString());
         }
+        this.app.customCss.getSnippetsFolder();
         this.app.customCss.setCssEnabledStatus(customSnippetPath, true);
         this.app.customCss.readSnippets();
     }
