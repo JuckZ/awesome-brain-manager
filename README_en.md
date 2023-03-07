@@ -58,21 +58,25 @@ It's not too long now. Just finish reading.🤣
   <summary><h3> 💻 1.1 Preview </h3></summary>
 
 #### mouse and keystroke effects
+
 <a href="https://www.bilibili.com/video/BV12R4y1q7De/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/特效展示.png" alt="鼠标、按键特效展示" width="49%">
 </a>
 
 #### pomodoro
+
 <a href="https://w11ww.bilibili.com/video/BV1284y1H74R/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/番茄钟示例.png" alt="番茄钟功能展示" width="49%">
 </a>
 
 #### Attach pictures to the article intelligently
+
 <a href="https://www.bilibili.com/video/BV1SM411Y7L9/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/切换banner.png" alt="文档智能配图功能展示" width="49%">
 </a>
 
 #### Display of document direction switch
+
 <a href="ttps://www.bilibili.com/video/BV1ne4y1P7qf/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/文档方向.png" alt="文档方向切换功能展示" width="49%">
 </a>
@@ -160,17 +164,21 @@ It's not too long now. Just finish reading.🤣
 <details open>
   <summary><h2> 🔍 2. How to use </h2></summary>
 
-  ### How to install
-  #### method1: From Plugin Market in Obsidian
-  💜: [Not available now] At present, PR has been submitted to obsidian official, and it can only be launched after a period of review. Now, this plugin cannot be searched in the plugin market
+### How to install
 
-  #### method2: Download Manually
-  🚚: Download the latest release.zip from [Releases](https://github.com/JuckZ/awesome-brain-manager/releases) page，then put the extracted folder `awesome-brain-manager` into your {{obsidian_vault}}/.obsidian/plugins folder.
+#### method1: From Plugin Market in Obsidian
 
-  #### Method3: Using BRAT
-  🚗: Add `JuckZ/awesome-brain-manager` to BRAT.
+💜: [Not available now] At present, PR has been submitted to obsidian official, and it can only be launched after a period of review. Now, this plugin cannot be searched in the plugin market
 
-  > Now you can learn how to use it by [watching videos](https://github.com/JuckZ/awesome-brain-manager/blob/master/README_en.md#--11-preview-), and if needed, I will provide better documentation in the future.
+#### method2: Download Manually
+
+🚚: Download the latest release.zip from [Releases](https://github.com/JuckZ/awesome-brain-manager/releases) page，then put the extracted folder `awesome-brain-manager` into your {{obsidian_vault}}/.obsidian/plugins folder.
+
+#### Method3: Using BRAT
+
+🚗: Add `JuckZ/awesome-brain-manager` to BRAT.
+
+> Now you can learn how to use it by [watching videos](https://github.com/JuckZ/awesome-brain-manager/blob/master/README_en.md#--11-preview-), and if needed, I will provide better documentation in the future.
 
 </details>
 
@@ -236,5 +244,9 @@ OUTDIR="../juckz.github.io/blogs/.obsidian/plugins/awesome-brain-manager" npm ru
 10. For more reference projects, see [package.json](./package.json) file
 
 </details>
+
+## 🎁 Thanks
+
+This project owes a debt of gratitude to [obsidian-rollover-daily-todos](https://github.com/lumoe/obsidian-rollover-daily-todos), [obsidian-admotion](https://github.com/valentine195/obsidian-admonition), [obsidian-reminder](https://github.com/uphy/obsidian-reminder), [makemd](https://github.com/Make-md/makemd), [Blue-topaz-example](https://github.com/PKM-er/Blue-topaz-example) and some other projects for their invaluable contributions, especially project Blue-topaz-example、obsidian-reminder、makemd bring me lots of inspiratio. I have utilized and customized some of their code in this project, and I strongly recommend these projects for their impressive.
 
 <!-- 📌🔥⭐🌟⛳🎯📲🎬🔎📩📬🗂️📆🌏🌄⚡ -->

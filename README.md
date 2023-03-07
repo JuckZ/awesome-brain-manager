@@ -58,21 +58,25 @@ It's not too long now. Just finish reading.🤣
   <summary><h3> 💻 1.1 功能预览 </h3></summary>
 
 #### 鼠标、按键特效展示
+
 <a href="https://www.bilibili.com/video/BV12R4y1q7De/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/特效展示.png" alt="鼠标、按键特效展示" width="200">
 </a>
 
 #### 番茄钟功能展示
+
 <a href="https://w11ww.bilibili.com/video/BV1284y1H74R/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/番茄钟示例.png" alt="番茄钟功能展示" width="200">
 </a>
 
 #### 文档智能配图功能展示
+
 <a href="https://www.bilibili.com/video/BV1SM411Y7L9/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/切换banner.png" alt="文档智能配图功能展示" width="200">
 </a>
 
 #### 文档方向切换功能展示
+
 <a href="ttps://www.bilibili.com/video/BV1ne4y1P7qf/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/文档方向.png" alt="文档方向切换功能展示" width="200">
 </a>
@@ -160,17 +164,21 @@ It's not too long now. Just finish reading.🤣
 <details open>
   <summary><h2> 🔍 2. 如何使用 </h2></summary>
 
-  ### 如何安装
-  #### 方法1：从obsidian的插件市场
-  💜: [暂不可用]目前已经向obsidian官方提交了PR，需要一段时间的审核后才能上线，现在在插件市场搜索不到本插件
+### 如何安装
 
-  #### 方法2：手动下载
-  🚚: 下载[Releases](https://github.com/JuckZ/awesome-brain-manager/releases)界面的最新版release.zip文件，将解压后得到的awesome-brain-manager目录放在您的{{obsidian_vault}}/.obsidian/plugins目录下即可完成安装
+#### 方法 1：从 obsidian 的插件市场
 
-  #### 方法3：使用BRAT插件
-  🚗: 将 `JuckZ/awesome-brain-manager` 加入BRAT.
+💜: [暂不可用]目前已经向 obsidian 官方提交了 PR，需要一段时间的审核后才能上线，现在在插件市场搜索不到本插件
 
-  > 现在你可以通过[浏览视频](https://github.com/JuckZ/awesome-brain-manager#--11-%E5%8A%9F%E8%83%BD%E9%A2%84%E8%A7%88-)的方式了解使用方法，未来需要时，会提供更好的使用文档
+#### 方法 2：手动下载
+
+🚚: 下载[Releases](https://github.com/JuckZ/awesome-brain-manager/releases)界面的最新版 release.zip 文件，将解压后得到的 awesome-brain-manager 目录放在您的{{obsidian_vault}}/.obsidian/plugins 目录下即可完成安装
+
+#### 方法 3：使用 BRAT 插件
+
+🚗: 将 `JuckZ/awesome-brain-manager` 加入 BRAT.
+
+> 现在你可以通过[浏览视频](https://github.com/JuckZ/awesome-brain-manager#--11-%E5%8A%9F%E8%83%BD%E9%A2%84%E8%A7%88-)的方式了解使用方法，未来需要时，会提供更好的使用文档
 
 </details>
 
@@ -236,5 +244,9 @@ OUTDIR="../juckz.github.io/blogs/.obsidian/plugins/awesome-brain-manager" npm ru
 10. 更多参考，请查阅 [package.json](./package.json) 文件
 
 </details>
+
+## 🎁 感谢
+
+[obsidian-rollover-daily-todos](https://github.com/lumoe/obsidian-rollover-daily-todos)、[obsidian-admotion](https://github.com/valentine195/obsidian-admonition)、[obsidian-reminder](https://github.com/uphy/obsidian-reminder)、[makemd](https://github.com/Make-md/makemd)、[Blue-topaz-example](https://github.com/PKM-er/Blue-topaz-example) 等项目让此项目受益匪浅，尤其是 Blue-topaz-example、obsidian-reminder、makemd 项目给我带来了很多灵感，并且部分代码从其中修改或者直接引用，非常感谢他们的开源贡献，也推荐大家去了解和使用它们。
 
 <!-- 📌🔥⭐🌟⛳🎯📲🎬🔎📩📬🗂️📆🌏🌄⚡ -->
