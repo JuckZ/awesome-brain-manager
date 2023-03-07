@@ -83,14 +83,6 @@ export default defineConfig({
                     src: '.hotreload',
                     dest: '',
                 },
-                {
-                    src: 'manifest.json',
-                    dest: '',
-                },
-                {
-                    src: 'versions.json',
-                    dest: '',
-                },
             ],
         }),
         svelte({

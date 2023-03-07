@@ -16,7 +16,8 @@ const config = {
         [
             '@semantic-release/exec',
             {
-                publishCmd: 'cp dest awesome-brain-manager -r && zip release.zip -r awesome-brain-manager',
+                publishCmd:
+                    'cp manifest.json versions.json dest && cp dest awesome-brain-manager -r && zip release.zip -r awesome-brain-manager',
             },
         ],
         [
