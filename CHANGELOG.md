@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.4.0...1.5.0) (2023-03-05)
+
+
+### Features
+
+* 1.pnpm ([70d4b4f](https://github.com/JuckZ/awesome-brain-manager/commit/70d4b4f0261743107e522282cf4131bbdc9ce981))
+
 # [1.4.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.3.5...1.4.0) (2023-03-05)
 
 
