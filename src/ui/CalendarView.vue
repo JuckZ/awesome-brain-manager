@@ -9,14 +9,16 @@
             <template #header="{ year, month }">
                 {{ `${year}-${month}` }}
             </template>
-            <template #default="{ year, month, date }"> <PomodoroListView :time="{ year, month, date }" /></template>
+            <template #default="{ year, month, date }">
+                <PomodoroListView :active-time="activeTime" :time="{ year, month, date }"
+            /></template>
         </NCalendar>
     </div>
 </template>
 
 <script setup lang="ts">
 import { NCalendar } from 'naive-ui';
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { moment } from 'obsidian';
 import PomodoroListView from './PomodoroListView.vue';
 
@@ -24,9 +26,15 @@ const emit = defineEmits(['focus-change']);
 
 const now = moment();
 const timestampNow = ref(now.valueOf());
+const activeTime: Ref<{ year: number; month: number; date: number }> = ref({
+    year: now.year(),
+    month: now.month(),
+    date: now.date(),
+});
 
 const handleUpdateValue = (_: number, { year, month, date }: { year: number; month: number; date: number }) => {
-    emit('focus-change', { year, month, date });
+    activeTime.value = { year, month, date };
+    emit('focus-change', activeTime.value);
     // message.success(`${year}-${month}-${date}`);
 };
 

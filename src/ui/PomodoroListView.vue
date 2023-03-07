@@ -3,11 +3,18 @@
         <span
             v-show="planButNotStart.length !== 0"
             style="position: absolute; transform: translateY(-100%); right: 0"
-            >{{ '📥' }}</span
+            >{{ '📥' + activeTime.date }}</span
         >
-        <n-list id="pomodoroList" :show-divider="false">
+        <n-list
+            :class="{
+                pomodoroList: true,
+                active: activeTime.date === time.date,
+                notActive: activeTime.date !== time.date,
+            }"
+            :show-divider="false"
+        >
             <n-list-item v-for="pomodoro in pomodoroList" :key="pomodoro.timestamp" :style="getRandomStyle()" bordered>
-                <n-ellipsis>
+                <n-ellipsis v-show="activeTime.date !== time.date">
                     {{ pomodoro.task }}
                 </n-ellipsis>
             </n-list-item>
@@ -30,6 +37,7 @@ const planButNotStart = ref([] as Pomodoro[]);
 
 const props = withDefaults(
     defineProps<{
+        activeTime: { year: number; month: number; date: number };
         time: { year: number; month: number; date: number };
     }>(),
     {
@@ -43,7 +51,7 @@ const props = withDefaults(
         },
     },
 );
-const { time } = toRefs(props);
+const { activeTime, time } = toRefs(props);
 watchEffect(() => {
     planButNotStart.value = pomodoroHistory.value.filter(
         item =>
@@ -72,17 +80,31 @@ const getRandomStyle = () => {
 </script>
 
 <style lang="scss">
-#pomodoroList {
-    background-color: none !important;
+.pomodoroList {
+    background-color: transparent !important;
+
     .n-list-item {
         padding: 0;
         margin-top: 2px;
         margin-bottom: 2px;
+        font-size: 80%;
         opacity: 0.5;
-        // 解决子元素超出父元素宽度的问题 https://juejin.cn/post/6974356682574921765
-        .n-list-item__main {
-            width: 0;
-            flex: 1;
+    }
+
+    &.active {
+        .n-list-item {
+            opacity: 1;
+            width: max-content;
+        }
+    }
+
+    &.notActive {
+        .n-list-item {
+            // 解决子元素超出父元素宽度的问题 https://juejin.cn/post/6974356682574921765
+            .n-list-item__main {
+                width: 0;
+                flex: 1;
+            }
         }
     }
 }

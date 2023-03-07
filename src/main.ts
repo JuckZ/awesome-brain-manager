@@ -487,7 +487,12 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         toggleCursorEffects(SETTINGS.cursorEffect.value);
         // 状态栏图标
         const obsidianManagerPomodoroStatusBar = this.addStatusBarItem();
-        obsidianManagerPomodoroStatusBar.createEl('span', { text: '🍅' });
+        obsidianManagerPomodoroStatusBar.createEl('span', {
+            text: '🍅',
+            attr: {
+                style: 'cursor: pointer',
+            },
+        });
         obsidianManagerPomodoroStatusBar.onClickEvent(async evt => {
             this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
             await this.app.workspace.getRightLeaf(true).setViewState({
