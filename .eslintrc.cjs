@@ -30,6 +30,8 @@ module.exports = {
     },
     plugins: ['@typescript-eslint', 'import'],
     rules: {
+        // TODO
+        // 'import/no-unresolve': 'error',
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single', { avoidEscape: true }],
         '@typescript-eslint/no-unused-vars': 0, // Configured in tsconfig instead.
@@ -53,5 +55,21 @@ module.exports = {
                 ignoreDeclarationSort: true,
             },
         ],
+    },
+    settings: {
+        'import/parsers': {
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+                // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
+
+                // Multiple tsconfigs (Useful for monorepos)
+                // use an array of glob patterns
+                project: ['packages/*/tsconfig.json', 'other-packages/*/tsconfig.json'],
+            },
+        },
     },
 };
