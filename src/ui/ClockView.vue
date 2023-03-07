@@ -43,7 +43,7 @@ function updateTime() {
     }
     currentSpend.value = moment().valueOf() - parseInt(pomodoro.lastactive) + parseInt(pomodoro.spend);
     // 转换成毫秒
-    expectedTime.value = parseInt(pomodoro.expectedTime);
+    expectedTime.value = parseFloat(pomodoro.expectedTime);
     const leftTime = moment.duration(expectedTime.value - currentSpend.value, 'milliseconds');
     time.value = moment.utc(leftTime.asMilliseconds()).format('HH:mm:ss');
 }

@@ -18,7 +18,7 @@ class Settings {
     powerMode: SettingModel<string, string>;
     shakeMode: SettingModel<boolean, boolean>;
     toolbar: SettingModel<boolean, boolean>;
-    expectedTime: SettingModel<number, number>;
+    expectedTime: SettingModel<string, string>;
     clickString: SettingModel<string, string>;
     customTag: SettingModel<string, string>;
     debugEnable: SettingModel<boolean, boolean>;
@@ -72,7 +72,7 @@ class Settings {
             .key('expectedTime')
             .name(t.setting.expectedTime.name)
             .desc(t.setting.expectedTime.desc)
-            .number(25)
+            .text('25')
             .build(new RawSerde());
 
         this.clickString = this.settings
@@ -161,7 +161,7 @@ class Settings {
             .desc(
                 'Change value to your ntfy server address, or use the ntfy official address https://ntfy.sh/change_to_your_topic_name, or disable if empty. Notice: Please learn how to use it from official documents to ensure information security!!!',
             )
-            .text('https://ntfy.sh/change_to_your_topic_name')
+            .text('')
             .build(new RawSerde());
 
         this.ntfyToken = this.settings
