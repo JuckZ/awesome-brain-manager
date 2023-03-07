@@ -38,12 +38,12 @@ const { currentPomodoro } = storeToRefs(usePomodoroStore());
 
 function updateTime() {
     const pomodoro = currentPomodoro.value;
-    if (!pomodoro) {
+    if (!pomodoro || pomodoro.status !== 'ing') {
         return;
     }
     currentSpend.value = moment().valueOf() - parseInt(pomodoro.lastactive) + parseInt(pomodoro.spend);
     // 转换成毫秒
-    expectedTime.value = parseInt(pomodoro.expectedTime);
+    expectedTime.value = parseFloat(pomodoro.expectedTime);
     const leftTime = moment.duration(expectedTime.value - currentSpend.value, 'milliseconds');
     time.value = moment.utc(leftTime.asMilliseconds()).format('HH:mm:ss');
 }

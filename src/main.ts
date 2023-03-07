@@ -122,7 +122,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             createTime,
             spend: '0',
             breaknum: '0',
-            expectedTime: (SETTINGS.expectedTime.value * 60 * 1000).toString(),
+            expectedTime: (parseFloat(SETTINGS.expectedTime.value) * 60 * 1000).toString(),
             status: 'todo',
             tags: tagsStr,
         };

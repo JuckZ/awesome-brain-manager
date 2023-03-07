@@ -92,8 +92,10 @@ export class PomodoroReminderModal extends Modal {
 
     onOpen() {
         const { contentEl } = this;
-
-        contentEl.createEl('h2', { text: t.info.done + this.pomodoro.task });
+        contentEl.createEl('h2', { text: t.info.done });
+        contentEl.createEl('div', {
+            text: `✅ ${this.pomodoro.task}`,
+        });
     }
 
     onClose() {
