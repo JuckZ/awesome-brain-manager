@@ -19,51 +19,39 @@ import Replacer from './Replacer';
 import Process from './process/Process';
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
-import { checkInDefaultPath, checkInList, customSnippetPath, pomodoroDB } from './utils/constants';
+import { checkInDefaultPath, checkInList, customSnippetPath } from './utils/constants';
 import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
 import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal';
 import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
 import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
 import { codeEmoji } from './render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
-import LoggerUtil, { initLogger } from './utils/logger';
+import LoggerUtil from './utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
 import { getWeather } from './utils/weather';
 import { getTagsFromTask, getTaskContentFromTask } from './utils/common';
-import {
-    dbResultsToDBTables,
-    deleteFromDB,
-    getDB,
-    initialDBCtx,
-    insertIntoDB,
-    saveDBAndKeepAlive,
-    selectDB,
-    updateDBConditionally,
-} from './utils/db/db';
+import { DBUtil } from './utils/db/db';
 import { insertAfterHandler } from './utils/content';
 import { getLocalRandomImg, searchPicture } from './utils/genBanner';
-import { loadSQL } from './utils/db/sqljs';
-import { PomodoroStatus, initiateDB } from './utils/pomotodo';
+import { PomodoroStatus } from './utils/pomotodo';
 import { AwesomeBrainSettingTab, SETTINGS } from './settings';
 import { PluginDataIO } from './data';
 import { eventTypes } from './types/types';
 import type { ExtApp } from './types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
-import { pomodoroSchema } from './schemas/spaces';
 import type { Pomodoro } from './schemas/spaces';
 import { notifyNtfy } from './api';
 import t from './i18n';
 import './main.scss';
 import { NotifyUtil } from './utils/notify';
-import { EditorUtil } from './utils/editor';
-import { useSystemStore } from '@/stores';
+import { EditorUtil, EditorUtils } from './utils/editor';
+import { usePomodoroStore, useSystemStore } from '@/stores';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
 export default class AwesomeBrainManagerPlugin extends Plugin {
     override app: ExtApp;
     pluginDataIO: PluginDataIO;
-    private pomodoroTarget: Pomodoro | null;
     private pomodoroHistoryView: PomodoroHistoryView | null;
     quickPreviewFunction: (file: TFile, data: string) => any;
     resizeFunction: () => any;
@@ -103,10 +91,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.process = new Process(this);
         this.pluginDataIO = new PluginDataIO(this);
         this.bindFunction();
-        initLogger(SETTINGS.debugEnable);
     }
-
-    saveSpacesDB = debounce(() => saveDBAndKeepAlive(this.spaceDBInstance(), this.spacesDBPath), 1000, true);
 
     bindFunction() {
         this.resizeFunction = this.customizeResize.bind(this);
@@ -121,51 +106,27 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.vaultRenameFunction = this.customizeVaultRename.bind(this);
     }
 
-    async sqlJS() {
-        // LoggerUtil.time("Loading SQlite");
-        const sqljs = await loadSQL();
-        // LoggerUtil.timeEnd("Loading SQlite");
-        return sqljs;
-    }
-
-    pomodoroChange(e: any) {
-        this.refreshPomodoroTarget();
-    }
     openBrowserHandle(e: CustomEvent) {
         this.openBrowser(e.detail.url);
     }
 
-    spaceDBInstance() {
-        return this.spaceDB;
-    }
-
-    async startPomodoro(task: string) {
+    async addPomodoro(task: string) {
         const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const tags: string[] = getTagsFromTask(task);
         const content: string = getTaskContentFromTask(task);
         const tagsStr = tags.join(',');
-        insertIntoDB(this.spaceDB, {
-            pomodoro: {
-                uniques: pomodoroSchema.uniques,
-                cols: pomodoroSchema.cols,
-                rows: [
-                    {
-                        timestamp: new Date().getTime() + '',
-                        task: content,
-                        createTime,
-                        spend: '0',
-                        breaknum: '0',
-                        expectedTime: (SETTINGS.expectedTime.value * 60 * 1000).toString(),
-                        status: 'todo',
-                        tags: tagsStr,
-                    },
-                ],
-            },
-        });
-        saveDBAndKeepAlive(this.spaceDB, this.spacesDBPath);
-        const evt = new CustomEvent(eventTypes.pomodoroChange);
-        window.dispatchEvent(evt);
-        LoggerUtil.log(selectDB(this.spaceDBInstance(), pomodoroDB));
+        const currentPomodoro = {
+            timestamp: new Date().getTime() + '',
+            task: content,
+            start: '',
+            createTime,
+            spend: '0',
+            breaknum: '0',
+            expectedTime: (SETTINGS.expectedTime.value * 60 * 1000).toString(),
+            status: 'todo',
+            tags: tagsStr,
+        };
+        usePomodoroStore().addPomodoro(currentPomodoro as Pomodoro);
     }
 
     get snippetPath() {
@@ -224,7 +185,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 title: 'Notify this to ntfy',
                 icon: 'megaphone',
                 clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    notifyNtfy(this.getCurrentSelection(editor));
+                    notifyNtfy(EditorUtils.getCurrentSelection(editor));
                 },
             },
             {
@@ -234,7 +195,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     const evt = new CustomEvent(eventTypes.calledFunction, {
                         detail: {
                             type: 'OpenAI',
-                            keyword: this.getCurrentSelection(editor),
+                            keyword: EditorUtils.getCurrentSelection(editor),
                         },
                     });
                     window.dispatchEvent(evt);
@@ -244,13 +205,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 title: t.menu.planPomodoro,
                 icon: 'send',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    let task = this.getCurrentSelection(editor);
+                    let task = EditorUtils.getCurrentSelection(editor);
                     task = task.replace('- [x] ', '');
                     task = task.replace('- [ ] ', '').trim();
                     if (!task) {
                         task = t.menu.defaultTask + Date.now();
                     }
-                    this.startPomodoro(task);
+                    this.addPomodoro(task);
                 },
             },
             {
@@ -275,17 +236,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             },
         ];
-    }
-
-    getCurrentSelection(editor: Editor) {
-        const cursorPos = editor.getCursor();
-        let content = editor.getSelection();
-        if (!content) {
-            if (cursorPos) {
-                content = editor.getLine(cursorPos.line);
-            }
-        }
-        return content;
     }
 
     async customizeEditorMenu(menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo): Promise<void> {
@@ -325,6 +275,11 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();
+        LoggerUtil.init(SETTINGS.debugEnable);
+        DBUtil.init(this, () => {
+            usePomodoroStore().loadPomodoroData();
+            this.startPomodoroTask();
+        });
         EditorUtil.init(this);
         NotifyUtil.init(this);
         this.setupUI();
@@ -334,41 +289,20 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
         this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
 
-        this.spacesDBPath = normalizePath(
-            this.app.vault.configDir + '/plugins/awesome-brain-manager/ObsidianManager.mdb',
-        );
-        initialDBCtx(this.app);
-        this.spaceDB = await getDB(await loadSQL(), this.spacesDBPath);
-        const tables = dbResultsToDBTables(
-            this.spaceDBInstance().exec(
-                "SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';",
-            ),
-        );
-        if (tables.length == 0) {
-            initiateDB(this.spaceDBInstance());
-        }
-        this.refreshPomodoroTarget();
         this.app.workspace.onLayoutReady(async () => {
             if (SETTINGS.debugEnable.value) {
                 monkeyPatchConsole(this);
             }
             this.watchVault();
-            this.startPomodoroTask();
         });
-    }
-
-    private async refreshPomodoroTarget() {
-        const pomodoroList = (await selectDB(this.spaceDBInstance(), pomodoroDB)?.rows) || [];
-        this.pomodoroTarget = (pomodoroList.filter(pomodoro => pomodoro.status === 'ing')[0] as Pomodoro) || null;
     }
 
     private startPomodoroTask() {
         // 进来就找到ing任务，如果有，则开始interval任务，倒计时准备弹窗提醒
         // 监听数据库变化事件，若变化，则刷新监听的任务
-        // this.register
         this.registerInterval(
             window.setInterval(() => {
-                const pomodoro = this.pomodoroTarget;
+                const pomodoro = usePomodoroStore().currentPomodoro;
                 if (!pomodoro) {
                     return;
                 }
@@ -385,38 +319,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     }
                     const changed = pomodoroStatus.changeState('done');
                     if (changed) {
-                        this.updatePomodoro(pomodoro);
-                        this.pomodoroTarget = null;
+                        usePomodoroStore().updatePomodoro(pomodoro);
                     } else {
                         LoggerUtil.error('Update failed', pomodoro);
                     }
                 }
             }, 1 * 1000),
         );
-    }
-
-    deletePomodoro(pomodoro: Pomodoro) {
-        deleteFromDB(this.spaceDBInstance(), pomodoroDB, `timestamp = ${pomodoro.timestamp}`);
-        saveDBAndKeepAlive(this.spaceDBInstance(), this.spacesDBPath);
-        const evt = new CustomEvent(eventTypes.pomodoroChange);
-        window.dispatchEvent(evt);
-    }
-
-    updatePomodoro(pomodoro: Pomodoro) {
-        updateDBConditionally(
-            this.spaceDBInstance(),
-            {
-                pomodoro: {
-                    uniques: pomodoroSchema.uniques,
-                    cols: pomodoroSchema.cols,
-                    rows: [pomodoro],
-                },
-            },
-            `timestamp = ${pomodoro.timestamp}`,
-        );
-        saveDBAndKeepAlive(this.spaceDBInstance(), this.spacesDBPath);
-        const evt = new CustomEvent(eventTypes.pomodoroChange);
-        window.dispatchEvent(evt);
     }
 
     private async addACheck(path, filename, time, content) {
@@ -557,7 +466,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     private setupUI() {
-        useSystemStore().updateLanguage(window.localStorage.getItem('language') || 'en')
+        useSystemStore().updateLanguage(window.localStorage.getItem('language') || 'en');
         useSystemStore().updateTheme(document.body.classList.contains('theme-dark') ? 'dark' : 'light');
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
@@ -651,7 +560,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
         });
-        window.addEventListener(eventTypes.pomodoroChange, this.pomodoroChange.bind(this));
         window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
         [
             this.app.workspace.on('click', this.clickFunction),

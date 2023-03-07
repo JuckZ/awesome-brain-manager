@@ -5,6 +5,7 @@
             #="{ year, month, date }"
             :is-date-disabled="isDateDisabled"
             @update:value="handleUpdateValue"
+            @panel-change="handlePanelChange"
         >
             {{ year }}
             <PomodoroListView :pomodoro-list="getPomodoro(year, month, date)" />
@@ -24,13 +25,27 @@ const props = defineProps<{
     allPomodoro: Pomodoro[];
 }>();
 
+const emit = defineEmits(['focus-change']);
+
 const { allPomodoro } = toRefs(props);
 
 const message = useMessage();
-const timestampNow = ref(moment().valueOf())
+const now = moment();
+const timestampNow = ref(now.valueOf());
+const getPomodoro = (year: number, month: number, date: number) => {
+    const theDay = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+    return allPomodoro.value.filter(pomodoro => {
+        return pomodoro.start && pomodoro.start.startsWith(theDay);
+    });
+};
 
 const handleUpdateValue = (_: number, { year, month, date }: { year: number; month: number; date: number }) => {
-    message.success(`${year}-${month}-${date}`);
+    emit('focus-change', { year, month, date });
+    // message.success(`${year}-${month}-${date}`);
+};
+
+const handlePanelChange = ({ year, month }: { year: number; month: number }) => {
+    // message.success(`${year}-${month}`);
 };
 
 const isDateDisabled = (timestamp: number) => {
@@ -38,13 +53,6 @@ const isDateDisabled = (timestamp: number) => {
     //     return true;
     // }
     return false;
-};
-
-const getPomodoro = (year: number, month: number, date: number) => {
-    const theDay = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
-    return allPomodoro.value.filter(pomodoro => {
-        return pomodoro.start.startsWith(theDay);
-    });
 };
 </script>
 

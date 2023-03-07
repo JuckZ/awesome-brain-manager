@@ -3,48 +3,46 @@ import chalk from 'chalk';
 import { ConstantReference } from '../model/ref';
 import type { ReadOnlyReference } from '../model/ref';
 
-chalk.level = 3;
-let debugEnable: ReadOnlyReference<boolean> = new ConstantReference(false);
-
-export const initLogger = (debugEnableVal: ReadOnlyReference<boolean>) => {
-    debugEnable = debugEnableVal;
-};
-
-// TODO 单例模式
-const printer = (args, chalkify) => {
-    if (!debugEnable.value) {
-        return;
-    }
-    if (args.length === 0) throw '::::::error::::: no argument supplied to logger';
-
-    args.forEach(element => {
-        if (typeof element === 'object') {
-            // const {inspect} = require('util') // src: https://stackoverflow.com/a/6157569/10012446
-            console.error(chalkify(inspect(element)));
-        } else {
-            console.error(chalkify(element));
-        }
-    });
-};
-
 class Logger {
+    private debugEnable: ReadOnlyReference<boolean> = new ConstantReference(false);
+
+    printer = (type, args, chalkify) => {
+        if (!this.debugEnable.value) {
+            return;
+        }
+        if (args.length === 0) throw '::::::error::::: no argument supplied to logger';
+
+        args.forEach(element => {
+            if (typeof element === 'object') {
+                // const {inspect} = require('util') // src: https://stackoverflow.com/a/6157569/10012446
+                type === 'error' ? console.error(chalkify(inspect(element))) : console.info(chalkify(inspect(element)));
+            } else {
+                type === 'error' ? console.error(chalkify(element)) : console.info(chalkify(element));
+            }
+        });
+    };
+
+    init(debugEnableVal: ReadOnlyReference<boolean>) {
+        this.debugEnable = debugEnableVal;
+        chalk.level = 3;
+    }
     log(...args: any) {
-        printer(args, chalk.bgCyanBright.blackBright.bold);
+        this.printer('log', args, chalk.bgCyanBright.blackBright.bold);
     }
     dir(...args: any) {
-        printer(args, chalk.bgBlueBright.blackBright.bold);
+        this.printer('dir', args, chalk.bgBlueBright.blackBright.bold);
     }
     info(...args: any) {
-        printer(args, chalk.bgBlueBright.blackBright.bold);
+        this.printer('info', args, chalk.bgBlueBright.blackBright.bold);
     }
     warn(...args: any) {
-        printer(args, chalk.bgYellowBright.blackBright.bold);
+        this.printer('warn', args, chalk.bgYellowBright.blackBright.bold);
     }
     error(...args: any) {
-        printer(args, chalk.bgRedBright.blackBright.bold);
+        this.printer('error', args, chalk.bgRedBright.blackBright.bold);
     }
     debug(...args: any[]) {
-        printer(args, chalk.bgRedBright.blackBright.bold);
+        this.printer('debug', args, chalk.bgRedBright.blackBright.bold);
     }
 }
 
@@ -55,6 +53,4 @@ const LoggerUtil = new Proxy(new Logger(), console);
 
 export default LoggerUtil;
 
-export {
-    LoggerUtil
-};
+export { LoggerUtil };

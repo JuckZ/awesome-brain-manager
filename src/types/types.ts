@@ -2,8 +2,8 @@ import { App, type Command } from 'obsidian';
 
 // TODO namespace?
 export const eventTypes = {
+    dbInited: 'db-inited',
     openBrowser: 'open-browser',
-    pomodoroChange: 'pomodoro-change',
     calledFunction: 'called-function',
 };
 

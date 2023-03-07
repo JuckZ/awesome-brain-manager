@@ -32,6 +32,17 @@ export class EditorUtils {
         this.appViewVueApp.mount(`#${appContainerId}`);
     }
 
+    static getCurrentSelection(editor: Editor) {
+        const cursorPos = editor.getCursor();
+        let content = editor.getSelection();
+        if (!content) {
+            if (cursorPos) {
+                content = editor.getLine(cursorPos.line);
+            }
+        }
+        return content;
+    }
+
     unload() {
         if (this.ele) {
             document.body.removeChild(this.ele);

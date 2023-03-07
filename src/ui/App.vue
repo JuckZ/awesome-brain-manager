@@ -12,6 +12,9 @@
                     <Teleport to="body" disable="false">
                         <Toolbar />
                     </Teleport>
+                    <!-- <Teleport to="#awesome-brain-manager-pomodoro-history-view" disable="false">
+                        <Toolbar />
+                    </Teleport> -->
                 </NNotificationProvider>
             </NSpace>
         </NMessageProvider>

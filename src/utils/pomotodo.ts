@@ -1,16 +1,5 @@
-import type { Database } from 'sql.js';
-import {
-    pomodoroSchema,
-} from '../schemas/spaces';
 import type { Pomodoro } from '../schemas/spaces';
 import LoggerUtil from '../utils/logger';
-import { replaceDB } from './db/db';
-
-export const initiateDB = (db: Database) => {
-    replaceDB(db, {
-        pomodoro: pomodoroSchema,
-    });
-};
 
 export class PomodoroStatus {
     private pomodoro: Pomodoro;

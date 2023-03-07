@@ -3,9 +3,7 @@
         <!-- horizontal -->
         <n-timeline v-if="pomodoroList.length != 0">
             <n-timeline-item
-                v-for="pomodoro in pomodoroList.filter(item =>
-                    item.createTime.startsWith(moment().format('YYYY-MM-DD')),
-                )"
+                v-for="pomodoro in pomodoroList"
                 :key="pomodoro.timestamp"
                 :type="getType(pomodoro.status)"
             >
@@ -59,17 +57,16 @@ import { NDropdown, NEmpty, NIcon, NSpace, NTag, NTimeline, NTimelineItem, useMe
 import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { onUpdated, toRefs } from 'vue';
 import { moment } from 'obsidian';
-import type AwesomeBrainManagerPlugin from '../main';
 import type { Pomodoro } from '../schemas/spaces';
 import { PomodoroStatus } from '../utils/pomotodo';
 import t from '../i18n';
+import { usePomodoroStore } from '../stores';
 
 const props = defineProps<{
     pomodoroList: Pomodoro[];
-    plugin: AwesomeBrainManagerPlugin;
 }>();
 
-const { pomodoroList, plugin } = toRefs(props);
+const { pomodoroList } = toRefs(props);
 const message = useMessage();
 
 const formatDuration = (duration: number) => {
@@ -121,10 +118,10 @@ const handleSelect = (
         }
         const changed = ps.changeState(targetStatus);
         if (changed) {
-            plugin.value.updatePomodoro(pomodoro);
+            usePomodoroStore().updatePomodoro(pomodoro);
         }
     } else {
-        plugin.value.deletePomodoro(pomodoro);
+        usePomodoroStore().deletePomodoro(pomodoro);
     }
 };
 

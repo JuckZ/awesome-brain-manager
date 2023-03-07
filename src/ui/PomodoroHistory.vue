@@ -11,21 +11,21 @@
                 <div id="historyViewContainer">
                     <H1Title></H1Title>
                     <!-- <Title></Title> -->
-                    <OverView :all-pomodoro="history" />
-                    <clock-view :current-pomodoro="currentPomodoro"></clock-view>
-                    <TimeLine :plugin="plugin" :pomodoro-list="history" />
+                    <OverView :all-pomodoro="pomodoroHistory" />
+                    <ClockView></ClockView>
+                    <TimeLine :pomodoro-list="pomodoroTimeLine" />
                     <!-- #BUG https://www.naiveui.com/zh-CN/os-theme/components/grid#layout-shift-disabled.vue -->
                     <n-grid cols="1 1024:2" responsive="self">
                         <n-grid-item>
-                            <DoughnutChart :all-pomodoro="history" />
+                            <DoughnutChart :all-pomodoro="pomodoroHistory" />
                         </n-grid-item>
                         <n-grid-item>
-                            <line-chart :all-pomodoro="history" />
+                            <line-chart :all-pomodoro="pomodoroHistory" />
                         </n-grid-item>
                     </n-grid>
                     <n-grid cols="1" :layout-shift-disabled="true">
                         <n-grid-item span="1">
-                            <CalendarView :all-pomodoro="history" />
+                            <CalendarView :all-pomodoro="pomodoroHistory" @focus-change="focusChangeHandle" />
                         </n-grid-item>
                     </n-grid>
                 </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="tsx">
-import { onMounted, ref, toRefs, onUnmounted, watchEffect, type Ref } from 'vue';
+import { ref, watchEffect, type Ref } from 'vue';
 import {
     darkTheme,
     lightTheme,
@@ -50,7 +50,6 @@ import {
     NGridItem,
     type GlobalThemeOverrides,
 } from 'naive-ui';
-import type { Pomodoro } from '../schemas/spaces';
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
 import ClockView from './ClockView.vue';
@@ -58,14 +57,10 @@ import TimeLine from './TimeLine.vue';
 import Title from './Title';
 import DoughnutChart from './DoughnutChart.vue';
 import LineChart from './LineChart.vue';
-import { pomodoroDB } from '../utils/constants';
-import { selectDB } from '../utils/db/db';
-import type AwesomeBrainManagerPlugin from '../main';
-import { eventTypes } from '../types/types';
-import { useSystemStore } from '../stores';
+import { useSystemStore, usePomodoroStore } from '../stores';
 import { storeToRefs } from 'pinia';
+import { moment } from 'obsidian';
 
-// const darkTheme = createTheme([inputDark, datePickerDark]);
 let theme = ref(darkTheme);
 let locale = ref(zhCN);
 let dateLocale = ref(dateZhCN);
@@ -74,11 +69,11 @@ const lightThemeOverrides: GlobalThemeOverrides = {};
 
 const darkThemeOverrides: GlobalThemeOverrides = {};
 
-const props = defineProps<{
-    plugin: AwesomeBrainManagerPlugin;
-}>();
-
 const { systemState } = storeToRefs(useSystemStore());
+const { pomodoroHistory } = storeToRefs(usePomodoroStore());
+const pomodoroTimeLine = ref(
+    pomodoroHistory.value.filter(item => item.createTime.startsWith(moment().format('YYYY-MM-DD'))),
+);
 
 watchEffect(() => {
     if (systemState.value.theme === 'dark') {
@@ -99,24 +94,12 @@ let H1Title = () => (
         <Title></Title>
     </h1>
 );
-const { plugin } = toRefs(props);
-const history: Ref<Pomodoro[]> = ref([]);
-const currentPomodoro: Ref<Pomodoro | null> = ref(null);
 
-const updateData = async (): Promise<void> => {
-    history.value = ((await selectDB(plugin.value.spaceDBInstance(), pomodoroDB)?.rows) as Pomodoro[]) || [];
-    currentPomodoro.value = history.value.filter(pomodoro => pomodoro.status === 'ing')[0] || null;
+const focusChangeHandle = ({ year, month, date }: { year: number; month: number; date: number }) => {
+    pomodoroTimeLine.value = pomodoroHistory.value.filter(item =>
+        item.createTime.startsWith(`${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`),
+    );
 };
-
-onMounted(async () => {
-    window.removeEventListener(eventTypes.pomodoroChange, updateData, false);
-    updateData();
-    window.addEventListener(eventTypes.pomodoroChange, updateData);
-});
-
-onUnmounted(() => {
-    window.removeEventListener(eventTypes.pomodoroChange, updateData, false);
-});
 </script>
 
 <style scoped lang="scss">
