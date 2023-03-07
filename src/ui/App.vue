@@ -12,6 +12,18 @@
                     <Teleport to="body" disable="false">
                         <Toolbar />
                     </Teleport>
+                    <Teleport to="body" disable="false">
+                        <NModal
+                            v-model:show="showModal"
+                            preset="dialog"
+                            title="确认"
+                            content="你确认?"
+                            positive-text="确认"
+                            negative-text="算了"
+                            @positive-click="submitCallback"
+                            @negative-click="cancelCallback"
+                        />
+                    </Teleport>
                     <!-- <Teleport to="#awesome-brain-manager-pomodoro-history-view" disable="false">
                         <Toolbar />
                     </Teleport> -->
@@ -26,6 +38,7 @@ import {
     type GlobalThemeOverrides,
     NConfigProvider,
     NMessageProvider,
+    NModal,
     NNotificationProvider,
     NSpace,
     darkTheme,
@@ -35,7 +48,7 @@ import {
     lightTheme,
     zhCN,
 } from 'naive-ui';
-import { onMounted, onUnmounted, onUpdated, ref, watchEffect } from 'vue';
+import { onUpdated, ref, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import LoggerUtil from '../utils/logger';
 import { useSystemStore } from '../stores';
@@ -44,6 +57,7 @@ import Toolbar from './Toolbar.vue';
 let theme = ref(darkTheme);
 let locale = ref(zhCN);
 let dateLocale = ref(dateZhCN);
+const showModal = ref(false);
 
 const { systemState } = storeToRefs(useSystemStore());
 
@@ -65,6 +79,14 @@ watchEffect(() => {
 const lightThemeOverrides: GlobalThemeOverrides = {};
 
 const darkThemeOverrides: GlobalThemeOverrides = {};
+
+const submitCallback = () => {
+    console.log('submitCallback');
+};
+
+const cancelCallback = () => {
+    console.log('cancelCallback');
+};
 
 onUpdated(() => {
     LoggerUtil.log('app updated');
