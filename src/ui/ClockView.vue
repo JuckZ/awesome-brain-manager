@@ -38,7 +38,7 @@ const { currentPomodoro } = storeToRefs(usePomodoroStore());
 
 function updateTime() {
     const pomodoro = currentPomodoro.value;
-    if (!pomodoro) {
+    if (!pomodoro || pomodoro.status !== 'ing') {
         return;
     }
     currentSpend.value = moment().valueOf() - parseInt(pomodoro.lastactive) + parseInt(pomodoro.spend);
