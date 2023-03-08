@@ -147,6 +147,7 @@
 		"cursor-effects": "^1.0.8",
 		"emoji-mart": "^5.5.2",
 		"jsonfile": "^6.1.0",
+		"lodash": "^4.17.21",
 		"naive-ui": "^2.34.3",
 		"ora": "^6.1.2",
 		"party-js": "^2.2.0",

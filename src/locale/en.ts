@@ -1,4 +1,12 @@
 export default {
+    __FOR_TEST: {
+        notExist: {
+            child: 'This is child',
+        },
+        exist: {
+            child: 'This is child',
+        },
+    },
     menu: {
         setBannerForCurrent: 'Set Random Banner For Current File',
         setBannerForTheFolder: 'Set random banner for this path',

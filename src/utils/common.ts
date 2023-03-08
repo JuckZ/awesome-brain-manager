@@ -19,3 +19,24 @@ export function getNumberFromStr(str: string) {
     const nums = str.match(/\d+(.\d+)?/g);
     return nums?.map(num => parseFloat(num)) || [];
 }
+
+export function deepCloneObj(source) {
+    // TODO
+    // const target = {};
+    // for (const key in source) {
+    //     if (typeof source[key] === 'object' && source[key] !== null) {
+    //         target[key] = deepClone(source[key]);
+    //     } else {
+    //         target[key] = source[key];
+    //     }
+    // }
+    // return target;
+}
+
+export function deepCloneArr(source) {
+    // TODO
+}
+
+export function deepClone(source) {
+    // TODO
+}

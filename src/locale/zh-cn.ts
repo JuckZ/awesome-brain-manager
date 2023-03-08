@@ -1,4 +1,9 @@
 export default {
+    __FOR_TEST: {
+        exist: {
+            child: '我是中文包',
+        },
+    },
     menu: {
         setBannerForCurrent: '切换当前文件banner图',
         setBannerForTheFolder: '切换当前路径下文件的banner图',
