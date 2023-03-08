@@ -1,3 +1,4 @@
+import { merge } from 'lodash';
 import en from './locale/en';
 import zh from './locale/zh-cn';
 class T {
@@ -13,7 +14,9 @@ class T {
     }
 
     get texts(): typeof this.all.en {
-        return this.all[this.lang];
+        const selectLangPack = this.all[this.lang];
+        const defaultLangPack = this.all['en'];
+        return merge(defaultLangPack, selectLangPack);
     }
 }
 
