@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/JuckZ/awesome-brain-manager/compare/1.7.0...1.7.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* Missing i18n partial translation prevents startup ([94b4cac](https://github.com/JuckZ/awesome-brain-manager/commit/94b4cac2cbdd5cef965e81227beb9055021bc3c8))
+
 # [1.7.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.6.0...1.7.0) (2023-03-07)
 
 
