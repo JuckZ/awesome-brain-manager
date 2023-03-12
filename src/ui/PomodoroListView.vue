@@ -3,9 +3,9 @@
         <span
             v-show="planButNotStart.length !== 0"
             style="position: absolute; transform: translateY(-100%); right: 0"
-            >{{ '📥' + activeTime.date }}</span
+            >{{ '📥' }}</span
         >
-        <n-list
+        <NList
             :class="{
                 pomodoroList: true,
                 active: activeTime.date === time.date,
@@ -13,12 +13,12 @@
             }"
             :show-divider="false"
         >
-            <n-list-item v-for="pomodoro in pomodoroList" :key="pomodoro.timestamp" :style="getRandomStyle()" bordered>
-                <n-ellipsis v-show="activeTime.date !== time.date">
+            <NListItem v-for="pomodoro in pomodoroList" :key="pomodoro.timestamp" :style="getRandomStyle()" bordered>
+                <NEllipsis v-show="activeTime.date !== time.date">
                     {{ pomodoro.task }}
-                </n-ellipsis>
-            </n-list-item>
-        </n-list>
+                </NEllipsis>
+            </NListItem>
+        </NList>
     </div>
 </template>
 

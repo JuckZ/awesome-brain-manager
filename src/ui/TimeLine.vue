@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 10px 5px; max-height: 200px; overflow: auto">
+    <div style="padding: 10px 5px">
         <!-- horizontal -->
         <n-timeline v-if="pomodoroList.length != 0">
             <n-timeline-item
@@ -8,16 +8,29 @@
                 :type="getType(pomodoro.status)"
             >
                 <template #icon>
-                    <n-dropdown
+                    <n-popover
                         trigger="hover"
+                        style="width: max-content; padding: 2px 4px"
                         placement="bottom-start"
-                        :options="getOptions(pomodoro.status)"
-                        @select="handleSelect($event, pomodoro)"
+                        :to="targetNode"
                     >
-                        <n-icon size="20">
-                            <radio-button-off-outline />
-                        </n-icon>
-                    </n-dropdown>
+                        <template #trigger>
+                            <n-icon size="20" @mouseenter="enterHandler">
+                                <radio-button-off-outline />
+                            </n-icon>
+                        </template>
+                        <div style="cursor: pointer">
+                            <div
+                                v-for="option in getOptions(pomodoro.status)"
+                                v-show="option.show"
+                                :key="option.key"
+                                class="option"
+                                @click="handleSelect(option.key as any, pomodoro)"
+                            >
+                                {{ option.label }}
+                            </div>
+                        </div>
+                    </n-popover>
                 </template>
                 <template #header>
                     <span v-if="pomodoro.start"> {{ moment(pomodoro.start).format('HH:mm') }}</span>
@@ -53,9 +66,9 @@
 </template>
 
 <script setup lang="ts">
-import { NDropdown, NEmpty, NIcon, NSpace, NTag, NTimeline, NTimelineItem, useMessage } from 'naive-ui';
+import { NEmpty, NIcon, NPopover, NSpace, NTag, NTimeline, NTimelineItem, useMessage } from 'naive-ui';
 import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
-import { onUpdated, ref, toRefs, watchEffect } from 'vue';
+import { Ref, onUpdated, ref, toRefs, watchEffect } from 'vue';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
 import type { Pomodoro } from '../schemas/spaces';
@@ -65,6 +78,7 @@ import { usePomodoroStore } from '../stores';
 const { pomodoroHistory } = storeToRefs(usePomodoroStore());
 
 const pomodoroList = ref([] as Pomodoro[]);
+const targetNode: Ref<string | HTMLElement | false> = ref(false);
 
 const props = withDefaults(
     defineProps<{
@@ -84,7 +98,9 @@ const props = withDefaults(
 
 const { time } = toRefs(props);
 const message = useMessage();
-
+const enterHandler = (e: MouseEvent) => {
+    targetNode.value = e.composedPath()[3] as HTMLElement;
+};
 watchEffect(() => {
     pomodoroList.value = pomodoroHistory.value.filter(item =>
         item.createTime.startsWith(
@@ -126,6 +142,7 @@ const getOptions = currentStatus => {
         {
             label: t.info.deleteTask,
             key: 'deleted',
+            show: true,
         },
     ];
 };
@@ -167,4 +184,16 @@ onUpdated(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div.option {
+    padding: 5px;
+    // border-collapse: collapse;
+    border-top: 1.4px solid rgb(243, 243, 245);
+    &:hover {
+        background: rgb(243, 243, 245);
+    }
+    &:first-of-type {
+        border-top: none;
+    }
+}
+</style>
