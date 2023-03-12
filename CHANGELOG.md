@@ -1,3 +1,18 @@
+# [1.8.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.7.1...1.8.0) (2023-03-12)
+
+
+### Bug Fixes
+
+* 1.inbox ([d740743](https://github.com/JuckZ/awesome-brain-manager/commit/d740743c8cad9de5af6f843a39d6fe7754c88873))
+* 1.naiveUI组件在electron多窗口模式/沙盒模式下无法正常定位 ([b7a0aaf](https://github.com/JuckZ/awesome-brain-manager/commit/b7a0aaf98150bdaa569b3157fb600022cee8aa84))
+* callout style on small screen ([bf77e79](https://github.com/JuckZ/awesome-brain-manager/commit/bf77e794f5d5d7cd8b5549fa4163aa80d58c9c4a))
+* 统一图标 ([6be8e83](https://github.com/JuckZ/awesome-brain-manager/commit/6be8e83cd82deb500ac5957cb59333d152401aa6))
+
+
+### Features
+
+* merge ([3f33a16](https://github.com/JuckZ/awesome-brain-manager/commit/3f33a16a594f26bf470afd637a8dcd975c936355))
+
 ## [1.7.1](https://github.com/JuckZ/awesome-brain-manager/compare/1.7.0...1.7.1) (2023-03-08)
 
 
