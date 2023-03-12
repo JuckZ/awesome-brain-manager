@@ -1,3 +1,43 @@
+## [1.7.1](https://github.com/JuckZ/awesome-brain-manager/compare/1.7.0...1.7.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* Missing i18n partial translation prevents startup ([94b4cac](https://github.com/JuckZ/awesome-brain-manager/commit/94b4cac2cbdd5cef965e81227beb9055021bc3c8))
+
+# [1.7.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.6.0...1.7.0) (2023-03-07)
+
+
+### Bug Fixes
+
+* 暂停或者取消任务时应该暂停时钟 ([f14c970](https://github.com/JuckZ/awesome-brain-manager/commit/f14c9705dbd2de9dd53061bae023b8386b8172a7))
+
+
+### Features
+
+* 1.支持类似0.5这样的浮点数番茄钟时长 2. ([3cc8daf](https://github.com/JuckZ/awesome-brain-manager/commit/3cc8daf712849a5b1c522df42e96662a600903a2))
+
+# [1.6.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.5.0...1.6.0) (2023-03-07)
+
+
+### Bug Fixes
+
+* 1.mkdir if no exists ([9e77f0a](https://github.com/JuckZ/awesome-brain-manager/commit/9e77f0a1566e1b78ef0755b7e5fab234d587e5fe))
+* 1.toolbar position on mobile ([c3343f1](https://github.com/JuckZ/awesome-brain-manager/commit/c3343f1cb5b6a3d666052a2ff6cbcb0611bced0d))
+* 1.toolbar style ([d2ed602](https://github.com/JuckZ/awesome-brain-manager/commit/d2ed60242ca42ed9e7249f9aed94643ed1a9b81c))
+* 1.toolbar trigger logic ([39542a2](https://github.com/JuckZ/awesome-brain-manager/commit/39542a27cbc0f8ef0ed4aa2cee7e422d5326004d))
+* some bugs ([b9867da](https://github.com/JuckZ/awesome-brain-manager/commit/b9867da0cf4283a7ff3d57ee9b042cec4cf21491))
+
+
+### Features
+
+* 1.add App Container ([a0d15c2](https://github.com/JuckZ/awesome-brain-manager/commit/a0d15c28ffe08b9b5fe542980cf23c92e4335a94))
+* 1.db utils refactor 2.pomodoro refactor 3.timeline follows calendar ([70f66a5](https://github.com/JuckZ/awesome-brain-manager/commit/70f66a53470e59c9cb7913fede9f0d53941fda09))
+* 1.system native notification support 2.ntfy notification support ([0ec0488](https://github.com/JuckZ/awesome-brain-manager/commit/0ec04882788b137f3a997240befda078d6593cf5))
+* 1.weather api ([8c039fd](https://github.com/JuckZ/awesome-brain-manager/commit/8c039fd455054423b5090672220d0e2f0e857dcd))
+* 1.优化当前聚焦日期的list展示 ([21110a0](https://github.com/JuckZ/awesome-brain-manager/commit/21110a051f6cfbb230bd273417b7ba6bafd55c4b))
+* 1.限制点击出现文字的生效范围 2.监听主题/语言变化，番茄钟主题/语言跟随 ([6f31104](https://github.com/JuckZ/awesome-brain-manager/commit/6f311047b1322d4e17a8840badbfdd530141fa5c))
+
 # [1.5.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.4.0...1.5.0) (2023-03-05)
 
 
