@@ -168,7 +168,7 @@ It's not too long now. Just finish reading.🤣
 
 #### method1: From Plugin Market in Obsidian
 
-💜: [Not available now] At present, PR has been submitted to obsidian official, and it can only be launched after a period of review. Now, this plugin cannot be searched in the plugin market
+💜: Search `awesome manager brain` in the plugin market, install it and enable it.
 
 #### method2: Download Manually
 
