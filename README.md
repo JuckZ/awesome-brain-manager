@@ -168,7 +168,7 @@ It's not too long now. Just finish reading.🤣
 
 #### 方法 1：从 obsidian 的插件市场
 
-💜: [暂不可用]目前已经向 obsidian 官方提交了 PR，需要一段时间的审核后才能上线，现在在插件市场搜索不到本插件
+💜: 在插件市场搜索 `awesome brain manager` 关键词，点击安装并启用即可
 
 #### 方法 2：手动下载
 
