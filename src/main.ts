@@ -226,7 +226,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 icon: 'alarm-clock',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-                    await this.app.workspace.getLeaf(true).setViewState({
+                    await this.app.workspace.getRightLeaf(false).setViewState({
                         type: POMODORO_HISTORY_VIEW,
                         active: true,
                     });
@@ -502,7 +502,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         obsidianManagerPomodoroStatusBar.onClickEvent(async evt => {
             this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-            await this.app.workspace.getRightLeaf(true).setViewState({
+            await this.app.workspace.getRightLeaf(false).setViewState({
                 type: POMODORO_HISTORY_VIEW,
                 active: true,
             });
