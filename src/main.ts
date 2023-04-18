@@ -302,7 +302,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         NotifyUtil.init(this);
         this.setupUI();
         this.setupCommands();
-        MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
+        if (SETTINGS.enableTwemoji.value) {
+            MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
+        }
         this.registerMarkdownPostProcessor(codeEmoji);
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
         this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);

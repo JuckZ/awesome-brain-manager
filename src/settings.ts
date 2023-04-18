@@ -28,6 +28,7 @@ class Settings {
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
     version: SettingModel<string, string>;
+    enableTwemoji: SettingModel<boolean, boolean>;
 
     constructor() {
         this.cursorEffectBuilder = this.settings
@@ -120,6 +121,14 @@ class Settings {
             .toggle(false)
             .build(new RawSerde());
 
+        this.enableTwemoji = this.settings
+            .newSettingBuilder()
+            .key('enableTwemoji')
+            .name(t.setting.enableTwemoji.name)
+            .desc(t.setting.enableTwemoji.desc)
+            .toggle(false)
+            .build(new RawSerde());
+
         this.debugEnable = this.settings
             .newSettingBuilder()
             .key('debugEnable')
@@ -187,7 +196,7 @@ class Settings {
 
         this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
 
-        this.settings.newGroup(t.setting.title.toolbar).addSettings(this.toolbar);
+        this.settings.newGroup(t.setting.title.tools).addSettings(this.toolbar, this.enableTwemoji);
 
         this.settings
             .newGroup('Notification')
