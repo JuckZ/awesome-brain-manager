@@ -19,6 +19,7 @@ export default {
         'remove-check-in': 'Remove Habit Check In',
         'query-openai': 'Query openAI',
         'open-emoji-picker': 'Open emoji picker',
+        'cut-line': 'Cut current line',
     },
     setting: {
         cursorEffect: {
@@ -41,10 +42,14 @@ export default {
             name: 'Toolbar',
             desc: 'a toolbar',
         },
+        enableTwemoji: {
+            name: 'Enable Twemoji',
+            desc: 'Enable Twemoji',
+        },
         title: {
             effects: 'Beautiful Effects',
             pomodoro: 'Pomodoro(beta feature)',
-            toolbar: 'Toolbar',
+            tools: 'Tool',
         },
     },
     info: {

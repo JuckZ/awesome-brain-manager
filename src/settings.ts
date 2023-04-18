@@ -27,6 +27,8 @@ class Settings {
     noticeAudio: SettingModel<string, string>;
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
+    version: SettingModel<string, string>;
+    enableTwemoji: SettingModel<boolean, boolean>;
 
     constructor() {
         this.cursorEffectBuilder = this.settings
@@ -119,6 +121,14 @@ class Settings {
             .toggle(false)
             .build(new RawSerde());
 
+        this.enableTwemoji = this.settings
+            .newSettingBuilder()
+            .key('enableTwemoji')
+            .name(t.setting.enableTwemoji.name)
+            .desc(t.setting.enableTwemoji.desc)
+            .toggle(false)
+            .build(new RawSerde());
+
         this.debugEnable = this.settings
             .newSettingBuilder()
             .key('debugEnable')
@@ -172,18 +182,26 @@ class Settings {
             .text('')
             .build(new RawSerde());
 
+        this.version = this.settings
+            .newSettingBuilder()
+            .key('version')
+            .name('last version')
+            .desc('record last version, do not change it!')
+            .text('1.8.0')
+            .build(new RawSerde());
+
         this.settings
             .newGroup(t.setting.title.effects)
             .addSettings(this.cursorEffect, this.clickString, this.customTag, this.powerMode, this.shakeMode);
 
         this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
 
-        this.settings.newGroup(t.setting.title.toolbar).addSettings(this.toolbar);
+        this.settings.newGroup(t.setting.title.tools).addSettings(this.toolbar, this.enableTwemoji);
 
         this.settings
             .newGroup('Notification')
             .addSettings(this.systemNoticeEnable, this.noticeAudio, this.ntfyServerHost, this.ntfyToken);
-        this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable);
+        this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }
 
     public forEach(consumer: (setting: SettingModel<any, any>) => void) {

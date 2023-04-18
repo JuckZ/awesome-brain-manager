@@ -11,10 +11,12 @@ export class PomodoroHistoryView extends ItemView {
     vueapp: VueApp;
     plugin: AwesomeBrainManagerPlugin;
     hoverPopover: HoverPopover | null;
+    mounted: boolean;
 
     constructor(leaf: WorkspaceLeaf, plugin: AwesomeBrainManagerPlugin) {
         super(leaf);
         this.plugin = plugin;
+        this.mounted = false;
     }
 
     getViewType() {
@@ -45,13 +47,15 @@ export class PomodoroHistoryView extends ItemView {
                 el.onNodeInserted(() => {
                     this.vueapp = createApp(PomodoroHistory);
                     this.vueapp.mount(el);
+                    this.mounted = true;
                 });
             },
         );
     }
 
     async onClose() {
-        // Nothing to clean up.
-        this.vueapp.unmount();
+        if (this.mounted) {
+            this.vueapp.unmount();
+        }
     }
 }

@@ -1,5 +1,8 @@
 export default {
     __FOR_TEST: {
+        existExt: {
+            child: '我是中文包',
+        },
         exist: {
             child: '我是中文包',
         },
@@ -16,6 +19,7 @@ export default {
         'remove-check-in': '移除习惯打卡',
         'query-openai': '询问OpenAI',
         'open-emoji-picker': '输入表情',
+        'cut-line': '剪切当前行',
     },
     setting: {
         cursorEffect: {
@@ -34,9 +38,18 @@ export default {
             name: '番茄钟时间',
             desc: '你期望一个番茄钟多少分钟？',
         },
+        toolbar: {
+            name: '工具栏',
+            desc: '一个工具栏',
+        },
+        enableTwemoji: {
+            name: '开启Twemoji',
+            desc: '开启Twemoji',
+        },
         title: {
             effects: '鼠标、按键特效',
             pomodoro: '番茄钟(beta version)',
+            tools: '工具',
         },
     },
     info: {
@@ -63,6 +76,8 @@ export default {
         },
         Pomodoro: '番茄钟',
         'Awesome Brain Manager': 'Awesome Brain Manager',
+        Chat: '聊天',
+        Browser: '浏览器',
         unknown: 'unknown',
         ltr: 'LTR',
         trl: 'RTL',

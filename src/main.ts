@@ -46,6 +46,7 @@ import './main.scss';
 import { NotifyUtil } from './utils/notify';
 import { EditorUtil, EditorUtils } from './utils/editor';
 import { usePomodoroStore, useSystemStore } from '@/stores';
+import { UpdateModal } from '@/ui/modal/UpdateModal';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -226,7 +227,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 icon: 'alarm-clock',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-                    await this.app.workspace.getLeaf(true).setViewState({
+                    await this.app.workspace.getRightLeaf(false).setViewState({
                         type: POMODORO_HISTORY_VIEW,
                         active: true,
                     });
@@ -301,7 +302,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         NotifyUtil.init(this);
         this.setupUI();
         this.setupCommands();
-        MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
+        if (SETTINGS.enableTwemoji.value) {
+            MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
+        }
         this.registerMarkdownPostProcessor(codeEmoji);
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
         this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
@@ -312,6 +315,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             }
             this.watchVault();
         });
+        await this.migrate();
+        this.announceUpdate();
     }
 
     private startPomodoroTask() {
@@ -340,6 +345,17 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     } else {
                         LoggerUtil.error('Update failed', pomodoro);
                     }
+                }
+                if (pomodoroStatus.getState() === 'ing') {
+                    const statusBar = document.querySelector('#obsidian-manager-pomodoro-status-bar');
+                    statusBar?.setAttr('title', pomodoro.task);
+                    // TODO 控制titlebar的宽度，使用省略号
+                    const remainTime = moment.duration(pomodoroStatus.getRemainTime(), 'milliseconds');
+                    statusBar?.setText(
+                        `🍅 ${pomodoroStatus.getPomodoro().task} ${moment
+                            .utc(remainTime.asMilliseconds())
+                            .format('HH:mm:ss')}`,
+                    );
                 }
             }, 1 * 1000),
         );
@@ -420,6 +436,17 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     private setupCommands() {
         this.addCommand({
+            id: 'cut-line',
+            icon: 'scissors',
+            name: t.command['cut-line'],
+            callback: () => {
+                const editor = this.app.workspace.activeEditor?.editor;
+                if (editor) {
+                    EditorUtils.cutLine(editor);
+                }
+            },
+        });
+        this.addCommand({
             id: 'check-in',
             name: t.command['check-in'],
             callback: () => {
@@ -497,12 +524,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         obsidianManagerPomodoroStatusBar.createEl('span', {
             text: '🍅',
             attr: {
+                id: 'obsidian-manager-pomodoro-status-bar',
                 style: 'cursor: pointer',
             },
         });
         obsidianManagerPomodoroStatusBar.onClickEvent(async evt => {
             this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-            await this.app.workspace.getRightLeaf(true).setViewState({
+            await this.app.workspace.getRightLeaf(false).setViewState({
                 type: POMODORO_HISTORY_VIEW,
                 active: true,
             });
@@ -597,6 +625,22 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         ].forEach(eventRef => {
             this.registerEvent(eventRef);
         });
+    }
+
+    // 版本迁移(为后续改造番茄钟数据结构做准备)
+    private migrate() {
+        return false;
+    }
+
+    private announceUpdate() {
+        // TODO 优化
+        const currentVersion = this.manifest.version;
+        const knownVersion = SETTINGS.version.value;
+        if (currentVersion === knownVersion) return;
+        SETTINGS.version.rawValue.value = currentVersion;
+        this.pluginDataIO.save();
+        const updateModal = new UpdateModal(knownVersion);
+        updateModal.open();
     }
 
     override async onunload(): Promise<void> {
