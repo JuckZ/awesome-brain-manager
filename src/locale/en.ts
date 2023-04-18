@@ -42,10 +42,14 @@ export default {
             name: 'Toolbar',
             desc: 'a toolbar',
         },
+        enableTwemoji: {
+            name: 'Enable Twemoji',
+            desc: 'Enable Twemoji',
+        },
         title: {
             effects: 'Beautiful Effects',
             pomodoro: 'Pomodoro(beta feature)',
-            toolbar: 'Toolbar',
+            tools: 'Tool',
         },
     },
     info: {
