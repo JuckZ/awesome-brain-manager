@@ -1,6 +1,6 @@
 {
     "name": "awesome-brain-manager",
-    "version": "1.8.0",
+    "version": "1.9.0",
     "description": "A plugin that tries to solve all the trivial problems most people usually encountered in obsidian.",
     "exports": "./main.js",
     "engines": {
