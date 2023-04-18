@@ -46,6 +46,7 @@ import './main.scss';
 import { NotifyUtil } from './utils/notify';
 import { EditorUtil, EditorUtils } from './utils/editor';
 import { usePomodoroStore, useSystemStore } from '@/stores';
+import { UpdateModal } from '@/ui/modal/UpdateModal';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -312,6 +313,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             }
             this.watchVault();
         });
+        await this.migrate();
+        this.announceUpdate();
     }
 
     private startPomodoroTask() {
@@ -597,6 +600,22 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         ].forEach(eventRef => {
             this.registerEvent(eventRef);
         });
+    }
+
+    // 版本迁移(为后续改造番茄钟数据结构做准备)
+    private migrate() {
+        return false;
+    }
+
+    private announceUpdate() {
+        // TODO 优化
+        const currentVersion = this.manifest.version;
+        const knownVersion = SETTINGS.version.value;
+        if (currentVersion === knownVersion) return;
+        SETTINGS.version.rawValue.value = currentVersion;
+        this.pluginDataIO.save();
+        const updateModal = new UpdateModal(knownVersion);
+        updateModal.open();
     }
 
     override async onunload(): Promise<void> {

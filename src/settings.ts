@@ -27,6 +27,7 @@ class Settings {
     noticeAudio: SettingModel<string, string>;
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
+    version: SettingModel<string, string>;
 
     constructor() {
         this.cursorEffectBuilder = this.settings
@@ -172,6 +173,14 @@ class Settings {
             .text('')
             .build(new RawSerde());
 
+        this.version = this.settings
+            .newSettingBuilder()
+            .key('version')
+            .name('last version')
+            .desc('record last version, do not change it!')
+            .text('1.8.0')
+            .build(new RawSerde());
+
         this.settings
             .newGroup(t.setting.title.effects)
             .addSettings(this.cursorEffect, this.clickString, this.customTag, this.powerMode, this.shakeMode);
@@ -183,7 +192,7 @@ class Settings {
         this.settings
             .newGroup('Notification')
             .addSettings(this.systemNoticeEnable, this.noticeAudio, this.ntfyServerHost, this.ntfyToken);
-        this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable);
+        this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }
 
     public forEach(consumer: (setting: SettingModel<any, any>) => void) {
