@@ -16,6 +16,7 @@ export default {
         'remove-check-in': '移除习惯打卡',
         'query-openai': '询问OpenAI',
         'open-emoji-picker': '输入表情',
+        'cut-line': '剪切当前行',
     },
     setting: {
         cursorEffect: {

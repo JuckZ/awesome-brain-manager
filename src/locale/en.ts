@@ -19,6 +19,7 @@ export default {
         'remove-check-in': 'Remove Habit Check In',
         'query-openai': 'Query openAI',
         'open-emoji-picker': 'Open emoji picker',
+        'cut-line': 'Cut current line',
     },
     setting: {
         cursorEffect: {

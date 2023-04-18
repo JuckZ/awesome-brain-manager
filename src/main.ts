@@ -423,6 +423,17 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     private setupCommands() {
         this.addCommand({
+            id: 'cut-line',
+            icon: 'scissors',
+            name: t.command['cut-line'],
+            callback: () => {
+                const editor = this.app.workspace.activeEditor?.editor;
+                if (editor) {
+                    EditorUtils.cutLine(editor);
+                }
+            },
+        });
+        this.addCommand({
             id: 'check-in',
             name: t.command['check-in'],
             callback: () => {

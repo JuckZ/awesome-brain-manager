@@ -1,4 +1,4 @@
-import type { Editor } from 'obsidian';
+import { type Editor } from 'obsidian';
 import { type App, createApp } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import AppVue from '../ui/App.vue';
@@ -85,6 +85,20 @@ export class EditorUtils {
         });
         this.plugin.updateSnippet();
     };
+
+    static cutLine(editor: Editor) {
+        const cursorPos = editor.getCursor();
+        const line = editor.getLine(cursorPos.line);
+        editor.replaceRange('', { line: cursorPos.line, ch: 0 }, { line: cursorPos.line, ch: line.length });
+        navigator.clipboard.writeText(line).then(
+            () => {
+                console.log('Line cut and copied: ' + line);
+            },
+            err => {
+                console.error('Failed to copy text: ', err);
+            },
+        );
+    }
 }
 
 export const EditorUtil = new EditorUtils();
