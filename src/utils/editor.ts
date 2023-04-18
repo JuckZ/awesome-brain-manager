@@ -6,6 +6,7 @@ import { buildTagRules } from '../render/Tag';
 import type { SettingModel } from 'model/settings';
 import { type ExtApp, Tag } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
+import LoggerUtil from '@/utils/logger';
 
 export const appContainerId = 'app-container';
 export class EditorUtils {
@@ -92,10 +93,10 @@ export class EditorUtils {
         editor.replaceRange('', { line: cursorPos.line, ch: 0 }, { line: cursorPos.line, ch: line.length });
         navigator.clipboard.writeText(line).then(
             () => {
-                console.log('Line cut and copied: ' + line);
+                LoggerUtil.log('Line cut and copied: ' + line);
             },
             err => {
-                console.error('Failed to copy text: ', err);
+                LoggerUtil.error('Failed to copy text: ', err);
             },
         );
     }
