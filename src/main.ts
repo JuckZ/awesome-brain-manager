@@ -346,6 +346,17 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                         LoggerUtil.error('Update failed', pomodoro);
                     }
                 }
+                if (pomodoroStatus.getState() === 'ing') {
+                    const statusBar = document.querySelector('#obsidian-manager-pomodoro-status-bar');
+                    statusBar?.setAttr('title', pomodoro.task);
+                    // TODO 控制titlebar的宽度，使用省略号
+                    const remainTime = moment.duration(pomodoroStatus.getRemainTime(), 'milliseconds');
+                    statusBar?.setText(
+                        `🍅 ${pomodoroStatus.getPomodoro().task} ${moment
+                            .utc(remainTime.asMilliseconds())
+                            .format('HH:mm:ss')}`,
+                    );
+                }
             }, 1 * 1000),
         );
     }
@@ -513,6 +524,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         obsidianManagerPomodoroStatusBar.createEl('span', {
             text: '🍅',
             attr: {
+                id: 'obsidian-manager-pomodoro-status-bar',
                 style: 'cursor: pointer',
             },
         });

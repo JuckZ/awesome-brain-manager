@@ -31,6 +31,12 @@ export class PomodoroStatus {
         return spend;
     }
 
+    getRemainTime() {
+        const realSpend = this.getRealSpend();
+        const expectedTime = parseInt(this.pomodoro.expectedTime);
+        return expectedTime - realSpend;
+    }
+
     setSpend() {
         this.pomodoro.spend = this.getRealSpend().toString();
     }
