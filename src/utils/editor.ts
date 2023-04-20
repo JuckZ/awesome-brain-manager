@@ -42,6 +42,12 @@ export class EditorUtils {
         return content;
     }
 
+    static replaceCurrentSelection(editor: Editor, targetText: string) {
+        const cursorPos = editor.getCursor();
+        const line = editor.getLine(cursorPos.line);
+        editor.replaceRange(targetText, { line: cursorPos.line, ch: 0 }, { line: cursorPos.line, ch: line.length });
+    }
+
     unload() {
         if (this.ele) {
             document.body.removeChild(this.ele);

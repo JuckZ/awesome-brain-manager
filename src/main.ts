@@ -47,6 +47,7 @@ import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
+import { generateMarkdownTable } from '@/utils/table';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -101,6 +102,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.editorChangeFunction = this.customizeEditorChange.bind(this);
         this.editorPasteFunction = this.customizeEditorPaste.bind(this);
         this.fileMenuFunction = this.customizeFileMenu.bind(this);
+        this.codemirrorFunction = this.customizeCodeMirror.bind(this);
         this.vaultCreateFunction = this.customizeVaultCreate.bind(this);
         this.vaultModifyFunction = this.customizeVaultModify.bind(this);
         this.vaultDeleteFunction = this.customizeVaultDelete.bind(this);
@@ -242,6 +244,10 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     new ImageOriginModal(this.app, this, file).open();
                 });
         });
+    }
+
+    async customizeCodeMirror(cm: CodeMirror.Editor, view: MarkdownView): Promise<void> {
+        // LoggerUtil.log('');
     }
 
     async customizeVaultCreate(file: TAbstractFile): Promise<void> {
@@ -570,6 +576,25 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         media.addEventListener('change', callback);
         this.register(() => media.removeEventListener('change', callback));
         this.register(() => mutationObserver.disconnect());
+        window.onkeydown = event => {
+            if (event.key === 'Tab') {
+                const editor = this.app.workspace.activeEditor?.editor as Editor;
+                if (editor) {
+                    let triggerText = EditorUtils.getCurrentSelection(editor);
+                    triggerText = triggerText.trim();
+                    if (triggerText === 't') {
+                        const targetText = '- [ ] ';
+                        EditorUtils.replaceCurrentSelection(editor, targetText);
+                    }
+                    const tableConfig = triggerText.match(/^t(\d+)\*(\d+)/);
+                    if (tableConfig) {
+                        const targetText = generateMarkdownTable(tableConfig[1], tableConfig[2]);
+                        EditorUtils.replaceCurrentSelection(editor, targetText);
+                    }
+                }
+                event.preventDefault();
+            }
+        };
         // window.addEventListener('languagechange', () => {
         //     console.log('languagechange event detected!');
         // });
@@ -581,6 +606,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
         [
+            this.app.workspace.on('codemirror', this.codemirrorFunction),
             this.app.workspace.on('click', this.clickFunction),
             this.app.workspace.on('resize', this.resizeFunction),
             this.app.workspace.on('editor-change', this.editorChangeFunction),
