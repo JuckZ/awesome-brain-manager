@@ -202,8 +202,8 @@ devDependencies:
     specifier: ^4.1.5
     version: 4.1.5
   obsidian:
-    specifier: ^1.1.1
-    version: 1.1.1(@codemirror/state@6.2.0)(@codemirror/view@6.9.1)
+    specifier: ^1.2.3
+    version: 1.2.3(@codemirror/state@6.2.0)(@codemirror/view@6.9.1)
   plantuml-encoder:
     specifier: ^1.4.0
     version: 1.4.0
@@ -6363,8 +6363,8 @@ packages:
       es-abstract: 1.21.1
     dev: true
 
-  /obsidian@1.1.1(@codemirror/state@6.2.0)(@codemirror/view@6.9.1):
-    resolution: {integrity: sha512-GcxhsHNkPEkwHEjeyitfYNBcQuYGeAHFs1pEpZIv0CnzSfui8p8bPLm2YKLgcg20B764770B1sYGtxCvk9ptxg==}
+  /obsidian@1.2.3(@codemirror/state@6.2.0)(@codemirror/view@6.9.1):
+    resolution: {integrity: sha512-v0RIu/M6kPCbamkIpH1L2wHG0W79qK0GYaPCbBzR3Rb08glbPSStPPRcd3ZVV/c547AEwLIbi8XjNO+HlFftnA==}
     peerDependencies:
       '@codemirror/state': ^6.0.0
       '@codemirror/view': ^6.0.0
