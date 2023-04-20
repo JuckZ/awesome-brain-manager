@@ -94,7 +94,7 @@ export default {
         totalTime: 'Total time',
         noTimeLine: 'No timeline content',
         startTask: '🚀 Start',
-        repeatTask: '🚀 Repeat',
+        repeatTask: '🔁 Repeat',
         stopTask: '⏸️ Stop',
         finishTask: '✅ Finish',
         cancelTask: '❎ Cancel',

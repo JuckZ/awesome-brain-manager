@@ -17,34 +17,34 @@ import type { MarkdownFileInfo, PluginManifest } from 'obsidian';
 
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
-import Replacer from './Replacer';
-import Process from './process/Process';
-import { checkInDefaultPath, checkInList, customSnippetPath } from './utils/constants';
-import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
-import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal';
-import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
-import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
-import { codeEmoji } from './render/Emoji';
-import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
-import LoggerUtil from './utils/logger';
-import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
-import { getWeather } from './utils/weather';
-import { getTagsFromTask, getTaskContentFromTask } from './utils/common';
-import { DBUtil } from './utils/db/db';
-import { insertAfterHandler } from './utils/content';
-import { getLocalRandomImg, searchPicture } from './utils/genBanner';
-import { PomodoroStatus } from './utils/pomotodo';
-import { AwesomeBrainSettingTab, SETTINGS } from './settings';
-import { PluginDataIO } from './data';
-import { eventTypes } from './types/types';
-import type { ExtApp } from './types/types';
-import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
-import type { Pomodoro } from './schemas/spaces';
-import { notifyNtfy } from './api';
-import t from './i18n';
-import './main.scss';
-import { NotifyUtil } from './utils/notify';
-import { EditorUtil, EditorUtils } from './utils/editor';
+import Replacer from '@/Replacer';
+import Process from '@/process/Process';
+import { checkInDefaultPath, checkInList, customSnippetPath } from '@/utils/constants';
+import { monkeyPatchConsole } from '@/obsidian-hack/obsidian-debug-mobile';
+import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from '@/ui/modal';
+import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from '@/ui/view/PomodoroHistoryView';
+import { BROWSER_VIEW, BrowserView } from '@/ui/view/BrowserView';
+import { codeEmoji } from '@/render/Emoji';
+import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEffects';
+import LoggerUtil from '@/utils/logger';
+import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
+import { getWeather } from '@/utils/weather';
+import { getTagsFromTask, getTaskContentFromTask } from '@/utils/common';
+import { DBUtil } from '@/utils/db/db';
+import { insertAfterHandler } from '@/utils/content';
+import { getLocalRandomImg, searchPicture } from '@/utils/genBanner';
+import { PomodoroStatus } from '@/utils/pomotodo';
+import { AwesomeBrainSettingTab, SETTINGS } from '@/settings';
+import { PluginDataIO } from '@/data';
+import { eventTypes } from '@/types/types';
+import type { ExtApp } from '@/types/types';
+import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
+import type { Pomodoro } from '@/schemas/spaces';
+import { notifyNtfy } from '@/api';
+import '@/main.scss';
+import { NotifyUtil } from '@/utils/notify';
+import { EditorUtil, EditorUtils } from '@/utils/editor';
+import t from '@/i18n';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
 
@@ -109,30 +109,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     openBrowserHandle(e: CustomEvent) {
         this.openBrowser(e.detail.url);
-    }
-
-    async addPomodoro(task: string) {
-        task = task.replace('- [x] ', '');
-        task = task.replace('- [ ] ', '').trim();
-        if (!task) {
-            task = t.menu.defaultTask + Date.now();
-        }
-        const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
-        const tags: string[] = getTagsFromTask(task);
-        const content: string = getTaskContentFromTask(task);
-        const tagsStr = tags.join(',');
-        const currentPomodoro = {
-            timestamp: new Date().getTime() + '',
-            task: content,
-            start: '',
-            createTime,
-            spend: '0',
-            breaknum: '0',
-            expectedTime: (parseFloat(SETTINGS.expectedTime.value) * 60 * 1000).toString(),
-            status: 'todo',
-            tags: tagsStr,
-        };
-        usePomodoroStore().addPomodoro(currentPomodoro as Pomodoro);
     }
 
     get snippetPath() {
@@ -219,7 +195,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 icon: 'send',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     const task = EditorUtils.getCurrentSelection(editor);
-                    this.addPomodoro(task);
+                    usePomodoroStore().quickAddPomodoro(task);
                 },
             },
             {

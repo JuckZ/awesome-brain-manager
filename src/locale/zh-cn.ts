@@ -94,7 +94,7 @@ export default {
         totalTime: '总专注时长',
         noTimeLine: '无时间线内容',
         startTask: '🚀 开始',
-        repeatTask: '🚀 重复',
+        repeatTask: '🔁 重复',
         stopTask: '⏸️ 暂停',
         finishTask: '✅ 完成',
         cancelTask: '❎ 取消',

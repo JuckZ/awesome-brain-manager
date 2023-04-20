@@ -141,7 +141,7 @@ const getOptions = currentStatus => {
         {
             label: t.info.repeatTask,
             key: 'repeat',
-            show: ['done', 'cancelled'].contains(currentStatus),
+            show: true,
         },
         {
             label: t.info.deleteTask,
@@ -164,8 +164,7 @@ const handleSelect = (
             }
         }
         if (targetStatus === 'repeat') {
-            console.log('TODO, add a quick add pomodoro method');
-            // usePomodoroStore().addPomodoro();
+            usePomodoroStore().quickAddPomodoro(pomodoro.task);
         }
         const changed = ps.changeState(targetStatus);
         if (changed) {
