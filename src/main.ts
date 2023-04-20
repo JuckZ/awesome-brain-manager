@@ -112,6 +112,11 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     async addPomodoro(task: string) {
+        task = task.replace('- [x] ', '');
+        task = task.replace('- [ ] ', '').trim();
+        if (!task) {
+            task = t.menu.defaultTask + Date.now();
+        }
         const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const tags: string[] = getTagsFromTask(task);
         const content: string = getTaskContentFromTask(task);
@@ -213,12 +218,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 title: t.menu.planPomodoro,
                 icon: 'send',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    let task = EditorUtils.getCurrentSelection(editor);
-                    task = task.replace('- [x] ', '');
-                    task = task.replace('- [ ] ', '').trim();
-                    if (!task) {
-                        task = t.menu.defaultTask + Date.now();
-                    }
+                    const task = EditorUtils.getCurrentSelection(editor);
                     this.addPomodoro(task);
                 },
             },
@@ -234,13 +234,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     this.app.workspace.revealLeaf(
                         this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
                     );
-                },
-            },
-            {
-                title: 'Reveal current file in navigation',
-                icon: 'navigation',
-                clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    this.app.commands.executeCommandById('file-explorer:reveal-active-file');
                 },
             },
         ];

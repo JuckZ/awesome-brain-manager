@@ -138,7 +138,11 @@ const getOptions = currentStatus => {
             key: 'cancelled',
             show: !['done', 'cancelled'].contains(currentStatus),
         },
-
+        {
+            label: t.info.repeatTask,
+            key: 'repeat',
+            show: ['done', 'cancelled'].contains(currentStatus),
+        },
         {
             label: t.info.deleteTask,
             key: 'deleted',
@@ -147,17 +151,21 @@ const getOptions = currentStatus => {
     ];
 };
 const handleSelect = (
-    targetStatus: 'ing' | 'done' | 'todo' | 'cancelled' | 'break' | 'deleted',
+    targetStatus: 'ing' | 'done' | 'todo' | 'cancelled' | 'break' | 'repeat' | 'deleted',
     pomodoro: Pomodoro,
 ) => {
     if (targetStatus != 'deleted') {
         const ps = new PomodoroStatus(pomodoro);
-        if (targetStatus == 'ing') {
+        if (targetStatus === 'ing') {
             const ingPomodoro = pomodoroList.value.find(item => item.status === 'ing');
             if (ingPomodoro) {
                 message.error(`${t.info.handleThisFirst + ingPomodoro.task}`);
                 return;
             }
+        }
+        if (targetStatus === 'repeat') {
+            console.log('TODO, add a quick add pomodoro method');
+            // usePomodoroStore().addPomodoro();
         }
         const changed = ps.changeState(targetStatus);
         if (changed) {
