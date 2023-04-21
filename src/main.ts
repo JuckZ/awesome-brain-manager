@@ -585,14 +585,15 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     if (triggerText === 't') {
                         const targetText = '- [ ] ';
                         EditorUtils.replaceCurrentSelection(editor, targetText);
+                        event.preventDefault();
                     }
                     const tableConfig = triggerText.match(/^t(\d+)\*(\d+)/);
                     if (tableConfig) {
                         const targetText = generateMarkdownTable(tableConfig[1], tableConfig[2]);
                         EditorUtils.replaceCurrentSelection(editor, targetText);
+                        event.preventDefault();
                     }
                 }
-                event.preventDefault();
             }
         };
         // window.addEventListener('languagechange', () => {
