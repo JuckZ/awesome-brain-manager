@@ -17,6 +17,7 @@ import type { MarkdownFileInfo, PluginManifest } from 'obsidian';
 
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
+import { expandEmmetAbbreviation } from './utils/emmet';
 import Replacer from '@/Replacer';
 import Process from '@/process/Process';
 import { checkInDefaultPath, checkInList, customSnippetPath } from '@/utils/constants';
@@ -29,7 +30,6 @@ import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEff
 import LoggerUtil from '@/utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
 import { getWeather } from '@/utils/weather';
-import { getTagsFromTask, getTaskContentFromTask } from '@/utils/common';
 import { DBUtil } from '@/utils/db/db';
 import { insertAfterHandler } from '@/utils/content';
 import { getLocalRandomImg, searchPicture } from '@/utils/genBanner';
@@ -39,7 +39,6 @@ import { PluginDataIO } from '@/data';
 import { eventTypes } from '@/types/types';
 import type { ExtApp } from '@/types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
-import type { Pomodoro } from '@/schemas/spaces';
 import { notifyNtfy } from '@/api';
 import '@/main.scss';
 import { NotifyUtil } from '@/utils/notify';
@@ -47,7 +46,6 @@ import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
-import { generateMarkdownTable } from '@/utils/table';
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -580,16 +578,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             if (event.key === 'Tab') {
                 const editor = this.app.workspace.activeEditor?.editor as Editor;
                 if (editor) {
-                    let triggerText = EditorUtils.getCurrentSelection(editor);
-                    triggerText = triggerText.trim();
-                    if (triggerText === 't') {
-                        const targetText = '- [ ] ';
-                        EditorUtils.replaceCurrentSelection(editor, targetText);
-                        event.preventDefault();
-                    }
-                    const tableConfig = triggerText.match(/^t(\d+)\*(\d+)/);
-                    if (tableConfig) {
-                        const targetText = generateMarkdownTable(tableConfig[1], tableConfig[2]);
+                    const triggerText = EditorUtils.getCurrentSelection(editor);
+                    const targetText = expandEmmetAbbreviation(triggerText);
+                    if (targetText) {
                         EditorUtils.replaceCurrentSelection(editor, targetText);
                         event.preventDefault();
                     }
