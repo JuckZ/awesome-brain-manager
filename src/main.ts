@@ -37,7 +37,6 @@ import { PomodoroStatus } from '@/utils/pomotodo';
 import { AwesomeBrainSettingTab, SETTINGS } from '@/settings';
 import { PluginDataIO } from '@/data';
 import { eventTypes } from '@/types/types';
-import type { ExtApp } from '@/types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
 import { notifyNtfy } from '@/api';
 import '@/main.scss';
@@ -50,7 +49,6 @@ import { UpdateModal } from '@/ui/modal/UpdateModal';
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
 export default class AwesomeBrainManagerPlugin extends Plugin {
-    override app: ExtApp;
     pluginDataIO: PluginDataIO;
     private pomodoroHistoryView: PomodoroHistoryView | null;
     quickPreviewFunction: (file: TFile, data: string) => any;
@@ -86,7 +84,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
-        this.app = app as ExtApp;
+        this.app = app;
         this.replacer = new Replacer(this);
         this.process = new Process(this);
         this.pluginDataIO = new PluginDataIO(this);
@@ -599,7 +597,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
         [
             this.app.workspace.on('codemirror', this.codemirrorFunction),
-            this.app.workspace.on('click', this.clickFunction),
+            // this.app.workspace.on('click', this.clickFunction),
             this.app.workspace.on('resize', this.resizeFunction),
             this.app.workspace.on('editor-change', this.editorChangeFunction),
             this.app.workspace.on('editor-paste', this.editorPasteFunction),

@@ -1,20 +1,20 @@
-import { type Editor } from 'obsidian';
-import { type App, createApp } from 'vue';
+import { App, type Editor } from 'obsidian';
+import { type App as VueApp, createApp } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import AppVue from '../ui/App.vue';
 import { buildTagRules } from '../render/Tag';
 import type { SettingModel } from 'model/settings';
-import { type ExtApp, Tag } from '@/types/types';
+import { Tag } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
 import LoggerUtil from '@/utils/logger';
 
 export const appContainerId = 'app-container';
 export class EditorUtils {
     plugin: AwesomeBrainManagerPlugin;
-    app: ExtApp;
+    app: App;
     ele: HTMLDivElement;
     loaded = false;
-    appViewVueApp: App;
+    appViewVueApp: VueApp;
     oldSelection: string;
     currentSelection: string;
 

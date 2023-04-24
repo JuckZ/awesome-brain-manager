@@ -15,29 +15,6 @@ export class AwesomeGlobalEvent extends Event {
     };
 }
 
-export class ExtApp extends App {
-    internalPlugins: any;
-    plugins: {
-        getPluginFolder(): string;
-        getPlugin(id: string): {
-            settings: any;
-        };
-    };
-    commands: {
-        commands: { [id: string]: Command };
-        editorCommands: { [id: string]: Command };
-        findCommand(id: string): Command;
-        executeCommandById(id: string): void;
-        listCommands(): Command[];
-    };
-    customCss: {
-        getSnippetsFolder(): string;
-        getSnippetPath(file: string): string;
-        readSnippets(): void;
-        setCssEnabledStatus(snippet: string, enabled: boolean): void;
-    };
-}
-
 export class Tag {
     color: string;
     bgColor: string;
