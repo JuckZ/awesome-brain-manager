@@ -29,14 +29,122 @@ class Settings {
     ntfyToken: SettingModel<string, string>;
     version: SettingModel<string, string>;
     enableTwemoji: SettingModel<boolean, boolean>;
+    defaultMode: SettingModel<string, string>;
+    triggerDelay: SettingModel<number, number>;
+    closeDelay: SettingModel<number, number>;
+    autoPin: SettingModel<string, string>;
+    rollDown: SettingModel<boolean, boolean>;
+    imageZoom: SettingModel<boolean, boolean>;
+    autoFocus: SettingModel<boolean, boolean>;
+    snapToEdges: SettingModel<boolean, boolean>;
+    initialHeight: SettingModel<string, string>;
+    initialWidth: SettingModel<string, string>;
+    showViewHeader: SettingModel<boolean, boolean>;
+    hoverEmbeds: SettingModel<boolean, boolean>;
 
     constructor() {
+        this.defaultMode = this.settings
+            .newSettingBuilder()
+            .key('defaultMode')
+            .name(t.setting.defaultMode.name)
+            .desc(t.setting.defaultMode.desc)
+            .dropdown('preview')
+            .build(new RawSerde());
+
+        this.autoPin = this.settings
+            .newSettingBuilder()
+            .key('autoPin')
+            .name(t.setting.autoPin.name)
+            .desc(t.setting.autoPin.desc)
+            .text('onMove')
+            .build(new RawSerde());
+
+        this.triggerDelay = this.settings
+            .newSettingBuilder()
+            .key('triggerDelay')
+            .name(t.setting.triggerDelay.name)
+            .desc(t.setting.triggerDelay.desc)
+            .number(300)
+            .build(new RawSerde());
+
+        this.closeDelay = this.settings
+            .newSettingBuilder()
+            .key('closeDelay')
+            .name(t.setting.closeDelay.name)
+            .desc(t.setting.closeDelay.desc)
+            .number(600)
+            .build(new RawSerde());
+
+        this.autoFocus = this.settings
+            .newSettingBuilder()
+            .key('autoFocus')
+            .name(t.setting.autoFocus.name)
+            .desc(t.setting.autoFocus.desc)
+            .toggle(true)
+            .build(new RawSerde());
+
+        this.rollDown = this.settings
+            .newSettingBuilder()
+            .key('rollDown')
+            .name(t.setting.rollDown.name)
+            .desc(t.setting.rollDown.desc)
+            .toggle(false)
+            .build(new RawSerde());
+
+        this.snapToEdges = this.settings
+            .newSettingBuilder()
+            .key('snapToEdges')
+            .name(t.setting.snapToEdges.name)
+            .desc(t.setting.snapToEdges.desc)
+            .toggle(false)
+            .build(new RawSerde());
+
+        this.initialHeight = this.settings
+            .newSettingBuilder()
+            .key('initialHeight')
+            .name(t.setting.initialHeight.name)
+            .desc(t.setting.initialHeight.desc)
+            .text('340px')
+            .build(new RawSerde());
+
+        this.initialWidth = this.settings
+            .newSettingBuilder()
+            .key('initialWidth')
+            .name(t.setting.initialWidth.name)
+            .desc(t.setting.initialWidth.desc)
+            .text('400px')
+            .build(new RawSerde());
+
         this.cursorEffectBuilder = this.settings
             .newSettingBuilder()
             .key('cursorEffect')
             .name(t.setting.cursorEffect.name)
             .desc(t.setting.cursorEffect.desc)
             .dropdown('none');
+
+        this.showViewHeader = this.settings
+            .newSettingBuilder()
+            .key('showViewHeader')
+            .name(t.setting.showViewHeader.name)
+            .desc(t.setting.showViewHeader.desc)
+            .toggle(true)
+            .build(new RawSerde());
+
+        this.imageZoom = this.settings
+            .newSettingBuilder()
+            .key('imageZoom')
+            .name(t.setting.imageZoom.name)
+            .desc(t.setting.imageZoom.desc)
+            .toggle(true)
+            .build(new RawSerde());
+
+        this.hoverEmbeds = this.settings
+            .newSettingBuilder()
+            .key('hoverEmbeds')
+            .name(t.setting.hoverEmbeds.name)
+            .desc(t.setting.hoverEmbeds.desc)
+            .toggle(false)
+            .build(new RawSerde());
 
         Object.keys(t.info.effects).forEach(f => this.cursorEffectBuilder.addOption(`${t.info.effects[f]}`, f));
 
