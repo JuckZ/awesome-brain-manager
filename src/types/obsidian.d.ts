@@ -112,6 +112,8 @@ declare module 'obsidian' {
         activeTime: number;
     }
     interface Workspace {
+        /** Sent to rendered dataview components to tell them to possibly refresh */
+        on(name: 'dataview:refresh-views', callback: () => void, ctx?: any): EventRef;
         recordHistory(leaf: WorkspaceLeaf, pushHistory: boolean): void;
         iterateLeaves(
             callback: (item: WorkspaceLeaf) => boolean | void,

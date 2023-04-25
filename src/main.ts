@@ -1215,6 +1215,16 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
+    maybeRefresh = () => {
+        // TODO
+        // If the index revision has changed recently, then queue a reload.
+        // But only if we're mounted in the DOM and auto-refreshing is active.
+        // if (this.lastReload != this.index.revision && this.container.isShown() && this.settings.refreshEnabled) {
+        //     this.lastReload = this.index.revision;
+        //     this.render();
+        // }
+    };
+
     private watchVault() {
         // https://github.com/kepano/obsidian-system-dark-mode/blob/master/main.ts
         // Watch for system changes to color theme
@@ -1267,6 +1277,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
         [
+            this.app.workspace.on('dataview:refresh-views', this.maybeRefresh),
             this.app.workspace.on('codemirror', this.codemirrorFunction),
             // this.app.workspace.on('click', this.clickFunction),
             this.app.workspace.on('resize', this.resizeFunction),
