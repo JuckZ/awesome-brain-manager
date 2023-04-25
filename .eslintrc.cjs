@@ -24,7 +24,8 @@ module.exports = {
     parser: 'vue-eslint-parser',
     parserOptions: {
         parser: '@typescript-eslint/parser',
-        tsconfigRootDir: './',
+        // TODO 在工作区中，指定此目录会导致无法正常工作
+        // tsconfigRootDir: './',
         // project: './tsconfig.json',
         ecmaVersion: 6,
         sourceType: 'module',
