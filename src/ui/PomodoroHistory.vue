@@ -12,6 +12,7 @@
                     <H1Title></H1Title>
                     <!-- <Title></Title> -->
                     <OverView :all-pomodoro="pomodoroHistory" />
+                    <DataViewTimeLine />
                     <ClockView></ClockView>
                     <TimeLine :time="focusTime" />
                     <n-grid cols="1" :layout-shift-disabled="true">
@@ -52,6 +53,7 @@ import {
 } from 'naive-ui';
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
+import DataViewTimeLine from './DataViewTimeLine.vue';
 import ClockView from './ClockView.vue';
 import TimeLine from './TimeLine.vue';
 import TestTitle from './TestTitle';

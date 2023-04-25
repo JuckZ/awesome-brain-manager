@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 import en from './locale/en';
 import zh from './locale/zh-cn';
 class T {

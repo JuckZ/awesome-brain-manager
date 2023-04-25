@@ -46,6 +46,7 @@ export default defineConfig(({ command, mode }) => {
                         // browser: true
                     }),
                     nodePolyfills({
+                        // include: ['path', 'fs', 'util'],
                         sourceMap: true,
                     }),
                 ],
@@ -60,6 +61,11 @@ export default defineConfig(({ command, mode }) => {
                     // // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
                     globals: {
                         // vue: 'Vue',
+                        // obsidian: 'obsidian',
+                        // moment: 'moment',
+                        // util: 'util',
+                        // fs: 'fs',
+                        // path: 'path',
                     },
                 },
                 external: [
@@ -107,7 +113,31 @@ export default defineConfig(({ command, mode }) => {
             }),
             vueJsx(),
         ],
-        optimizeDeps: {},
+        optimizeDeps: {
+            // include: [
+            //     'moment',
+            //     '@lezer/common',
+            //     '@lezer/highlight',
+            //     '@lezer/lr',
+            //     'chart.js',
+            //     'commander',
+            //     'cursor-effects',
+            //     'emoji-mart',
+            //     '@emoji-mart/data',
+            //     'lodash-es',
+            //     'naive-ui',
+            //     'ora',
+            //     'party-js',
+            //     'pinia',
+            //     'rrule',
+            //     'sql.js',
+            //     'svelte',
+            //     'twemoji',
+            //     'vue',
+            //     'vue3-radial-progress',
+            //     ...builtins,
+            // ],
+        },
         resolve: {
             alias: [
                 {
