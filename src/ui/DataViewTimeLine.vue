@@ -7,7 +7,7 @@
         <div class="taskListContainer">
             <div
                 v-for="task in taskList"
-                :key="task.blockId"
+                :key="task.id"
                 @mouseenter="previewTask($event, task)"
                 @click="onClicked($event, task)"
             >
@@ -135,5 +135,27 @@ const onChecked = async (evt, item: STask) => {
 <style lang="scss" scoped>
 .taskListContainer {
     margin: 8px 0;
+    max-height: 300px;
+    max-width: 100%;
+    cursor: pointer;
+    overflow-y: scroll;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-x: hidden;
+
+    input {
+        cursor: pointer;
+    }
+
+    div {
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin: 4px 0;
+        background-color: rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s ease-in-out;
+    }
+    div:hover {
+        background-color: rgba(0, 183, 255, 0.692);
+    }
 }
 </style>
