@@ -1,7 +1,8 @@
 import { URL, fileURLToPath } from 'node:url';
 import { resolve } from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { type PluginOption, defineConfig, loadEnv } from 'vite';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { visualizer } from 'rollup-plugin-visualizer';
 import builtins from 'builtin-modules';
 
 import vue from '@vitejs/plugin-vue';
@@ -112,6 +113,11 @@ export default defineConfig(({ command, mode }) => {
                 },
             }),
             vueJsx(),
+            visualizer({
+                open: true, //注意这里要设置为true，否则无效
+                gzipSize: true,
+                brotliSize: true,
+            }) as PluginOption,
         ],
         optimizeDeps: {
             // include: [

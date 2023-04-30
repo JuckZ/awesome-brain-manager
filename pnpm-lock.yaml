@@ -231,6 +231,9 @@ devDependencies:
   rollup-plugin-polyfill-node:
     specifier: ^0.12.0
     version: 0.12.0(rollup@3.18.0)
+  rollup-plugin-visualizer:
+    specifier: ^5.9.0
+    version: 5.9.0(rollup@3.18.0)
   sass:
     specifier: ^1.58.2
     version: 1.58.2
@@ -7253,6 +7256,23 @@ packages:
       rollup: 3.18.0
     dev: true
 
+  /rollup-plugin-visualizer@5.9.0(rollup@3.18.0):
+    resolution: {integrity: sha512-bbDOv47+Bw4C/cgs0czZqfm8L82xOZssk4ayZjG40y9zbXclNk7YikrZTDao6p7+HDiGxrN0b65SgZiVm9k1Cg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    peerDependencies:
+      rollup: 2.x || 3.x
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      open: 8.4.2
+      picomatch: 2.3.1
+      rollup: 3.18.0
+      source-map: 0.7.4
+      yargs: 17.7.1
+    dev: true
+
   /rollup@2.79.1:
     resolution: {integrity: sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==}
     engines: {node: '>=10.0.0'}
@@ -7540,6 +7560,11 @@ packages:
   /source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
+
+  /source-map@0.7.4:
+    resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
+    engines: {node: '>= 8'}
+    dev: true
 
   /sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
@@ -8982,7 +9007,7 @@ packages:
     dev: true
 
   github.com/obsidianmd/obsidian-api/d6f80eccf6a6f0d1ec314605bdb7e9489311503f(@codemirror/state@6.2.0)(@codemirror/view@6.7.3):
-    resolution: {commit: d6f80eccf6a6f0d1ec314605bdb7e9489311503f, repo: git+ssh://git@github.com/obsidianmd/obsidian-api.git, type: git}
+    resolution: {tarball: https://codeload.github.com/obsidianmd/obsidian-api/tar.gz/d6f80eccf6a6f0d1ec314605bdb7e9489311503f}
     id: github.com/obsidianmd/obsidian-api/d6f80eccf6a6f0d1ec314605bdb7e9489311503f
     name: obsidian
     version: 1.2.5

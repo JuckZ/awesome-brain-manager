@@ -66,9 +66,9 @@ import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
-import { initWorker } from '@/web-worker';
+// import { initWorker } from '@/web-worker';
 
-initWorker();
+// initWorker();
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
