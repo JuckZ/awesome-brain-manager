@@ -130,3 +130,22 @@ export class EmojiPickerModal extends Modal {
         contentEl.empty();
     }
 }
+
+export class CommonModal extends Modal {
+    content: Node;
+
+    constructor(app: App, content: Node) {
+        super(app);
+        this.content = content;
+    }
+
+    onOpen(): void {
+        const { contentEl } = this;
+        contentEl.appendChild(this.content);
+    }
+
+    onClose(): void {
+        const { contentEl } = this;
+        contentEl.empty();
+    }
+}
