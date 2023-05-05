@@ -1,6 +1,3 @@
-import type { Modifier } from '@interactjs/modifiers/types';
-import type { ActionMap } from '@interactjs/core/types';
-import type { InteractEvent, Interactable, Interaction, ResizeEvent } from '@interactjs/types';
 import { around } from 'monkey-around';
 import {
     Component,
@@ -25,14 +22,6 @@ import {
 } from 'obsidian';
 
 import HoverEditorPlugin from './main';
-import {
-    calculateOffsets,
-    dragMoveListener,
-    expandContract,
-    restorePopover,
-    snapToEdge,
-    storeDimensions,
-} from '@/utils/measure';
 import { isA } from '@/utils/misc';
 import { genId } from '@/utils/common';
 import { SETTINGS } from '@/settings';
@@ -43,6 +32,7 @@ export interface HoverEditorParent {
     containerEl?: HTMLElement;
     view?: View;
     dom?: HTMLElement;
+    parent: HoverEditorParent | null;
 }
 type ConstructableWorkspaceSplit = new (ws: Workspace, dir: 'horizontal' | 'vertical') => WorkspaceSplit;
 
@@ -63,16 +53,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
     shownPos: MousePos | null;
 
-    isPinned: boolean = SETTINGS.autoPin.value === 'always' ? true : false;
-
-    isDragging: boolean;
-
-    isResizing: boolean;
-
-    interact?: Interactable;
-
-    lockedOut: boolean;
-
     abortController? = this.addChild(new Component());
 
     detaching = false;
@@ -83,41 +63,21 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
     targetRect = this.targetEl?.getBoundingClientRect();
 
-    pinEl: HTMLElement;
-
     titleEl: HTMLElement;
 
     containerEl: HTMLElement;
 
-    hideNavBarEl: HTMLElement;
+    parent: HoverEditorParent | null;
 
-    viewHeaderHeight: number;
-
-    oldPopover = this.parent?.hoverPopover;
+    oldPopover: HoverEditor | null;
 
     document: Document = this.targetEl?.ownerDocument ?? window.activeDocument ?? window.document;
 
-    interactStatic = this.plugin.interact.forDom(this.document.body).interact;
-
-    constrainAspectRatio: boolean;
-
     id = genId(8);
-
-    resizeModifiers: Modifier[];
-
-    dragElementRect: { top: number; left: number; bottom: number; right: number };
 
     onMouseIn: (event: MouseEvent) => void;
 
     onMouseOut: (event: MouseEvent) => void;
-
-    xspeed: number;
-
-    yspeed: number;
-
-    bounce?: NodeJS.Timeout;
-
-    boundOnZoomOut: () => void;
 
     originalPath: string; // these are kept to avoid adopting targets w/a different link
     originalLinkText: string;
@@ -161,13 +121,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
         return el ? popovers.get(el) : undefined;
     }
 
-    static iteratePopoverLeaves(ws: Workspace, cb: (leaf: WorkspaceLeaf) => boolean | void) {
-        for (const popover of this.activePopovers()) {
-            if (popover.rootSplit && ws.iterateLeaves(cb, popover.rootSplit)) return true;
-        }
-        return false;
-    }
-
     hoverEl: HTMLElement = this.document.defaultView!.createDiv({
         cls: 'popover hover-popover',
         attr: { id: 'he' + this.id },
@@ -183,6 +136,7 @@ export class HoverEditor extends nosuper(HoverPopover) {
         //
         super();
 
+        this.oldPopover = parent.hoverPopover ?? null;
         if (waitTime === undefined) {
             waitTime = 300;
         }
@@ -225,18 +179,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.containerEl = this.hoverEl.createDiv('popover-content');
         this.buildWindowControls();
         this.setInitialDimensions();
-        const pinEl = (this.pinEl = this.document.defaultView!.createEl('a', 'popover-header-icon mod-pin-popover'));
-        this.titleEl.prepend(this.pinEl);
-        pinEl.onclick = () => {
-            this.togglePin();
-        };
-        if (requireApiVersion && requireApiVersion('0.13.27')) {
-            setIcon(pinEl, 'lucide-pin');
-        } else {
-            setIcon(pinEl, 'pin');
-        }
-        this.createResizeHandles();
-        if (SETTINGS.imageZoom.value) this.registerZoomImageHandlers();
     }
 
     adopt(targetEl: HTMLElement) {
@@ -260,51 +202,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
         return false;
     }
 
-    onZoomOut() {
-        this.document.body.removeEventListener('mouseup', this.boundOnZoomOut);
-        this.document.body.removeEventListener('dragend', this.boundOnZoomOut);
-        if (this.hoverEl.hasClass('do-not-restore')) {
-            this.hoverEl.removeClass('do-not-restore');
-        } else {
-            restorePopover(this.hoverEl);
-        }
-    }
-
-    onZoomIn(event: MouseEvent) {
-        if (event.button !== 0) {
-            return;
-        }
-        if (this.hoverEl.hasClass('snap-to-viewport')) {
-            this.hoverEl.addClass('do-not-restore');
-        }
-        this.document.body.addEventListener('mouseup', this.boundOnZoomOut, {
-            once: true,
-        });
-        this.document.body.addEventListener('dragend', this.boundOnZoomOut, {
-            once: true,
-        });
-        const offset = calculateOffsets(this.document);
-        storeDimensions(this.hoverEl);
-        snapToEdge(this.hoverEl, 'viewport', offset);
-        return false;
-    }
-
-    registerZoomImageHandlers() {
-        this.hoverEl.addClass('image-zoom');
-        this.boundOnZoomOut = this.onZoomOut.bind(this);
-        this.hoverEl.on('mousedown', 'img', this.onZoomIn.bind(this));
-    }
-
-    togglePin(value?: boolean) {
-        if (value === undefined) {
-            value = !this.isPinned;
-        }
-        if (value) this.abortController?.unload();
-        this.hoverEl.toggleClass('is-pinned', value);
-        this.pinEl.toggleClass('is-active', value);
-        this.isPinned = value;
-    }
-
     getDefaultMode() {
         return this.parent?.view?.getMode ? this.parent.view.getMode() : 'preview';
     }
@@ -320,38 +217,8 @@ export class HoverEditor extends nosuper(HoverPopover) {
         }, this.rootSplit);
         if (leafCount === 0) {
             this.hide(); // close if we have no leaves
-        } else if (leafCount > 1) {
-            this.toggleConstrainAspectRatio(false);
         }
         this.hoverEl.setAttribute('data-leaf-count', leafCount.toString());
-    }
-
-    get headerHeight() {
-        const hoverEl = this.hoverEl;
-        return this.titleEl.getBoundingClientRect().bottom - hoverEl.getBoundingClientRect().top;
-    }
-
-    toggleMinimized(value?: boolean) {
-        const hoverEl = this.hoverEl;
-        const headerHeight = this.headerHeight;
-
-        if (!hoverEl.hasAttribute('data-restore-height')) {
-            if (SETTINGS.rollDown.value) expandContract(hoverEl, false);
-            hoverEl.setAttribute('data-restore-height', String(hoverEl.offsetHeight));
-            hoverEl.style.minHeight = headerHeight + 'px';
-            hoverEl.style.maxHeight = headerHeight + 'px';
-            hoverEl.toggleClass('is-minimized', true);
-        } else {
-            const restoreHeight = hoverEl.getAttribute('data-restore-height');
-            if (restoreHeight) {
-                hoverEl.removeAttribute('data-restore-height');
-                hoverEl.style.height = restoreHeight + 'px';
-            }
-            hoverEl.style.removeProperty('max-height');
-            hoverEl.toggleClass('is-minimized', false);
-            if (SETTINGS.rollDown.value) expandContract(hoverEl, true);
-        }
-        this.interact?.reflow({ name: 'drag', axis: 'xy' });
     }
 
     attachLeaf(): WorkspaceLeaf {
@@ -391,59 +258,10 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.hoverEl.style.width = SETTINGS.initialWidth.value;
     }
 
-    adjustHeight(byPx: number) {
-        this.hoverEl.style.height = this.hoverEl.offsetHeight + byPx + 'px';
-    }
-
-    toggleViewHeader(value?: boolean, initial?: boolean) {
-        if (value === undefined) value = !this.hoverEl.hasClass('show-navbar');
-        this.hideNavBarEl?.toggleClass('is-active', value);
-        this.hoverEl.toggleClass('show-navbar', value);
-        const viewHeaderEl = this.hoverEl.querySelector('.view-header');
-        if (!viewHeaderEl || initial) return;
-        const calculatedViewHeaderHeight = parseFloat(
-            getComputedStyle(viewHeaderEl).getPropertyValue('--he-view-header-height'),
-        );
-        this.hoverEl.style.transition = 'height 0.2s';
-        this.adjustHeight(value ? calculatedViewHeaderHeight : -calculatedViewHeaderHeight);
-        setTimeout(() => {
-            this.hoverEl.style.removeProperty('transition');
-        }, 200);
-
-        this.requestLeafMeasure();
-    }
-
     buildWindowControls() {
         this.titleEl = this.document.defaultView!.createDiv('popover-titlebar');
         this.titleEl.createDiv('popover-title');
         const popoverActions = this.titleEl.createDiv('popover-actions');
-        const hideNavBarEl = (this.hideNavBarEl = popoverActions.createEl('a', 'popover-action mod-show-navbar'));
-        setIcon(hideNavBarEl, 'sidebar-open');
-        hideNavBarEl.addEventListener('click', event => {
-            this.toggleViewHeader();
-        });
-        if (SETTINGS.showViewHeader.value) {
-            this.toggleViewHeader(true, true);
-        }
-        const minEl = popoverActions.createEl('a', 'popover-action mod-minimize');
-        setIcon(minEl, 'minus');
-        minEl.addEventListener('click', event => {
-            restorePopover(this.hoverEl);
-            this.toggleMinimized();
-        });
-        const maxEl = popoverActions.createEl('a', 'popover-action mod-maximize');
-        setIcon(maxEl, 'maximize');
-        maxEl.addEventListener('click', event => {
-            if (this.hoverEl.hasClass('snap-to-viewport')) {
-                setIcon(maxEl, 'maximize');
-                restorePopover(this.hoverEl);
-                return;
-            }
-            setIcon(maxEl, 'minimize');
-            const offset = calculateOffsets(this.document);
-            storeDimensions(this.hoverEl);
-            snapToEdge(this.hoverEl, 'viewport', offset);
-        });
 
         const closeEl = popoverActions.createEl('a', 'popover-action mod-close');
         setIcon(closeEl, 'x');
@@ -451,17 +269,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
             this.hide();
         });
         this.containerEl.prepend(this.titleEl);
-    }
-
-    requestLeafMeasure() {
-        // address view height measurement issues triggered by css transitions
-        // we wait a bit for the transition to finish and remeasure
-        const leaves = this.leaves();
-        if (leaves.length) {
-            setTimeout(() => {
-                leaves.forEach(leaf => leaf.onResize());
-            }, 200);
-        }
     }
 
     onShow() {
@@ -492,60 +299,8 @@ export class HoverEditor extends nosuper(HoverPopover) {
                 if (leaf.view instanceof MarkdownView) (leaf.view.editMode as any).reinit?.();
             }, this.rootSplit);
 
-        this.togglePin(this.isPinned);
-
         this.onShowCallback?.();
         this.onShowCallback = undefined; // only call it once
-    }
-
-    startBounce() {
-        this.bounce = setTimeout(() => {
-            this.hoverEl.style.left = parseFloat(this.hoverEl.style.left) + this.xspeed + 'px';
-            this.hoverEl.style.top = parseFloat(this.hoverEl.style.top) + this.yspeed + 'px';
-            this.checkHitBox();
-            this.startBounce();
-        }, 20);
-    }
-
-    toggleBounce() {
-        this.xspeed = 7;
-        this.yspeed = 7;
-        if (this.bounce) {
-            clearTimeout(this.bounce);
-            this.bounce = undefined;
-            const el = this.hoverEl.querySelector('.view-content') as HTMLElement;
-            if (el?.style) {
-                el.style.removeProperty('backgroundColor');
-            }
-        } else {
-            this.startBounce();
-        }
-    }
-
-    checkHitBox() {
-        const x = parseFloat(this.hoverEl.style.left);
-        const y = parseFloat(this.hoverEl.style.top);
-        const width = parseFloat(this.hoverEl.style.width);
-        const height = parseFloat(this.hoverEl.style.height);
-        if (x <= 0 || x + width >= this.document.body.offsetWidth) {
-            this.xspeed *= -1;
-            this.pickColor();
-        }
-
-        if (y <= 0 || y + height >= this.document.body.offsetHeight) {
-            this.yspeed *= -1;
-            this.pickColor();
-        }
-    }
-
-    pickColor() {
-        const r = Math.random() * (254 - 0) + 0;
-        const g = Math.random() * (254 - 0) + 0;
-        const b = Math.random() * (254 - 0) + 0;
-        const el = this.hoverEl.querySelector('.view-content') as HTMLElement;
-        if (el?.style) {
-            el.style.backgroundColor = 'rgb(' + r + ',' + g + ', ' + b + ')';
-        }
     }
 
     transition() {
@@ -570,17 +325,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
                 }
             }
         }
-    }
-
-    detect(el: HTMLElement) {
-        // TODO: may not be needed? the mouseover/out handers handle most detection use cases
-        const { targetEl, hoverEl } = this;
-
-        if (targetEl) {
-            this.onTarget = el === targetEl || targetEl.contains(el);
-        }
-
-        this.onHover = el === hoverEl || hoverEl.contains(el);
     }
 
     _onMouseIn(event: MouseEvent) {
@@ -671,242 +415,12 @@ export class HoverEditor extends nosuper(HoverPopover) {
             !!(
                 this.onTarget ||
                 this.onHover ||
-                (this.state == PopoverState.Shown && this.isPinned) ||
+                this.state == PopoverState.Shown ||
                 this.document.querySelector(
                     `body>.modal-container, body > #he${this.id} ~ .menu, body > #he${this.id} ~ .suggestion-container`,
                 )
             )
         );
-    }
-
-    calculateMinSize() {
-        return { width: 40, height: this.headerHeight };
-    }
-
-    calculateBoundaries(x: number, y: number, interaction: Interaction<keyof ActionMap>) {
-        const bodyEl = interaction.element.closest('body');
-        const boundaryEl = bodyEl?.querySelector('.workspace') || bodyEl?.querySelector('.workspace-window');
-        return boundaryEl?.getBoundingClientRect();
-    }
-
-    calculateMaxSize(x: number, y: number, interaction: Interaction<keyof ActionMap>) {
-        const width =
-            interaction.pointerType === 'reflow'
-                ? this.document.body.offsetWidth / 1.5
-                : this.document.body.offsetWidth;
-        const height =
-            interaction.pointerType === 'reflow'
-                ? this.document.body.offsetHeight / 1.5
-                : this.document.body.offsetHeight;
-        return { width: width, height: height };
-    }
-
-    toggleConstrainAspectRatio(value?: boolean, ratio?: number) {
-        const aspectRatioMod = this.resizeModifiers.find(mod => mod.name == 'aspectRatio');
-        if (!aspectRatioMod) return;
-        if (value === undefined) value = !aspectRatioMod.options.enabled;
-        if (value) {
-            aspectRatioMod.enable();
-            this.constrainAspectRatio = true;
-            if (ratio !== undefined && aspectRatioMod.options.ratio !== ratio) {
-                aspectRatioMod.options.ratio = ratio;
-            }
-        } else {
-            aspectRatioMod.disable();
-            this.constrainAspectRatio = false;
-        }
-    }
-
-    registerInteract() {
-        const viewPortBounds: HTMLElement = this.document.querySelector('div.app-container, div.workspace-split')!;
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const self = this;
-        const calculateBoundaryRestriction = function (
-            eventX: number,
-            eventY: number,
-            interaction: Interaction<keyof ActionMap>,
-        ) {
-            const { top, right, bottom, left, x, y, width, height } = viewPortBounds.getBoundingClientRect();
-            const boundingRect = { top, right, bottom, left, x, y, width, height };
-            if (interaction.pointerType === 'reflow') {
-                // if we're reflowing, we want to keep the window fully inside the viewport
-                self.dragElementRect.bottom = 1;
-            } else {
-                self.dragElementRect.bottom = 0;
-            }
-            if (SETTINGS.snapToEdges.value) {
-                boundingRect.top = top - 30;
-                boundingRect.bottom = bottom - self.headerHeight;
-            } else {
-                boundingRect.bottom = bottom - self.headerHeight;
-            }
-            return boundingRect;
-        };
-        let firstMovement = true;
-        let windowChromeHeight: number;
-        const imgRatio = this.hoverEl.dataset?.imgRatio ? parseFloat(this.hoverEl.dataset?.imgRatio) : undefined;
-        this.resizeModifiers = [
-            this.interactStatic.modifiers.restrictEdges({
-                outer: self.calculateBoundaries.bind(this),
-            }),
-            this.interactStatic.modifiers.restrictSize({
-                min: self.calculateMinSize.bind(this),
-                max: self.calculateMaxSize.bind(this),
-            }),
-            this.interactStatic.modifiers.aspectRatio({
-                ratio: imgRatio || 'preserve',
-                enabled: false,
-            }),
-        ];
-        this.dragElementRect = { top: 0, left: 1, bottom: 0, right: 0 };
-        const dragModifiers = [
-            this.interactStatic.modifiers.restrict({
-                restriction: calculateBoundaryRestriction,
-                offset: { top: 0, left: 40, bottom: 0, right: 40 },
-                elementRect: this.dragElementRect,
-                endOnly: false,
-            }),
-        ];
-        if (this.constrainAspectRatio && imgRatio !== undefined) {
-            this.toggleConstrainAspectRatio(true, imgRatio);
-        }
-        const i = this.interactStatic(this.hoverEl)
-            .preventDefault('always')
-
-            .on('doubletap', this.onDoubleTap.bind(this))
-
-            .draggable({
-                // inertiajs has a core lib memory leak currently. leave disabled
-                // inertia: false,
-                modifiers: dragModifiers,
-                allowFrom: '.popover-titlebar',
-
-                listeners: {
-                    start(event: DragEvent) {
-                        // only auto pin if the drag with user initiated
-                        // this avoids a reflow causing an auto pin
-                        if (event.buttons) self.togglePin(true);
-                        if (event.buttons && isA(event.target, HTMLElement)) {
-                            event.target.addClass('is-dragging');
-                        }
-                    },
-                    end(event: DragEvent) {
-                        if (isA(event.target, HTMLElement)) {
-                            event.target.removeClass('is-dragging');
-                        }
-                    },
-                    move: dragMoveListener.bind(self),
-                },
-            })
-            .resizable({
-                edges: {
-                    top: '.top-left, .top-right, .top',
-                    left: '.top-left, .bottom-left, .left',
-                    bottom: '.bottom-left, .bottom-right, .bottom',
-                    right: '.top-right, .bottom-right, .right',
-                },
-                modifiers: this.resizeModifiers,
-                listeners: {
-                    start(event: ResizeEvent) {
-                        const viewEl = event.target as HTMLElement;
-                        viewEl.style.removeProperty('max-height');
-                        const viewHeaderHeight = (self.hoverEl.querySelector('.view-header') as HTMLElement)
-                            ?.offsetHeight;
-                        const titlebarHeight = self.titleEl.offsetHeight;
-
-                        windowChromeHeight = titlebarHeight + viewHeaderHeight;
-                        firstMovement = true;
-                        // only auto pin if the drag with user initiated
-                        // this avoids a reflow causing an auto pin
-                        if (event.buttons) self.togglePin(true);
-                    },
-                    move: function (event: ResizeEvent) {
-                        if (!event?.deltaRect || !event.edges) return;
-                        const { target } = event;
-                        let { x, y } = target.dataset;
-
-                        let height = event.rect.height;
-                        let width = event.rect.width;
-
-                        x = x ? x : target.style.left;
-                        y = y ? y : target.style.top;
-
-                        x = String((parseFloat(x) || 0) + event.deltaRect?.left);
-                        y = String((parseFloat(y) || 0) + event.deltaRect?.top);
-
-                        if (self.constrainAspectRatio && imgRatio && event.buttons !== undefined) {
-                            // don't run if this was an automated resize (ie. reflow)
-                            if (firstMovement) {
-                                // adjustments to compensate for the titlebar height
-                                if (event.edges.top && (event.edges.right || event.edges.left)) {
-                                    y = String(parseFloat(y) - windowChromeHeight);
-                                } else if (event.edges.top) {
-                                    x = String(parseFloat(x) + windowChromeHeight * imgRatio);
-                                } else if (event.edges.left && !(event.edges.top || event.edges.bottom)) {
-                                    y = String(parseFloat(y) - windowChromeHeight);
-                                }
-                            }
-
-                            firstMovement = false;
-
-                            if (event.edges.top && !(event.edges.right || event.edges.left)) {
-                                height = height - windowChromeHeight;
-                                width = width - windowChromeHeight * imgRatio;
-                            } else if (event.edges.bottom && !(event.edges.right || event.edges.left)) {
-                                height = height - windowChromeHeight;
-                                width = width - windowChromeHeight * imgRatio;
-                            }
-
-                            height = height + windowChromeHeight;
-
-                            if (target.hasClass('snap-to-left') || target.hasClass('snap-to-right')) {
-                                y = String(parseFloat(target.style.top));
-                                x = String(parseFloat(target.style.left));
-                            }
-                        } else {
-                            if (imgRatio && height > this?.document?.body.offsetHeight) {
-                                height = height / 1.5;
-                                width = height * imgRatio;
-                            }
-                        }
-
-                        Object.assign(target.style, {
-                            width: `${width}px`,
-                            height: `${height}px`,
-                            top: `${y}px`,
-                            left: x === 'NaN' ? 'unset' : `${x}px`,
-                        });
-
-                        Object.assign(target.dataset, { x, y });
-                    },
-                    end: function (event: ResizeEvent) {
-                        if (event.rect.height > self.headerHeight) {
-                            event.target.removeAttribute('data-restore-height');
-                        }
-                        i.reflow({ name: 'drag', axis: 'xy' });
-                    },
-                },
-            });
-        this.interact = i;
-    }
-
-    createResizeHandles() {
-        this.hoverEl.createDiv('resize-handle bottom-left');
-        this.hoverEl.createDiv('resize-handle bottom-right');
-        this.hoverEl.createDiv('resize-handle top-left');
-        this.hoverEl.createDiv('resize-handle top-right');
-        this.hoverEl.createDiv('resize-handle right');
-        this.hoverEl.createDiv('resize-handle left');
-        this.hoverEl.createDiv('resize-handle bottom');
-        this.hoverEl.createDiv('resize-handle top');
-    }
-
-    onDoubleTap(event: InteractEvent) {
-        if (event.target.tagName === 'DIV' && event.target.closest('.popover-titlebar')) {
-            event.preventDefault();
-            this.togglePin(true);
-            this.toggleMinimized();
-        }
     }
 
     show() {
@@ -935,12 +449,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
             this.hoverEl.style.height = parseFloat(this.hoverEl.dataset.imgHeight) + this.titleEl.offsetHeight + 'px';
             this.hoverEl.style.width = parseFloat(this.hoverEl.dataset.imgWidth) + 'px';
         }
-        this.registerInteract();
-        this.interact?.reflow({
-            name: 'resize',
-            edges: { right: true, bottom: true },
-        });
-        this.interact?.reflow({ name: 'drag', axis: 'xy' });
     }
 
     onHide() {
@@ -952,7 +460,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
     hide() {
         this.onTarget = this.onHover = false;
-        this.isPinned = false;
         this.detaching = true;
         // Once we reach this point, we're committed to closing
 
@@ -989,10 +496,8 @@ export class HoverEditor extends nosuper(HoverPopover) {
             });
         } else {
             this.parent = null;
-            if (this.interact?.unset) this.interact.unset();
             this.abortController?.unload();
             this.abortController = undefined;
-            this.interact = undefined;
             return this.nativeHide();
         }
     }
@@ -1047,12 +552,12 @@ export class HoverEditor extends nosuper(HoverPopover) {
             // TODO: temporary workaround to prevent image popover from disappearing immediately when using live preview
             if (
                 SETTINGS.autoFocus.value &&
+                // eslint-disable-next-line no-prototype-builtins
                 this.parent?.hasOwnProperty('editorEl') &&
                 (this.parent as unknown as MarkdownEditView).editorEl!.hasClass('is-live-preview')
             ) {
                 this.waitTime = 3000;
             }
-            this.constrainAspectRatio = true;
             const img = leaf!.view.contentEl.querySelector('img')!;
             this.hoverEl.dataset.imgHeight = String(img.naturalHeight);
             this.hoverEl.dataset.imgWidth = String(img.naturalWidth);
@@ -1100,7 +605,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
             createEl.addEventListener(
                 'click',
                 async () => {
-                    this.togglePin(true);
                     await this.openLink(linkText, sourcePath, eState, leaf);
                 },
                 { once: true },

@@ -80,6 +80,16 @@ declare module 'obsidian' {
         viewRegistry: ViewRegistry;
         openWithDefaultApp(path: string): void;
     }
+    interface Workspace {
+        activeLeaf: WorkspaceLeaf;
+        floatingSplit: any;
+    }
+    interface WorkspaceSplit {
+        children: any;
+    }
+    interface WorkspaceTabs {
+        children: any;
+    }
     interface ViewRegistry {
         typeByExtension: Record<string, string>; // file extensions to view types
         viewByType: Record<string, (leaf: WorkspaceLeaf) => View>; // file extensions to view types
