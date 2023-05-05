@@ -86,6 +86,7 @@ export class EditorUtils {
         if (tags.length === 0) {
             return;
         }
+        document.body.addClass('tag-awesome-brain-manager');
         tags.forEach(tag => {
             const rules = buildTagRules(new Tag(tag[0], tag[1], tag[2], tag[3], tag[4]));
             rules.forEach(rule => this.plugin.style.sheet?.insertRule(rule, this.plugin.style.sheet.cssRules.length));
