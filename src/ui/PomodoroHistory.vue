@@ -12,7 +12,6 @@
                     <H1Title></H1Title>
                     <!-- <Title></Title> -->
                     <OverView :all-pomodoro="pomodoroHistory" />
-                    <DataViewTimeLine />
                     <TaskSelector></TaskSelector>
                     <ClockView></ClockView>
                     <TimeLine :time="focusTime" />
@@ -55,7 +54,6 @@ import {
 import CalendarView from './CalendarView.vue';
 import OverView from './OverView.vue';
 import TaskSelector from './TaskSelector.vue';
-import DataViewTimeLine from './DataViewTimeLine.vue';
 import ClockView from './ClockView.vue';
 import TimeLine from './TimeLine.vue';
 import TestTitle from './TestTitle';
