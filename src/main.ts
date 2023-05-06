@@ -16,15 +16,14 @@ import {
     WorkspaceContainer,
     WorkspaceItem,
     WorkspaceLeaf,
-    WorkspaceTabs,
     WorkspaceWindow,
     debounce,
     normalizePath,
-    requireApiVersion,
 } from 'obsidian';
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
 import { expandEmmetAbbreviation } from './utils/emmet';
+import { usePomodoroStore, useSystemStore } from '@/stores';
 import Replacer from '@/Replacer';
 import Process from '@/process/Process';
 import { checkInDefaultPath, checkInList, customSnippetPath } from '@/utils/constants';
@@ -50,7 +49,6 @@ import '@/main.scss';
 import { NotifyUtil } from '@/utils/notify';
 import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
-import { usePomodoroStore, useSystemStore } from '@/stores';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
 import { HoverEditor, type HoverEditorParent } from '@/popover';
 
@@ -326,10 +324,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         await this.migrate();
         this.announceUpdate();
-    }
-
-    get activePopovers(): HoverEditor[] {
-        return HoverEditor.activePopovers();
     }
 
     patchWorkspaceLeaf() {
@@ -770,7 +764,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onunload(): Promise<void> {
-        HoverEditor.activePopovers().forEach(popover => popover.hide());
         EditorUtil.unload();
         NotifyUtil.onload();
         toggleBlast('0');

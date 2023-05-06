@@ -1,7 +1,6 @@
 // https://github.com/nothingislost/obsidian-hover-editor/blob/master/src/types/obsidian.d.ts
 import type { EditorView } from '@codemirror/view';
 import { Plugin, SuggestModal, TFile, View, WorkspaceLeaf } from 'obsidian';
-// import { HoverEditorParent } from '@/ui/modal/popover';
 
 interface InternalPlugins {
     switcher: QuickSwitcherPlugin;
@@ -198,7 +197,6 @@ declare module 'obsidian' {
         type?: string;
     }
     interface HoverPopover {
-        // parent: HoverEditorParent | null;
         targetEl: HTMLElement;
         hoverEl: HTMLElement;
         position(pos?: MousePos): void;

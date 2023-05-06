@@ -1,18 +1,14 @@
 <template>
     <div>
-        <div id="resultContainer"></div>
-        <!-- <Teleport to="body" disable="false">
-            <div v-html="mdText"></div>
-        </Teleport> -->
         <div class="taskListContainer">
-            <div
-                v-for="task in taskList"
-                :key="task.id"
-                @mouseenter="previewTask($event, task)"
-                @click="onClicked($event, task)"
-            >
-                <input type="checkbox" :checked="task.status !== ' '" @click="onChecked($event, task)" />
-                {{ task.text }}
+            <div v-for="task in taskList" :key="task.id" @click="onClicked($event, task)">
+                <div>
+                    <input type="checkbox" :checked="task.status !== ' '" @click="onChecked($event, task)" />
+                    {{ task.text }}
+                </div>
+                <n-icon @mouseenter="previewTask($event, task)">
+                    <EyeOutline />
+                </n-icon>
             </div>
         </div>
     </div>
@@ -22,6 +18,8 @@
 import { Component, MarkdownPreviewView, MarkdownView, Platform } from 'obsidian';
 import { type SListItem, STask, getAPI as getDataviewApi } from 'obsidian-dataview';
 import { type Ref, ref } from 'vue';
+import { NIcon } from 'naive-ui';
+import { EyeOutline } from '@vicons/ionicons5';
 import { debounce } from 'lodash-es';
 import {
     concentrateTasks,
@@ -43,16 +41,8 @@ const DataviewAPI = getDataviewApi();
 const searchHandle = async () => {
     // query
     // mdText.value = (await DataviewAPI.queryMarkdown(listTasks)).value;
-
-    // taskList.value
     const res = await DataviewAPI.query(concentrateTasks);
     taskList.value = res.value.values;
-    // console.log(taskList.value);
-    // const component = new Component();
-    // const container = document.querySelector('#resultContainer');
-    // executeJs
-    // const res = await DataviewAPI.execute(queryImportantTasks, container, component, '');
-    // console.log(res);
 };
 
 searchHandle();
@@ -75,7 +65,6 @@ const debouncePreview = debounce((event, item: STask) => {
 }, 400);
 const previewTask = async (event, item: STask) => {
     // 延迟触发，鼠标移出后取消触发
-    // console.log('previewTask', item);
     debouncePreview(event, item);
 };
 
@@ -159,15 +148,18 @@ const onChecked = async (evt, item: STask) => {
         cursor: pointer;
     }
 
-    div {
+    & > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         padding: 4px 8px;
         border-radius: 4px;
         margin: 4px 0;
         background-color: rgba(0, 0, 0, 0.1);
         transition: background-color 0.2s ease-in-out;
     }
-    div:hover {
-        background-color: rgba(0, 183, 255, 0.692);
+    & > div:hover {
+        background-color: rgba(0, 0, 0, 0.3);
     }
 }
 </style>

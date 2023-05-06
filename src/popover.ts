@@ -1,24 +1,20 @@
 import {
     Component,
-    type EphemeralState,
     HoverPopover,
     MarkdownView,
     type MousePos,
     PopoverState,
-    TFile,
     View,
     Workspace,
     WorkspaceLeaf,
     WorkspaceSplit,
     WorkspaceTabs,
     requireApiVersion,
-    resolveSubpath,
     setIcon,
 } from 'obsidian';
 import HoverEditorPlugin from './main';
 import { useSystemStore } from '@/stores';
 
-import { isA } from '@/utils/misc';
 import { genId } from '@/utils/common';
 import { SETTINGS } from '@/settings';
 
@@ -47,8 +43,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
     shownPos: MousePos | null;
 
-    abortController? = this.addChild(new Component());
-
     detaching = false;
 
     opening = false;
@@ -69,10 +63,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
     id = genId(8);
 
-    onMouseIn: (event: MouseEvent) => void;
-
-    onMouseOut: (event: MouseEvent) => void;
-
     originalPath: string; // these are kept to avoid adopting targets w/a different link
     originalLinkText: string;
 
@@ -87,26 +77,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
             }
         }
         return windows;
-    }
-
-    static containerForDocument(doc: Document) {
-        if (doc !== document && app.workspace.floatingSplit)
-            for (const container of app.workspace.floatingSplit.children) {
-                if (container.doc === doc) return container;
-            }
-        return app.workspace.rootSplit;
-    }
-
-    static activePopovers() {
-        return this.activeWindows().flatMap(this.popoversForWindow);
-    }
-
-    static popoversForWindow(win?: Window) {
-        return (
-            Array.prototype.slice.call(win?.document?.body.querySelectorAll('.hover-popover') ?? []) as HTMLElement[]
-        )
-            .map(el => popovers.get(el)!)
-            .filter(he => he);
     }
 
     static forLeaf(leaf: WorkspaceLeaf | undefined) {
@@ -140,30 +110,7 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.parent = parent;
         this.waitTime = waitTime;
         this.state = PopoverState.Showing;
-        const { hoverEl } = this;
-        this.onMouseIn = this._onMouseIn.bind(this);
-        this.onMouseOut = this._onMouseOut.bind(this);
-        this.abortController!.load();
 
-        if (targetEl) {
-            targetEl.addEventListener('mouseover', this.onMouseIn);
-            targetEl.addEventListener('mouseout', this.onMouseOut);
-        }
-
-        hoverEl.addEventListener('mouseover', event => {
-            if (mouseIsOffTarget(event, hoverEl)) {
-                this.onHover = true;
-                this.onTarget = false;
-                this.transition();
-            }
-        });
-        hoverEl.addEventListener('mouseout', event => {
-            if (mouseIsOffTarget(event, hoverEl)) {
-                this.onHover = false;
-                this.onTarget = false;
-                this.transition();
-            }
-        });
         this.timer = window.setTimeout(this.show.bind(this), waitTime);
 
         // custom logic begin
@@ -191,7 +138,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
     attachLeaf(): WorkspaceLeaf {
         this.rootSplit.getRoot = () => app.workspace[this.document === document ? 'rootSplit' : 'floatingSplit']!;
-        this.rootSplit.getContainer = () => HoverEditor.containerForDocument(this.document);
         this.titleEl.insertAdjacentElement('afterend', this.rootSplit.containerEl);
         const leaf = this.plugin.app.workspace.createLeafInParent(this.rootSplit, 0);
         this.updateLeaves();
@@ -272,40 +218,9 @@ export class HoverEditor extends nosuper(HoverPopover) {
     }
 
     transition() {
-        if (this.shouldShow()) {
-            if (this.state === PopoverState.Hiding) {
-                this.state = PopoverState.Shown;
-                clearTimeout(this.timer);
-            }
-        } else {
-            if (this.state === PopoverState.Showing) {
-                this.hide();
-            } else {
-                if (this.state === PopoverState.Shown) {
-                    this.state = PopoverState.Hiding;
-                    this.timer = window.setTimeout(() => {
-                        if (this.shouldShow()) {
-                            this.transition();
-                        } else {
-                            this.hide();
-                        }
-                    }, this.waitTime);
-                }
-            }
-        }
-    }
-
-    _onMouseIn(event: MouseEvent) {
-        if (!(this.targetEl && !mouseIsOffTarget(event, this.targetEl))) {
-            this.onTarget = true;
-            this.transition();
-        }
-    }
-
-    _onMouseOut(event: MouseEvent) {
-        if (!(this.targetEl && !mouseIsOffTarget(event, this.targetEl))) {
-            this.onTarget = false;
-            this.transition();
+        if (this.state === PopoverState.Hiding) {
+            this.state = PopoverState.Shown;
+            clearTimeout(this.timer);
         }
     }
 
@@ -334,46 +249,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
 
         this.document.body.appendChild(this.hoverEl);
         positionEl(rect, this.hoverEl, { gap: 10 }, this.document);
-
-        // custom hover editor logic
-        if (pos) {
-            // give positionEl a chance to adjust the position before we read the coords
-            setTimeout(() => {
-                const left = parseFloat(this.hoverEl.style.left);
-                const top = parseFloat(this.hoverEl.style.top);
-                this.hoverEl.setAttribute('data-x', String(left));
-                this.hoverEl.setAttribute('data-y', String(top));
-            }, 0);
-        }
-    }
-
-    shouldShow() {
-        return this.shouldShowSelf() || this.shouldShowChild();
-    }
-
-    shouldShowChild(): boolean {
-        return HoverEditor.activePopovers().some(popover => {
-            if (popover !== this && popover.targetEl && this.hoverEl.contains(popover.targetEl)) {
-                return popover.shouldShow();
-            }
-            return false;
-        });
-    }
-
-    shouldShowSelf() {
-        // Don't let obsidian show() us if we've already started closing
-        // return !this.detaching && (this.onTarget || this.onHover);
-        return (
-            !this.detaching &&
-            !!(
-                this.onTarget ||
-                this.onHover ||
-                this.state == PopoverState.Shown ||
-                this.document.querySelector(
-                    `body>.modal-container, body > #he${this.id} ~ .menu, body > #he${this.id} ~ .suggestion-container`,
-                )
-            )
-        );
     }
 
     show() {
@@ -442,8 +317,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
             });
         } else {
             this.parent = null;
-            this.abortController?.unload();
-            this.abortController = undefined;
             return this.nativeHide();
         }
     }
@@ -458,8 +331,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
         if (targetEl) {
             const parent = targetEl.matchParent('.hover-popover');
             if (parent) popovers.get(parent)?.transition();
-            targetEl.removeEventListener('mouseover', this.onMouseIn);
-            targetEl.removeEventListener('mouseout', this.onMouseOut);
         }
 
         this.onHide();
@@ -541,56 +412,4 @@ export function positionEl(
         left: leftResult,
         vresult: vresult,
     };
-}
-
-/**
- * "Get the position of an element relative to a parent element."
- *
- * The function takes two arguments:
- *
- * el: The element whose position we want to get.
- * parentEl: The parent element to which we want to get the relative position.
- * The function returns an object with two properties:
- *
- * top: The top position of the element relative to the parent element.
- * left: The left position of the element relative to the parent element.
- *
- * The function works by looping through the offsetParent chain of the element and subtracting the
- * scrollTop and scrollLeft values of the parent elements
- * @param {HTMLElement | null} el - The element you want to get the relative position of.
- * @param {HTMLElement | null} parentEl - The parent element that you want to get the relative position
- * of.
- * @returns An object with two properties, top and left.
- */
-function getRelativePos(el: HTMLElement | null, parentEl: HTMLElement | null) {
-    let top = 0,
-        left = 0;
-    for (let nextParentEl = parentEl ? parentEl.offsetParent : null; el && el !== parentEl && el !== nextParentEl; ) {
-        top += el.offsetTop;
-        left += el.offsetLeft;
-        const offsetParent = el.offsetParent as HTMLElement | null;
-
-        for (let parent = el.parentElement; parent && parent !== offsetParent; ) {
-            top -= parent.scrollTop;
-            left -= parent.scrollLeft;
-            parent = parent.parentElement;
-        }
-
-        if (offsetParent && offsetParent !== parentEl && offsetParent !== nextParentEl) {
-            top -= offsetParent.scrollTop;
-            left -= offsetParent.scrollLeft;
-        }
-
-        el = offsetParent;
-    }
-
-    return {
-        top,
-        left,
-    };
-}
-
-function mouseIsOffTarget(event: MouseEvent, el: Element) {
-    const relatedTarget = event.relatedTarget;
-    return !(isA(relatedTarget, Node) && el.contains(relatedTarget));
 }
