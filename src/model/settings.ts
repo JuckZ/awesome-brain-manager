@@ -1,6 +1,5 @@
 import { AbstractTextComponent, Setting } from 'obsidian';
-import type { ReadOnlyReference } from '../model/ref';
-import { Reference } from '../model/ref';
+import { type ReadOnlyReference, Reference } from '../model/ref';
 import LoggerUtil from '../utils/logger';
 
 class SettingRegistry {

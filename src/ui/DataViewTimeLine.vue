@@ -22,6 +22,7 @@
 import { Component, MarkdownPreviewView, MarkdownView, Platform } from 'obsidian';
 import { type SListItem, STask, getAPI as getDataviewApi } from 'obsidian-dataview';
 import { type Ref, ref } from 'vue';
+import { debounce } from 'lodash-es';
 import {
     concentrateTasks,
     importantTasks,
@@ -31,6 +32,7 @@ import {
     rewriteTask,
     setTaskCompletion,
 } from '@/utils/dataview';
+import { eventTypes } from '@/types/types';
 
 const keyword = ref('');
 let mdText = ref('');
@@ -62,9 +64,19 @@ const refreshOperation = async () => {
 // DataviewAPI.index.onChange(refreshOperation);
 app.workspace.on('dataview:refresh-views', refreshOperation);
 
+const debouncePreview = debounce((event, item: STask) => {
+    const evt = new CustomEvent(eventTypes.previewCursor, {
+        detail: {
+            originEvent: event,
+            cursorTarget: item,
+        },
+    });
+    window.dispatchEvent(evt);
+}, 400);
 const previewTask = async (event, item: STask) => {
     // 延迟触发，鼠标移出后取消触发
     // console.log('previewTask', item);
+    debouncePreview(event, item);
 };
 
 const onClicked = async (evt, item: STask) => {

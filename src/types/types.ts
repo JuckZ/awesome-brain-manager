@@ -5,6 +5,7 @@ export const eventTypes = {
     dbInited: 'db-inited',
     openBrowser: 'open-browser',
     calledFunction: 'called-function',
+    previewCursor: 'preview-cursor',
 };
 
 export type GlobalChange = 'file-create' | 'file-remove' | 'file-rename';
@@ -39,4 +40,8 @@ export type EditorState = {
 export type SystemState = {
     language: string;
     theme: string;
+    mouseCoords: {
+        x: number;
+        y: number;
+    };
 };

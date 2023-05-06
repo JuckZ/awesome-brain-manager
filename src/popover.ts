@@ -1,13 +1,9 @@
-import { around } from 'monkey-around';
 import {
     Component,
-    type EmptyView,
     type EphemeralState,
     HoverPopover,
-    MarkdownEditView,
     MarkdownView,
     type MousePos,
-    type OpenViewState,
     PopoverState,
     TFile,
     View,
@@ -15,13 +11,13 @@ import {
     WorkspaceLeaf,
     WorkspaceSplit,
     WorkspaceTabs,
-    parseLinktext,
     requireApiVersion,
     resolveSubpath,
     setIcon,
 } from 'obsidian';
-
 import HoverEditorPlugin from './main';
+import { useSystemStore } from '@/stores';
+
 import { isA } from '@/utils/misc';
 import { genId } from '@/utils/common';
 import { SETTINGS } from '@/settings';
@@ -35,8 +31,6 @@ export interface HoverEditorParent {
     parent: HoverEditorParent | null;
 }
 type ConstructableWorkspaceSplit = new (ws: Workspace, dir: 'horizontal' | 'vertical') => WorkspaceSplit;
-
-let mouseCoords: MousePos = { x: 0, y: 0 };
 
 function nosuper<T>(base: new (...args: unknown[]) => T): new () => T {
     const derived = function () {
@@ -171,7 +165,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
             }
         });
         this.timer = window.setTimeout(this.show.bind(this), waitTime);
-        this.document.addEventListener('mousemove', setMouseCoords);
 
         // custom logic begin
         popovers.set(this.hoverEl, this);
@@ -179,31 +172,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.containerEl = this.hoverEl.createDiv('popover-content');
         this.buildWindowControls();
         this.setInitialDimensions();
-    }
-
-    adopt(targetEl: HTMLElement) {
-        if (this.targetEl === targetEl) return true;
-        const bounds = targetEl?.getBoundingClientRect();
-        if (overlaps(this.targetRect, bounds)) {
-            this.targetEl.removeEventListener('mouseover', this.onMouseIn);
-            this.targetEl.removeEventListener('mouseout', this.onMouseOut);
-            targetEl.addEventListener('mouseover', this.onMouseIn);
-            targetEl.addEventListener('mouseout', this.onMouseOut);
-            this.targetEl = targetEl;
-            this.targetRect = bounds;
-            const { x, y } = mouseCoords;
-            this.onTarget = overlaps(bounds, { left: x, right: x, top: y, bottom: y } as DOMRect);
-            this.transition();
-            return true;
-        } else {
-            this.onTarget = false;
-            this.transition();
-        }
-        return false;
-    }
-
-    getDefaultMode() {
-        return this.parent?.view?.getMode ? this.parent.view.getMode() : 'preview';
     }
 
     updateLeaves() {
@@ -362,21 +330,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
                 left: pos.x,
                 right: pos.x,
             };
-        } else if (this.targetEl) {
-            const relativePos = getRelativePos(this.targetEl, this.document.body);
-            rect = {
-                top: relativePos.top,
-                bottom: relativePos.top + this.targetEl.offsetHeight,
-                left: relativePos.left,
-                right: relativePos.left + this.targetEl.offsetWidth,
-            };
-        } else {
-            rect = {
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-            };
         }
 
         this.document.body.appendChild(this.hoverEl);
@@ -428,14 +381,11 @@ export class HoverEditor extends nosuper(HoverPopover) {
         if (!this.targetEl || this.document.body.contains(this.targetEl)) {
             this.state = PopoverState.Shown;
             this.timer = 0;
+            const mouseCoords: MousePos = useSystemStore().systemState.mouseCoords;
             this.shownPos = mouseCoords;
             this.position(mouseCoords);
-            this.document.removeEventListener('mousemove', setMouseCoords);
             this.onShow();
             app.workspace.onLayoutChange();
-            // initializingHoverPopovers.remove(this);
-            // activeHoverPopovers.push(this);
-            // initializePopoverChecker();
             this.load();
         } else {
             this.hide();
@@ -461,10 +411,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
     hide() {
         this.onTarget = this.onHover = false;
         this.detaching = true;
-        // Once we reach this point, we're committed to closing
-
-        // in case we didn't ever call show()
-        this.document.removeEventListener('mousemove', setMouseCoords);
 
         // A timer might be pending to call show() for the first time, make sure
         // it doesn't bring us back up after we close
@@ -519,205 +465,6 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.onHide();
         this.unload();
     }
-
-    resolveLink(linkText: string, sourcePath: string): TFile | null {
-        const link = parseLinktext(linkText);
-        const tFile = link ? this.plugin.app.metadataCache.getFirstLinkpathDest(link.path, sourcePath) : null;
-        return tFile;
-    }
-
-    async openLink(linkText: string, sourcePath: string, eState?: EphemeralState, createInLeaf?: WorkspaceLeaf) {
-        let file = this.resolveLink(linkText, sourcePath);
-        const link = parseLinktext(linkText);
-        if (!file && createInLeaf) {
-            const folder = this.plugin.app.fileManager.getNewFileParent(sourcePath);
-            file = await this.plugin.app.fileManager.createNewMarkdownFile(folder, link.path);
-        }
-        if (!file) {
-            this.displayCreateFileAction(linkText, sourcePath, eState);
-            return;
-        }
-        const { viewRegistry } = this.plugin.app;
-        const viewType = viewRegistry.typeByExtension[file.extension];
-        if (!viewType || !viewRegistry.viewByType[viewType]) {
-            this.displayOpenFileAction(file);
-            return;
-        }
-        eState = Object.assign(this.buildEphemeralState(file, link), eState);
-        const parentMode = this.getDefaultMode();
-        const state = this.buildState(parentMode, eState);
-        const leaf = await this.openFile(file, state, createInLeaf);
-        const leafViewType = leaf?.view?.getViewType();
-        if (leafViewType === 'image') {
-            // TODO: temporary workaround to prevent image popover from disappearing immediately when using live preview
-            if (
-                SETTINGS.autoFocus.value &&
-                // eslint-disable-next-line no-prototype-builtins
-                this.parent?.hasOwnProperty('editorEl') &&
-                (this.parent as unknown as MarkdownEditView).editorEl!.hasClass('is-live-preview')
-            ) {
-                this.waitTime = 3000;
-            }
-            const img = leaf!.view.contentEl.querySelector('img')!;
-            this.hoverEl.dataset.imgHeight = String(img.naturalHeight);
-            this.hoverEl.dataset.imgWidth = String(img.naturalWidth);
-            this.hoverEl.dataset.imgRatio = String(img.naturalWidth / img.naturalHeight);
-        } else if (leafViewType === 'pdf') {
-            this.hoverEl.style.height = '800px';
-            this.hoverEl.style.width = '600px';
-        }
-        if (state.state?.mode === 'source')
-            this.whenShown(() => {
-                // Not sure why this is needed, but without it we get issue #186
-                if (requireApiVersion('1.0')) (leaf?.view as any)?.editMode?.reinit?.();
-                leaf?.view?.setEphemeralState(state.eState);
-            });
-    }
-
-    displayOpenFileAction(file: TFile) {
-        const leaf = this.attachLeaf();
-        const view = leaf.view! as EmptyView;
-        view.emptyTitleEl.hide();
-        view.actionListEl.empty();
-        const { actionListEl } = view;
-        actionListEl.createDiv({ cls: 'file-embed-title' }, div => {
-            div.createSpan({ cls: 'file-embed-icon' }, span => setIcon(span, 'document'));
-            div.appendText(' ' + file.name);
-        });
-        actionListEl.addEventListener('click', () => this.plugin.app.openWithDefaultApp(file.path));
-        actionListEl.setAttribute('aria-label', i18next.t('interface.embed-open-in-default-app-tooltip'));
-    }
-
-    displayCreateFileAction(linkText: string, sourcePath: string, eState?: EphemeralState) {
-        const leaf = this.attachLeaf();
-        const view = leaf.view as EmptyView;
-        if (view) {
-            view.emptyTitleEl?.hide();
-            view.actionListEl?.empty();
-            const createEl = view.actionListEl?.createEl('button', 'empty-state-action');
-            if (!createEl) return;
-            createEl.textContent = `${linkText} is not yet created. Click to create.`;
-            if (SETTINGS.autoFocus.value) {
-                setTimeout(() => {
-                    createEl?.focus();
-                }, 200);
-            }
-            createEl.addEventListener(
-                'click',
-                async () => {
-                    await this.openLink(linkText, sourcePath, eState, leaf);
-                },
-                { once: true },
-            );
-        }
-    }
-
-    whenShown(callback: () => any) {
-        // invoke callback once the popover is visible
-        if (this.detaching) return;
-        const existingCallback = this.onShowCallback;
-        this.onShowCallback = () => {
-            if (this.detaching) return;
-            callback();
-            if (typeof existingCallback === 'function') existingCallback();
-        };
-        if (this.state === PopoverState.Shown) {
-            this.onShowCallback();
-            this.onShowCallback = undefined;
-        }
-    }
-
-    async openFile(file: TFile, openState?: OpenViewState, useLeaf?: WorkspaceLeaf) {
-        if (this.detaching) return;
-        const leaf = useLeaf ?? this.attachLeaf();
-        this.opening = true;
-        try {
-            await leaf.openFile(file, openState);
-            if (SETTINGS.autoFocus.value && !this.detaching) {
-                this.whenShown(() => {
-                    // Don't set focus so as not to activate the Obsidian window during unfocused mouseover
-                    app.workspace.setActiveLeaf(leaf, false, false);
-                    // Set only the leaf focus, rather than global focus
-                    if (app.workspace.activeLeaf === leaf) leaf.setEphemeralState({ focus: true });
-                    // Prevent this leaf's file from registering as a recent file
-                    // (for the quick switcher or Recent Files plugin) for the next
-                    // 1ms.  (They're both triggered by a file-open event that happens
-                    // in a timeout 0ms after setActiveLeaf, so we register now and
-                    // uninstall later to ensure our uninstalls happen after the event.)
-                    setTimeout(
-                        around(Workspace.prototype, {
-                            recordMostRecentOpenedFile(old) {
-                                return function (_file: TFile) {
-                                    // Don't update the quick switcher's recent list
-                                    if (_file !== file) {
-                                        return old.call(this, _file);
-                                    }
-                                };
-                            },
-                        }),
-                        1,
-                    );
-                    const recentFiles = this.plugin.app.plugins.plugins['recent-files-obsidian'];
-                    if (recentFiles)
-                        setTimeout(
-                            around(recentFiles, {
-                                shouldAddFile(old) {
-                                    return function (_file: TFile) {
-                                        // Don't update the Recent Files plugin
-                                        return _file !== file && old.call(this, _file);
-                                    };
-                                },
-                            }),
-                            1,
-                        );
-                });
-            } else if (!SETTINGS.autoFocus.value && !this.detaching) {
-                const titleEl = this.hoverEl.querySelector('.popover-title');
-                if (!titleEl) return;
-                titleEl.textContent = leaf.view?.getDisplayText();
-                titleEl.setAttribute('data-path', leaf.view?.file?.path);
-            }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            this.opening = false;
-            if (this.detaching) this.hide();
-        }
-        return leaf;
-    }
-
-    buildState(parentMode: string, eState?: EphemeralState) {
-        const defaultMode = SETTINGS.defaultMode.value;
-        const mode = defaultMode === 'match' ? parentMode : SETTINGS.defaultMode.value;
-        return {
-            active: false, // Don't let Obsidian force focus if we have autofocus off
-            state: { mode: mode },
-            eState: eState,
-        };
-    }
-
-    buildEphemeralState(
-        file: TFile,
-        link?: {
-            path: string;
-            subpath: string;
-        },
-    ) {
-        const cache = this.plugin.app.metadataCache.getFileCache(file);
-        const subpath = cache ? resolveSubpath(cache, link?.subpath || '') : undefined;
-        const eState: EphemeralState = { subpath: link?.subpath };
-        if (subpath) {
-            eState.line = subpath.start.line;
-            eState.startLoc = subpath.start;
-            eState.endLoc = subpath.end || undefined;
-        }
-        return eState;
-    }
-}
-
-export function isHoverLeaf(leaf: WorkspaceLeaf) {
-    // Work around missing enhance.js API by checking match condition instead of looking up parent
-    return leaf.containerEl.matches('.popover.hover-popover.hover-editor .workspace-leaf');
 }
 
 /**
@@ -843,25 +590,7 @@ function getRelativePos(el: HTMLElement | null, parentEl: HTMLElement | null) {
     };
 }
 
-export function setMouseCoords(event: MouseEvent) {
-    mouseCoords = {
-        x: event.clientX,
-        y: event.clientY,
-    };
-}
-
 function mouseIsOffTarget(event: MouseEvent, el: Element) {
     const relatedTarget = event.relatedTarget;
     return !(isA(relatedTarget, Node) && el.contains(relatedTarget));
-}
-
-function overlaps(rect1?: DOMRect, rect2?: DOMRect) {
-    return !!(
-        rect1 &&
-        rect2 &&
-        rect1.right > rect2.left &&
-        rect1.left < rect2.right &&
-        rect1.bottom > rect2.top &&
-        rect1.top < rect2.bottom
-    );
 }

@@ -9,7 +9,6 @@ import {
     Menu,
     Plugin,
     type PluginManifest,
-    PopoverState,
     TAbstractFile,
     TFile,
     Tasks,
@@ -26,8 +25,6 @@ import {
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
 import { expandEmmetAbbreviation } from './utils/emmet';
-import { HoverEditor, type HoverEditorParent, isHoverLeaf } from '@/popover';
-import { onLinkHover } from '@/onLinkHover';
 import Replacer from '@/Replacer';
 import Process from '@/process/Process';
 import { checkInDefaultPath, checkInList, customSnippetPath } from '@/utils/constants';
@@ -50,12 +47,13 @@ import { eventTypes } from '@/types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
 import { notifyNtfy } from '@/api';
 import '@/main.scss';
-import { isA } from '@/utils/misc';
 import { NotifyUtil } from '@/utils/notify';
 import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
+import { HoverEditor, type HoverEditorParent } from '@/popover';
+
 // import { initWorker } from '@/web-worker';
 
 // initWorker();
@@ -66,7 +64,6 @@ const media = window.matchMedia('(prefers-color-scheme: dark)');
 export default class AwesomeBrainManagerPlugin extends Plugin {
     pluginDataIO: PluginDataIO;
     private pomodoroHistoryView: PomodoroHistoryView | null;
-    quickPreviewFunction: (file: TFile, data: string) => any;
     resizeFunction: () => any;
     clickFunction: (evt: MouseEvent) => any;
     activeLeafChangeFunction: (leaf: WorkspaceLeaf | null) => any;
@@ -322,8 +319,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 monkeyPatchConsole(this);
             }
             this.watchVault();
-            this.patchSlidingPanes();
-            this.patchLinkHover();
             setTimeout(() => {
                 // workaround to ensure our plugin shows up properly within Style Settings
                 this.app.workspace.trigger('css-change');
@@ -399,111 +394,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             }),
         );
-    }
-
-    patchSlidingPanes() {
-        const SlidingPanesPlugin = this.app.plugins.plugins['sliding-panes-obsidian']?.constructor;
-        if (SlidingPanesPlugin) {
-            const uninstaller = around(SlidingPanesPlugin.prototype, {
-                // eslint-disable-next-line @typescript-eslint/ban-types
-                handleFileOpen(old: Function) {
-                    return function (...args: unknown[]) {
-                        // sliding panes needs to ignore popover open events or else it freaks out
-                        if (isHoverLeaf(this.app.workspace.activeLeaf)) return;
-                        return old.call(this, ...args);
-                    };
-                },
-                // eslint-disable-next-line @typescript-eslint/ban-types
-                handleLayoutChange(old: Function) {
-                    return function (...args: unknown[]) {
-                        // sliding panes needs to ignore popovers or else it activates the wrong pane
-                        if (isHoverLeaf(this.app.workspace.activeLeaf)) return;
-                        return old.call(this, ...args);
-                    };
-                },
-                // eslint-disable-next-line @typescript-eslint/ban-types
-                focusActiveLeaf(old: Function) {
-                    return function (...args: unknown[]) {
-                        // sliding panes tries to add popovers to the root split if we don't exclude them
-                        if (isHoverLeaf(this.app.workspace.activeLeaf)) return;
-                        return old.call(this, ...args);
-                    };
-                },
-            });
-            this.register(uninstaller);
-        }
-    }
-
-    patchLinkHover() {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const plugin = this;
-        const pagePreviewPlugin = this.app.internalPlugins.plugins['page-preview'];
-        if (!pagePreviewPlugin.enabled) return;
-        const uninstaller = around(pagePreviewPlugin.instance.constructor.prototype, {
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            onLinkHover(old: Function) {
-                return function (
-                    parent: HoverEditorParent,
-                    targetEl: HTMLElement,
-                    linkText: string,
-                    path: string,
-                    state: EphemeralState,
-                    ...args: unknown[]
-                ) {
-                    onLinkHover(plugin, parent, targetEl, linkText, path, state, ...args);
-                };
-            },
-        });
-        this.register(uninstaller);
-
-        // This will recycle the event handlers so that they pick up the patched onLinkHover method
-        pagePreviewPlugin.disable();
-        pagePreviewPlugin.enable();
-
-        plugin.register(function () {
-            if (!pagePreviewPlugin.enabled) return;
-            pagePreviewPlugin.disable();
-            pagePreviewPlugin.enable();
-        });
-    }
-
-    patchUnresolvedGraphNodeHover() {
-        const leaf = new (WorkspaceLeaf as new (app: App) => WorkspaceLeaf)(this.app);
-        const view = this.app.internalPlugins.plugins.graph.views.localgraph(leaf);
-        const GraphEngine = view.engine.constructor;
-        leaf.detach(); // close the view
-        view.renderer?.worker?.terminate(); // ensure the worker is terminated
-        const uninstall = around(GraphEngine.prototype, {
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            onNodeHover(old: Function) {
-                return function (event: UIEvent, linkText: string, nodeType: string, ...items: unknown[]) {
-                    if (nodeType === 'unresolved') {
-                        if ((this.onNodeUnhover(), isA(event, MouseEvent))) {
-                            if (
-                                this.hoverPopover &&
-                                this.hoverPopover.state !== PopoverState.Hidden &&
-                                this.lastHoverLink === linkText
-                            ) {
-                                this.hoverPopover.onTarget = true;
-                                return void this.hoverPopover.transition();
-                            }
-                            this.lastHoverLink = linkText;
-                            this.app.workspace.trigger('hover-link', {
-                                event: event,
-                                source: 'graph',
-                                hoverParent: this,
-                                targetEl: null,
-                                linktext: linkText,
-                            });
-                        }
-                    } else {
-                        return old.call(this, event, linkText, nodeType, ...items);
-                    }
-                };
-            },
-        });
-        this.register(uninstall);
-        leaf.detach();
     }
 
     private startPomodoroTask() {
@@ -621,30 +511,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
-    convertLeafToPopover(oldLeaf: WorkspaceLeaf) {
-        if (!oldLeaf) return;
-        const newLeaf = this.spawnPopover(undefined, () => {
-            const { parentSplit: newParentSplit } = newLeaf;
-            const { parentSplit: oldParentSplit } = oldLeaf;
-            oldParentSplit.removeChild(oldLeaf);
-            newParentSplit.replaceChild(0, oldLeaf, true);
-            this.app.workspace.setActiveLeaf(oldLeaf, false, true);
-        });
-        return newLeaf;
-    }
-
-    dockPopoverToWorkspace(oldLeaf: WorkspaceLeaf) {
-        if (!oldLeaf) return;
-        oldLeaf.parentSplit.removeChild(oldLeaf);
-        const { rootSplit } = this.app.workspace;
-        if (requireApiVersion('0.16.3') && rootSplit.children[0] instanceof WorkspaceTabs) {
-            rootSplit.children[0].insertChild(-1, oldLeaf);
-        } else rootSplit.insertChild(-1, oldLeaf);
-        app.workspace.activeLeaf = null; // Force re-activation
-        app.workspace.setActiveLeaf(oldLeaf, false, true);
-        return oldLeaf;
-    }
-
     spawnPopover(initiatingEl?: HTMLElement, onShowCallback?: () => unknown): WorkspaceLeaf {
         const parent = this.app.workspace.activeLeaf as unknown as HoverEditorParent;
         if (!initiatingEl) initiatingEl = parent.containerEl;
@@ -653,81 +519,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     private setupCommands() {
-        this.addCommand({
-            id: 'open-new-popover',
-            name: 'Open new Hover Editor',
-            callback: () => {
-                // Focus the leaf after it's shown
-                const newLeaf = this.spawnPopover(undefined, () =>
-                    this.app.workspace.setActiveLeaf(newLeaf, false, true),
-                );
-            },
-        });
-        this.addCommand({
-            id: 'open-current-file-in-new-popover',
-            name: 'Open current file in new Hover Editor',
-            checkCallback: (checking: boolean) => {
-                const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-                if (activeView) {
-                    if (!checking) {
-                        const newLeaf = this.spawnPopover(undefined, () =>
-                            this.app.workspace.setActiveLeaf(newLeaf, false, true),
-                        );
-                        newLeaf.openFile(activeView.file);
-                    }
-                    return true;
-                }
-                return false;
-            },
-        });
-        this.addCommand({
-            id: 'convert-active-pane-to-popover',
-            name: 'Convert active pane to Hover Editor',
-            checkCallback: (checking: boolean) => {
-                const { activeLeaf } = this.app.workspace;
-                if (activeLeaf) {
-                    if (!checking) {
-                        this.convertLeafToPopover(activeLeaf);
-                    }
-                    return true;
-                }
-                return false;
-            },
-        });
-        this.addCommand({
-            id: 'dock-active-popover-to-workspace',
-            name: 'Dock active Hover Editor to workspace',
-            checkCallback: (checking: boolean) => {
-                const { activeLeaf } = this.app.workspace;
-                if (activeLeaf && HoverEditor.forLeaf(activeLeaf)) {
-                    if (!checking) {
-                        this.dockPopoverToWorkspace(activeLeaf);
-                    }
-                    return true;
-                }
-                return false;
-            },
-        });
-        this.addCommand({
-            id: 'open-link-in-new-popover',
-            name: 'Test Open link under cursor in new Hover Editor',
-            checkCallback: (checking: boolean) => {
-                const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-                if (activeView) {
-                    if (!checking) {
-                        const token = activeView.editor.getClickableTokenAt(activeView.editor.getCursor());
-                        if (token?.type === 'internal-link') {
-                            const newLeaf = this.spawnPopover(undefined, () =>
-                                this.app.workspace.setActiveLeaf(newLeaf, false, true),
-                            );
-                            newLeaf.openLinkText(token.text, activeView.file.path);
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            },
-        });
         this.addCommand({
             id: 'cut-line',
             icon: 'scissors',
@@ -926,7 +717,23 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
         });
-        window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
+        const mouseMoveCallback = (event: MouseEvent) => {
+            useSystemStore().updateMouseCoords({
+                x: event.clientX,
+                y: event.clientY,
+            });
+        };
+        const previewCursorCallback = (e: CustomEvent) => {
+            const newLeaf = this.spawnPopover(undefined, () => this.app.workspace.setActiveLeaf(newLeaf, false, true));
+            newLeaf.openLinkText(e.detail.cursorTarget.title, e.detail.cursorTarget.path);
+        };
+        window.addEventListener('mousemove', mouseMoveCallback);
+        this.register(() => window.removeEventListener('mousemove', mouseMoveCallback));
+        window.addEventListener(eventTypes.previewCursor, previewCursorCallback);
+        this.register(() => window.removeEventListener(eventTypes.previewCursor, previewCursorCallback));
+        const openBrowserCallback = this.openBrowserHandle.bind(this);
+        window.addEventListener(eventTypes.openBrowser, openBrowserCallback);
+        this.register(() => window.removeEventListener(eventTypes.openBrowser, openBrowserCallback));
         [
             this.app.workspace.on('dataview:refresh-views', this.maybeRefresh),
             this.app.workspace.on('codemirror', this.codemirrorFunction),

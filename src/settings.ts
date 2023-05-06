@@ -1,7 +1,6 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/settings.ts
 import { App, PluginSettingTab, Plugin_2 } from 'obsidian';
-import type { SettingModel } from './model/settings';
-import { RawSerde, SettingTabModel } from './model/settings';
+import { RawSerde, type SettingModel, SettingTabModel } from './model/settings';
 import type { PluginDataIO } from './data';
 import { toggleCursorEffects } from './render/CursorEffects';
 import { toggleBlast } from './render/Blast';
