@@ -113,11 +113,11 @@ export default defineConfig(({ command, mode }) => {
                 },
             }),
             vueJsx(),
-            visualizer({
-                open: true, //注意这里要设置为true，否则无效
-                gzipSize: true,
-                brotliSize: true,
-            }) as PluginOption,
+            // visualizer({
+            //     open: true, //注意这里要设置为true，否则无效
+            //     gzipSize: true,
+            //     brotliSize: true,
+            // }) as PluginOption,
         ],
         optimizeDeps: {
             // include: [

@@ -143,6 +143,8 @@ declare module 'obsidian' {
         onLayoutChange(): void; // tell Obsidian leaves have been added/removed/etc.
     }
     interface Editor {
+        coordsAtPos(pos: EditorPosition): { left: number; top: number };
+        containerEl: HTMLElement;
         getClickableTokenAt(pos: EditorPosition): {
             text: string;
             type: string;

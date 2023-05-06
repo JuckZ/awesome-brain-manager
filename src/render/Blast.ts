@@ -1,5 +1,6 @@
 // https://github.com/chinchang/code-blast-codemirror
-import type { Editor } from 'obsidian';
+import { type Editor, Platform } from 'obsidian';
+import { throttle } from 'lodash-es';
 import party from 'party-js';
 import type { DynamicSourceType } from 'party-js/lib/systems/sources';
 import t from '../i18n';
@@ -16,16 +17,12 @@ let shakeTime = 0,
     titleBarHeight = 40,
     canvas,
     ctx;
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-if (window.app.isMobile) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    titleBarHeight = document.getElementsByClassName('view-header')[5]?.innerHeight || 40;
+if (Platform.isMobile) {
+    const titleEl = document.getElementsByClassName('view-header')[5] as HTMLElement | undefined;
+    titleBarHeight = titleEl?.innerHeight || 40;
 } else {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    titleBarHeight = document.getElementsByClassName('titlebar')[0]?.innerHeight || 40;
+    const titleEl = document.getElementsByClassName('titlebar')[0] as HTMLElement | undefined;
+    titleBarHeight = titleEl?.innerHeight || 40;
 }
 const shakeIntensity = 5,
     particles: any[] = [],
@@ -89,16 +86,20 @@ function heartBeat(node) {
     });
 }
 
-function partyMe(cm) {
+function partyMe(cm: Editor) {
     const cursorPos = cm.getCursor();
-    const pos = cm.coordsAtPos(cursorPos);
-    const node = document.elementFromPoint(pos.left, pos.top) as DynamicSourceType;
-    if (effect == '3') {
-        party.confetti(node, {
-            count: party.variation.range(20, 40),
-        });
-    } else if (effect == '4') {
-        heartBeat(node);
+    try {
+        const pos = cm.coordsAtPos(cursorPos);
+        const node = document.elementFromPoint(pos.left, pos.top) as DynamicSourceType;
+        if (effect == '3') {
+            party.confetti(node, {
+                count: party.variation.range(20, 40),
+            });
+        } else if (effect == '4') {
+            heartBeat(node);
+        }
+    } catch (error) {
+        // console.log(error);
     }
 }
 
@@ -117,14 +118,17 @@ function getRGBComponents(node) {
 
 function spawnParticles(cm) {
     const cursorPos = cm.getCursor();
-    const pos = cm.coordsAtPos(cursorPos);
-    const node = document.elementFromPoint(pos.left, pos.top);
-    const numParticles = random(PARTICLE_NUM_RANGE.min, PARTICLE_NUM_RANGE.max);
-    const color = getRGBComponents(node);
-
-    for (let i = numParticles; i--; ) {
-        particles[particlePointer] = createParticle(pos.left + 10, pos.top - titleBarHeight, color);
-        particlePointer = (particlePointer + 1) % MAX_PARTICLES;
+    try {
+        const pos = cm.coordsAtPos(cursorPos);
+        const node = document.elementFromPoint(pos.left, pos.top);
+        const numParticles = random(PARTICLE_NUM_RANGE.min, PARTICLE_NUM_RANGE.max);
+        const color = getRGBComponents(node);
+        for (let i = numParticles; i--; ) {
+            particles[particlePointer] = createParticle(pos.left + 10, pos.top - titleBarHeight, color);
+            particlePointer = (particlePointer + 1) % MAX_PARTICLES;
+        }
+    } catch (error) {
+        // console.log(error);
     }
 }
 
@@ -207,8 +211,6 @@ function drawParticles() {
 }
 
 function shake(editor: Editor, time) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     cmNode = editor.containerEl;
     shakeTime = shakeTimeMax = time;
 }
@@ -219,20 +221,6 @@ function random(min, max) {
         min = 0;
     }
     return min + ~~(Math.random() * (max - min + 1));
-}
-
-function throttle(callback, limit) {
-    let wait = false;
-    return function () {
-        if (!wait) {
-            // eslint-disable-next-line prefer-rest-params
-            callback.apply(this, arguments);
-            wait = true;
-            setTimeout(function () {
-                wait = false;
-            }, limit);
-        }
-    };
 }
 
 function loop() {
@@ -258,15 +246,9 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-export function onCodeMirrorChange(editor) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+export function onCodeMirrorChange(editor: Editor) {
     throttledShake(editor, 0.3);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     throttledSpawnParticles(editor);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     throttledPartyMe(editor);
 }
 
