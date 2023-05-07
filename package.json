@@ -48,7 +48,8 @@
         "start:example": "ts-node ./src/bin/order.bin.ts pizza beer",
         "semantic-release": "semantic-release",
         "version": "node version-bump.mjs",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "postinstall": "patch-package"
     },
     "bin": {
         "example": "./dest/bin/order.bin.ts"
@@ -148,13 +149,14 @@
         "chalk": "^5.2.0",
         "chart.js": "^4.2.0",
         "commander": "^9.4.1",
-        "cursor-effects": "^1.0.8",
+        "cursor-effects": "^1.0.11",
         "emoji-mart": "^5.5.2",
         "jsonfile": "^6.1.0",
         "lodash-es": "^4.17.21",
         "naive-ui": "^2.34.3",
         "ora": "^6.1.2",
         "party-js": "^2.2.0",
+        "patch-package": "^7.0.0",
         "pinia": "^2.0.32",
         "rrule": "^2.7.1",
         "sql.js": "^1.8.0",

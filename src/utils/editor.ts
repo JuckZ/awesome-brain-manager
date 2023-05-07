@@ -1,4 +1,4 @@
-import { App, type Editor } from 'obsidian';
+import { App, type Editor, Platform } from 'obsidian';
 import { type App as VueApp, createApp } from 'vue';
 import type AwesomeBrainManagerPlugin from '../main';
 import AppVue from '../ui/App.vue';
@@ -29,6 +29,16 @@ export class EditorUtils {
         this.appViewVueApp = createApp(AppVue);
         this.appViewVueApp.use(pinia);
         this.appViewVueApp.mount(`#${appContainerId}`);
+    }
+
+    static getTitleBarHeight(): number {
+        if (Platform.isMobile) {
+            const titleEl = document.getElementsByClassName('view-header')[5] as HTMLElement | undefined;
+            return titleEl?.innerHeight || 40;
+        } else {
+            const titleEl = document.getElementsByClassName('titlebar')[0] as HTMLElement | undefined;
+            return titleEl?.innerHeight || 40;
+        }
     }
 
     static getCurrentSelection(editor: Editor) {

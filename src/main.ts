@@ -303,7 +303,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         EditorUtil.init(this);
         NotifyUtil.init(this);
-        this.setupUI();
         this.setupCommands();
         if (SETTINGS.enableTwemoji.value) {
             MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
@@ -316,6 +315,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             if (SETTINGS.debugEnable.value) {
                 monkeyPatchConsole(this);
             }
+            this.setupUI();
             this.watchVault();
             setTimeout(() => {
                 // workaround to ensure our plugin shows up properly within Style Settings

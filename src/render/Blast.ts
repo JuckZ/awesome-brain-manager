@@ -5,6 +5,7 @@ import party from 'party-js';
 import type { DynamicSourceType } from 'party-js/lib/systems/sources';
 import t from '../i18n';
 import type { SettingModel } from 'model/settings';
+import { EditorUtils } from '@/utils/editor';
 
 let shakeTime = 0,
     shakeTimeMax = 0,
@@ -14,17 +15,10 @@ let shakeTime = 0,
     isActive = false,
     enableShake: SettingModel<boolean, boolean>,
     cmNode,
-    titleBarHeight = 40,
     canvas,
     ctx;
-if (Platform.isMobile) {
-    const titleEl = document.getElementsByClassName('view-header')[5] as HTMLElement | undefined;
-    titleBarHeight = titleEl?.innerHeight || 40;
-} else {
-    const titleEl = document.getElementsByClassName('titlebar')[0] as HTMLElement | undefined;
-    titleBarHeight = titleEl?.innerHeight || 40;
-}
 const shakeIntensity = 5,
+    titleBarHeight = EditorUtils.getTitleBarHeight(),
     particles: any[] = [],
     MAX_PARTICLES = 500,
     PARTICLE_NUM_RANGE = { min: 5, max: 10 },
