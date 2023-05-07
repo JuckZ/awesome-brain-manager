@@ -31,7 +31,6 @@
         "build:check": "run-p type-check build-only",
         "d:theme": "sass --watch ./src/styles/theme/index.scss ../juckz.github.io/blogs/.obsidian/themes/\"Awesome Brain Manager\"/theme.css",
         "t:theme": "sass --watch ./src/styles/theme/index.scss ./dest/out.css",
-
         "preview": "vite preview",
         "test": "vitest",
         "test:unit": "vitest --environment jsdom --root src/",
