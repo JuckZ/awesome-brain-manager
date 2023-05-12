@@ -26,6 +26,7 @@ class Settings {
     noticeAudio: SettingModel<string, string>;
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
+    qweatherApiKey: SettingModel<string, string>;
     version: SettingModel<string, string>;
     enableTwemoji: SettingModel<boolean, boolean>;
     defaultMode: SettingModel<string, string>;
@@ -289,6 +290,14 @@ class Settings {
             .text('')
             .build(new RawSerde());
 
+        this.qweatherApiKey = this.settings
+            .newSettingBuilder()
+            .key('qweatherApiKey')
+            .name('Qweather ApiKey')
+            .desc('input your ApiKey from https://dev.qweather.com/')
+            .text('')
+            .build(new RawSerde());
+
         this.version = this.settings
             .newSettingBuilder()
             .key('version')
@@ -307,7 +316,13 @@ class Settings {
 
         this.settings
             .newGroup('Notification')
-            .addSettings(this.systemNoticeEnable, this.noticeAudio, this.ntfyServerHost, this.ntfyToken);
+            .addSettings(
+                this.systemNoticeEnable,
+                this.noticeAudio,
+                this.ntfyServerHost,
+                this.ntfyToken,
+                this.qweatherApiKey,
+            );
         this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }
 

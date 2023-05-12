@@ -35,7 +35,7 @@ import { codeEmoji } from '@/render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEffects';
 import LoggerUtil from '@/utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
-import { getWeather } from '@/utils/weather';
+import { getWeather } from '@/api/weather';
 import { DBUtil } from '@/utils/db/db';
 import { insertAfterHandler } from '@/utils/content';
 import { getLocalRandomImg, searchPicture } from '@/utils/genBanner';
@@ -474,7 +474,12 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         getLocalRandom: (title, path) => {
             return getLocalRandomImg(this.app, title, path);
         },
-        getWeather,
+        getWeather: () => {
+            return getWeather({
+                city: '',
+                key: SETTINGS.qweatherApiKey.value,
+            });
+        },
     };
 
     async setRandomBanner(path: TAbstractFile | null, origin: string): Promise<void> {
