@@ -474,10 +474,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         getLocalRandom: (title, path) => {
             return getLocalRandomImg(this.app, title, path);
         },
-        getWeather: () => {
+        getWeather: apiKey => {
             return getWeather({
-                city: '',
-                key: SETTINGS.qweatherApiKey.value,
+                apiKey: apiKey || SETTINGS.qweatherApiKey.value,
             });
         },
     };

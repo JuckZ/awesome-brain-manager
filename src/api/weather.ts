@@ -1,9 +1,11 @@
 import { request } from '@/utils/request';
 
 // 你的和风天气API密钥
-const API_KEY = '<你的和风天气API密钥>';
+let API_KEY = '<你的和风天气API密钥>';
 
 const locationId = '';
+
+const city = '';
 
 /**
  * 天气预报接口返回数据的类型定义
@@ -135,6 +137,8 @@ class WeatherResponseForJournal {
     sunrise: string;
     /** 日落时间，在高纬度地区可能为空 */
     sunset: string;
+    /** obsidian描述 */
+    desc: string;
 
     constructor(weather: WeatherDailyResponse) {
         this.init(weather);
@@ -229,10 +233,14 @@ async function getWWeather(city) {
     return result;
 }
 
-export async function getWeather(latitude: number, longitude: number): Promise<WeatherResponse | null> {
+export async function getWeatherDaily(latitude: number, longitude: number): Promise<WeatherResponse | null> {
     try {
+        // now or 3d
+        const url = `https://devapi.qweather.com/v7/weather/3d?location=${longitude},${latitude}&key=${API_KEY}`;
+        console.log(url);
+
         const response = await request({
-            url: `https://devapi.qweather.com/v7/weather/now?location=${longitude},${latitude}&key=${API_KEY}`,
+            url,
             method: 'GET',
         });
         const data = JSON.parse(response);
@@ -247,12 +255,44 @@ export async function getWeather(latitude: number, longitude: number): Promise<W
     }
 }
 
-export async function getCurrentLocation(): Promise<GeolocationPosition> {
+export async function getWeather({ apiKey }): Promise<WeatherResponse | null> {
+    try {
+        API_KEY = 'e6d27287b8d54b5da382f19086dac223';
+        const position = await getCurrentLocation();
+        console.log(position);
+        if (position === null) {
+            return null;
+        }
+        const weather = await getWeatherDaily(position.coords.latitude, position.coords.longitude);
+        console.log(weather);
+        return weather;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export async function getCurrentLocation(): Promise<{
+    coords: {
+        latitude: number;
+        longitude: number;
+    };
+} | null> {
     return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(async position => {
-            // position.coords.latitude, position.coords.longitude
-            resolve(position);
-        }, reject);
+        getpos()
+            .then(async position => {
+                const city = position.cityCode;
+                const res = await searchCity(city);
+                resolve(res);
+            })
+            .catch(error => {
+                console.error(error);
+                reject(error);
+            });
+        // navigator.geolocation.getCurrentPosition(async position => {
+        //     // position.coords.latitude, position.coords.longitude
+        //     resolve(position);
+        // }, reject);
     });
 }
 
@@ -274,40 +314,47 @@ async function getair(locationId, key) {
 }
 
 //查询位置
-async function urlGet(url) {
-    const finalURL = new URL(url);
+async function getpos() {
     const res = await request({
-        url: finalURL.href,
+        url: 'https://whois.pconline.com.cn/ipJson.jsp?json=true',
         method: 'GET',
-        headers: {
-            'Cache-Control': 'no-cache',
-            'Content-Type': 'application/json;charset=gb2312',
-            'User-Agent':
-                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.100.4758.11 Safari/537.36',
-        },
     });
-
-    return res;
-}
-
-async function getpos(key) {
-    const resultStr = await urlGet('http://whois.pconline.com.cn/ipJson.jsp?json=true');
-    const resultObj = JSON.parse(resultStr) as { city: string; cityCode: string };
-    const city = resultObj.cityCode;
-    return await searchCity(city, key);
+    const resultObj = JSON.parse(res) as { city: string; cityCode: string };
+    return resultObj;
 }
 
 //查询城市ID
-async function searchCity(city, key) {
-    const searchUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${city}&key=${key}&number=1`;
+async function searchCity(city) {
+    const searchUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${city}&key=${API_KEY}&number=1`;
     const sUrl = new URL(searchUrl);
     const res = await request({
         url: sUrl.href,
         method: 'GET',
     });
-    const data = JSON.parse(res);
+    const data = JSON.parse(res) as {
+        code: string;
+        location: {
+            id: string;
+            name: string;
+            adm2: string;
+            adm1: string;
+            country: string;
+            tz: string;
+            utcOffset: string;
+            lat: string;
+            lon: string;
+        }[];
+    };
+    console.log(res);
     if (data.code == '200') {
-        return data.location[0];
+        const location = data.location[0];
+        city = location.name;
+        return {
+            coords: {
+                latitude: parseFloat(location.lat),
+                longitude: parseFloat(location.lon),
+            },
+        };
     }
-    return -1;
+    return null;
 }
