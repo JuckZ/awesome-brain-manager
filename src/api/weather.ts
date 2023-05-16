@@ -96,7 +96,7 @@ interface WeatherDailyResponse {
 /**
  * 状态码及其含义请参考API文档
  */
-interface WeatherResponse {
+export interface WeatherResponse {
     code: string; // API状态码
     updateTime: string; // 最近更新时间
     fxLink: string; // 当前数据的响应式页面，方便嵌入网站或应用
