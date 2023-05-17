@@ -93,18 +93,52 @@ interface WeatherDailyResponse {
     cloud: number;
 }
 
-/**
- * 状态码及其含义请参考API文档
- */
-interface WeatherResponse {
+interface QWeatherBaseResponse {
     code: string; // API状态码
     updateTime: string; // 最近更新时间
     fxLink: string; // 当前数据的响应式页面，方便嵌入网站或应用
-    daily: WeatherDailyResponse[]; // 天气预报数据
     refer: {
         sources: string[]; // 原始数据来源，可能为空
         license: string[]; // 数据许可或版权声明，可能为空
     };
+}
+
+/**
+ * 状态码及其含义请参考API文档
+ */
+interface WeatherResponse extends QWeatherBaseResponse {
+    daily: WeatherDailyResponse[]; // 天气预报数据
+}
+
+interface AirResponse extends QWeatherBaseResponse {
+    now: {
+        pubTime: string; // 数据发布时间
+        aqi: string; // 空气质量指数
+        level: string; // 空气质量指数等级
+        category: string; // 空气质量指数级别
+        primary: string; // 主要污染物
+        pm10: string; // pm10
+        pm2p5: string; // pm2.5
+        no2: string; // 二氧化氮
+        so2: string; // 二氧化硫
+        co: string; // 一氧化碳
+        o3: string; // 臭氧
+    };
+    station: Array<{
+        pubTime: string; // 数据发布时间
+        name: string; // 监测站名称
+        id: string; // 监测站ID
+        aqi: string; // 空气质量指数
+        level: string; // 空气质量指数等级
+        category: string; // 空气质量指数级别
+        primary: string; // 主要污染物
+        pm10: string; // pm10
+        pm2p5: string; // pm2.5
+        no2: string; // 二氧化氮
+        so2: string; // 二氧化硫
+        co: string; // 一氧化碳
+        o3: string; // 臭氧
+    }>; // 空气质量监测站点数据
 }
 
 /**
@@ -224,10 +258,7 @@ class WeatherResponseForJournal {
 }
 
 //wttr 天气入口
-async function getWWeather(city) {
-    if (city === undefined) {
-        city = '';
-    }
+async function getWWeather(city: string) {
     let result = await fetch('https://wttr.in/' + city + '?format=%l:+%c+%t+%w').then(async res => await res.text());
     result = result.replace(/:/g, '').replace(/\+/g, '').replace(', China', '');
     return result;
@@ -296,16 +327,21 @@ export async function getCurrentLocation(): Promise<{
     });
 }
 
-// 获取空气质量信息
-async function getair(locationId, key) {
-    const weatherUrl = `https://devapi.qweather.com/v7/air/now?location=${locationId}&key=${key}`;
+/**
+ * 获取空气质量信息
+ * @param locationId 地理位置ID
+ * @param apiKey API Key
+ * @returns
+ */
+async function getair(locationId, apiKey): Promise<AirResponse | -1> {
+    const weatherUrl = `https://devapi.qweather.com/v7/air/now?location=${locationId}&key=${apiKey}`;
     const wUrl = new URL(weatherUrl);
     const res = await request({
         url: wUrl.href,
         method: 'GET',
     });
 
-    const data = JSON.parse(res);
+    const data = JSON.parse(res) as { code: string; now: AirResponse };
     if (data.code != '200') {
         return -1;
     }
