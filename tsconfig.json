@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*.ts", "types.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "include": ["src/**/*.ts", "types.d.ts",],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "baseUrl": "./src/",
     // "inlineSourceMap": true,
