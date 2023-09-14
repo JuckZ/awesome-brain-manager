@@ -36,7 +36,7 @@ module.exports = {
     plugins: ['@typescript-eslint', 'import'],
     rules: {
         // TODO
-        'import/no-unresolved': 'error',
+        'import/no-unresolved': ['error', { ignore: ['^virtual:'] }],
         'vue/multi-word-component-names': 1,
         'vue/no-v-model-argument': 'off',
         'linebreak-style': ['error', 'unix'],

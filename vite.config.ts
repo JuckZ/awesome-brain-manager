@@ -1,5 +1,6 @@
 import { URL, fileURLToPath } from 'node:url';
 import { resolve } from 'path';
+import UnoCSS from 'unocss/vite';
 import { type PluginOption, defineConfig, loadEnv } from 'vite';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -92,6 +93,7 @@ export default defineConfig(({ command, mode }) => {
             'process.env.NODE_ENV': '"production"',
         },
         plugins: [
+            UnoCSS(),
             viteStaticCopy({
                 targets: [
                     {
