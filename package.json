@@ -165,6 +165,7 @@
     "vitest": "^0.29.2",
     "vue-tsc": "^1.1.2"
   },
+  "packageManager": "pnpm@8.6.12",
   "engines": {
     "node": ">=14.16"
   }
