@@ -206,11 +206,11 @@ devDependencies:
     specifier: ^4.1.5
     version: 4.1.5
   obsidian:
-    specifier: ^1.2.3
-    version: 1.2.3(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
+    specifier: ^1.4.11
+    version: 1.4.11(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
   obsidian-dataview:
-    specifier: ^0.5.55
-    version: 0.5.55
+    specifier: ^0.5.56
+    version: 0.5.56
   plantuml-encoder:
     specifier: ^1.4.0
     version: 1.4.0
@@ -1720,12 +1720,6 @@ packages:
 
   /@types/chai@4.3.6:
     resolution: {integrity: sha512-VOVRLM1mBxIRxydiViqPcKn6MIxZytrbMpd6RJLIWKxUNr3zux8no0Oc7kJx0WAPIitgZ0gkrDS+btlqQpubpw==}
-    dev: true
-
-  /@types/codemirror@0.0.108:
-    resolution: {integrity: sha512-3FGFcus0P7C2UOGCNUVENqObEb4SFk+S8Dnxq7K6aIsLVs/vDtlangl3PEO0ykaKXyK56swVF6Nho7VsA44uhw==}
-    dependencies:
-      '@types/tern': 0.23.5
     dev: true
 
   /@types/codemirror@5.60.8:
@@ -6485,8 +6479,8 @@ packages:
       - '@codemirror/view'
     dev: true
 
-  /obsidian-dataview@0.5.55:
-    resolution: {integrity: sha512-t52I2ebvO6gCUakfJvuQb7qbNx0yKTdfJJAlJvyyj8+DliwM5wZXFMEio+YVLlXMyRSw2ZGq8eGp19anEIuDbg==}
+  /obsidian-dataview@0.5.56:
+    resolution: {integrity: sha512-QyXpJLDJVpLmPCiF8ht4XqeuhWaccAs/pSpP+oDmwou4uJvEO4rXosj7joYQXv1QMsxf5UHy2OO56BZoyzVGBg==}
     dependencies:
       '@codemirror/language': git@github.com+lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc
       '@codemirror/state': 6.2.1
@@ -6500,15 +6494,15 @@ packages:
       preact: 10.17.1
     dev: true
 
-  /obsidian@1.2.3(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
-    resolution: {integrity: sha512-v0RIu/M6kPCbamkIpH1L2wHG0W79qK0GYaPCbBzR3Rb08glbPSStPPRcd3ZVV/c547AEwLIbi8XjNO+HlFftnA==}
+  /obsidian@1.4.11(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
+    resolution: {integrity: sha512-BCVYTvaXxElJMl6MMbDdY/CGK+aq18SdtDY/7vH8v6BxCBQ6KF4kKxL0vG9UZ0o5qh139KpUoJHNm+6O5dllKA==}
     peerDependencies:
       '@codemirror/state': ^6.0.0
       '@codemirror/view': ^6.0.0
     dependencies:
       '@codemirror/state': 6.2.1
       '@codemirror/view': 6.19.0
-      '@types/codemirror': 0.0.108
+      '@types/codemirror': 5.60.8
       moment: 2.29.4
     dev: true
 
