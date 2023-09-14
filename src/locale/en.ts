@@ -20,6 +20,7 @@ export default {
         'query-openai': 'Query openAI',
         'open-emoji-picker': 'Open emoji picker',
         'cut-line': 'Cut current line',
+        'plan-pomodoro': 'Plan a pomodoro',
     },
     setting: {
         cursorEffect: {

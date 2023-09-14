@@ -20,6 +20,7 @@ export default {
         'query-openai': '询问OpenAI',
         'open-emoji-picker': '输入表情',
         'cut-line': '剪切当前行',
+        'plan-pomodoro': '规划一个番茄钟',
     },
     setting: {
         cursorEffect: {

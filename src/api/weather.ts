@@ -1,5 +1,3 @@
-import { request } from '@/utils/request';
-
 // 你的和风天气API密钥
 let API_KEY = '<你的和风天气API密钥>';
 
@@ -267,13 +265,10 @@ async function getWWeather(city: string) {
 export async function getWeatherDaily(latitude: number, longitude: number): Promise<WeatherResponse | null> {
     try {
         const url = `https://devapi.qweather.com/v7/weather/3d?location=${longitude},${latitude}&key=${API_KEY}`;
-        console.log(url);
-
-        const response = await request({
-            url,
+        const response = await fetch(url, {
             method: 'GET',
         });
-        const data = JSON.parse(response);
+        const data = await response.json();
         if (data.code != '200') {
             return null;
         }
@@ -289,12 +284,10 @@ export async function getWeather({ apiKey }): Promise<WeatherResponse | null> {
     try {
         API_KEY = 'e6d27287b8d54b5da382f19086dac223';
         const position = await getCurrentLocation();
-        console.log(position);
         if (position === null) {
             return null;
         }
         const weather = await getWeatherDaily(position.coords.latitude, position.coords.longitude);
-        console.log(weather);
         return weather;
     } catch (error) {
         console.error(error);
@@ -335,12 +328,11 @@ export async function getCurrentLocation(): Promise<{
 async function getair(locationId, apiKey) {
     const weatherUrl = `https://devapi.qweather.com/v7/air/now?location=${locationId}&key=${apiKey}`;
     const wUrl = new URL(weatherUrl);
-    const res = await request({
-        url: wUrl.href,
+    const res = await fetch(wUrl.href, {
         method: 'GET',
     });
 
-    const data = JSON.parse(res) as AirResponse;
+    const data = await res.json();
     if (data.code != '200') {
         return null;
     }
@@ -350,11 +342,10 @@ async function getair(locationId, apiKey) {
 
 //查询位置
 async function getpos() {
-    const res = await request({
-        url: 'https://whois.pconline.com.cn/ipJson.jsp?json=true',
+    const res = await fetch('https://whois.pconline.com.cn/ipJson.jsp?json=true', {
         method: 'GET',
     });
-    const resultObj = JSON.parse(res) as { city: string; cityCode: string };
+    const resultObj = (await res.json()) as { city: string; cityCode: string };
     return resultObj;
 }
 
@@ -362,11 +353,10 @@ async function getpos() {
 async function searchCity(city) {
     const searchUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${city}&key=${API_KEY}&number=1`;
     const sUrl = new URL(searchUrl);
-    const res = await request({
-        url: sUrl.href,
+    const res = await fetch(sUrl.href, {
         method: 'GET',
     });
-    const data = JSON.parse(res) as {
+    const data = (await res.json()) as {
         code: string;
         location: {
             id: string;
@@ -380,7 +370,6 @@ async function searchCity(city) {
             lon: string;
         }[];
     };
-    console.log(res);
     if (data.code == '200') {
         const location = data.location[0];
         city = location.name;

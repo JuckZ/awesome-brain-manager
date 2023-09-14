@@ -1,8 +1,8 @@
 import { inspect } from 'util';
 import chalk from 'chalk';
+import { Notice } from 'obsidian';
 import { ConstantReference } from '../model/ref';
 import type { ReadOnlyReference } from '../model/ref';
-import { Notice } from 'obsidian';
 
 class Logger {
     private debugEnable: ReadOnlyReference<boolean> = new ConstantReference(false);
@@ -26,28 +26,28 @@ class Logger {
     init(debugEnableVal: ReadOnlyReference<boolean>) {
         this.debugEnable = debugEnableVal;
         chalk.level = 3;
-        window.onerror = (msg, url, lineNo, columnNo, error) => {
-            if (!this.debugEnable.value) {
-                return;
-            }
-            const string = msg.toString().toLowerCase();
-            const substring = 'script error';
-            if (string.indexOf(substring) > -1) {
-                new Notice('Script Error: See Browser Console for Detail');
-            } else {
-                const message = [
-                    'Message: ' + msg,
-                    'URL: ' + url,
-                    'Line: ' + lineNo,
-                    'Column: ' + columnNo,
-                    'Error object: ' + JSON.stringify(error),
-                ].join(' - ');
+        // window.onerror = (msg, url, lineNo, columnNo, error) => {
+        //     if (!this.debugEnable.value) {
+        //         return;
+        //     }
+        //     const string = msg.toString().toLowerCase();
+        //     const substring = 'script error';
+        //     if (string.indexOf(substring) > -1) {
+        //         new Notice('Script Error: See Browser Console for Detail');
+        //     } else {
+        //         const message = [
+        //             'Message: ' + msg,
+        //             'URL: ' + url,
+        //             'Line: ' + lineNo,
+        //             'Column: ' + columnNo,
+        //             'Error object: ' + JSON.stringify(error),
+        //         ].join(' - ');
 
-                new Notice(message);
-            }
+        //         new Notice(message);
+        //     }
 
-            return false;
-        };
+        //     return false;
+        // };
     }
     log(...args: any) {
         this.printer('log', args, chalk.bgCyanBright.blackBright.bold);
