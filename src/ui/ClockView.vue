@@ -14,7 +14,8 @@
             >
                 <div class="radialTimeText">{{ time }}</div>
             </RadialProgress>
-            <n-result v-else status="418" :title="t.info.noDoingTask" :description="t.info.haveABreak"> </n-result>
+            <n-result v-else status="418" size="small" :title="t.info.noDoingTask" :description="t.info.haveABreak">
+            </n-result>
         </n-space>
     </div>
 </template>

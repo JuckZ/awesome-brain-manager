@@ -15,7 +15,7 @@
                         :to="targetNode"
                     >
                         <template #trigger>
-                            <n-icon size="20" @mouseenter="enterHandler">
+                            <n-icon size="20" class="cursor-pointer" @mouseenter="enterHandler">
                                 <radio-button-off-outline />
                             </n-icon>
                         </template>

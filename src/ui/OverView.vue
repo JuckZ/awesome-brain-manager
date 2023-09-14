@@ -1,24 +1,16 @@
 <template>
-    <n-grid cols="1 320:2 640:4" responsive="self">
+    <n-grid cols="1 200:2 640:4" responsive="self">
         <n-grid-item>
-            <n-card :title="t.info.todayNum" content-style="font-size: 16px;">{{
-                countPomodoro(allPomodoro, 'todayNum')
-            }}</n-card>
+            <n-card :title="t.info.todayNum" size="small">{{ countPomodoro(allPomodoro, 'todayNum') }}</n-card>
         </n-grid-item>
         <n-grid-item>
-            <n-card :title="t.info.todayTime" content-style="font-size: 16px;">{{
-                countPomodoro(allPomodoro, 'todayTime')
-            }}</n-card>
+            <n-card :title="t.info.todayTime" size="small">{{ countPomodoro(allPomodoro, 'todayTime') }}</n-card>
         </n-grid-item>
         <n-grid-item>
-            <n-card :title="t.info.totalNum" content-style="font-size: 16px;">{{
-                countPomodoro(allPomodoro, 'totalNum')
-            }}</n-card>
+            <n-card :title="t.info.totalNum" size="small">{{ countPomodoro(allPomodoro, 'totalNum') }}</n-card>
         </n-grid-item>
         <n-grid-item>
-            <n-card :title="t.info.totalTime" content-style="font-size: 16px;">{{
-                countPomodoro(allPomodoro, 'totalTime')
-            }}</n-card>
+            <n-card :title="t.info.totalTime" size="small">{{ countPomodoro(allPomodoro, 'totalTime') }}</n-card>
         </n-grid-item>
     </n-grid>
 </template>

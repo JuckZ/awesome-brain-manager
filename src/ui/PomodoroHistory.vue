@@ -8,7 +8,7 @@
     >
         <n-message-provider>
             <n-space vertical>
-                <div id="historyViewContainer">
+                <div class="pa5px">
                     <H1Title></H1Title>
                     <!-- <Title></Title> -->
                     <OverView :all-pomodoro="pomodoroHistory" />
@@ -49,6 +49,9 @@ import {
     NSpace,
     NGrid,
     NGridItem,
+    CardProps,
+    CalendarProps,
+    ResultProps,
     type GlobalThemeOverrides,
 } from 'naive-ui';
 import CalendarView from './CalendarView.vue';
@@ -66,9 +69,39 @@ let theme = ref(darkTheme);
 let locale = ref(zhCN);
 let dateLocale = ref(dateZhCN);
 
-const lightThemeOverrides: GlobalThemeOverrides = {};
+type CardThemeOverrides = NonNullable<CardProps['themeOverrides']>
+type ResultThemeOverrides = NonNullable<ResultProps['themeOverrides']>
+type CalendarThemeOverrides = NonNullable<CalendarProps['themeOverrides']>
+const cardThemeOverrides: CardThemeOverrides = {
+    paddingSmall: '0.5rem',
+    fontSizeSmall: '0.8rem',
+    titleFontSizeSmall: '1rem',
+    titleFontWeight: '700'
+}
 
-const darkThemeOverrides: GlobalThemeOverrides = {};
+const resultThemeOverrides: ResultThemeOverrides = {
+    titleFontWeight: '700',
+    titleFontSizeSmall: '1.2rem',
+    fontSizeSmall: '0.8rem'
+}
+const calendarThemeOverrides: CalendarThemeOverrides = {
+    lineHeight: 1.2,
+    fontSize: '0.8rem',
+    titleFontSize: '1.2rem',
+    titleFontWeight: '700'
+}
+
+const lightThemeOverrides: GlobalThemeOverrides = {
+    Card: cardThemeOverrides,
+    Result: resultThemeOverrides,
+    Calendar: calendarThemeOverrides
+};
+
+const darkThemeOverrides: GlobalThemeOverrides = {
+    Card: cardThemeOverrides,
+    Result: resultThemeOverrides,
+    Calendar: calendarThemeOverrides
+};
 
 const { systemState } = storeToRefs(useSystemStore());
 const { pomodoroHistory } = storeToRefs(usePomodoroStore());
@@ -102,9 +135,3 @@ const focusChangeHandle = ({ year, month, date }: { year: number; month: number;
     };
 };
 </script>
-
-<style scoped lang="scss">
-#historyViewContainer {
-    padding: 5px 10px;
-}
-</style>

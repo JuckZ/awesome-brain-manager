@@ -13,7 +13,12 @@
             }"
             :show-divider="false"
         >
-            <NListItem v-for="pomodoro in pomodoroList" :key="pomodoro.timestamp" :style="getRandomStyle()" bordered>
+            <NListItem
+                v-for="pomodoro in pomodoroList"
+                :key="pomodoro.timestamp"
+                :style="getRandomStyle(pomodoro)"
+                bordered
+            >
                 <NEllipsis v-show="activeTime.date !== time.date">
                     {{ pomodoro.task }}
                 </NEllipsis>
@@ -73,8 +78,13 @@ watchEffect(() => {
     );
 });
 
-const getRandomStyle = () => {
-    const color = colorSchema[Math.floor(Math.random() * colorSchema.length)];
+const getRandomStyle = (pomodoro: Pomodoro) => {
+    let seed = 0;
+    for (let i = 0; i < pomodoro.task.length; i++) {
+        seed += pomodoro.task.charCodeAt(i);
+    }
+    let index = seed % colorSchema.length;
+    const color = colorSchema[index];
     return `background-color: ${color.bg};color: ${color.fg};`;
 };
 </script>
