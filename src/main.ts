@@ -531,6 +531,18 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             },
         });
         this.addCommand({
+            id: 'plan-pomodoro',
+            icon: 'scissors',
+            name: t.command['plan-pomodoro'],
+            callback: () => {
+                const editor = this.app.workspace.activeEditor?.editor;
+                if (editor) {
+                    const task = EditorUtils.getCurrentSelection(editor);
+                    usePomodoroStore().quickAddPomodoro(task);
+                }
+            },
+        });
+        this.addCommand({
             id: 'check-in',
             name: t.command['check-in'],
             callback: () => {
