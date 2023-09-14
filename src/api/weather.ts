@@ -191,7 +191,7 @@ class WeatherResponseForJournal {
         this.temp = weather.tempMax;
         this.text = weather.textDay;
         const air = await getair(locationId, API_KEY);
-        this.desc = `${city} ${weather.textDay}, ${weather.tempMin}~${weather.tempMax}℃ ${air.category} ${
+        this.desc = `${city} ${weather.textDay}, ${weather.tempMin}~${weather.tempMax}℃ ${air?.category} ${
             this.windydesc
         }${weather.moonPhase.replace(/[\u4e00-\u9fa5]/g, '')}`;
         this.icon = weather.iconDay;
@@ -266,7 +266,6 @@ async function getWWeather(city: string) {
 
 export async function getWeatherDaily(latitude: number, longitude: number): Promise<WeatherResponse | null> {
     try {
-        // now or 3d
         const url = `https://devapi.qweather.com/v7/weather/3d?location=${longitude},${latitude}&key=${API_KEY}`;
         console.log(url);
 
@@ -333,7 +332,7 @@ export async function getCurrentLocation(): Promise<{
  * @param apiKey API Key
  * @returns
  */
-async function getair(locationId, apiKey): Promise<AirResponse | -1> {
+async function getair(locationId, apiKey) {
     const weatherUrl = `https://devapi.qweather.com/v7/air/now?location=${locationId}&key=${apiKey}`;
     const wUrl = new URL(weatherUrl);
     const res = await request({
@@ -341,9 +340,9 @@ async function getair(locationId, apiKey): Promise<AirResponse | -1> {
         method: 'GET',
     });
 
-    const data = JSON.parse(res) as { code: string; now: AirResponse };
+    const data = JSON.parse(res) as AirResponse;
     if (data.code != '200') {
-        return -1;
+        return null;
     }
     const air = data.now;
     return air;

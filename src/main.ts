@@ -332,7 +332,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 getRoot(old) {
                     return function () {
                         const top = old.call(this);
-                        return top.getRoot === this.getRoot ? top : top.getRoot();
+                        top.getRoot === this.getRoot ? top : top.getRoot();
+                        // bugfix make.md冲突，不能使用ctrl+o打开文件 #bug
+                        return top;
                     };
                 },
                 onResize(old) {
