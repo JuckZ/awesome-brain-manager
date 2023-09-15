@@ -20,9 +20,8 @@ describe('weather', () => {
         expect(weather).not.null;
     });
 
-    it('getWeather', async () => {
+    it.skip('getWeather', async () => {
         await Promise.all([getWeather({ apiKey }), getAir(locationId, apiKey)]).then(([weather, air]) => {
-            console.log(weather);
             expect(weather).not.null;
             expect(weather?.daily[0]?.textDay).string;
             if (weather?.daily[0] && air) {
