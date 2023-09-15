@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'virtual:uno.css';
 import { around } from 'monkey-around';
 import {
@@ -36,7 +37,7 @@ import { codeEmoji } from '@/render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEffects';
 import { LoggerUtil } from '@/utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
-import { getWeather } from '@/api/weather';
+import { weatherDesc } from '@/api/weather';
 import { DBUtil } from '@/utils/db/db';
 import { insertAfterHandler } from '@/utils/content';
 import { getLocalRandomImg, searchPicture } from '@/utils/genBanner';
@@ -65,7 +66,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     private pomodoroHistoryView: PomodoroHistoryView | null;
     resizeFunction: () => any;
     clickFunction: (evt: MouseEvent) => any;
-    activeLeafChangeFunction: (leaf: WorkspaceLeaf | null) => any;
+    activeLeafChangeFunction: (leaf: WorkspaceLeaf) => any;
     fileOpenFunction: (file: TFile | null) => any;
     layoutChangeFunction: () => any;
     windowOpenFunction: (win: WorkspaceWindow, window: Window) => any;
@@ -74,9 +75,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     fileMenuFunction: (menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf) => any;
     editorMenuFunction: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
     editorChangeFunction: (editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
-    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
+    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView) => any;
     editorDropFunction: (evt: DragEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
-    codemirrorFunction: (cm: CodeMirror.Editor) => any;
+    codemirrorFunction: (cm: CodeMirror.Editor, info: MarkdownView) => any;
     quitFunction: (tasks: Tasks) => any;
 
     vaultCreateFunction: (file: TAbstractFile) => any;
@@ -478,9 +479,10 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         getLocalRandom: (title, path) => {
             return getLocalRandomImg(this.app, title, path);
         },
-        getWeather: apiKey => {
-            return getWeather({
+        weatherDesc: apiKey => {
+            return weatherDesc({
                 apiKey: apiKey || SETTINGS.qweatherApiKey.value,
+                type: 'obsidian',
             });
         },
     };

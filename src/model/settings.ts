@@ -163,7 +163,10 @@ interface Serde<R, E> {
 type AnyValueChanged = (context: SettingContext) => void;
 
 abstract class AbstractSettingModelBuilder<R> {
-    constructor(protected context: SettingContext, protected initValue: R) {}
+    constructor(
+        protected context: SettingContext,
+        protected initValue: R,
+    ) {}
 
     onAnyValueChanged(anyValueChanged: AnyValueChanged) {
         this.context.anyValueChanged = anyValueChanged;
@@ -186,7 +189,11 @@ abstract class AbstractSettingModelBuilder<R> {
 class TextSettingModelBuilder extends AbstractSettingModelBuilder<string> {
     private _placeHolder?: string;
 
-    constructor(context: SettingContext, private longText: boolean, initValue: string) {
+    constructor(
+        context: SettingContext,
+        private longText: boolean,
+        initValue: string,
+    ) {
         super(context, initValue);
     }
 
@@ -281,7 +288,10 @@ class ToggleSettingModelBuilder extends AbstractSettingModelBuilder<boolean> {
 }
 
 class DropdownOption {
-    constructor(public label: string, public value: string) {}
+    constructor(
+        public label: string,
+        public value: string,
+    ) {}
 }
 
 class DropdownSettingModelBuilder<E> extends AbstractSettingModelBuilder<string> {

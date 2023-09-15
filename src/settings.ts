@@ -334,7 +334,11 @@ class Settings {
 export const SETTINGS = new Settings();
 
 export class AwesomeBrainSettingTab extends PluginSettingTab {
-    constructor(app: App, plugin: Plugin, protected pluginData: PluginDataIO) {
+    constructor(
+        app: App,
+        plugin: Plugin,
+        protected pluginData: PluginDataIO,
+    ) {
         super(app, plugin);
     }
 
