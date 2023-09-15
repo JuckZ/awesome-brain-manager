@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deepClone, deepCloneArr, deepCloneObj } from '../../utils/common';
+import { deepClone, deepCloneArr, deepCloneObj } from '@/utils/common';
 
 const obj1 = {
     name: 'John',

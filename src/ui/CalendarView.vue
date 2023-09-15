@@ -20,7 +20,7 @@
 import { NCalendar } from 'naive-ui';
 import { Ref, ref } from 'vue';
 import { moment } from 'obsidian';
-import PomodoroListView from './PomodoroListView.vue';
+import PomodoroListView from '@/ui/PomodoroListView.vue';
 
 const emit = defineEmits(['focus-change']);
 

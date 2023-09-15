@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import chalk from 'chalk';
-import * as sut from '../waiter';
+import * as sut from '@/waiter';
 
 describe('Waiter', () => {
     it('should print the food on the order', () => {

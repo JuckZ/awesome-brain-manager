@@ -7,6 +7,6 @@ describe('weather', () => {
         const weather = await getWeather({ apiKey });
         console.log(weather);
         expect(weather).not.null;
-        expect(weather?.textDay).string;
+        expect(weather?.daily[0]?.textDay).string;
     });
 });

@@ -1,8 +1,8 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { Ref, App as VueApp } from 'vue';
-import BrowserViewComp from '../BrowserView.vue';
-import t from '../../i18n';
+import BrowserViewComp from '@/ui/BrowserView.vue';
+import t from '@/i18n';
 import type AwesomeBrainManagerPlugin from 'main';
 
 export const BROWSER_VIEW = 'browser-view';

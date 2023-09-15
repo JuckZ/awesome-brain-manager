@@ -19,9 +19,9 @@
 import { NCard, NGrid, NGridItem } from 'naive-ui';
 import { toRefs } from 'vue';
 import { moment } from 'obsidian';
-import { getTheDay } from '../utils/constants';
-import type { Pomodoro } from '../schemas/spaces';
-import t from '../i18n';
+import { getTheDay } from '@/utils/constants';
+import type { Pomodoro } from '@/schemas/spaces';
+import t from '@/i18n';
 
 const props = defineProps<{
     allPomodoro: Pomodoro[];

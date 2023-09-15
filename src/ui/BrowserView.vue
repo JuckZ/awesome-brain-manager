@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, onUpdated, toRefs } from 'vue';
-import LoggerUtil from '../utils/logger';
+import { LoggerUtil } from '@/utils/logger';
 
 const props = defineProps<{
     url: string;

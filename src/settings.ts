@@ -1,11 +1,11 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/settings.ts
-import { App, PluginSettingTab, Plugin_2 } from 'obsidian';
-import { RawSerde, type SettingModel, SettingTabModel } from './model/settings';
-import type { PluginDataIO } from './data';
-import { toggleCursorEffects } from './render/CursorEffects';
-import { toggleBlast } from './render/Blast';
-import t from './i18n';
-import { EditorUtil } from './utils/editor';
+import { App, Plugin, PluginSettingTab } from 'obsidian';
+import { RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
+import { toggleCursorEffects } from '@/render/CursorEffects';
+import { toggleBlast } from '@/render/Blast';
+import t from '@/i18n';
+import { EditorUtil } from '@/utils/editor';
+import type { PluginDataIO } from '@/data';
 
 class Settings {
     settings: SettingTabModel = new SettingTabModel();
@@ -334,7 +334,7 @@ class Settings {
 export const SETTINGS = new Settings();
 
 export class AwesomeBrainSettingTab extends PluginSettingTab {
-    constructor(app: App, plugin: Plugin_2, protected pluginData: PluginDataIO) {
+    constructor(app: App, plugin: Plugin, protected pluginData: PluginDataIO) {
         super(app, plugin);
     }
 

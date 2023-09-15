@@ -1,12 +1,12 @@
 import { App, type Editor, Platform } from 'obsidian';
 import { type App as VueApp, createApp } from 'vue';
-import type AwesomeBrainManagerPlugin from '../main';
-import AppVue from '../ui/App.vue';
-import { buildTagRules } from '../render/Tag';
+import type AwesomeBrainManagerPlugin from '@/main';
+import AppVue from '@/ui/App.vue';
+import { buildTagRules } from '@/render/Tag';
 import type { SettingModel } from 'model/settings';
 import { Tag } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
-import LoggerUtil from '@/utils/logger';
+import { LoggerUtil } from '@/utils/logger';
 
 export const appContainerId = 'app-container';
 export class EditorUtils {

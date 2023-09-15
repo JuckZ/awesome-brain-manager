@@ -1,4 +1,4 @@
-import { MessageManager } from './MessageManager';
+import { MessageManager } from '@/web-worker/MessageManager';
 
 let messageManager: MessageManager | null = null;
 

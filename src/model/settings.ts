@@ -1,6 +1,6 @@
 import { AbstractTextComponent, Setting } from 'obsidian';
-import { type ReadOnlyReference, Reference } from '../model/ref';
-import LoggerUtil from '../utils/logger';
+import { type ReadOnlyReference, Reference } from '@/model/ref';
+import { LoggerUtil } from '@/utils/logger';
 
 class SettingRegistry {
     private settingContexts: Array<SettingContext> = [];

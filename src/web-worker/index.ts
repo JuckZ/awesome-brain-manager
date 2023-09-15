@@ -1,4 +1,4 @@
-import { MessageManager } from './MessageManager';
+import { MessageManager } from '@/web-worker/MessageManager';
 
 const worker = new Worker(new URL('./Worker.ts', import.meta.url), {
     // TODO type: 'module',

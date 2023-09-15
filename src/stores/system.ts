@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { reactive } from 'vue';
-import type { SystemState } from '../types/types';
+import type { SystemState } from '@/types/types';
 
 export const useSystemStore = defineStore('system', () => {
     const systemState: SystemState = reactive({

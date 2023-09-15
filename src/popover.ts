@@ -12,7 +12,7 @@ import {
     requireApiVersion,
     setIcon,
 } from 'obsidian';
-import HoverEditorPlugin from './main';
+import HoverEditorPlugin from '@/main';
 import { useSystemStore } from '@/stores';
 
 import { genId } from '@/utils/common';

@@ -3,8 +3,8 @@ import { type Editor, Platform } from 'obsidian';
 import { throttle } from 'lodash-es';
 import party from 'party-js';
 import type { DynamicSourceType } from 'party-js/lib/systems/sources';
-import t from '../i18n';
-import type { SettingModel } from 'model/settings';
+import t from '@/i18n';
+import type { SettingModel } from '@/model/settings';
 import { EditorUtils } from '@/utils/editor';
 
 let shakeTime = 0,

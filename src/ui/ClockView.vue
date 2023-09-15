@@ -27,8 +27,8 @@ import type { Ref } from 'vue';
 import { NResult, NSpace } from 'naive-ui';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
-import { usePomodoroStore } from '../stores';
-import t from '../i18n';
+import { usePomodoroStore } from '@/stores';
+import t from '@/i18n';
 
 const time: Ref<string> = ref('');
 const currentSpend: Ref<number> = ref(0);

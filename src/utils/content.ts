@@ -1,7 +1,7 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
 import { VueApp, createApp } from 'vue/dist/vue.esm-bundler.js';
-import TestTitle from '../ui/TestTitle';
-import LoggerUtil from '../utils/logger';
+import TestTitle from '@/ui/TestTitle';
+import { LoggerUtil } from '@/utils/logger';
 
 interface MContent {
     content: string;

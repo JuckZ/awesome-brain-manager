@@ -32,9 +32,9 @@ import { NEllipsis, NList, NListItem } from 'naive-ui';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
 import { ref, toRefs, watchEffect } from 'vue';
-import type { Pomodoro } from '../schemas/spaces';
-import { usePomodoroStore } from '../stores';
-import { colorSchema } from '../utils/constants';
+import type { Pomodoro } from '@/schemas/spaces';
+import { usePomodoroStore } from '@/stores';
+import { colorSchema } from '@/utils/constants';
 
 const { pomodoroHistory } = storeToRefs(usePomodoroStore());
 const pomodoroList = ref([] as Pomodoro[]);

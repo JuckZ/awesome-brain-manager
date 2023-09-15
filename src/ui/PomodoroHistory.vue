@@ -38,69 +38,69 @@
 <script setup lang="tsx">
 import { ref, watchEffect } from 'vue';
 import {
-    darkTheme,
-    lightTheme,
-    zhCN,
-    dateZhCN,
-    enUS,
-    dateEnUS,
+    CalendarProps,
+    CardProps,
+    type GlobalThemeOverrides,
     NConfigProvider,
-    NMessageProvider,
-    NSpace,
     NGrid,
     NGridItem,
-    CardProps,
-    CalendarProps,
+    NMessageProvider,
+    NSpace,
     ResultProps,
-    type GlobalThemeOverrides,
+    darkTheme,
+    dateEnUS,
+    dateZhCN,
+    enUS,
+    lightTheme,
+    zhCN,
 } from 'naive-ui';
-import CalendarView from './CalendarView.vue';
-import OverView from './OverView.vue';
-import TaskSelector from './TaskSelector.vue';
-import ClockView from './ClockView.vue';
-import TimeLine from './TimeLine.vue';
-import TestTitle from './TestTitle';
-import DoughnutChart from './DoughnutChart.vue';
-import LineChart from './LineChart.vue';
-import { useSystemStore, usePomodoroStore } from '../stores';
 import { storeToRefs } from 'pinia';
+import OverView from '@/ui/OverView.vue';
+import TaskSelector from '@/ui/TaskSelector.vue';
+import ClockView from '@/ui/ClockView.vue';
+import TimeLine from '@/ui/TimeLine.vue';
+import TestTitle from '@/ui/TestTitle';
+import DoughnutChart from '@/ui/DoughnutChart.vue';
+import LineChart from '@/ui/LineChart.vue';
+import CalendarView from '@/ui/CalendarView.vue';
+import { usePomodoroStore, useSystemStore } from '@/stores';
 
 let theme = ref(darkTheme);
 let locale = ref(zhCN);
 let dateLocale = ref(dateZhCN);
 
-type CardThemeOverrides = NonNullable<CardProps['themeOverrides']>
-type ResultThemeOverrides = NonNullable<ResultProps['themeOverrides']>
-type CalendarThemeOverrides = NonNullable<CalendarProps['themeOverrides']>
+type CardThemeOverrides = NonNullable<CardProps['themeOverrides']>;
+type ResultThemeOverrides = NonNullable<ResultProps['themeOverrides']>;
+type CalendarThemeOverrides = NonNullable<CalendarProps['themeOverrides']>;
 const cardThemeOverrides: CardThemeOverrides = {
     paddingSmall: '0.5rem',
     fontSizeSmall: '0.8rem',
     titleFontSizeSmall: '1rem',
-    titleFontWeight: '700'
-}
+    titleFontWeight: '700',
+};
 
 const resultThemeOverrides: ResultThemeOverrides = {
     titleFontWeight: '700',
     titleFontSizeSmall: '1.2rem',
-    fontSizeSmall: '0.8rem'
-}
+    fontSizeSmall: '0.8rem',
+};
 const calendarThemeOverrides: CalendarThemeOverrides = {
     lineHeight: 1.2,
     fontSize: '0.8rem',
     titleFontSize: '1.2rem',
-    titleFontWeight: '700'
-}
+    titleFontWeight: '700',
+};
 
 const lightThemeOverrides: GlobalThemeOverrides = {
     Card: cardThemeOverrides,
     Result: resultThemeOverrides,
-    Calendar: calendarThemeOverrides
+    Calendar: calendarThemeOverrides,
 };
 
 const darkThemeOverrides: GlobalThemeOverrides = {
     Card: cardThemeOverrides,
     Result: resultThemeOverrides,
-    Calendar: calendarThemeOverrides
+    Calendar: calendarThemeOverrides,
 };
 
 const { systemState } = storeToRefs(useSystemStore());

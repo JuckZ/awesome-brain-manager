@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import * as packgeJSON from '../../package.json';
-import { writeFile } from '../file-access';
-import { placeOrder } from '../waiter';
+import { writeFile } from '@/file-access';
+import { placeOrder } from '@/waiter';
 
 const program = new Command();
 

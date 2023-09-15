@@ -71,10 +71,10 @@ import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { Ref, onUpdated, ref, toRefs, watchEffect } from 'vue';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
-import type { Pomodoro } from '../schemas/spaces';
-import { PomodoroStatus } from '../utils/pomotodo';
-import t from '../i18n';
-import { usePomodoroStore } from '../stores';
+import { PomodoroStatus } from '@/utils/pomotodo';
+import t from '@/i18n';
+import { usePomodoroStore } from '@/stores';
+import type { Pomodoro } from '@/schemas/spaces';
 const { pomodoroHistory } = storeToRefs(usePomodoroStore());
 
 const pomodoroList = ref([] as Pomodoro[]);

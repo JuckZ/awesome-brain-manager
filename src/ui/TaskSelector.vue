@@ -17,7 +17,7 @@
 import { NModal, useMessage } from 'naive-ui';
 import { Component, MarkdownPreviewView, MarkdownView, Platform } from 'obsidian';
 import { type Ref, ref } from 'vue';
-import DataViewTimeLine from './DataViewTimeLine.vue';
+import DataViewTimeLine from '@/ui/DataViewTimeLine.vue';
 import { CommonModal } from '@/ui/modal';
 import {
     concentrateTasks,

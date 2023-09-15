@@ -1,6 +1,6 @@
 // https://github.com/joethei/obsidian-plantuml
 import type { MarkdownPostProcessorContext } from 'obsidian';
-import type AwesomeBrainManagerPlugin from './main';
+import type AwesomeBrainManagerPlugin from '@/main';
 
 export default class Replacer {
     plugin: AwesomeBrainManagerPlugin;

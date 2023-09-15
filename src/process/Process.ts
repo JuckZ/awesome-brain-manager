@@ -3,9 +3,9 @@ import { debounce } from 'obsidian';
 import twemoji from 'twemoji';
 import plantuml from 'plantuml-encoder';
 import { v4 as uuidv4 } from 'uuid';
-import type AwesomeBrainManagerPlugin from '../main';
-import { insertImageWithMap, insertVueComponent } from '../utils/content';
-import { request } from '../utils/request';
+import { request } from '@/utils/request';
+import type AwesomeBrainManagerPlugin from '@/main';
+import { insertImageWithMap, insertVueComponent } from '@/utils/content';
 
 export default class Process {
     plugin: AwesomeBrainManagerPlugin;

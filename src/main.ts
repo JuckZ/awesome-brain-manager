@@ -23,7 +23,7 @@ import {
 } from 'obsidian';
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
-import { expandEmmetAbbreviation } from './utils/emmet';
+import { expandEmmetAbbreviation } from '@/utils/emmet';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import Replacer from '@/Replacer';
 import Process from '@/process/Process';
@@ -34,7 +34,7 @@ import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from '@/ui/view/PomodoroHi
 import { BROWSER_VIEW, BrowserView } from '@/ui/view/BrowserView';
 import { codeEmoji } from '@/render/Emoji';
 import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEffects';
-import LoggerUtil from '@/utils/logger';
+import { LoggerUtil } from '@/utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
 import { getWeather } from '@/api/weather';
 import { DBUtil } from '@/utils/db/db';

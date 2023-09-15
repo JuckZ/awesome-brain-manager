@@ -1,6 +1,6 @@
-import { request } from '../utils/request';
-import LoggerUtil from '../utils/logger';
-import { getAllFiles } from '../utils/file';
+import { request } from '@/utils/request';
+import { LoggerUtil } from '@/utils/logger';
+import { getAllFiles } from '@/utils/file';
 
 export const searchPicture = async (source: string, keyword: string): Promise<string> => {
     const res: string = await new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
-import { request } from '../utils/request';
-import LoggerUtil from '../utils/logger';
-import { SETTINGS } from '../settings';
+import { LoggerUtil } from '@/utils/logger';
+import { SETTINGS } from '@/settings';
+import { request } from '@/utils/request';
 
 export type ServiceName = 'Bing' | 'OpenAI' | 'ChatGPT' | 'GenImageWithChatGPT' | 'Baidu' | 'Google';
 export const ServiceNames = {

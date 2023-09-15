@@ -1,8 +1,8 @@
 import { inspect } from 'util';
 import chalk from 'chalk';
 import { Notice } from 'obsidian';
-import { ConstantReference } from '../model/ref';
-import type { ReadOnlyReference } from '../model/ref';
+import { ConstantReference } from '@/model/ref';
+import type { ReadOnlyReference } from '@/model/ref';
 
 class Logger {
     private debugEnable: ReadOnlyReference<boolean> = new ConstantReference(false);
@@ -73,7 +73,5 @@ class Logger {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const LoggerUtil = new Proxy(new Logger(), console);
-
-export default LoggerUtil;
 
 export { LoggerUtil };

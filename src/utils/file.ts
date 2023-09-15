@@ -1,5 +1,5 @@
 import { TFile, normalizePath } from 'obsidian';
-import LoggerUtil from './logger';
+import { LoggerUtil } from '@/utils/logger';
 
 export async function getNotePath(directory, filename) {
     if (!filename.endsWith('.md')) {

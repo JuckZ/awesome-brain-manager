@@ -32,7 +32,7 @@ export class Tag {
 }
 
 export type EditorState = {
-    currentEle: Element;
+    currentEle?: Element;
     position: { top: number; bottom: number; left: number; right: number };
     selection: string;
 };

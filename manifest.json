@@ -6,5 +6,6 @@
 	"description": "A toolkit tries to solve all the trivial problems most people usually encountered in obsidian.",
 	"author": "Juck",
 	"authorUrl": "https://github.com/JuckZ",
-	"isDesktopOnly": false
+	"isDesktopOnly": false,
+	"fundingUrl": "https://github.com/JuckZ/awesome-brain-manager"
 }
