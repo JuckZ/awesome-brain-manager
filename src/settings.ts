@@ -27,6 +27,7 @@ class Settings {
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
     qweatherApiKey: SettingModel<string, string>;
+    aMapApiKey: SettingModel<string, string>;
     version: SettingModel<string, string>;
     enableTwemoji: SettingModel<boolean, boolean>;
     defaultMode: SettingModel<string, string>;
@@ -298,6 +299,14 @@ class Settings {
             .text('')
             .build(new RawSerde());
 
+        this.aMapApiKey = this.settings
+            .newSettingBuilder()
+            .key('aMapApiKey')
+            .name('AMap ApiKey')
+            .desc('input your ApiKey from aMapApiKey')
+            .text('')
+            .build(new RawSerde());
+
         this.version = this.settings
             .newSettingBuilder()
             .key('version')
@@ -322,6 +331,7 @@ class Settings {
                 this.ntfyServerHost,
                 this.ntfyToken,
                 this.qweatherApiKey,
+                this.aMapApiKey,
             );
         this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }

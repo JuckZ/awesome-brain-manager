@@ -1,5 +1,3 @@
-const city = '';
-
 /**
  * 天气预报接口返回数据的类型定义
  */
@@ -117,6 +115,16 @@ interface CityLocationResponse {
     };
 }
 
+interface CityLocationAmapResponse {
+    status: string;
+    info: string;
+    infocode: string;
+    province: string;
+    city: string;
+    adcode: string;
+    rectangle: string;
+}
+
 /**
  * 状态码及其含义请参考API文档
  */
@@ -137,29 +145,22 @@ interface AirResponse {
     co: string; // 一氧化碳
     o3: string; // 臭氧
 }
+
+// 空气质量监测站点数据
+interface AirStationResponse extends AirResponse {
+    name: string; // 监测站ID
+    id: string; // 监测站ID
+}
+
 interface RealTimeAirResponse extends QWeatherBaseResponse {
     now: AirResponse;
-    station: Array<{
-        pubTime: string; // 数据发布时间
-        name: string; // 监测站名称
-        id: string; // 监测站ID
-        aqi: string; // 空气质量指数
-        level: string; // 空气质量指数等级
-        category: string; // 空气质量指数级别
-        primary: string; // 主要污染物
-        pm10: string; // pm10
-        pm2p5: string; // pm2.5
-        no2: string; // 二氧化氮
-        so2: string; // 二氧化硫
-        co: string; // 一氧化碳
-        o3: string; // 臭氧
-    }>; // 空气质量监测站点数据
+    station: Array<AirStationResponse>;
 }
 
 /**
  * 用于日记的天气数据
  */
-export class WeatherResponseForJournal {
+export interface WeatherResponseForJournal {
     /** 风速 */
     windyspeed: number;
     /** 风速描述 */
@@ -196,84 +197,69 @@ export class WeatherResponseForJournal {
     textDay: string;
     /** obsidian描述 */
     desc: string;
+}
 
-    getDesc(weather: WeatherDailyResponse, air: AirResponse) {
-        this.category = air.category;
-        this.tempMax = weather.tempMax;
-        this.tempMin = weather.tempMin;
-        this.windyspeed = Math.max(weather.windSpeedDay, weather.windSpeedNight);
-        if (this.windyspeed < 12) {
-            this.windydesc = '微风习习';
-        } else if (this.windyspeed < 39) {
-            //小风
-            this.windydesc = '清风徐徐';
-        } else {
-            this.windydesc = '有' + weather.windDirDay + '风出没，风力' + weather.windScaleDay + '级';
-        }
-        this.temp = weather.tempMax;
-        this.text = weather.textDay;
-        this.icon = weather.iconDay;
-        this.humidity = weather.humidity;
-        this.vis = weather.vis;
-        this.cloud = weather.cloud;
-        this.uvIndex = weather.uvIndex;
-        this.moonPhase = weather.moonPhase;
-        this.moonPhaseIcon = weather.moonPhaseIcon;
-        this.sunrise = weather.sunrise;
-        this.sunset = weather.sunset;
-        const textDay = weather.textDay;
-        if (textDay.includes('雨')) {
-            this.textDay = '🌧' + textDay;
-        } else if (textDay.includes('云')) {
-            this.textDay = '⛅' + textDay;
-        } else if (textDay.includes('晴')) {
-            this.textDay = '🌞' + textDay;
-        } else if (textDay.includes('雪')) {
-            this.textDay = '❄' + textDay;
-        } else if (textDay.includes('阴')) {
-            this.textDay = '🌥' + textDay;
-        } else if (textDay.includes('风')) {
-            this.textDay = '🍃' + textDay;
-        } else if (textDay.includes('雷')) {
-            this.textDay = '⛈' + textDay;
-        } else if (textDay.includes('雾')) {
-            this.textDay = '🌫' + textDay;
-        }
-        switch (weather.moonPhase) {
-            case '新月':
-                this.moonPhaseIcon = '🌑';
-                break;
-            case '峨眉月':
-                this.moonPhaseIcon = '🌒';
-                break;
-            case '朔月':
-                this.moonPhaseIcon = '🌑';
-                break;
-            case '娥眉月':
-                this.moonPhaseIcon = '🌒';
-                break;
-            case '上弦月':
-                this.moonPhaseIcon = '🌓';
-                break;
-            case '盈凸月':
-                this.moonPhaseIcon = '🌔';
-                break;
-            case '满月':
-                this.moonPhaseIcon = '🌕';
-                break;
-            case '亏凸月':
-                this.moonPhaseIcon = '🌖';
-                break;
-            case '下弦月':
-                this.moonPhaseIcon = '🌗';
-                break;
-            default:
-                this.moonPhaseIcon = '🌘';
-        }
-
-        this.desc = `${this.textDay}, ${this.tempMin}~${this.tempMax}℃ ${this?.category} ${this.windydesc}${this.moonPhaseIcon}`;
-        return this.desc;
+export function getWeatherDescription(weather, air) {
+    const response: WeatherResponseForJournal = { ...weather, ...air };
+    response.windyspeed = Math.max(weather.windSpeedDay, weather.windSpeedNight);
+    if (response.windyspeed < 12) {
+        response.windydesc = '微风习习';
+    } else if (response.windyspeed < 39) {
+        response.windydesc = '清风徐徐';
+    } else {
+        response.windydesc = `有${weather.windDirDay}风出没，风力${weather.windScaleDay}级`;
     }
+    const textDay = weather.textDay;
+    if (textDay.includes('雨')) {
+        response.textDay = '🌧' + textDay;
+    } else if (textDay.includes('云')) {
+        response.textDay = '⛅' + textDay;
+    } else if (textDay.includes('晴')) {
+        response.textDay = '🌞' + textDay;
+    } else if (textDay.includes('雪')) {
+        response.textDay = '❄' + textDay;
+    } else if (textDay.includes('阴')) {
+        response.textDay = '🌥' + textDay;
+    } else if (textDay.includes('风')) {
+        response.textDay = '🍃' + textDay;
+    } else if (textDay.includes('雷')) {
+        response.textDay = '⛈' + textDay;
+    } else if (textDay.includes('雾')) {
+        response.textDay = '🌫' + textDay;
+    }
+    switch (weather.moonPhase) {
+        case '新月':
+            response.moonPhaseIcon = '🌑';
+            break;
+        case '峨眉月':
+            response.moonPhaseIcon = '🌒';
+            break;
+        case '朔月':
+            response.moonPhaseIcon = '🌑';
+            break;
+        case '娥眉月':
+            response.moonPhaseIcon = '🌒';
+            break;
+        case '上弦月':
+            response.moonPhaseIcon = '🌓';
+            break;
+        case '盈凸月':
+            response.moonPhaseIcon = '🌔';
+            break;
+        case '满月':
+            response.moonPhaseIcon = '🌕';
+            break;
+        case '亏凸月':
+            response.moonPhaseIcon = '🌖';
+            break;
+        case '下弦月':
+            response.moonPhaseIcon = '🌗';
+            break;
+        default:
+            response.moonPhaseIcon = '🌘';
+    }
+    response.desc = `${response.textDay}, ${response.tempMin}~${response.tempMax}℃ ${response?.category} ${response.windydesc}${response.moonPhaseIcon}`;
+    return response;
 }
 
 //wttr 天气入口
@@ -283,14 +269,13 @@ export async function getWttrWeather(city: string) {
     return result;
 }
 
-export async function getWeatherDaily(latitude: number, longitude: number, apiKey): Promise<WeatherResponse | null> {
+async function getWeatherDaily(latitude: number, longitude: number, apiKey): Promise<WeatherResponse | null> {
     try {
         const url = `https://devapi.qweather.com/v7/weather/3d?location=${longitude},${latitude}&key=${apiKey}`;
         const response = await fetch(url, {
             method: 'GET',
         });
         const data = await response.json();
-        console.warn(data);
         if (data.code != '200') {
             return null;
         }
@@ -302,9 +287,9 @@ export async function getWeatherDaily(latitude: number, longitude: number, apiKe
     }
 }
 
-export async function getWeather({ apiKey }): Promise<WeatherResponse | null> {
+export async function getWeather({ apiKey, amapKey }): Promise<WeatherResponse | null> {
     try {
-        const cityLocationResponse = await getCurrentLocation(apiKey);
+        const cityLocationResponse = await getCurrentLocation(apiKey, amapKey);
         if (cityLocationResponse === null) {
             return null;
         }
@@ -317,22 +302,18 @@ export async function getWeather({ apiKey }): Promise<WeatherResponse | null> {
     }
 }
 
-export async function getCurrentLocation(apiKey): Promise<CityLocationResponse | null> {
+export async function getCurrentLocation(apiKey, amapKey): Promise<CityLocationResponse | null> {
     return new Promise((resolve, reject) => {
-        getpos()
+        getPosition(amapKey)
             .then(async position => {
-                const city = position.cityCode;
-                const res = await searchCity(city, apiKey);
+                const location = position!.cityCode;
+                const res = await searchCity(location, apiKey);
                 resolve(res);
             })
             .catch(error => {
                 console.error(error);
                 reject(error);
             });
-        // navigator.geolocation.getCurrentPosition(async position => {
-        //     // position.coords.latitude, position.coords.longitude
-        //     resolve(position);
-        // }, reject);
     });
 }
 
@@ -357,29 +338,34 @@ export async function getAir(locationId, apiKey): Promise<RealTimeAirResponse | 
     return air;
 }
 
-//查询位置
-async function getpos() {
-    const res = await fetch('https://whois.pconline.com.cn/ipJson.jsp?json=true', {
+async function getPosition(amapKey, ip = '') {
+    let url = `https://restapi.amap.com/v3/ip?key=${amapKey}`;
+    if (ip) {
+        url += `&ip=${ip}`;
+    }
+    const sUrl = new URL(url);
+    const res = await fetch(sUrl.href, {
         method: 'GET',
     });
-    const resultObj = (await res.json()) as {
-        city: string;
-        cityCode: string;
-        ip: string;
-        pro: string;
-        proCode: string;
-        region: string;
-        regionCode: string;
-        addr: string;
-        regionNames: string;
-        error: string;
-    };
-    return resultObj;
+    const data = (await res.json()) as CityLocationAmapResponse;
+    if (data.status === '1') {
+        return {
+            city: data.city,
+            cityCode: data.adcode,
+        };
+    } else {
+        return null;
+    }
 }
-
-//查询城市ID
-async function searchCity(city, apiKey) {
-    const searchUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${city}&key=${apiKey}&number=1`;
+/**
+ * Retrieves the city information based on the given location.
+ *
+ * @param {string} location - The location to search for.
+ * @param {string} apiKey - The API key for accessing the Geo API.
+ * @return {Promise<CityLocationResponse | null>} The city information if found, otherwise null.
+ */
+async function searchCity(location, apiKey) {
+    const searchUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${location}&key=${apiKey}&number=1`;
     const sUrl = new URL(searchUrl);
     const res = await fetch(sUrl.href, {
         method: 'GET',
@@ -392,10 +378,10 @@ async function searchCity(city, apiKey) {
     }
 }
 
-export async function weatherDesc({ apiKey, type }) {
+export async function weatherDesc({ apiKey, amapKey, type }) {
     let locationId = '';
     let cityName = '';
-    const currentLocationResponse = await getCurrentLocation(apiKey);
+    const currentLocationResponse = await getCurrentLocation(apiKey, amapKey);
     const location = currentLocationResponse?.location[0];
     if (location) {
         locationId = location.id;
@@ -403,15 +389,15 @@ export async function weatherDesc({ apiKey, type }) {
     } else {
         locationId = '101010100';
     }
-
     if (type === 'obsidian') {
-        await Promise.all([getWeather({ apiKey }), getAir(locationId, apiKey)]).then(([weather, air]) => {
-            if (weather?.daily[0] && air) {
-                const jouranlResponse = new WeatherResponseForJournal();
-                const desc = cityName + jouranlResponse.getDesc(weather?.daily[0], air?.now);
-                return desc;
-            }
-        });
+        return await Promise.all([getWeather({ apiKey, amapKey }), getAir(locationId, apiKey)]).then(
+            ([weather, air]) => {
+                if (weather?.daily[0] && air) {
+                    const desc = cityName + getWeatherDescription(weather?.daily[0], air?.now).desc;
+                    return desc;
+                }
+            },
+        );
     }
     return '';
 }

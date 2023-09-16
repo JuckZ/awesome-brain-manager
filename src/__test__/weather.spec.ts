@@ -1,11 +1,12 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import { WeatherResponseForJournal, getAir, getCurrentLocation, getWeather, getWttrWeather } from '@/api/weather';
+import { getAir, getCurrentLocation, getWeather, getWeatherDescription, getWttrWeather } from '@/api/weather';
 
 let locationId = '';
-const apiKey = 'e6d27287b8d54b5da382f19086dac223';
+const apiKey = process.env.VITE_QWEATHER_APIKEY;
+const amapKey = process.env.VITE_AMAP_APIKEY;
 let cityName = '';
 beforeAll(async () => {
-    const currentLocationResponse = await getCurrentLocation(apiKey);
+    const currentLocationResponse = await getCurrentLocation(apiKey, amapKey);
     const location = currentLocationResponse?.location[0];
     if (location) {
         locationId = location.id;
@@ -20,14 +21,12 @@ describe('weather', () => {
         expect(weather).not.null;
     });
 
-    it.skip('getWeather', async () => {
-        await Promise.all([getWeather({ apiKey }), getAir(locationId, apiKey)]).then(([weather, air]) => {
-            expect(weather).not.null;
-            expect(weather?.daily[0]?.textDay).string;
+    it('getWeather', async () => {
+        await Promise.all([getWeather({ apiKey, amapKey }), getAir(locationId, apiKey)]).then(([weather, air]) => {
             if (weather?.daily[0] && air) {
-                const jouranlResponse = new WeatherResponseForJournal();
-                const desc = cityName + jouranlResponse.getDesc(weather?.daily[0], air?.now);
-                console.log(desc);
+                const desc = cityName + getWeatherDescription(weather?.daily[0], air?.now).desc;
+                expect(desc).not.null;
+                return desc;
             }
         });
     });

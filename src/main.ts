@@ -479,9 +479,10 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         getLocalRandom: (title, path) => {
             return getLocalRandomImg(this.app, title, path);
         },
-        weatherDesc: apiKey => {
+        weatherDesc: (apiKey, amapKey) => {
             return weatherDesc({
                 apiKey: apiKey || SETTINGS.qweatherApiKey.value,
+                amapKey: amapKey || SETTINGS.aMapApiKey.value,
                 type: 'obsidian',
             });
         },
@@ -568,7 +569,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
             // 带条件的编辑器指令
             // editorCheckCallback: (checking: boolean, editor: Editor, view: MarkdownView) => {}
-            editorCallback: (editor: Editor, view: MarkdownView) => {
+            editorCallback: (editor: Editor, view: MarkdownView | MarkdownFileInfo) => {
                 const evt = new CustomEvent(eventTypes.calledFunction, {
                     detail: {
                         type: 'OpenAI',
