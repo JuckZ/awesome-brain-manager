@@ -1,3 +1,20 @@
+# [1.9.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.8.0...1.9.0) (2023-04-18)
+
+
+### Bug Fixes
+
+* 1.https://github.com/JuckZ/awesome-brain-manager/issues/19 ([cf6a7e2](https://github.com/JuckZ/awesome-brain-manager/commit/cf6a7e2573d76e847013986244ab9bcc40116c6c))
+* 1.修复一个生命周期控制的bug，改bug导致的效果见 https://github.com/JuckZ/awesome-brain-manager/issues/23 ([50c35fa](https://github.com/JuckZ/awesome-brain-manager/commit/50c35fafc930513bb8aa55317888820dfbe29810))
+
+
+### Features
+
+* 1.修改tag透明度，以免无法看见光标 ([df1f0ac](https://github.com/JuckZ/awesome-brain-manager/commit/df1f0acd59465f47a766d4f2de849dc35a964cfb))
+* 1.在手机上番茄钟视图在右侧工具栏打开 ([0fa192d](https://github.com/JuckZ/awesome-brain-manager/commit/0fa192d236579f8a50d948684164f652f32eab51))
+* 1.增加剪切当前行的命令（可以用于手机端，不需要长按选中当前行所有内容） ([389db89](https://github.com/JuckZ/awesome-brain-manager/commit/389db89497140844ac8a38909f2d015d69f9a515))
+* 1.更新插件会展示更新日志 ([920917c](https://github.com/JuckZ/awesome-brain-manager/commit/920917cc68f7b0978a3b49a4209bc7bbf5f94098))
+* 1.状态栏展示番茄钟剩余时间和番茄钟名称 https://github.com/JuckZ/awesome-brain-manager/issues/20 ([ec46f9b](https://github.com/JuckZ/awesome-brain-manager/commit/ec46f9bb6f9e1af97b20b60006f4e19d8fe61b3d))
+
 # [1.8.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.7.1...1.8.0) (2023-03-12)
 
 
