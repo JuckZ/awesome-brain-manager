@@ -1,7 +1,9 @@
 import { URL, fileURLToPath } from 'node:url';
 import { resolve } from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import UnoCSS from 'unocss/vite';
+import { type PluginOption, defineConfig, loadEnv } from 'vite';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { visualizer } from 'rollup-plugin-visualizer';
 import builtins from 'builtin-modules';
 
 import vue from '@vitejs/plugin-vue';
@@ -46,6 +48,7 @@ export default defineConfig(({ command, mode }) => {
                         // browser: true
                     }),
                     nodePolyfills({
+                        // include: ['path', 'fs', 'util'],
                         sourceMap: true,
                     }),
                 ],
@@ -60,6 +63,11 @@ export default defineConfig(({ command, mode }) => {
                     // // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
                     globals: {
                         // vue: 'Vue',
+                        // obsidian: 'obsidian',
+                        // moment: 'moment',
+                        // util: 'util',
+                        // fs: 'fs',
+                        // path: 'path',
                     },
                 },
                 external: [
@@ -85,6 +93,7 @@ export default defineConfig(({ command, mode }) => {
             'process.env.NODE_ENV': '"production"',
         },
         plugins: [
+            UnoCSS(),
             viteStaticCopy({
                 targets: [
                     {
@@ -106,8 +115,37 @@ export default defineConfig(({ command, mode }) => {
                 },
             }),
             vueJsx(),
+            // visualizer({
+            //     open: true, //注意这里要设置为true，否则无效
+            //     gzipSize: true,
+            //     brotliSize: true,
+            // }) as PluginOption,
         ],
-        optimizeDeps: {},
+        optimizeDeps: {
+            // include: [
+            //     'moment',
+            //     '@lezer/common',
+            //     '@lezer/highlight',
+            //     '@lezer/lr',
+            //     'chart.js',
+            //     'commander',
+            //     'cursor-effects',
+            //     'emoji-mart',
+            //     '@emoji-mart/data',
+            //     'lodash-es',
+            //     'naive-ui',
+            //     'ora',
+            //     'party-js',
+            //     'pinia',
+            //     'rrule',
+            //     'sql.js',
+            //     'svelte',
+            //     'twemoji',
+            //     'vue',
+            //     'vue3-radial-progress',
+            //     ...builtins,
+            // ],
+        },
         resolve: {
             alias: [
                 {

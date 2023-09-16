@@ -1,20 +1,20 @@
-import { type Editor } from 'obsidian';
-import { type App, createApp } from 'vue';
-import type AwesomeBrainManagerPlugin from '../main';
-import AppVue from '../ui/App.vue';
-import { buildTagRules } from '../render/Tag';
+import { App, type Editor, Platform } from 'obsidian';
+import { type App as VueApp, createApp } from 'vue';
+import type AwesomeBrainManagerPlugin from '@/main';
+import AppVue from '@/ui/App.vue';
+import { buildTagRules } from '@/render/Tag';
 import type { SettingModel } from 'model/settings';
-import { type ExtApp, Tag } from '@/types/types';
+import { Tag } from '@/types/types';
 import pinia, { useEditorStore } from '@/stores';
-import LoggerUtil from '@/utils/logger';
+import { LoggerUtil } from '@/utils/logger';
 
 export const appContainerId = 'app-container';
 export class EditorUtils {
     plugin: AwesomeBrainManagerPlugin;
-    app: ExtApp;
+    app: App;
     ele: HTMLDivElement;
     loaded = false;
-    appViewVueApp: App;
+    appViewVueApp: VueApp;
     oldSelection: string;
     currentSelection: string;
 
@@ -31,6 +31,16 @@ export class EditorUtils {
         this.appViewVueApp.mount(`#${appContainerId}`);
     }
 
+    static getTitleBarHeight(): number {
+        if (Platform.isMobile) {
+            const titleEl = document.getElementsByClassName('view-header')[5] as HTMLElement | undefined;
+            return titleEl?.innerHeight || 40;
+        } else {
+            const titleEl = document.getElementsByClassName('titlebar')[0] as HTMLElement | undefined;
+            return titleEl?.innerHeight || 40;
+        }
+    }
+
     static getCurrentSelection(editor: Editor) {
         const cursorPos = editor.getCursor();
         let content = editor.getSelection();
@@ -40,6 +50,12 @@ export class EditorUtils {
             }
         }
         return content;
+    }
+
+    static replaceCurrentSelection(editor: Editor, targetText: string) {
+        const cursorPos = editor.getCursor();
+        const line = editor.getLine(cursorPos.line);
+        editor.replaceRange(targetText, { line: cursorPos.line, ch: 0 }, { line: cursorPos.line, ch: line.length });
     }
 
     unload() {
@@ -80,6 +96,7 @@ export class EditorUtils {
         if (tags.length === 0) {
             return;
         }
+        document.body.addClass('tag-awesome-brain-manager');
         tags.forEach(tag => {
             const rules = buildTagRules(new Tag(tag[0], tag[1], tag[2], tag[3], tag[4]));
             rules.forEach(rule => this.plugin.style.sheet?.insertRule(rule, this.plugin.style.sheet.cssRules.length));

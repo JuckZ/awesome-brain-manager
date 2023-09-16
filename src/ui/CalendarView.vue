@@ -20,7 +20,7 @@
 import { NCalendar } from 'naive-ui';
 import { Ref, ref } from 'vue';
 import { moment } from 'obsidian';
-import PomodoroListView from './PomodoroListView.vue';
+import PomodoroListView from '@/ui/PomodoroListView.vue';
 
 const emit = defineEmits(['focus-change']);
 
@@ -51,7 +51,16 @@ const isDateDisabled = (timestamp: number) => {
 </script>
 
 <style scoped lang="scss">
-#calendarContainerInSelf :deep(.n-calendar-header__extra .n-button-group .n-button) {
-    max-width: max-content;
+#calendarContainerInSelf :deep(.n-calendar) {
+    height: 500px;
+    .n-calendar-header__extra .n-button-group .n-button {
+        max-width: max-content;
+    }
+    .n-calendar-dates {
+        grid-template-rows: repeat(5, minmax(4rem, auto));
+        .n-calendar-cell {
+            padding: 0px;
+        }
+    }
 }
 </style>

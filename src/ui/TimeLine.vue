@@ -15,7 +15,7 @@
                         :to="targetNode"
                     >
                         <template #trigger>
-                            <n-icon size="20" @mouseenter="enterHandler">
+                            <n-icon size="20" class="cursor-pointer" @mouseenter="enterHandler">
                                 <radio-button-off-outline />
                             </n-icon>
                         </template>
@@ -71,10 +71,10 @@ import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { Ref, onUpdated, ref, toRefs, watchEffect } from 'vue';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
-import type { Pomodoro } from '../schemas/spaces';
-import { PomodoroStatus } from '../utils/pomotodo';
-import t from '../i18n';
-import { usePomodoroStore } from '../stores';
+import { PomodoroStatus } from '@/utils/pomotodo';
+import t from '@/i18n';
+import { usePomodoroStore } from '@/stores';
+import type { Pomodoro } from '@/schemas/spaces';
 const { pomodoroHistory } = storeToRefs(usePomodoroStore());
 
 const pomodoroList = ref([] as Pomodoro[]);
@@ -138,7 +138,11 @@ const getOptions = currentStatus => {
             key: 'cancelled',
             show: !['done', 'cancelled'].contains(currentStatus),
         },
-
+        {
+            label: t.info.repeatTask,
+            key: 'repeat',
+            show: true,
+        },
         {
             label: t.info.deleteTask,
             key: 'deleted',
@@ -147,17 +151,20 @@ const getOptions = currentStatus => {
     ];
 };
 const handleSelect = (
-    targetStatus: 'ing' | 'done' | 'todo' | 'cancelled' | 'break' | 'deleted',
+    targetStatus: 'ing' | 'done' | 'todo' | 'cancelled' | 'break' | 'repeat' | 'deleted',
     pomodoro: Pomodoro,
 ) => {
     if (targetStatus != 'deleted') {
         const ps = new PomodoroStatus(pomodoro);
-        if (targetStatus == 'ing') {
+        if (targetStatus === 'ing') {
             const ingPomodoro = pomodoroList.value.find(item => item.status === 'ing');
             if (ingPomodoro) {
                 message.error(`${t.info.handleThisFirst + ingPomodoro.task}`);
                 return;
             }
+        }
+        if (targetStatus === 'repeat') {
+            usePomodoroStore().quickAddPomodoro(pomodoro.task);
         }
         const changed = ps.changeState(targetStatus);
         if (changed) {

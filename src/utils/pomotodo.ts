@@ -1,5 +1,5 @@
-import type { Pomodoro } from '../schemas/spaces';
-import LoggerUtil from '../utils/logger';
+import type { Pomodoro } from '@/schemas/spaces';
+import { LoggerUtil } from '@/utils/logger';
 
 export class PomodoroStatus {
     private pomodoro: Pomodoro;

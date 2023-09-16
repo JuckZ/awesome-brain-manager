@@ -1,9 +1,26 @@
 import type AwesomeBrainManagerPlugin from '@/main';
 import { SETTINGS } from '@/settings';
 
+interface NotificationOptions {
+    title?: string;
+    subtitle?: string;
+    body?: string;
+    silent?: boolean;
+    icon?: string;
+    hasReply: boolean;
+    timeoutType: string;
+    replyPlaceholder: string;
+    sound?: string;
+    urgency: string;
+    closeButtonText: string;
+    actions: Array<{
+        type: string;
+        text: string;
+    }>;
+}
 export class NotifyUtils {
     plugin: AwesomeBrainManagerPlugin;
-    options: any;
+    options: NotificationOptions;
     audioEle: HTMLAudioElement;
 
     init(plugin: AwesomeBrainManagerPlugin) {

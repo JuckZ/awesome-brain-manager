@@ -1,7 +1,7 @@
 import { createPinia } from 'pinia';
-import { useEditorStore } from './editor';
-import { useSystemStore } from './system';
-import { usePomodoroStore } from './pomodoro';
+import { useSystemStore } from '@/stores/system';
+import { usePomodoroStore } from '@/stores/pomodoro';
+import { useEditorStore } from '@/stores/editor';
 const pinia = createPinia();
 export default pinia;
 export { useEditorStore, useSystemStore, usePomodoroStore };

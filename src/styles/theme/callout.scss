@@ -805,6 +805,13 @@ body.style-options-for-admonition-plugin .admonition-flex .admonition-content[da
     justify-content: space-around;
 }
 
+// 第一个列表不需要padding-inline-start
+body.style-options-for-admonition-plugin .admonition-flex .admonition-content {
+    ul:nth-child(1), ol:nth-child(1) {
+        padding-inline-start: 0;
+    }
+}
+
 .print .markdown-preview-view .admonition-flex .admonition-content {
     display: flex !important;
 }

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 
 import { reactive } from 'vue';
-import type { EditorState } from '../types/types';
+import type { EditorState } from '@/types/types';
 
 export const useEditorStore = defineStore('editor', () => {
     const editorState: EditorState = reactive({
-        currentEle: null as unknown as Element,
+        currentEle: undefined,
         position: {
             top: 0,
             bottom: 0,

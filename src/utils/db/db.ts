@@ -1,12 +1,12 @@
 // https://github.com/Make-md/makemd/blob/main/src/utils/db/db.ts
-import { FileSystemAdapter, normalizePath } from 'obsidian';
+import { App, FileSystemAdapter, normalizePath } from 'obsidian';
 import type { Database, QueryExecResult, SqlJsStatic } from 'sql.js';
-import { pomodoroDB } from '../constants';
-import LoggerUtil from '../logger';
-import { treeUtil } from '../common';
-import { sanitizeSQLStatement } from '../sanitize';
-import { loadSQL } from './sqljs';
-import { type ExtApp, eventTypes } from '@/types/types';
+import { pomodoroDB } from '@/utils/constants';
+import { LoggerUtil } from '@/utils/logger';
+import { treeUtil } from '@/utils/common';
+import { sanitizeSQLStatement } from '@/utils/sanitize';
+import { loadSQL } from '@/utils/db/sqljs';
+import { eventTypes } from '@/types/types';
 import type { DBTable, DBTables } from '@/types/mdb';
 import { type Pomodoro, pomodoroSchema } from '@/schemas/spaces';
 import type AwesomeBrainManagerPlugin from '@/main';
@@ -15,7 +15,7 @@ const { uniq } = treeUtil;
 
 export class DBUtils {
     private plugin: AwesomeBrainManagerPlugin;
-    private app: ExtApp;
+    private app: App;
     awesomeBrainDB: Database;
     awesomeBrainDBPath: string;
     initedCallback: any;

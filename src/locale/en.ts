@@ -20,6 +20,7 @@ export default {
         'query-openai': 'Query openAI',
         'open-emoji-picker': 'Open emoji picker',
         'cut-line': 'Cut current line',
+        'plan-pomodoro': 'Plan a pomodoro',
     },
     setting: {
         cursorEffect: {
@@ -50,6 +51,54 @@ export default {
             effects: 'Beautiful Effects',
             pomodoro: 'Pomodoro(beta feature)',
             tools: 'Tool',
+        },
+        defaultMode: {
+            name: 'Default Mode',
+            desc: 'Default mode for hover editor',
+        },
+        autoPin: {
+            name: 'Auto Pin',
+            desc: 'Auto pin hover editor when opened',
+        },
+        triggerDelay: {
+            name: 'Trigger Delay',
+            desc: 'Delay before hover editor is triggered',
+        },
+        closeDelay: {
+            name: 'Close Delay',
+            desc: 'Delay before hover editor is closed',
+        },
+        autoFocus: {
+            name: 'Auto Focus',
+            desc: 'Auto focus hover editor when opened',
+        },
+        rollDown: {
+            name: 'Roll Down',
+            desc: 'Roll down hover editor when opened',
+        },
+        snapToEdges: {
+            name: 'Snap To Edges',
+            desc: 'Snap hover editor to edges when opened',
+        },
+        initialHeight: {
+            name: 'Initial Height',
+            desc: 'Initial height of hover editor',
+        },
+        initialWidth: {
+            name: 'Initial Width',
+            desc: 'Initial width of hover editor',
+        },
+        showViewHeader: {
+            name: 'Show View Header',
+            desc: 'Show view header',
+        },
+        imageZoom: {
+            name: 'Image Zoom',
+            desc: 'Enable image zoom',
+        },
+        hoverEmbeds: {
+            name: 'Hover Embeds',
+            desc: 'Enable hover embeds',
         },
     },
     info: {
@@ -94,6 +143,7 @@ export default {
         totalTime: 'Total time',
         noTimeLine: 'No timeline content',
         startTask: '🚀 Start',
+        repeatTask: '🔁 Repeat',
         stopTask: '⏸️ Stop',
         finishTask: '✅ Finish',
         cancelTask: '❎ Cancel',

@@ -8,8 +8,8 @@
 import { onMounted, onUpdated, ref, toRefs } from 'vue';
 import Chart from 'chart.js/auto';
 import type { ChartItem } from 'chart.js/auto';
-import type { Pomodoro } from '../schemas/spaces';
-import t from '../i18n';
+import type { Pomodoro } from '@/schemas/spaces';
+import t from '@/i18n';
 
 const props = defineProps<{
     allPomodoro: Pomodoro[];

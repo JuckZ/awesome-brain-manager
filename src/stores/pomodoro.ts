@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref } from 'vue';
 import type { Pomodoro } from '@/schemas/spaces';
+import t from '@/i18n';
 import { DBUtil } from '@/utils/db/db';
+import { getTagsFromTask, getTaskContentFromTask } from '@/utils/common';
+import { SETTINGS } from '@/settings';
 
 // TODO 将数据持久化，优化性能 注意不同设备之间的持久化策略
 export const usePomodoroStore = defineStore('pomodoro', () => {
@@ -26,6 +29,30 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
         currentPomodoro.value = data.filter(pomodoro => pomodoro.status === 'ing')[0] as Pomodoro;
     }
 
+    function quickAddPomodoro(task: string) {
+        task = task.replace('- [x] ', '');
+        task = task.replace('- [ ] ', '').trim();
+        if (!task) {
+            task = t.menu.defaultTask + Date.now();
+        }
+        const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        const tags: string[] = getTagsFromTask(task);
+        const content: string = getTaskContentFromTask(task);
+        const tagsStr = tags.join(',');
+        const currentPomodoro = {
+            timestamp: new Date().getTime() + '',
+            task: content,
+            start: '',
+            createTime,
+            spend: '0',
+            breaknum: '0',
+            expectedTime: (parseFloat(SETTINGS.expectedTime.value) * 60 * 1000).toString(),
+            status: 'todo',
+            tags: tagsStr,
+        };
+        this.addPomodoro(currentPomodoro as Pomodoro);
+    }
+
     function addPomodoro(pomodoro: Pomodoro) {
         DBUtil.addPomodoro(pomodoro);
         pomodoroHistory.value.push(pomodoro);
@@ -45,6 +72,7 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
         totalTask,
         pomodoroHistory,
         loadPomodoroData,
+        quickAddPomodoro,
         addPomodoro,
         updatePomodoro,
         deletePomodoro,

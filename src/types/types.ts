@@ -5,6 +5,7 @@ export const eventTypes = {
     dbInited: 'db-inited',
     openBrowser: 'open-browser',
     calledFunction: 'called-function',
+    previewCursor: 'preview-cursor',
 };
 
 export type GlobalChange = 'file-create' | 'file-remove' | 'file-rename';
@@ -12,29 +13,6 @@ export type GlobalChange = 'file-create' | 'file-remove' | 'file-rename';
 export class AwesomeGlobalEvent extends Event {
     detail: {
         type: GlobalChange;
-    };
-}
-
-export class ExtApp extends App {
-    internalPlugins: any;
-    plugins: {
-        getPluginFolder(): string;
-        getPlugin(id: string): {
-            settings: any;
-        };
-    };
-    commands: {
-        commands: { [id: string]: Command };
-        editorCommands: { [id: string]: Command };
-        findCommand(id: string): Command;
-        executeCommandById(id: string): void;
-        listCommands(): Command[];
-    };
-    customCss: {
-        getSnippetsFolder(): string;
-        getSnippetPath(file: string): string;
-        readSnippets(): void;
-        setCssEnabledStatus(snippet: string, enabled: boolean): void;
     };
 }
 
@@ -54,7 +32,7 @@ export class Tag {
 }
 
 export type EditorState = {
-    currentEle: Element;
+    currentEle?: Element;
     position: { top: number; bottom: number; left: number; right: number };
     selection: string;
 };
@@ -62,4 +40,8 @@ export type EditorState = {
 export type SystemState = {
     language: string;
     theme: string;
+    mouseCoords: {
+        x: number;
+        y: number;
+    };
 };

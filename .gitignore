@@ -88,3 +88,4 @@ typings/
 dist/**
 
 .env.local
+stats.html

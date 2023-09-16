@@ -22,12 +22,16 @@ import {
     // An elasticish trail of cursors that will nip to wherever your mouse is
     trailingCursor,
 } from 'cursor-effects';
-import { randomColor } from '../utils/common';
+import { debounce } from 'lodash-es';
+import { randomColor } from '@/utils/common';
+import { EditorUtils } from '@/utils/editor';
 import type { SettingModel } from 'model/settings';
 
-const cursorEffects: any[] = [];
-
+const cursorEffects: object[] = [];
+let oldCursorEffects: object[] = [];
+let newCanvas: HTMLCanvasElement;
 function enableCursorEffect(effectName) {
+    const canvasesBefore = Array.from(document.querySelectorAll('canvas'));
     let emo;
     switch (effectName) {
         case 'bubbleCursor':
@@ -67,13 +71,42 @@ function enableCursorEffect(effectName) {
             break;
     }
     cursorEffects.push(emo);
+    const canvasesAfter = Array.from(document.querySelectorAll('canvas'));
+    newCanvas = canvasesAfter.find(canvas => !canvasesBefore.includes(canvas)) as unknown as HTMLCanvasElement;
+    // 调整特效层级，解决在侧边栏和设置弹窗时不可见的问题
+    newCanvas.style.zIndex = '9999';
 }
 
 export function toggleCursorEffects(target: string) {
+    const appendHandle = debounce(() => {
+        if (!document.body.contains(newCanvas)) {
+            document.body.appendChild(newCanvas);
+        }
+    }, 500);
+
+    const appendCanvas = (event: Event) => {
+        appendHandle();
+    };
+    const removeCanvas = (event: Event) => {
+        if (document.body.contains(newCanvas)) {
+            document.body.removeChild(newCanvas);
+        }
+    };
+    oldCursorEffects = [...cursorEffects];
+    const titlebarEleList = document.querySelectorAll('.titlebar, .workspace-tab-header-container');
     if (target != 'none') {
         disableCursorEffect();
+        // mouseenter无法完成该效果
+        titlebarEleList.forEach(ele => {
+            ele.addEventListener('mouseenter', removeCanvas);
+            ele.addEventListener('mouseleave', appendCanvas);
+        });
         enableCursorEffect(target);
     } else {
+        titlebarEleList.forEach(ele => {
+            ele.removeEventListener('mouseenter', removeCanvas);
+            ele.removeEventListener('mouseleave', appendCanvas);
+        });
         disableCursorEffect();
     }
 }

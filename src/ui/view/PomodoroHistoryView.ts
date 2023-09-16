@@ -1,8 +1,8 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { App as VueApp } from 'vue';
-import PomodoroHistory from '../PomodoroHistory.vue';
-import t from '../../i18n';
+import PomodoroHistory from '@/ui/PomodoroHistory.vue';
+import t from '@/i18n';
 import type AwesomeBrainManagerPlugin from 'main';
 
 export const POMODORO_HISTORY_VIEW = 'pomodoro-history-view';
@@ -34,6 +34,9 @@ export class PomodoroHistoryView extends ItemView {
 
     async onOpen(): Promise<void> {
         const container = this.containerEl.children[1];
+        if (container instanceof HTMLElement) {
+            container.style.padding = '0';
+        }
         container.empty();
         container.createEl(
             'div',

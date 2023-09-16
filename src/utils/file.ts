@@ -1,5 +1,5 @@
-import { TFile, normalizePath } from 'obsidian';
-import LoggerUtil from './logger';
+import { App, TFile, normalizePath } from 'obsidian';
+import { LoggerUtil } from '@/utils/logger';
 
 export async function getNotePath(directory, filename) {
     if (!filename.endsWith('.md')) {
@@ -36,7 +36,7 @@ async function ensureFolderExists(path) {
     }
 }
 
-export async function getAllFiles(app, folders, ignorePath: string[], ext, files): Promise<TFile[]> {
+export async function getAllFiles(app: App, folders, ignorePath: string[], ext, files): Promise<TFile[]> {
     const ignoreMatch = ignorePath.find(item => folders.path.startsWith(item));
     if (!ignoreMatch) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

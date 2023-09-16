@@ -1,12 +1,11 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/settings.ts
-import { App, PluginSettingTab, Plugin_2 } from 'obsidian';
-import type { SettingModel } from './model/settings';
-import { RawSerde, SettingTabModel } from './model/settings';
-import type { PluginDataIO } from './data';
-import { toggleCursorEffects } from './render/CursorEffects';
-import { toggleBlast } from './render/Blast';
-import t from './i18n';
-import { EditorUtil } from './utils/editor';
+import { App, Plugin, PluginSettingTab } from 'obsidian';
+import { RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
+import { toggleCursorEffects } from '@/render/CursorEffects';
+import { toggleBlast } from '@/render/Blast';
+import t from '@/i18n';
+import { EditorUtil } from '@/utils/editor';
+import type { PluginDataIO } from '@/data';
 
 class Settings {
     settings: SettingTabModel = new SettingTabModel();
@@ -27,16 +26,126 @@ class Settings {
     noticeAudio: SettingModel<string, string>;
     ntfyServerHost: SettingModel<string, string>;
     ntfyToken: SettingModel<string, string>;
+    qweatherApiKey: SettingModel<string, string>;
+    aMapApiKey: SettingModel<string, string>;
     version: SettingModel<string, string>;
     enableTwemoji: SettingModel<boolean, boolean>;
+    defaultMode: SettingModel<string, string>;
+    triggerDelay: SettingModel<number, number>;
+    closeDelay: SettingModel<number, number>;
+    autoPin: SettingModel<string, string>;
+    rollDown: SettingModel<boolean, boolean>;
+    imageZoom: SettingModel<boolean, boolean>;
+    autoFocus: SettingModel<boolean, boolean>;
+    snapToEdges: SettingModel<boolean, boolean>;
+    initialHeight: SettingModel<string, string>;
+    initialWidth: SettingModel<string, string>;
+    showViewHeader: SettingModel<boolean, boolean>;
+    hoverEmbeds: SettingModel<boolean, boolean>;
 
     constructor() {
+        this.defaultMode = this.settings
+            .newSettingBuilder()
+            .key('defaultMode')
+            .name(t.setting.defaultMode.name)
+            .desc(t.setting.defaultMode.desc)
+            .dropdown('preview')
+            .build(new RawSerde());
+
+        this.autoPin = this.settings
+            .newSettingBuilder()
+            .key('autoPin')
+            .name(t.setting.autoPin.name)
+            .desc(t.setting.autoPin.desc)
+            .text('onMove')
+            .build(new RawSerde());
+
+        this.triggerDelay = this.settings
+            .newSettingBuilder()
+            .key('triggerDelay')
+            .name(t.setting.triggerDelay.name)
+            .desc(t.setting.triggerDelay.desc)
+            .number(300)
+            .build(new RawSerde());
+
+        this.closeDelay = this.settings
+            .newSettingBuilder()
+            .key('closeDelay')
+            .name(t.setting.closeDelay.name)
+            .desc(t.setting.closeDelay.desc)
+            .number(600)
+            .build(new RawSerde());
+
+        this.autoFocus = this.settings
+            .newSettingBuilder()
+            .key('autoFocus')
+            .name(t.setting.autoFocus.name)
+            .desc(t.setting.autoFocus.desc)
+            .toggle(true)
+            .build(new RawSerde());
+
+        this.rollDown = this.settings
+            .newSettingBuilder()
+            .key('rollDown')
+            .name(t.setting.rollDown.name)
+            .desc(t.setting.rollDown.desc)
+            .toggle(false)
+            .build(new RawSerde());
+
+        this.snapToEdges = this.settings
+            .newSettingBuilder()
+            .key('snapToEdges')
+            .name(t.setting.snapToEdges.name)
+            .desc(t.setting.snapToEdges.desc)
+            .toggle(false)
+            .build(new RawSerde());
+
+        this.initialHeight = this.settings
+            .newSettingBuilder()
+            .key('initialHeight')
+            .name(t.setting.initialHeight.name)
+            .desc(t.setting.initialHeight.desc)
+            .text('340px')
+            .build(new RawSerde());
+
+        this.initialWidth = this.settings
+            .newSettingBuilder()
+            .key('initialWidth')
+            .name(t.setting.initialWidth.name)
+            .desc(t.setting.initialWidth.desc)
+            .text('400px')
+            .build(new RawSerde());
+
         this.cursorEffectBuilder = this.settings
             .newSettingBuilder()
             .key('cursorEffect')
             .name(t.setting.cursorEffect.name)
             .desc(t.setting.cursorEffect.desc)
             .dropdown('none');
+
+        this.showViewHeader = this.settings
+            .newSettingBuilder()
+            .key('showViewHeader')
+            .name(t.setting.showViewHeader.name)
+            .desc(t.setting.showViewHeader.desc)
+            .toggle(true)
+            .build(new RawSerde());
+
+        this.imageZoom = this.settings
+            .newSettingBuilder()
+            .key('imageZoom')
+            .name(t.setting.imageZoom.name)
+            .desc(t.setting.imageZoom.desc)
+            .toggle(true)
+            .build(new RawSerde());
+
+        this.hoverEmbeds = this.settings
+            .newSettingBuilder()
+            .key('hoverEmbeds')
+            .name(t.setting.hoverEmbeds.name)
+            .desc(t.setting.hoverEmbeds.desc)
+            .toggle(false)
+            .build(new RawSerde());
 
         Object.keys(t.info.effects).forEach(f => this.cursorEffectBuilder.addOption(`${t.info.effects[f]}`, f));
 
@@ -94,8 +203,8 @@ class Settings {
             ['white', '#058c1c', 'complete', ' ', ''],
             ['red', '#ffb6b9', 'principle', ' 📌', ''],
             ['white', '#323232', 'abandon', ' 🏁', ''],
-            ['white', '#eaffd0', 'review', ' 🌱', ''],
-            ['white', '#eaffd0', 'flashcards', ' 🌱', ''],
+            ['white', '#b5dc8e', 'review', ' 🌱', ''],
+            ['white', '#b5dc8e', 'flashcards', ' 🌱', ''],
             ['white', '#a6e3e9', 'juck', ' 👨‍💻', ''],
             ['white', '#a6e3e9', 'juckz', ' 👨‍💻', ''],
             ['white', '#a6e3e9', 'todo', ' 📥', ''],
@@ -182,6 +291,22 @@ class Settings {
             .text('')
             .build(new RawSerde());
 
+        this.qweatherApiKey = this.settings
+            .newSettingBuilder()
+            .key('qweatherApiKey')
+            .name('Qweather ApiKey')
+            .desc('input your ApiKey from https://dev.qweather.com/')
+            .text('')
+            .build(new RawSerde());
+
+        this.aMapApiKey = this.settings
+            .newSettingBuilder()
+            .key('aMapApiKey')
+            .name('AMap ApiKey')
+            .desc('input your ApiKey from aMapApiKey')
+            .text('')
+            .build(new RawSerde());
+
         this.version = this.settings
             .newSettingBuilder()
             .key('version')
@@ -200,7 +325,14 @@ class Settings {
 
         this.settings
             .newGroup('Notification')
-            .addSettings(this.systemNoticeEnable, this.noticeAudio, this.ntfyServerHost, this.ntfyToken);
+            .addSettings(
+                this.systemNoticeEnable,
+                this.noticeAudio,
+                this.ntfyServerHost,
+                this.ntfyToken,
+                this.qweatherApiKey,
+                this.aMapApiKey,
+            );
         this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }
 
@@ -212,7 +344,11 @@ class Settings {
 export const SETTINGS = new Settings();
 
 export class AwesomeBrainSettingTab extends PluginSettingTab {
-    constructor(app: App, plugin: Plugin_2, protected pluginData: PluginDataIO) {
+    constructor(
+        app: App,
+        plugin: Plugin,
+        protected pluginData: PluginDataIO,
+    ) {
         super(app, plugin);
     }
 

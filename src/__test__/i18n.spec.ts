@@ -1,8 +1,8 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import chalk from 'chalk';
 
-import enPack from '../locale/en';
-import zhPack from '../locale/zh-cn';
+import enPack from '@/locale/en';
+import zhPack from '@/locale/zh-cn';
 
 let languagePack;
 describe('i18n', () => {
@@ -16,7 +16,7 @@ describe('i18n', () => {
     });
 
     it('should return selected lang', async () => {
-        languagePack = (await import('../i18n')).default;
+        languagePack = (await import('@/i18n')).default;
         console.log(languagePack);
         expect(languagePack['__FOR_TEST'].exist.child).eq(zhPack['__FOR_TEST'].exist.child);
     });

@@ -1,8 +1,8 @@
 import { App, FuzzySuggestModal, Modal, Notice, SuggestModal, TAbstractFile } from 'obsidian';
 import { Picker } from 'emoji-mart';
 import data from '@emoji-mart/data';
-import type { Pomodoro } from '../../schemas/spaces';
-import t from '../../i18n';
+import type { Pomodoro } from '@/schemas/spaces';
+import t from '@/i18n';
 import type AwesomeBrainManagerPlugin from 'main';
 
 interface Book {
@@ -109,7 +109,7 @@ export class EmojiPickerModal extends Modal {
         super(app);
     }
 
-    onSelect = (emoji: any) => {
+    onSelect = emoji => {
         const editor = this.app.workspace.activeEditor?.editor;
         // BUG 光标问题
         editor?.replaceRange(emoji.native, editor.getCursor());
@@ -119,13 +119,32 @@ export class EmojiPickerModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         const pickerOptions = { onEmojiSelect: this.onSelect, data, skin: 1, set: 'native', theme: 'light' };
-        const picker: any = new Picker(pickerOptions);
+        const picker = new Picker(pickerOptions);
         // for style
         this.modalEl.id = 'emoji-modal';
-        contentEl.appendChild(picker);
+        contentEl.appendChild(picker as unknown as HTMLElement);
     }
 
     onClose() {
+        const { contentEl } = this;
+        contentEl.empty();
+    }
+}
+
+export class CommonModal extends Modal {
+    content: Node;
+
+    constructor(app: App, content: Node) {
+        super(app);
+        this.content = content;
+    }
+
+    onOpen(): void {
+        const { contentEl } = this;
+        contentEl.appendChild(this.content);
+    }
+
+    onClose(): void {
         const { contentEl } = this;
         contentEl.empty();
     }

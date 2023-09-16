@@ -3,6 +3,7 @@ module.exports = {
         es6: true,
         node: true,
         browser: true,
+        // obsidian: true, TODO，one-eslint
     },
     extends: [
         'plugin:vue/base',
@@ -20,22 +21,27 @@ module.exports = {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
         activeDocument: 'readonly',
+        app: 'readonly',
     },
     parser: 'vue-eslint-parser',
     parserOptions: {
         parser: '@typescript-eslint/parser',
-        tsconfigRootDir: './',
+        extraFileExtensions: ['.vue'],
+        // TODO 在工作区中，指定此目录会导致无法正常工作
+        // tsconfigRootDir: './',
         // project: './tsconfig.json',
         ecmaVersion: 6,
         sourceType: 'module',
+        jsx: true,
         ecmaFeatures: {
             modules: true,
+            jsx: true,
         },
     },
     plugins: ['@typescript-eslint', 'import'],
     rules: {
         // TODO
-        'import/no-unresolved': 'error',
+        'import/no-unresolved': ['error', { ignore: ['^virtual:'] }],
         'vue/multi-word-component-names': 1,
         'vue/no-v-model-argument': 'off',
         'linebreak-style': ['error', 'unix'],

@@ -1,63 +1,72 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import 'virtual:uno.css';
+import { around } from 'monkey-around';
 import {
     App,
     Editor,
+    type EphemeralState,
+    type MarkdownFileInfo,
     MarkdownPreviewRenderer,
     MarkdownView,
     Menu,
     Plugin,
+    type PluginManifest,
     TAbstractFile,
     TFile,
     Tasks,
+    type ViewState,
+    WorkspaceContainer,
+    WorkspaceItem,
     WorkspaceLeaf,
     WorkspaceWindow,
     debounce,
     normalizePath,
 } from 'obsidian';
-import type { MarkdownFileInfo, PluginManifest } from 'obsidian';
-
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
-import Replacer from './Replacer';
-import Process from './process/Process';
-import { checkInDefaultPath, checkInList, customSnippetPath } from './utils/constants';
-import { monkeyPatchConsole } from './obsidian-hack/obsidian-debug-mobile';
-import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from './ui/modal';
-import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from './ui/view/PomodoroHistoryView';
-import { BROWSER_VIEW, BrowserView } from './ui/view/BrowserView';
-import { codeEmoji } from './render/Emoji';
-import { toggleCursorEffects, toggleMouseClickEffects } from './render/CursorEffects';
-import LoggerUtil from './utils/logger';
-import { getAllFiles, getCleanTitle, getNotePath } from './utils/file';
-import { getWeather } from './utils/weather';
-import { getTagsFromTask, getTaskContentFromTask } from './utils/common';
-import { DBUtil } from './utils/db/db';
-import { insertAfterHandler } from './utils/content';
-import { getLocalRandomImg, searchPicture } from './utils/genBanner';
-import { PomodoroStatus } from './utils/pomotodo';
-import { AwesomeBrainSettingTab, SETTINGS } from './settings';
-import { PluginDataIO } from './data';
-import { eventTypes } from './types/types';
-import type { ExtApp } from './types/types';
-import { onCodeMirrorChange, toggleBlast, toggleShake } from './render/Blast';
-import type { Pomodoro } from './schemas/spaces';
-import { notifyNtfy } from './api';
-import t from './i18n';
-import './main.scss';
-import { NotifyUtil } from './utils/notify';
-import { EditorUtil, EditorUtils } from './utils/editor';
+import { expandEmmetAbbreviation } from '@/utils/emmet';
 import { usePomodoroStore, useSystemStore } from '@/stores';
+import Replacer from '@/Replacer';
+import Process from '@/process/Process';
+import { checkInDefaultPath, checkInList, customSnippetPath } from '@/utils/constants';
+import { monkeyPatchConsole } from '@/obsidian-hack/obsidian-debug-mobile';
+import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from '@/ui/modal';
+import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from '@/ui/view/PomodoroHistoryView';
+import { BROWSER_VIEW, BrowserView } from '@/ui/view/BrowserView';
+import { codeEmoji } from '@/render/Emoji';
+import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEffects';
+import { LoggerUtil } from '@/utils/logger';
+import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
+import { weatherDesc } from '@/api/weather';
+import { DBUtil } from '@/utils/db/db';
+import { insertAfterHandler } from '@/utils/content';
+import { getLocalRandomImg, searchPicture } from '@/utils/genBanner';
+import { PomodoroStatus } from '@/utils/pomotodo';
+import { AwesomeBrainSettingTab, SETTINGS } from '@/settings';
+import { PluginDataIO } from '@/data';
+import { eventTypes } from '@/types/types';
+import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
+import { notifyNtfy } from '@/api';
+import '@/main.scss';
+import { NotifyUtil } from '@/utils/notify';
+import { EditorUtil, EditorUtils } from '@/utils/editor';
+import t from '@/i18n';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
+import { HoverEditor, type HoverEditorParent } from '@/popover';
+
+// import { initWorker } from '@/web-worker';
+
+// initWorker();
 
 export const OpenUrl = ref('https://baidu.com');
 const media = window.matchMedia('(prefers-color-scheme: dark)');
+
 export default class AwesomeBrainManagerPlugin extends Plugin {
-    override app: ExtApp;
     pluginDataIO: PluginDataIO;
     private pomodoroHistoryView: PomodoroHistoryView | null;
-    quickPreviewFunction: (file: TFile, data: string) => any;
     resizeFunction: () => any;
     clickFunction: (evt: MouseEvent) => any;
-    activeLeafChangeFunction: (leaf: WorkspaceLeaf | null) => any;
+    activeLeafChangeFunction: (leaf: WorkspaceLeaf) => any;
     fileOpenFunction: (file: TFile | null) => any;
     layoutChangeFunction: () => any;
     windowOpenFunction: (win: WorkspaceWindow, window: Window) => any;
@@ -66,9 +75,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     fileMenuFunction: (menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf) => any;
     editorMenuFunction: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
     editorChangeFunction: (editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
-    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
+    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView) => any;
     editorDropFunction: (evt: DragEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
-    codemirrorFunction: (cm: CodeMirror.Editor) => any;
+    codemirrorFunction: (cm: CodeMirror.Editor, info: MarkdownView) => any;
     quitFunction: (tasks: Tasks) => any;
 
     vaultCreateFunction: (file: TAbstractFile) => any;
@@ -84,10 +93,11 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     replacer: Replacer;
     process: Process;
     emojiPickerModal: EmojiPickerModal;
+    interact: any;
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
-        this.app = app as ExtApp;
+        this.app = app;
         this.replacer = new Replacer(this);
         this.process = new Process(this);
         this.pluginDataIO = new PluginDataIO(this);
@@ -101,6 +111,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.editorChangeFunction = this.customizeEditorChange.bind(this);
         this.editorPasteFunction = this.customizeEditorPaste.bind(this);
         this.fileMenuFunction = this.customizeFileMenu.bind(this);
+        this.activeLeafChangeFunction = this.customizeActiveLeafChange.bind(this);
+        this.codemirrorFunction = this.customizeCodeMirror.bind(this);
         this.vaultCreateFunction = this.customizeVaultCreate.bind(this);
         this.vaultModifyFunction = this.customizeVaultModify.bind(this);
         this.vaultDeleteFunction = this.customizeVaultDelete.bind(this);
@@ -111,32 +123,14 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.openBrowser(e.detail.url);
     }
 
-    async addPomodoro(task: string) {
-        const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
-        const tags: string[] = getTagsFromTask(task);
-        const content: string = getTaskContentFromTask(task);
-        const tagsStr = tags.join(',');
-        const currentPomodoro = {
-            timestamp: new Date().getTime() + '',
-            task: content,
-            start: '',
-            createTime,
-            spend: '0',
-            breaknum: '0',
-            expectedTime: (parseFloat(SETTINGS.expectedTime.value) * 60 * 1000).toString(),
-            status: 'todo',
-            tags: tagsStr,
-        };
-        usePomodoroStore().addPomodoro(currentPomodoro as Pomodoro);
-    }
-
     get snippetPath() {
         return this.app.customCss.getSnippetPath(customSnippetPath);
     }
 
     generateCssString() {
-        const sheet = [
-            `/* This snippet was auto-generated by the awesome-brain-manager plugin on ${new Date().toLocaleString()} */`,
+        const sheet: string[] = [
+            // TODO 临时解决，这个代码导致同步插件同步隐藏文件时频繁冲突，后面可以优化成判断是否已经生成过css
+            // `/* This snippet was auto-generated by the awesome-brain-manager plugin on ${new Date().toLocaleString()} */`,
         ];
 
         for (const rule of Array.from(this.style.sheet!.cssRules)) {
@@ -167,7 +161,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         () => {
             // LoggerUtil.log('resize')
         },
-        500,
+        100,
         true,
     );
 
@@ -213,13 +207,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 title: t.menu.planPomodoro,
                 icon: 'send',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    let task = EditorUtils.getCurrentSelection(editor);
-                    task = task.replace('- [x] ', '');
-                    task = task.replace('- [ ] ', '').trim();
-                    if (!task) {
-                        task = t.menu.defaultTask + Date.now();
-                    }
-                    this.addPomodoro(task);
+                    const task = EditorUtils.getCurrentSelection(editor);
+                    usePomodoroStore().quickAddPomodoro(task);
                 },
             },
             {
@@ -234,13 +223,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     this.app.workspace.revealLeaf(
                         this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
                     );
-                },
-            },
-            {
-                title: 'Reveal current file in navigation',
-                icon: 'navigation',
-                clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    this.app.commands.executeCommandById('file-explorer:reveal-active-file');
                 },
             },
         ];
@@ -275,6 +257,29 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
+    async customizeActiveLeafChange(leaf: WorkspaceLeaf): Promise<void> {
+        HoverEditor.activePopover?.hoverEl.removeClass('is-active');
+        const hoverEditor = (HoverEditor.activePopover = leaf ? HoverEditor.forLeaf(leaf) : undefined);
+        if (hoverEditor && leaf) {
+            hoverEditor.hoverEl.addClass('is-active');
+            const titleEl = hoverEditor.hoverEl.querySelector('.popover-title');
+            if (!titleEl) return;
+            titleEl.textContent = leaf.view?.getDisplayText();
+            if (leaf?.view?.getViewType()) {
+                hoverEditor.hoverEl.setAttribute('data-active-view-type', leaf.view.getViewType());
+            }
+            if (leaf.view?.file?.path) {
+                titleEl.setAttribute('data-path', leaf.view.file.path);
+            } else {
+                titleEl.removeAttribute('data-path');
+            }
+        }
+    }
+
+    async customizeCodeMirror(cm: CodeMirror.Editor, view: MarkdownView): Promise<void> {
+        // LoggerUtil.log('');
+    }
+
     async customizeVaultCreate(file: TAbstractFile): Promise<void> {
         // LoggerUtil.log('');
     }
@@ -294,13 +299,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();
         LoggerUtil.init(SETTINGS.debugEnable);
+        this.patchWorkspaceLeaf();
         DBUtil.init(this, () => {
             usePomodoroStore().loadPomodoroData();
             this.startPomodoroTask();
         });
         EditorUtil.init(this);
         NotifyUtil.init(this);
-        this.setupUI();
         this.setupCommands();
         if (SETTINGS.enableTwemoji.value) {
             MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
@@ -313,10 +318,81 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             if (SETTINGS.debugEnable.value) {
                 monkeyPatchConsole(this);
             }
+            this.setupUI();
             this.watchVault();
+            setTimeout(() => {
+                // workaround to ensure our plugin shows up properly within Style Settings
+                this.app.workspace.trigger('css-change');
+            }, 2000);
         });
         await this.migrate();
         this.announceUpdate();
+    }
+
+    patchWorkspaceLeaf() {
+        this.register(
+            around(WorkspaceLeaf.prototype, {
+                getRoot(old) {
+                    return function () {
+                        const top = old.call(this);
+                        top.getRoot === this.getRoot ? top : top.getRoot();
+                        // bugfix make.md冲突，不能使用ctrl+o打开文件 #bug
+                        return top;
+                    };
+                },
+                onResize(old) {
+                    return function () {
+                        this.view?.onResize();
+                    };
+                },
+                setViewState(old) {
+                    return async function (viewState: ViewState, eState?: unknown) {
+                        const result = await old.call(this, viewState, eState);
+                        // try and catch files that are opened from outside of the
+                        // HoverEditor class so that we can update the popover title bar
+                        try {
+                            const he = HoverEditor.forLeaf(this);
+                            if (he) {
+                                if (viewState.type) he.hoverEl.setAttribute('data-active-view-type', viewState.type);
+                                const titleEl = he.hoverEl.querySelector('.popover-title');
+                                if (titleEl) {
+                                    titleEl.textContent = this.view?.getDisplayText();
+                                    if (this.view?.file?.path) {
+                                        titleEl.setAttribute('data-path', this.view.file.path);
+                                    } else {
+                                        titleEl.removeAttribute('data-path');
+                                    }
+                                }
+                            }
+                        } catch {
+                            // ignore
+                        }
+                        return result;
+                    };
+                },
+                setEphemeralState(old) {
+                    return function (state: EphemeralState) {
+                        old.call(this, state);
+                        if (state.focus && this.view?.getViewType() === 'empty') {
+                            // Force empty (no-file) view to have focus so dialogs don't reset active pane
+                            this.view.contentEl.tabIndex = -1;
+                            this.view.contentEl.focus();
+                        }
+                    };
+                },
+            }),
+        );
+        this.register(
+            around(WorkspaceItem.prototype, {
+                getContainer(old) {
+                    return function () {
+                        if (!old) return; // 0.14.x doesn't have this
+                        if (!this.parentSplit || this instanceof WorkspaceContainer) return old.call(this);
+                        return this.parentSplit.getContainer();
+                    };
+                },
+            }),
+        );
     }
 
     private startPomodoroTask() {
@@ -403,7 +479,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         getLocalRandom: (title, path) => {
             return getLocalRandomImg(this.app, title, path);
         },
-        getWeather,
+        weatherDesc: (apiKey, amapKey) => {
+            return weatherDesc({
+                apiKey: apiKey || SETTINGS.qweatherApiKey.value,
+                amapKey: amapKey || SETTINGS.aMapApiKey.value,
+                type: 'obsidian',
+            });
+        },
     };
 
     async setRandomBanner(path: TAbstractFile | null, origin: string): Promise<void> {
@@ -434,6 +516,13 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
+    spawnPopover(initiatingEl?: HTMLElement, onShowCallback?: () => unknown): WorkspaceLeaf {
+        const parent = this.app.workspace.activeLeaf as unknown as HoverEditorParent;
+        if (!initiatingEl) initiatingEl = parent.containerEl;
+        const hoverPopover = new HoverEditor(parent, initiatingEl!, this, undefined, onShowCallback);
+        return hoverPopover.attachLeaf();
+    }
+
     private setupCommands() {
         this.addCommand({
             id: 'cut-line',
@@ -443,6 +532,18 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 const editor = this.app.workspace.activeEditor?.editor;
                 if (editor) {
                     EditorUtils.cutLine(editor);
+                }
+            },
+        });
+        this.addCommand({
+            id: 'plan-pomodoro',
+            icon: 'scissors',
+            name: t.command['plan-pomodoro'],
+            callback: () => {
+                const editor = this.app.workspace.activeEditor?.editor;
+                if (editor) {
+                    const task = EditorUtils.getCurrentSelection(editor);
+                    usePomodoroStore().quickAddPomodoro(task);
                 }
             },
         });
@@ -468,7 +569,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
             // 带条件的编辑器指令
             // editorCheckCallback: (checking: boolean, editor: Editor, view: MarkdownView) => {}
-            editorCallback: (editor: Editor, view: MarkdownView) => {
+            editorCallback: (editor: Editor, view: MarkdownView | MarkdownFileInfo) => {
                 const evt = new CustomEvent(eventTypes.calledFunction, {
                     detail: {
                         type: 'OpenAI',
@@ -573,6 +674,16 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
+    maybeRefresh = () => {
+        // TODO
+        // If the index revision has changed recently, then queue a reload.
+        // But only if we're mounted in the DOM and auto-refreshing is active.
+        // if (this.lastReload != this.index.revision && this.container.isShown() && this.settings.refreshEnabled) {
+        //     this.lastReload = this.index.revision;
+        //     this.render();
+        // }
+    };
+
     private watchVault() {
         // https://github.com/kepano/obsidian-system-dark-mode/blob/master/main.ts
         // Watch for system changes to color theme
@@ -601,6 +712,19 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         media.addEventListener('change', callback);
         this.register(() => media.removeEventListener('change', callback));
         this.register(() => mutationObserver.disconnect());
+        window.onkeydown = event => {
+            if (event.key === 'Tab') {
+                const editor = this.app.workspace.activeEditor?.editor as Editor;
+                if (editor) {
+                    const triggerText = EditorUtils.getCurrentSelection(editor);
+                    const targetText = expandEmmetAbbreviation(triggerText);
+                    if (targetText) {
+                        EditorUtils.replaceCurrentSelection(editor, targetText);
+                        event.preventDefault();
+                    }
+                }
+            }
+        };
         // window.addEventListener('languagechange', () => {
         //     console.log('languagechange event detected!');
         // });
@@ -610,14 +734,33 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
         });
-        window.addEventListener(eventTypes.openBrowser, this.openBrowserHandle.bind(this));
+        const mouseMoveCallback = (event: MouseEvent) => {
+            useSystemStore().updateMouseCoords({
+                x: event.clientX,
+                y: event.clientY,
+            });
+        };
+        const previewCursorCallback = (e: CustomEvent) => {
+            const newLeaf = this.spawnPopover(undefined, () => this.app.workspace.setActiveLeaf(newLeaf, false, true));
+            newLeaf.openLinkText(e.detail.cursorTarget.title, e.detail.cursorTarget.path);
+        };
+        window.addEventListener('mousemove', mouseMoveCallback);
+        this.register(() => window.removeEventListener('mousemove', mouseMoveCallback));
+        window.addEventListener(eventTypes.previewCursor, previewCursorCallback);
+        this.register(() => window.removeEventListener(eventTypes.previewCursor, previewCursorCallback));
+        const openBrowserCallback = this.openBrowserHandle.bind(this);
+        window.addEventListener(eventTypes.openBrowser, openBrowserCallback);
+        this.register(() => window.removeEventListener(eventTypes.openBrowser, openBrowserCallback));
         [
-            this.app.workspace.on('click', this.clickFunction),
+            this.app.workspace.on('dataview:refresh-views', this.maybeRefresh),
+            this.app.workspace.on('codemirror', this.codemirrorFunction),
+            // this.app.workspace.on('click', this.clickFunction),
             this.app.workspace.on('resize', this.resizeFunction),
             this.app.workspace.on('editor-change', this.editorChangeFunction),
             this.app.workspace.on('editor-paste', this.editorPasteFunction),
             this.app.workspace.on('file-menu', this.fileMenuFunction),
             this.app.workspace.on('editor-menu', this.editorMenuFunction),
+            this.app.workspace.on('active-leaf-change', this.activeLeafChangeFunction),
             this.app.vault.on('create', this.vaultCreateFunction),
             this.app.vault.on('modify', this.vaultModifyFunction),
             this.app.vault.on('delete', this.vaultDeleteFunction),

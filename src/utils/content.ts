@@ -1,7 +1,7 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
 import { VueApp, createApp } from 'vue/dist/vue.esm-bundler.js';
-import TestTitle from '../ui/TestTitle';
-import LoggerUtil from '../utils/logger';
+import TestTitle from '@/ui/TestTitle';
+import { LoggerUtil } from '@/utils/logger';
 
 interface MContent {
     content: string;
@@ -51,7 +51,7 @@ export function insertAfterHandler(targetString: string, formatted: string, file
 }
 
 // https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
-export function escapeRegExp(text: any) {
+export function escapeRegExp(text: string) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 

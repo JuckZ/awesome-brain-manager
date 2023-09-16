@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { beforeAll, describe, expect, it } from 'vitest';
-import * as sut from '../file-access';
+import * as sut from '@/file-access';
 
 describe('file access', () => {
     beforeAll(() => {

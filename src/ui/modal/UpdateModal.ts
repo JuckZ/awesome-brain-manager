@@ -1,6 +1,6 @@
 // https://raw.githubusercontent.com/chhoumann/quickadd/c536135609e37d44e3a686d2da0f2c18031f1222/src/gui/UpdateModal/UpdateModal.ts
 import { type Component, MarkdownRenderer, Modal } from 'obsidian';
-import LoggerUtil from '@/utils/logger';
+import { LoggerUtil } from '@/utils/logger';
 
 type Release = {
     tag_name: string;

@@ -62,19 +62,19 @@
 import { onMounted, onUnmounted, onUpdated, ref, watchEffect } from 'vue';
 import { NIcon, NTooltip, useNotification } from 'naive-ui';
 import { storeToRefs } from 'pinia';
-import { ServiceNames, chatWith } from '../api';
-import { useEditorStore } from '../stores';
-import { eventTypes } from '../types/types';
-import LoggerUtil from '../utils/logger';
-import { getNumberFromStr } from '../utils/common';
-import OpenAI from './components/icon/OpenAI.vue';
-import Baidu from './components/icon/Baidu.vue';
-import Bing from './components/icon/Bing.vue';
-import ChatGPT from './components/icon/ChatGPT.vue';
-import Google from './components/icon/Google.vue';
-import ScanImage from './components/icon/ScanImage.vue';
+import { ServiceNames, chatWith } from '@/api';
+import { useEditorStore } from '@/stores';
+import { eventTypes } from '@/types/types';
+import { LoggerUtil } from '@/utils/logger';
+import { getNumberFromStr } from '@/utils/common';
+import OpenAI from '@/ui/components/icon/OpenAI.vue';
+import Baidu from '@/ui/components/icon/Baidu.vue';
+import Bing from '@/ui/components/icon/Bing.vue';
+import ChatGPT from '@/ui/components/icon/ChatGPT.vue';
+import Google from '@/ui/components/icon/Google.vue';
+import ScanImage from '@/ui/components/icon/ScanImage.vue';
 
-import { customAvatar, customContent, customDescription, customTitle } from './CustomContent';
+import { customAvatar, customContent, customDescription, customTitle } from '@/ui/CustomContent';
 
 const { editorState: currentState } = storeToRefs(useEditorStore());
 const isShow = ref(false);
@@ -156,7 +156,7 @@ const getComputedStyle = () => {
         return currentState.value.position.top + topOffset;
     };
     const getLeft = () => {
-        const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content') as any;
+        const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content');
 
         if (activeDoc.innerWidth < 250) {
             return getElementViewLeft(activeLine);

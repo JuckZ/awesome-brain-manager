@@ -12,7 +12,7 @@ export function randomColor() {
 }
 
 export const treeUtil = {
-    uniq: (a: any[]) => [...new Set(a)],
+    uniq: (a: []) => [...new Set(a)],
 };
 
 export function getNumberFromStr(str: string) {
@@ -39,4 +39,18 @@ export function deepCloneArr(source) {
 
 export function deepClone(source) {
     // TODO
+}
+
+export function genId(size: number) {
+    const chars: string[] = [];
+    for (let n = 0; n < size; n++) chars.push(((16 * Math.random()) | 0).toString(16));
+    return chars.join('');
+}
+
+export async function getCurrentLocation(): Promise<GeolocationPosition> {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(async position => {
+            resolve(position);
+        }, reject);
+    });
 }

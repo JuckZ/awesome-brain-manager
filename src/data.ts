@@ -1,6 +1,6 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/data.ts
 import type { Plugin } from 'obsidian';
-import { SETTINGS } from './settings';
+import { SETTINGS } from '@/settings';
 
 export class PluginDataIO {
     changed = false;

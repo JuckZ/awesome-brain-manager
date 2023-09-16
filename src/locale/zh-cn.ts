@@ -20,6 +20,7 @@ export default {
         'query-openai': '询问OpenAI',
         'open-emoji-picker': '输入表情',
         'cut-line': '剪切当前行',
+        'plan-pomodoro': '规划一个番茄钟',
     },
     setting: {
         cursorEffect: {
@@ -50,6 +51,54 @@ export default {
             effects: '鼠标、按键特效',
             pomodoro: '番茄钟(beta version)',
             tools: '工具',
+        },
+        defaultMode: {
+            name: '默认模式',
+            desc: '默认模式',
+        },
+        autoPin: {
+            name: '自动固定',
+            desc: '自动固定悬浮编辑器',
+        },
+        triggerDelay: {
+            name: '触发延迟',
+            desc: '触发延迟',
+        },
+        closeDelay: {
+            name: '关闭延迟',
+            desc: '关闭延迟',
+        },
+        autoFocus: {
+            name: '自动聚焦',
+            desc: '自动聚焦悬浮编辑器',
+        },
+        rollDown: {
+            name: '滚动到底部',
+            desc: '滚动到底部',
+        },
+        snapToEdges: {
+            name: '贴边',
+            desc: '贴边',
+        },
+        initialHeight: {
+            name: '初始高度',
+            desc: '初始高度',
+        },
+        initialWidth: {
+            name: '初始宽度',
+            desc: '初始宽度',
+        },
+        showViewHeader: {
+            name: '显示标题栏',
+            desc: '显示标题栏',
+        },
+        imageZoom: {
+            name: '图片缩放',
+            desc: '图片缩放',
+        },
+        hoverEmbeds: {
+            name: '悬浮嵌入',
+            desc: '悬浮嵌入',
         },
     },
     info: {
@@ -94,6 +143,7 @@ export default {
         totalTime: '总专注时长',
         noTimeLine: '无时间线内容',
         startTask: '🚀 开始',
+        repeatTask: '🔁 重复',
         stopTask: '⏸️ 暂停',
         finishTask: '✅ 完成',
         cancelTask: '❎ 取消',
