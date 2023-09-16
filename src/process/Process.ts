@@ -30,7 +30,10 @@ export default class Process {
 
     // https://github.com/joethei/obsidian-plantuml
     UMLProcess = async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-        const debounceMap = new Map<string, Debouncer<[string, HTMLElement, MarkdownPostProcessorContext], any>>();
+        const debounceMap = new Map<
+            string,
+            Debouncer<[string, HTMLElement, MarkdownPostProcessorContext], Promise<void>>
+        >();
         const processor = async (source: string, el: HTMLElement, _: MarkdownPostProcessorContext) => {
             const url = 'https://www.plantuml.com/plantuml';
             const imageUrlBase = url + '/png/';

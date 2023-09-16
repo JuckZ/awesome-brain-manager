@@ -156,7 +156,7 @@ const getComputedStyle = () => {
         return currentState.value.position.top + topOffset;
     };
     const getLeft = () => {
-        const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content') as any;
+        const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content');
 
         if (activeDoc.innerWidth < 250) {
             return getElementViewLeft(activeLine);

@@ -19,7 +19,7 @@ let shakeTime = 0,
     ctx;
 const shakeIntensity = 5,
     titleBarHeight = EditorUtils.getTitleBarHeight(),
-    particles: any[] = [],
+    particles: Particle[] = [],
     MAX_PARTICLES = 500,
     PARTICLE_NUM_RANGE = { min: 5, max: 10 },
     PARTICLE_GRAVITY = 0.08,
@@ -126,8 +126,21 @@ function spawnParticles(cm) {
     }
 }
 
+interface Particle {
+    x: number;
+    y: number;
+    alpha: number;
+    color: [number, number, number];
+    size: number;
+    vx: number;
+    vy: number;
+    drag: number;
+    wander: number;
+    theta: number;
+}
+
 function createParticle(x, y, color) {
-    const p = {
+    const p: Particle = {
         x: x,
         y: y + 10,
         alpha: 1,

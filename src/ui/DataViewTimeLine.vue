@@ -37,7 +37,6 @@ let mdText = ref('');
 const taskList: Ref<STask[]> = ref([]);
 
 const DataviewAPI = getDataviewApi();
-
 const searchHandle = async () => {
     // query
     // mdText.value = (await DataviewAPI.queryMarkdown(listTasks)).value;
@@ -68,8 +67,18 @@ const previewTask = async (event, item: STask) => {
     debouncePreview(event, item);
 };
 
+type SelectionState = {
+    estate: {
+        cursor: {
+            from: { line: number; ch: number };
+            to: { line: number; ch: number };
+        };
+    };
+    line: number;
+};
+
 const onClicked = async (evt, item: STask) => {
-    const selectionState = {
+    const selectionState: SelectionState = {
         eState: {
             cursor: {
                 from: { line: item.line, ch: item.position.start.col },
@@ -83,7 +92,7 @@ const onClicked = async (evt, item: STask) => {
         item.link.toFile().obsidianLink(),
         item.path,
         evt.ctrlKey || (evt.metaKey && Platform.isMacOS),
-        selectionState as any,
+        selectionState,
     );
 };
 

@@ -27,8 +27,8 @@ import { randomColor } from '@/utils/common';
 import { EditorUtils } from '@/utils/editor';
 import type { SettingModel } from 'model/settings';
 
-const cursorEffects: any[] = [];
-let oldCursorEffects: any[] = [];
+const cursorEffects: object[] = [];
+let oldCursorEffects: object[] = [];
 let newCanvas: HTMLCanvasElement;
 function enableCursorEffect(effectName) {
     const canvasesBefore = Array.from(document.querySelectorAll('canvas'));
@@ -84,10 +84,10 @@ export function toggleCursorEffects(target: string) {
         }
     }, 500);
 
-    const appendCanvas = (event: MouseEvent) => {
+    const appendCanvas = (event: Event) => {
         appendHandle();
     };
-    const removeCanvas = (event: MouseEvent) => {
+    const removeCanvas = (event: Event) => {
         if (document.body.contains(newCanvas)) {
             document.body.removeChild(newCanvas);
         }

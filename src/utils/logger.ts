@@ -49,22 +49,22 @@ class Logger {
         //     return false;
         // };
     }
-    log(...args: any) {
+    log(...args) {
         this.printer('log', args, chalk.bgCyanBright.blackBright.bold);
     }
-    dir(...args: any) {
+    dir(...args) {
         this.printer('dir', args, chalk.bgBlueBright.blackBright.bold);
     }
-    info(...args: any) {
+    info(...args) {
         this.printer('info', args, chalk.bgBlueBright.blackBright.bold);
     }
-    warn(...args: any) {
+    warn(...args) {
         this.printer('warn', args, chalk.bgYellowBright.blackBright.bold);
     }
-    error(...args: any) {
+    error(...args) {
         this.printer('error', args, chalk.bgRedBright.blackBright.bold);
     }
-    debug(...args: any[]) {
+    debug(...args) {
         this.printer('debug', args, chalk.bgRedBright.blackBright.bold);
     }
 }

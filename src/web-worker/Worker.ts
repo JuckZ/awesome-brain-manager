@@ -2,7 +2,7 @@ import { MessageManager } from '@/web-worker/MessageManager';
 
 let messageManager: MessageManager | null = null;
 
-function executeFunction<T extends MessageManager>(target: T, func: keyof T, args: any): void {
+function executeFunction<T extends MessageManager>(target: T, func: keyof T, args): void {
     // eslint-disable-next-line @typescript-eslint/ban-types
     (target[func] as unknown as Function)(args);
 }

@@ -21,7 +21,7 @@ export const chatWith = async (type: string, keyword: string) => {
     return res;
 };
 
-export const notifyNtfy = (msg: any) => {
+export const notifyNtfy = (msg?: string | ArrayBuffer) => {
     const headers = {};
     if (SETTINGS.ntfyToken.value) {
         headers['Authorization'] = `Basic ${SETTINGS.ntfyToken.value}`;

@@ -21,7 +21,8 @@ describe('weather', () => {
         expect(weather).not.null;
     });
 
-    it('getWeather', async () => {
+    // 本地测试即可，流水线中不提供apikey等信息
+    it.skip('getWeather', async () => {
         await Promise.all([getWeather({ apiKey, amapKey }), getAir(locationId, apiKey)]).then(([weather, air]) => {
             if (weather?.daily[0] && air) {
                 const desc = cityName + getWeatherDescription(weather?.daily[0], air?.now).desc;

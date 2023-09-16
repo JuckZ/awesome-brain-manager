@@ -12,7 +12,7 @@ export function randomColor() {
 }
 
 export const treeUtil = {
-    uniq: (a: any[]) => [...new Set(a)],
+    uniq: (a: []) => [...new Set(a)],
 };
 
 export function getNumberFromStr(str: string) {
