@@ -1,3 +1,49 @@
+# [1.10.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.9.0...1.10.0) (2023-09-16)
+
+
+### Bug Fixes
+
+* 1.blockId不存在 feat: 1.简单修改样式 ([67206c4](https://github.com/JuckZ/awesome-brain-manager/commit/67206c478932c917146e94bc5b7df849da25292e))
+* 1.lang=ts ([91ecf46](https://github.com/JuckZ/awesome-brain-manager/commit/91ecf469c3a8ded126e78c05fd547093700e4b6b))
+* 1.make.md冲突，不能使用ctrl+o打开文件 2.clean code ([fbca009](https://github.com/JuckZ/awesome-brain-manager/commit/fbca00954a085ddaa703fe129eeb1c1f3af74e60))
+* 1.make.md冲突，不能使用ctrl+o打开文件 2.export interface ([13c649c](https://github.com/JuckZ/awesome-brain-manager/commit/13c649ce1dfa0d0bd1994d4a578324e5e63529e6))
+* 1.pnpm install failed in github action ([e6a0189](https://github.com/JuckZ/awesome-brain-manager/commit/e6a0189d8cea92471a5a31cd396ffce9a04f1a27))
+* 1.weather ([ae47aa2](https://github.com/JuckZ/awesome-brain-manager/commit/ae47aa2cf0a2f1177ca5c474ad141c4a35ba9535))
+* 1.weather API ([b85d65d](https://github.com/JuckZ/awesome-brain-manager/commit/b85d65d3544a1d2e96e58b7e4837cdf1d6e35a17))
+* 1.匹配到emmet的情况才禁用Tab默认事件，避免Tab的正常功能受到影响 ([68c3cdb](https://github.com/JuckZ/awesome-brain-manager/commit/68c3cdb9065f0cf29e73790a7e1724d77727a65b))
+* 1.手机端无法快捷加入当前光标下的TODO事项 https://github.com/JuckZ/awesome-brain-manager/issues/36 ([84e2322](https://github.com/JuckZ/awesome-brain-manager/commit/84e23224c018fde4130b9ddb9cfbe88914d7ddfe))
+* 1.暂时禁用window.onerror部分逻辑，这导致一直notice弹出ResizeObserver loop limit exceeded提示 ([1910318](https://github.com/JuckZ/awesome-brain-manager/commit/1910318502b8c5117bf60fe7871a34bc1ccbfa44))
+* 1.源码模式tag不予使用样式 ([dd248ac](https://github.com/JuckZ/awesome-brain-manager/commit/dd248ac8833897e9dece99bd15de7e5bb7c697df))
+* 1.解决同步冲突问题 ([bd3ce7c](https://github.com/JuckZ/awesome-brain-manager/commit/bd3ce7ca4893d6e9356ce5ae654e32c10fe1ccd5))
+* 1.解决窗口拖动问题 2.修正鼠标特效位置问题 ([69ec87f](https://github.com/JuckZ/awesome-brain-manager/commit/69ec87f468e7f2ecfcbb30a7966a7e8bcc86b1cb))
+* 鼠标特效开启后无法拖动窗口 ([03b6620](https://github.com/JuckZ/awesome-brain-manager/commit/03b662098e32a8fbe0ee12f7d30a6e4a8ac19e93))
+
+
+### Features
+
+* 1. 支持重复任务，多次加入番茄钟 ([24f5bcb](https://github.com/JuckZ/awesome-brain-manager/commit/24f5bcb1b5e3915b0d01121ac45f0464a85d831b))
+* 1.add interface ([309add3](https://github.com/JuckZ/awesome-brain-manager/commit/309add389fa90c0203fd1252005de0e0f2750bdf))
+* 1.add ITS checkbox css snippets https://github.com/SlRvb/Obsidian--ITS-Theme/blob/main/Snippets/S%20-%20Checkboxes.css ([773e03b](https://github.com/JuckZ/awesome-brain-manager/commit/773e03b10eb237b81c7c699c8b7cbf839789ceac))
+* 1.emmet功能 ([ed41a24](https://github.com/JuckZ/awesome-brain-manager/commit/ed41a24eca4386cbd17c7358fa4851a12aef09d2))
+* 1.release.yml use packageManager field in the package.json. ([c51b07b](https://github.com/JuckZ/awesome-brain-manager/commit/c51b07b573cd636decd994668145f93aedb551d0))
+* 1.UI调整，更适合小屏幕，并且电脑端更紧凑 ([f21570d](https://github.com/JuckZ/awesome-brain-manager/commit/f21570d0758072f53804ca1cbc898caed9b3931d))
+* 1.weather ([8e8ffe6](https://github.com/JuckZ/awesome-brain-manager/commit/8e8ffe670cd5f4d21caefad5284e15102a851ca7))
+* 1.任务切换完成状态 2.任务跳转 ([68a403f](https://github.com/JuckZ/awesome-brain-manager/commit/68a403f629689c01f76d9bfaf9a1e9cdc5f255b4))
+* 1.任务管理修改 ([79e3acc](https://github.com/JuckZ/awesome-brain-manager/commit/79e3acc18bab1ae435957a66d053684a4cfa100d))
+* 1.修改单元测试 ([410a50f](https://github.com/JuckZ/awesome-brain-manager/commit/410a50fe32e8b87fd25cae685641ec23e2d35196))
+* 1.准备增加【重复番茄钟】功能 ([99ecdea](https://github.com/JuckZ/awesome-brain-manager/commit/99ecdea49e529ba348bf80944a7b38e936ec3e2c))
+* 1.升级obsidian-api ([c9fdb55](https://github.com/JuckZ/awesome-brain-manager/commit/c9fdb5578982758216ae091575da348d15000006))
+* 1.增加专注弹窗（ing） ([cb6818f](https://github.com/JuckZ/awesome-brain-manager/commit/cb6818ffdd25b5a7044ba47bbe51e0503ee7058f))
+* 1.支持emmet模式（目前输入t+Tab可以生成todo 输入tm*n可以生成m*n的表格） ([d5777be](https://github.com/JuckZ/awesome-brain-manager/commit/d5777be7a52262d8cf72d3eb21ac1812a6e26f3a))
+* 1.整合 https://github.com/nothingislost/obsidian-hover-editor（TODO：README文件感谢） ([0e4c3a5](https://github.com/JuckZ/awesome-brain-manager/commit/0e4c3a5fb9daab2382fdcb8e6491a80996111930))
+* 1.样式主题模块化 ([327161c](https://github.com/JuckZ/awesome-brain-manager/commit/327161c9feaaa9f322a3531ba225a1e452e2898a))
+* 1.模块化样式文件 ([ab33a05](https://github.com/JuckZ/awesome-brain-manager/commit/ab33a0595b3c23c6ff794cd16e435ad5e3ba4d88))
+* 1.第一个列表不需要padding-inline-start ([65e5e2e](https://github.com/JuckZ/awesome-brain-manager/commit/65e5e2e1b7abffb4e65f4150f5c61b89bb68f3e3))
+* 1.简化hover editor ([cb61326](https://github.com/JuckZ/awesome-brain-manager/commit/cb61326537b69baea434a06580fd72877d333377))
+* 1.精简hover editor ([f9a7fd6](https://github.com/JuckZ/awesome-brain-manager/commit/f9a7fd69ba43dc07eacc5ea4d97976b5f263924b))
+* 1.精简popover ([3647899](https://github.com/JuckZ/awesome-brain-manager/commit/36478996d5697d417fa21f52558ec21e5944f04e))
+* 1.集成webworker，为性能优化做准备 ([646a998](https://github.com/JuckZ/awesome-brain-manager/commit/646a99818eb7261a3a0651dd40da7d358d16916a))
+
 # [1.9.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.8.0...1.9.0) (2023-04-18)
 
 
