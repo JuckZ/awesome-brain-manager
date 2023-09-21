@@ -1,11 +1,55 @@
-import type { MarkdownPostProcessorContext } from 'obsidian';
-import { VueApp, createApp } from 'vue/dist/vue.esm-bundler.js';
+import type { MarkdownPostProcessorContext, TFile } from 'obsidian';
+import naive from 'naive-ui';
+import * as vue from 'vue/dist/vue.esm-bundler.js';
 import TestTitle from '@/ui/TestTitle';
 import { LoggerUtil } from '@/utils/logger';
 
 interface MContent {
     content: string;
     posNum?: number;
+}
+
+// TODO  registerCodeBlockComponents
+export async function registerComponent(file: TFile, vueApp: vue.VueApp) {
+    const content = await app.vault.read(file);
+    const templateMatch = content.match(/<template>([\s\S]*?)<\/template>/);
+    const scriptMatch = content.match(/<script>([\s\S]*?)<\/script>/);
+
+    if (templateMatch && scriptMatch) {
+        const templateContent = templateMatch[1].trim();
+        const scriptContent = scriptMatch[1].trim();
+        const compName = file.name.replace('.' + file.extension, '');
+        vueApp.component(compName, {
+            data() {
+                return {
+                    message: 'hello juck',
+                };
+            },
+            template: templateContent,
+        });
+    }
+}
+
+export async function awaitFilesLoaded() {
+    let len: number;
+    do {
+        len = app.vault.getAllLoadedFiles().length;
+        await new Promise(r => setTimeout(r, 500));
+    } while (len != app.vault.getAllLoadedFiles().length);
+}
+
+async function registerComponentsFromDirectory(dir, vueApp) {
+    try {
+        await awaitFilesLoaded();
+        const sfcList = app.vault.getFiles().filter(file => {
+            return file.path.contains(dir) && file.extension === 'vue';
+        });
+        for (const file of sfcList) {
+            await registerComponent(file, vueApp);
+        }
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 //credit to chhoumann, original code from: https://github.com/chhoumann/quickadd
@@ -151,13 +195,15 @@ export function insertSvgImage(el: HTMLElement, image: string) {
     el.insertAdjacentHTML('beforeend', svg.documentElement.outerHTML);
 }
 
-export function registerVueComponent(vueApp: VueApp) {
+export async function registerVueComponent(vueApp: vue.VueApp) {
+    vueApp.use(naive);
     // TODO 扫描并注册某个文件夹下所有的组件
+    await registerComponentsFromDirectory('vue-widget', vueApp);
     vueApp.component('TestTitle', TestTitle);
 }
 
-export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {
-    const vueApp = createApp({
+export async function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {
+    const vueApp = vue.createApp({
         data() {
             return {
                 message: 'ignore this place',
@@ -166,7 +212,21 @@ export function insertVueComponent(el: HTMLElement, ctx: MarkdownPostProcessorCo
         template: source,
     });
     // TODO 优化方向1，根据source进行有选择的注入组件，而非全部注入；优化方向2：只使用一个实例，通过定位等方式在不同元素上使用是否可行
-    registerVueComponent(vueApp);
+    await registerVueComponent(vueApp);
+    const container = document.createElement('span');
+    vueApp.mount(container);
+    el.replaceChildren(container);
+}
+
+export function insertReactComponent(el: HTMLElement, ctx: MarkdownPostProcessorContext, source: string) {
+    const vueApp = vue.createApp({
+        data() {
+            return {
+                message: 'ignore this place',
+            };
+        },
+        template: source,
+    });
     const container = document.createElement('span');
     vueApp.mount(container);
     el.replaceChildren(container);

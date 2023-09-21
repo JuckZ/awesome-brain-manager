@@ -312,7 +312,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         }
         this.registerMarkdownPostProcessor(codeEmoji);
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
-        this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
+        this.registerMarkdownCodeBlockProcessor('vue-widget', this.process.VueProcess);
+        this.registerMarkdownCodeBlockProcessor('react-widget', this.process.ReactProcess);
 
         this.app.workspace.onLayoutReady(async () => {
             if (SETTINGS.debugEnable.value) {

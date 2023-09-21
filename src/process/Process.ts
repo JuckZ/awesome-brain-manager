@@ -5,7 +5,7 @@ import plantuml from 'plantuml-encoder';
 import { v4 as uuidv4 } from 'uuid';
 import { request } from '@/utils/request';
 import type AwesomeBrainManagerPlugin from '@/main';
-import { insertImageWithMap, insertVueComponent } from '@/utils/content';
+import { insertImageWithMap, insertReactComponent, insertVueComponent } from '@/utils/content';
 
 export default class Process {
     plugin: AwesomeBrainManagerPlugin;
@@ -25,6 +25,10 @@ export default class Process {
         } else {
             // insertVueComponent(el, ctx, `<Markdown src={${JSON.stringify('```tsx\n' + source + '\n```')}}/>`);
         }
+        insertVueComponent(el, ctx, source);
+    };
+
+    ReactProcess = async (source, el, ctx) => {
         insertVueComponent(el, ctx, source);
     };
 
