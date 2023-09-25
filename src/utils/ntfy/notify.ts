@@ -1,19 +1,5 @@
 import type AwesomeBrainManagerPlugin from '@/main';
 import { SETTINGS } from '@/settings';
-import ntfyWasmUrl from '@/utils/ntfy/ntfy.wasm?url';
-
-export const loadNtfy = async () => {
-    try {
-        await import('./wasm_exec.js');
-        const go = new Go();
-        const response = await fetch(ntfyWasmUrl);
-        const wasmBuffer = await response.arrayBuffer();
-        const { instance } = await WebAssembly.instantiate(wasmBuffer, go.importObject);
-        go.run(instance);
-    } catch (error) {
-        console.error('Error loading WASM:', error);
-    }
-};
 
 interface NotificationOptions {
     title?: string;

@@ -48,7 +48,7 @@ import { eventTypes } from '@/types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
 import { notifyNtfy } from '@/api';
 import '@/main.scss';
-import { NotifyUtil, loadNtfy } from '@/utils/ntfy/notify';
+import { NotifyUtil } from '@/utils/ntfy/notify';
 import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
@@ -322,7 +322,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             this.setupUI();
             this.watchVault();
             setTimeout(() => {
-                loadNtfy();
                 // workaround to ensure our plugin shows up properly within Style Settings
                 this.app.workspace.trigger('css-change');
             }, 2000);
