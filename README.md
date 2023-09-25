@@ -191,6 +191,18 @@ It's not too long now. Just finish reading.🤣
 
 ### 调试方法
 
+#### 编译ntfy
+
+```powershell
+$env:GOOS = "js"
+$env:GOARCH = "wasm"
+go build -o src/utils/ntfy.wasm ntfy.go
+```
+
+```sh
+GOOS=js GOARCH=wasm go build -o src/utils/ntfy.wasm ntfy.go
+```
+
 #### Windows(cmd.exe)
 
 ```cmd

@@ -80,7 +80,7 @@ It's not too long now. Just finish reading.🤣
 <a href="ttps://www.bilibili.com/video/BV1ne4y1P7qf/?spm_id_from=333.999.0.0">
   <img src="https://raw.githubusercontent.com/JuckZ/awesome-brain-manager/master/public/recording/preview/文档方向.png" alt="文档方向切换功能展示" width="49%">
 </a>
- 
+
 </details>
 
 <details open>
@@ -190,6 +190,18 @@ It's not too long now. Just finish reading.🤣
 Open the Settings panel with the 'Enable debug' option under the 'Advance' group
 
 ### Debugging method
+
+#### compile ntfy
+
+```powershell
+$env:GOOS = "js"
+$env:GOARCH = "wasm"
+go build -o src/utils/ntfy.wasm ntfy.go
+```
+
+```sh
+GOOS=js GOARCH=wasm go build -o src/utils/ntfy.wasm ntfy.go
+```
 
 #### Windows(cmd.exe)
 
