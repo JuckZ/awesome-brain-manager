@@ -199,9 +199,6 @@ devDependencies:
   lint-staged:
     specifier: ^14.0.1
     version: 14.0.1
-  monkey-around:
-    specifier: ^2.3.0
-    version: 2.3.0
   npm-run-all:
     specifier: ^4.1.5
     version: 4.1.5
@@ -5990,10 +5987,6 @@ packages:
 
   /moment@2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
-    dev: true
-
-  /monkey-around@2.3.0:
-    resolution: {integrity: sha512-QWcCUWjqE/MCk9cXlSKZ1Qc486LD439xw/Ak8Nt6l2PuL9+yrc9TJakt7OHDuOqPRYY4nTWBAEFKn32PE/SfXA==}
     dev: true
 
   /mri@1.2.0:

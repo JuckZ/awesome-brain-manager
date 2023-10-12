@@ -79,6 +79,7 @@ declare module 'obsidian' {
         viewRegistry: ViewRegistry;
         openWithDefaultApp(path: string): void;
     }
+
     interface Workspace {
         activeLeaf: WorkspaceLeaf;
         floatingSplit: any;
@@ -89,6 +90,7 @@ declare module 'obsidian' {
     interface WorkspaceTabs {
         children: any;
     }
+
     interface ViewRegistry {
         typeByExtension: Record<string, string>; // file extensions to view types
         viewByType: Record<string, (leaf: WorkspaceLeaf) => View>; // file extensions to view types
@@ -103,7 +105,10 @@ declare module 'obsidian' {
         containerEl: HTMLElement;
     }
     interface MarkdownView {
-        editMode: { cm: EditorView };
+        editMode: {
+            reinit(): unknown;
+            cm: EditorView;
+        };
     }
     interface MarkdownEditView {
         editorEl: HTMLElement;
@@ -122,6 +127,7 @@ declare module 'obsidian' {
     }
     interface Workspace {
         /** Sent to rendered dataview components to tell them to possibly refresh */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         on(name: 'dataview:refresh-views', callback: () => void, ctx?: any): EventRef;
         recordHistory(leaf: WorkspaceLeaf, pushHistory: boolean): void;
         iterateLeaves(
