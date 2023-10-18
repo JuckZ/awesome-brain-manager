@@ -7,6 +7,7 @@ import {
     MarkdownPreviewRenderer,
     MarkdownView,
     Menu,
+    Notice,
     Plugin,
     type PluginManifest,
     TAbstractFile,
@@ -78,6 +79,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     vaultModifyFunction: (file: TAbstractFile) => any;
     vaultDeleteFunction: (file: TAbstractFile) => any;
     vaultRenameFunction: (file: TAbstractFile, oldPath: string) => any;
+    vaultRowFunction: (path: string) => any;
     vaultClosedFunction: () => any;
 
     useSnippet = true;
@@ -110,6 +112,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.vaultModifyFunction = this.customizeVaultModify.bind(this);
         this.vaultDeleteFunction = this.customizeVaultDelete.bind(this);
         this.vaultRenameFunction = this.customizeVaultRename.bind(this);
+        this.vaultRowFunction = this.customizeRow.bind(this);
     }
 
     openBrowserHandle(e: CustomEvent) {
@@ -258,20 +261,36 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // LoggerUtil.log('');
     }
 
-    async customizeVaultCreate(file: TAbstractFile): Promise<void> {
-        // LoggerUtil.log('');
+    async customizeVaultCreate(file: TAbstractFile): Promise<void> {}
+
+    async customizeVaultModify(file: TAbstractFile): Promise<void> {}
+
+    async customizeVaultDelete(file: TAbstractFile): Promise<void> {}
+
+    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {}
+
+    async customizeRow(path: string): Promise<void> {
+        const paths = path.split('/');
+        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths.length > 3) {
+            const plugin = paths[2];
+            this.reloadPlugins(plugin);
+        }
     }
 
-    async customizeVaultModify(file: TAbstractFile): Promise<void> {
-        // LoggerUtil.log('');
-    }
-
-    async customizeVaultDelete(file: TAbstractFile): Promise<void> {
-        // LoggerUtil.log('');
-    }
-
-    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {
-        // LoggerUtil.log('');
+    async reloadPlugins(plugin: string) {
+        const plugins = this.app.plugins;
+        // Don't reload disabled plugins
+        if (!plugins.enabledPlugins.has(plugin)) return;
+        await plugins.disablePlugin(plugin);
+        try {
+            setTimeout(async () => {
+                await this.app.plugins.enablePlugin(plugin);
+                new Notice(`Plugin "${plugin}" has been reloaded`);
+            }, 100);
+        } catch (error) {
+            new Notice(`Failed reload "${plugin}"`);
+            console.error(error);
+        }
     }
 
     override async onload(): Promise<void> {
@@ -680,6 +699,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             this.app.vault.on('modify', this.vaultModifyFunction),
             this.app.vault.on('delete', this.vaultDeleteFunction),
             this.app.vault.on('rename', this.vaultRenameFunction),
+            this.app.vault.on('raw', this.vaultRowFunction),
         ].forEach(eventRef => {
             this.registerEvent(eventRef);
         });
@@ -707,5 +727,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();
+        console.warn('unloading plugin');
     }
 }

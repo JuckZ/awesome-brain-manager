@@ -47,11 +47,17 @@ declare global {
 
 declare module 'obsidian' {
     interface App {
+        vault: {
+            on(name: 'raw', callback: (path: string) => void): EventRef;
+        };
         internalPlugins: {
             plugins: InternalPlugins;
             getPluginById<T extends keyof InternalPlugins>(id: T): InternalPlugins[T];
         };
         plugins: {
+            enablePlugin(plugin: string): () => Promise<void>;
+            disablePlugin(plugin: string): () => Promise<void>;
+            enabledPlugins: Set<string>;
             manifests: Record<string, PluginManifest>;
             plugins: Record<string, Plugin> & {
                 ['recent-files-obsidian']: Plugin & {
