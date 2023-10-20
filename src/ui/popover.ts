@@ -180,18 +180,18 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.titleEl = this.document.defaultView!.createDiv('popover-titlebar');
         this.titleEl.createDiv('popover-title');
         const popoverActions = this.titleEl.createDiv('popover-actions');
-
         const closeEl = popoverActions.createEl('a', 'popover-action mod-close');
         setIcon(closeEl, 'x');
         const minEl = popoverActions.createEl('a', 'popover-action mod-minimize');
         setIcon(minEl, 'minus');
         const maxEl = popoverActions.createEl('a', 'popover-action mod-maximize');
         setIcon(maxEl, 'maximize');
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const _self = this;
         interact(this.hoverEl).draggable({
             // origin: 'body',
             // inertia: true,
-            // allowFrom: '.popover-titlebar',
+            allowFrom: '.popover-titlebar',
             modifiers: [
                 // TODO 边缘吸附，留出10px的操作空间
                 interact.modifiers.restrict({
@@ -202,7 +202,7 @@ export class HoverEditor extends nosuper(HoverPopover) {
             ],
             listeners: {
                 start(event: DragEvent) {
-                    console.log(event);
+                    // console.log(event);
                 },
                 move(event) {
                     _self.thePosition.x += event.dx;
@@ -210,24 +210,13 @@ export class HoverEditor extends nosuper(HoverPopover) {
                     event.target.style.transform = `translate(${_self.thePosition.x}px, ${_self.thePosition.y}px)`;
                 },
                 end(event: DragEvent) {
-                    console.log(event);
+                    // console.log(event);
                 },
             },
         });
 
-        minEl.addEventListener('click', event => {
-            // restorePopover(this.hoverEl);
-            // this.toggleMinimized();
-        });
-        maxEl.addEventListener('click', event => {
-            if (this.hoverEl.hasClass('snap-to-viewport')) {
-                // restorePopover(this.hoverEl);
-                return;
-            }
-            // const offset = calculateOffsets(this.document);
-            // storeDimensions(this.hoverEl);
-            // snapToEdge(this.hoverEl, 'viewport', offset);
-        });
+        minEl.addEventListener('click', event => {});
+        maxEl.addEventListener('click', event => {});
         closeEl.addEventListener('click', event => {
             this.hide();
         });
