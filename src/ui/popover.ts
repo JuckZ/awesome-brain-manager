@@ -172,6 +172,7 @@ export class HoverEditor extends nosuper(HoverPopover) {
     }
 
     setInitialDimensions() {
+        this.hoverEl.style.zIndex = '99999';
         this.hoverEl.style.height = SETTINGS.initialHeight.value;
         this.hoverEl.style.width = SETTINGS.initialWidth.value;
     }
