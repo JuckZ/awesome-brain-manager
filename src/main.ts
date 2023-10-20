@@ -79,7 +79,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     vaultModifyFunction: (file: TAbstractFile) => any;
     vaultDeleteFunction: (file: TAbstractFile) => any;
     vaultRenameFunction: (file: TAbstractFile, oldPath: string) => any;
-    vaultRowFunction: (path: string) => any;
+    vaultRawFunction: (path: string) => any;
     vaultClosedFunction: () => any;
 
     useSnippet = true;
@@ -112,7 +112,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.vaultModifyFunction = this.customizeVaultModify.bind(this);
         this.vaultDeleteFunction = this.customizeVaultDelete.bind(this);
         this.vaultRenameFunction = this.customizeVaultRename.bind(this);
-        this.vaultRowFunction = this.customizeRow.bind(this);
+        this.vaultRawFunction = this.customizeRaw.bind(this);
     }
 
     openBrowserHandle(e: CustomEvent) {
@@ -269,14 +269,14 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {}
 
-    async customizeRow(path: string): Promise<void> {
+    async customizeRaw(path: string): Promise<void> {
         const paths = path.split('/');
         const reloadPluginList = ['awesome-brain-manager'];
-        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths[3]) {
+        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths.length >= 4) {
             const plugin = paths[2];
             const file = paths[paths.length - 1];
             if (file.endsWith('.mdb')) return;
-            if (plugin in reloadPluginList) {
+            if (reloadPluginList.includes(plugin)) {
                 this.reloadPlugins(plugin);
             }
         }
@@ -704,7 +704,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             this.app.vault.on('modify', this.vaultModifyFunction),
             this.app.vault.on('delete', this.vaultDeleteFunction),
             this.app.vault.on('rename', this.vaultRenameFunction),
-            this.app.vault.on('raw', this.vaultRowFunction),
+            this.app.vault.on('raw', this.vaultRawFunction),
         ].forEach(eventRef => {
             this.registerEvent(eventRef);
         });
