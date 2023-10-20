@@ -1,10 +1,17 @@
 <template>
     <div>
-        <div class="selectorTrigger" @click="openSelectorModal">专注 &gt;</div>
+        <span class="cursor-pointer flex items-center p1" @click="openSelectorModal">
+            <n-gradient-text type="info" class="mr1"> 快捷添加 </n-gradient-text>
+            <n-icon size="20" color="rgb(178, 209, 244)">
+                <AddCircleOutline />
+            </n-icon>
+        </span>
+
         <n-modal
             v-model:show="showModal"
             :mask-closable="true"
             preset="dialog"
+            :show-icon="false"
             @positive-click="onPositiveClick"
             @negative-click="onNegativeClick"
         >
@@ -14,9 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { NModal, useMessage } from 'naive-ui';
+import { NGradientText, NIcon, NModal, useMessage } from 'naive-ui';
 import { Component, MarkdownPreviewView, MarkdownView, Platform } from 'obsidian';
 import { type Ref, ref } from 'vue';
+import { AddCircleOutline } from '@vicons/ionicons5';
 import DataViewTimeLine from '@/ui/DataViewTimeLine.vue';
 import { CommonModal } from '@/ui/modal';
 import {
@@ -58,9 +66,4 @@ const openSelectorModal = () => {
 };
 </script>
 
-<style lang="scss" scoped>
-.selectorTrigger {
-    cursor: pointer;
-    padding: 5px;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -680,7 +680,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                     this.app.workspace.setActiveLeaf(newLeaf, false, true);
                 },
             ).attachLeaf();
-            newLeaf!.openLinkText(e.detail.cursorTarget.title, e.detail.cursorTarget.path);
+            newLeaf!.openLinkText(e.detail.cursorTarget.file.name, e.detail.cursorTarget.path);
         };
         window.addEventListener('mousemove', mouseMoveCallback);
         this.register(() => window.removeEventListener('mousemove', mouseMoveCallback));
