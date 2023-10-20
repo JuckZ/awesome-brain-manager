@@ -94,14 +94,14 @@ export default defineConfig(({ command, mode }) => {
         },
         plugins: [
             UnoCSS(),
-            viteStaticCopy({
-                targets: [
-                    {
-                        src: '.hotreload',
-                        dest: '',
-                    },
-                ],
-            }),
+            // viteStaticCopy({
+            //     targets: [
+            //         {
+            //             src: '.hotreload',
+            //             dest: '',
+            //         },
+            //     ],
+            // }),
             svelte({
                 configFile: 'svelte.config.js',
             }),
