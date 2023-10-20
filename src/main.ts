@@ -271,9 +271,14 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     async customizeRow(path: string): Promise<void> {
         const paths = path.split('/');
-        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths.length > 3) {
+        const reloadPluginList = ['awesome-brain-manager'];
+        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths[3]) {
             const plugin = paths[2];
-            this.reloadPlugins(plugin);
+            const file = paths[paths.length - 1];
+            if (file.endsWith('.mdb')) return;
+            if (plugin in reloadPluginList) {
+                this.reloadPlugins(plugin);
+            }
         }
     }
 
