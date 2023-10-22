@@ -80,8 +80,8 @@ watchEffect(() => {
 
 const getRandomStyle = (pomodoro: Pomodoro) => {
     let seed = 0;
-    for (let i = 0; i < pomodoro.task.length; i++) {
-        seed += pomodoro.task.charCodeAt(i);
+    for (let i = 0; i < pomodoro.timestamp.length; i++) {
+        seed += pomodoro.timestamp.charCodeAt(i);
     }
     let index = seed % colorSchema.length;
     const color = colorSchema[index];
