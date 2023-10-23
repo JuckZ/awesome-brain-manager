@@ -1,66 +1,85 @@
 <template>
-  <div v-if="show" class="announcement">
-    <a href="">
+
+  <div v-if="show" class="announcement" @click="close">
+    <div class="card">
       <slot>{{ translations[site.lang] }}</slot>
-      <span @click="close" class="cursor-pointer"> x </span>
-    </a>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useData } from 'vitepress'
+import { onMount } from 'svelte'
 
 const { site } = useData()
 const translations = {
-  'en-US': 'The document is constantly being updated, due to the many functions, if you find the document does not match the actual, please contact the author',
-  'zh-CN': '文档正在持续更新中，由于功能繁多，如发现文档与实际不相符，请联系作者',
+  'en-US': 'Too many features have been introduced to update the document (15% progress). If you find that the document does not match the reality, please contact the author',
+  'zh-CN': '引入了太多功能，来不及更新文档(进度15%)，如发现文档与实际不相符，请联系作者',
 }
-let show = true
+
+const show = ref(false)
 defineProps<{ title: string }>()
 function close() {
-  show = false
+  show.value = false
 }
+setTimeout(() => {
+  show.value = true
+}, 1500);
 </script>
 
 <style scoped>
+
 .announcement {
-  margin-top: 20px;
-  background-color: var(--vp-code-block-bg);
-  padding: 1em 1.25em;
-  border-radius: 2px;
-  position: relative;
-  display: flex;
+  position: fixed;
+  top: 5em;
+  width: 60%;
+  left: 50%;
+  transform: translateX(-50%)
 }
-.announcement a {
-  color: var(--c-text);
-  position: relative;
-  padding-left: 36px;
-}
-.announcement a:before {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 30px;
-  height: 30px;
-  top: calc(50% - 15px);
-  left: -4px;
-  border-radius: 50%;
-  background-color: #73abfe;
-}
-.announcement a:after {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 0;
-  height: 0;
-  top: calc(50% - 5px);
-  left: 8px;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 8px solid #fff;
+/* https://codepen.io/gayane-gasparyan/details/jOmaBQK */
+@property --rotate {
+  syntax: "<angle>";
+  initial-value: 132deg;
+  inherits: false;
 }
 
-.cursor-pointer {
+.card {
+  background: #191c29;
+  position: relative;
+  border-radius: 6px;
+  font-size: 1.5em;
+  color: rgb(88 199 250 / 0%);
   cursor: pointer;
+  font-family: cursive;
+}
+
+.card:hover {
+  color: rgb(88 199 250 / 100%);
+  transition: color 1s;
+}
+
+.card::before {
+  content: "";
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  border-radius: 8px;
+  background-image: linear-gradient(
+    var(--rotate)
+    , #5ddcff, #3c67e3 43%, #4e00c2);
+    position: absolute;
+    z-index: -1;
+    top: -5px;
+    left: -5px;
+    animation: spin 2.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    --rotate: 0deg;
+  }
+  100% {
+    --rotate: 360deg;
+  }
 }
 </style>

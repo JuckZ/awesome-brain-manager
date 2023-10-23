@@ -1,7 +1,7 @@
 # Awesome Brain Manager 是什么？
 
 <p align="center">
-  <img width="300px" src="/logo.jpg">
+  <img width="300px" src="/logo.png">
 </p>
 
 <p align="center">

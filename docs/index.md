@@ -7,7 +7,7 @@ hero:
   text: "All in one"
   tagline: A plugin that tries to solve all the trivial problems most people usually encountered in obsidian.
   image:
-    src: /logo.jpg
+    src: /logo.png
     alt: Awesome Brain Manager
   actions:
     - theme: brand
@@ -43,12 +43,8 @@ import { useData } from 'vitepress'
 const { page } = useData()
 </script>
 
-<!-- <AnnouncementBar /> -->
+<AnnouncementBar />
 <style module>
-.button {
-  color: red;
-  font-weight: bold;
-}
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);
   font-size: 12px;

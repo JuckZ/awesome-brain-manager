@@ -107,7 +107,7 @@ export const sharedConfig = defineConfig({
   ],
 
   themeConfig: {
-    logo: '/logo.jpg',
+    logo: '/logo.png',
     outline: [2, 3],
 
     // https://vitepress.dev/reference/default-theme-config

@@ -7,7 +7,7 @@ hero:
   text: "All in one"
   tagline: 旨在解决大多数人在Obsidian中遇到的所有琐碎问题
   image:
-    src: /logo.jpg
+    src: /logo.png
     alt: Awesome Brain Manager
   actions:
     - theme: brand
@@ -38,12 +38,8 @@ features:
     details: 请移步到指南查看更多
 ---
 
-<!-- <AnnouncementBar /> -->
+<AnnouncementBar />
 <style module>
-.button {
-  color: red;
-  font-weight: bold;
-}
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);
   font-size: 12px;
