@@ -148,12 +148,11 @@ export const sharedConfig = defineConfig({
       text: 'Suggest changes',
     },
 
-    // TODO 配置
-    // algolia: {
-    //   appId: '69Y3N7LHI2',
-    //   apiKey: '45441f4b65a2f80329fd45c7cb371fea',
-    //   indexName: 'pinia',
-    // },
+    algolia: {
+      appId: 'QFGZ2O907E',
+      apiKey: '6d61c1871a8e6f84277e7ccbb7ab650c',
+      indexName: 'awesome-brain-manager',
+    },
 
     // carbonAds: {
     //   code: 'CEBICK3I',
