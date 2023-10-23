@@ -17,7 +17,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
   themeConfig: {
     editLink: {
-      pattern: 'https://github.com/vuejs/pinia/edit/v2/packages/docs/:path',
+      pattern: 'https://github.com/JuckZ/awesome-brain-manager/edit/develop/docs/:path',
       text: 'Suggest changes to this page',
     },
 
@@ -26,25 +26,24 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       // { text: 'Plugins', link: '/plugins/' },
       {
         text: 'Guide',
-        link: '/core-concepts/',
-        activeMatch: '^/core-concepts/',
+        link: '/guide/',
+        activeMatch: '^/guide/',
       },
       { text: 'API', link: '/api/', activeMatch: '^/api/' },
-      { text: 'Cookbook', link: '/cookbook/', activeMatch: '^/cookbook/' },
       {
         text: 'Links',
         items: [
           {
             text: 'Discussions',
-            link: 'https://github.com/vuejs/pinia/discussions',
+            link: 'https://github.com/JuckZ/awesome-brain-manager/discussions',
           },
           {
             text: 'Changelog',
-            link: 'https://github.com/vuejs/pinia/blob/v2/packages/pinia/CHANGELOG.md',
+            link: 'https://github.com/JuckZ/awesome-brain-manager/blob/master/CHANGELOG.md',
           },
           {
-            text: 'Vue.js Certification',
-            link: 'https://certification.vuejs.org/?friend=VUEROUTER',
+            text: 'Roadmap',
+            link: 'https://github.com/users/JuckZ/projects/2',
           },
         ],
       },
@@ -55,11 +54,27 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         {
           text: 'packages',
           items: [
-            { text: 'pinia', link: '/api/modules/pinia.html' },
-            { text: '@pinia/nuxt', link: '/api/modules/pinia_nuxt.html' },
+            { text: 'core', link: '/api/modules/core.html' },
+            { text: 'pomodoro', link: '/api/modules/pomodoro.html' },
             {
-              text: '@pinia/testing',
-              link: '/api/modules/pinia_testing.html',
+              text: 'ai',
+              link: '/api/modules/ai.html',
+            },
+            {
+              text: 'obsidian',
+              link: '/api/modules/obsidian.html',
+            },
+            {
+              text: 'utils',
+              link: '/api/modules/utils.html',
+            },
+            {
+              text: 'ntfy',
+              link: '/api/modules/ntfy.html',
+            },
+            {
+              text: 'browser',
+              link: '/api/modules/browser.html',
             },
           ],
         },
@@ -70,7 +85,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: 'Introduction',
           items: [
             {
-              text: 'What is Pinia?',
+              text: 'What is Awesome Brain Manager?',
               link: '/introduction.html',
             },
             {
@@ -80,30 +95,12 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ],
         },
         {
-          text: 'Core Concepts',
+          text: 'Core Feature',
           items: [
-            { text: 'Defining a Store', link: '/core-concepts/' },
-            { text: 'State', link: '/core-concepts/state.html' },
-            { text: 'Getters', link: '/core-concepts/getters.html' },
-            { text: 'Actions', link: '/core-concepts/actions.html' },
-            { text: 'Plugins', link: '/core-concepts/plugins.html' },
-            {
-              text: 'Stores outside of components',
-              link: '/core-concepts/outside-component-usage.html',
-            },
-          ],
-        },
-        {
-          text: 'Server-Side Rendering (SSR)',
-          items: [
-            {
-              text: 'Vue and Vite',
-              link: '/ssr/',
-            },
-            {
-              text: 'Nuxt.js',
-              link: '/ssr/nuxt.html',
-            },
+            { text: 'Feature preview', link: '/guide/' },
+            { text: 'Pomodoro', link: '/guide/pomodoro.html' },
+            { text: 'Special Effects', link: '/guide/special-effects.html' },
+            { text: 'Utils', link: '/guide/utils.html' },
           ],
         },
         {
@@ -115,10 +112,6 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: '/cookbook/',
             },
             {
-              text: 'Migration from Vuex ≤4',
-              link: '/cookbook/migration-vuex.html',
-            },
-            {
               text: 'Hot Module Replacement',
               link: '/cookbook/hot-module-replacement.html',
             },
@@ -127,24 +120,8 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: '/cookbook/testing.html',
             },
             {
-              text: 'Usage without setup()',
-              link: '/cookbook/options-api.html',
-            },
-            {
-              text: 'Composing Stores',
-              link: '/cookbook/composing-stores.html',
-            },
-            {
-              text: 'VSCode Snippets',
-              link: '/cookbook/vscode-snippets.html',
-            },
-            {
-              text: 'Migration from v0/v1 to v2',
-              link: '/cookbook/migration-v1-v2.html',
-            },
-            {
-              text: 'Dealing with composables',
-              link: '/cookbook/composables.html',
+              text: 'Advanced',
+              link: '/cookbook/advanced.html',
             },
           ],
         },

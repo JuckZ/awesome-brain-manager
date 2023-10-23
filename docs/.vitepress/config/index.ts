@@ -23,31 +23,10 @@ export default defineConfig({
       description: '旨在解决大多数人在Obsidian中遇到的所有琐碎问题',
       ...zhConfig
     },
-    zhTW: {
-      label: '繁體中文', 
-      lang: 'zh-TW', 
-      link: 'https://abm-zh-tw.netlify.app',
-    }
+    // zhTW: {
+    //   label: '繁體中文', 
+    //   lang: 'zh-TW', 
+    //   link: 'https://abm-zh-tw.netlify.app',
+    // }
   },
-  themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
-
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
-    ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
-  }
 })

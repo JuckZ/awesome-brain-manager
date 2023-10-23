@@ -52,6 +52,7 @@ export const sharedConfig = defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }],
+    ['link', { rel: 'icon', type: 'image/jpg', href: '/logo.jpg' }],
 
     [
       'meta',
@@ -106,41 +107,58 @@ export const sharedConfig = defineConfig({
   ],
 
   themeConfig: {
-    logo: '/logo.svg',
+    logo: '/logo.jpg',
     outline: [2, 3],
 
+    // https://vitepress.dev/reference/default-theme-config
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: 'Examples', link: '/markdown-examples' }
+    ],
+
+    sidebar: [
+      {
+        text: 'Examples',
+        items: [
+          { text: 'Markdown Examples', link: '/markdown-examples' },
+          { text: 'Runtime API Examples', link: '/api-examples' }
+        ]
+      }
+    ],
+
     socialLinks: [
-      { icon: 'twitter', link: 'https://twitter.com/posva' },
+      // { icon: 'twitter', link: 'https://twitter.com/posva' },
       {
         icon: 'github',
-        link: 'https://github.com/vuejs/pinia',
+        link: 'https://github.com/JuckZ/awesome-brain-manager',
       },
-      {
-        icon: 'discord',
-        link: 'https://chat.vuejs.org',
-      },
+      // {
+      //   icon: 'discord',
+      //   link: 'https://chat.vuejs.org',
+      // },
     ],
 
     footer: {
-      copyright: 'Copyright © 2019-present Eduardo San Martin Morote',
+      copyright: 'Copyright © 2022-present Juck',
       message: 'Released under the MIT License.',
     },
 
     editLink: {
-      pattern: 'https://github.com/vuejs/pinia/edit/v2/packages/docs/:path',
+      pattern: 'https://github.com/JuckZ/awesome-brain-manager/edit/develop/docs/:path',
       text: 'Suggest changes',
     },
 
-    algolia: {
-      appId: '69Y3N7LHI2',
-      apiKey: '45441f4b65a2f80329fd45c7cb371fea',
-      indexName: 'pinia',
-    },
+    // TODO 配置
+    // algolia: {
+    //   appId: '69Y3N7LHI2',
+    //   apiKey: '45441f4b65a2f80329fd45c7cb371fea',
+    //   indexName: 'pinia',
+    // },
 
-    carbonAds: {
-      code: 'CEBICK3I',
-      // custom: 'CEBICK3M',
-      placement: 'routervuejsorg',
-    },
+    // carbonAds: {
+    //   code: 'CEBICK3I',
+    //   // custom: 'CEBICK3M',
+    //   placement: 'routervuejsorg',
+    // },
   },
 })

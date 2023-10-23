@@ -18,7 +18,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
   themeConfig: {
     editLink: {
-      pattern: 'https://github.com/vuejs/pinia/edit/v2/packages/docs/:path',
+      pattern: 'https://github.com/JuckZ/awesome-brain-manager/edit/develop/docs/:path',
       text: '对本页提出修改建议',
     },
 
@@ -36,21 +36,24 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       // { text: 'Plugins', link: '/plugins/' },
       {
         text: '指南',
-        link: '/zh/core-concepts/',
-        activeMatch: '^/zh/core-concepts/',
+        link: '/zh/guide/',
+        activeMatch: '^/zh/guide/',
       },
       { text: 'API', link: '/zh/api/', activeMatch: '^/zh/api/' },
-      { text: '手册', link: '/zh/cookbook/', activeMatch: '^/zh/cookbook/' },
       {
         text: '相关链接',
         items: [
           {
             text: '论坛',
-            link: 'https://github.com/vuejs/pinia/discussions',
+            link: 'https://github.com/JuckZ/awesome-brain-manager/discussions',
           },
           {
             text: '更新日志',
-            link: 'https://github.com/vuejs/pinia/blob/v2/packages/pinia/CHANGELOG.md',
+            link: 'https://github.com/JuckZ/awesome-brain-manager/blob/master/CHANGELOG.md',
+          },
+          {
+            text: '路线图',
+            link: 'https://github.com/users/JuckZ/projects/2',
           },
         ],
       },
@@ -60,11 +63,27 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         {
           text: 'packages',
           items: [
-            { text: 'pinia', link: '/zh/api/modules/pinia.html' },
-            { text: '@pinia/nuxt', link: '/zh/api/modules/pinia_nuxt.html' },
+            { text: 'core', link: '/zh/api/modules/core.html' },
+            { text: 'pomodoro', link: '/zh/api/modules/pomodoro.html' },
             {
-              text: '@pinia/testing',
-              link: '/zh/api/modules/pinia_testing.html',
+              text: 'ai',
+              link: '/zh/api/modules/ai.html',
+            },
+            {
+              text: 'obsidian',
+              link: '/zh/api/modules/obsidian.html',
+            },
+            {
+              text: 'utils',
+              link: '/zh/api/modules/utils.html',
+            },
+            {
+              text: 'ntfy',
+              link: '/zh/api/modules/ntfy.html',
+            },
+            {
+              text: 'browser',
+              link: '/zh/api/modules/browser.html',
             },
           ],
         },
@@ -74,7 +93,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '介绍',
           items: [
             {
-              text: 'Pinia 是什么？',
+              text: 'Awesome Brain Manager 是什么？',
               link: '/zh/introduction.html',
             },
             {
@@ -84,30 +103,12 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ],
         },
         {
-          text: '核心概念',
+          text: '核心功能',
           items: [
-            { text: '定义 Store', link: '/zh/core-concepts/' },
-            { text: 'State', link: '/zh/core-concepts/state.html' },
-            { text: 'Getter', link: '/zh/core-concepts/getters.html' },
-            { text: 'Action', link: '/zh/core-concepts/actions.html' },
-            { text: '插件', link: '/zh/core-concepts/plugins.html' },
-            {
-              text: '组件外的 Store',
-              link: '/zh/core-concepts/outside-component-usage.html',
-            },
-          ],
-        },
-        {
-          text: '服务端渲染 (SSR)',
-          items: [
-            {
-              text: 'Vue 与 Vite',
-              link: '/zh/ssr/',
-            },
-            {
-              text: 'Nuxt.js',
-              link: '/zh/ssr/nuxt.html',
-            },
+            { text: '功能预览', link: '/zh/guide/' },
+            { text: '番茄钟', link: '/zh/guide/pomodoro.html' },
+            { text: '特效', link: '/zh/guide/special-effects.html' },
+            { text: '小工具', link: '/zh/guide/utils.html' },
           ],
         },
         {
@@ -119,10 +120,6 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: '/zh/cookbook/',
             },
             {
-              text: '从 Vuex ≤4 迁移',
-              link: '/zh/cookbook/migration-vuex.html',
-            },
-            {
               text: '热更新',
               link: '/zh/cookbook/hot-module-replacement.html',
             },
@@ -131,20 +128,8 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               link: '/zh/cookbook/testing.html',
             },
             {
-              text: '不使用 setup() 的用法',
-              link: '/zh/cookbook/options-api.html',
-            },
-            {
-              text: '组合式 Stores',
-              link: '/zh/cookbook/composing-stores.html',
-            },
-            {
-              text: '从 v0/v1 迁移至 v2',
-              link: '/zh/cookbook/migration-v1-v2.html',
-            },
-            {
-              text: '处理组合式函数',
-              link: '/zh/cookbook/composables.html',
+              text: '高级',
+              link: '/zh/cookbook/advanced.html',
             },
           ],
         },
