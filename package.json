@@ -158,6 +158,7 @@
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.67.0",
     "semantic-release": "^21.1.1",
+    "sitemap": "^7.1.1",
     "start-server-and-test": "^2.0.0",
     "svelte-check": "^3.5.1",
     "svelte-preprocess": "^5.0.4",
