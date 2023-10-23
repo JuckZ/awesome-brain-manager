@@ -38,6 +38,9 @@ dependencies:
   emoji-mart:
     specifier: ^5.5.2
     version: 5.5.2
+  i18next:
+    specifier: ^23.6.0
+    version: 23.6.0
   interactjs:
     specifier: ^1.10.19
     version: 1.10.19
@@ -240,10 +243,10 @@ devDependencies:
     version: 2.0.0
   svelte-check:
     specifier: ^3.5.1
-    version: 3.5.1(@babel/core@7.22.19)(postcss@8.4.29)(sass@1.67.0)(svelte@4.2.0)
+    version: 3.5.1(@babel/core@7.22.19)(postcss@8.4.31)(sass@1.67.0)(svelte@4.2.0)
   svelte-preprocess:
     specifier: ^5.0.4
-    version: 5.0.4(@babel/core@7.22.19)(postcss@8.4.29)(sass@1.67.0)(svelte@4.2.0)(typescript@5.2.2)
+    version: 5.0.4(@babel/core@7.22.19)(postcss@8.4.31)(sass@1.67.0)(svelte@4.2.0)(typescript@5.2.2)
   ts-node:
     specifier: ^10.9.1
     version: 10.9.1(@types/node@20.6.0)(typescript@5.2.2)
@@ -255,7 +258,7 @@ devDependencies:
     version: 5.2.2
   unocss:
     specifier: ^0.55.7
-    version: 0.55.7(postcss@8.4.29)(rollup@3.29.1)(vite@4.4.9)
+    version: 0.55.7(postcss@8.4.31)(rollup@3.29.1)(vite@4.4.9)
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -273,7 +276,7 @@ devDependencies:
     version: 3.2.2(vite@4.4.9)
   vitepress:
     specifier: 1.0.0-rc.23
-    version: 1.0.0-rc.23(@algolia/client-search@4.20.0)(@types/node@20.6.0)(postcss@8.4.29)(sass@1.67.0)(search-insights@2.9.0)(typescript@5.2.2)
+    version: 1.0.0-rc.23(@algolia/client-search@4.20.0)(@types/node@20.6.0)(postcss@8.4.31)(sass@1.67.0)(search-insights@2.9.0)(typescript@5.2.2)
   vitest:
     specifier: ^0.34.4
     version: 0.34.4(jsdom@22.1.0)(sass@1.67.0)
@@ -2267,7 +2270,7 @@ packages:
       sirv: 2.0.3
     dev: true
 
-  /@unocss/postcss@0.55.7(postcss@8.4.29):
+  /@unocss/postcss@0.55.7(postcss@8.4.31):
     resolution: {integrity: sha512-53Z/yv/CNdlTqKZQ9gpYRoLZSuzQ28J0SDrGCdzwjLcvHG/FD7/x1S7yxE7cUp/4sjvLL15HSzkWq8vNy6SkwQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -2278,7 +2281,7 @@ packages:
       css-tree: 2.3.1
       fast-glob: 3.3.1
       magic-string: 0.30.3
-      postcss: 8.4.29
+      postcss: 8.4.31
     dev: true
 
   /@unocss/preset-attributify@0.55.7:
@@ -5284,6 +5287,12 @@ packages:
     hasBin: true
     dev: true
 
+  /i18next@23.6.0:
+    resolution: {integrity: sha512-z0Cxr0MGkt+kli306WS4nNNM++9cgt2b2VCMprY92j+AIab/oclgPxdwtTZVLP1zn5t5uo8M6uLsZmYrcjr3HA==}
+    dependencies:
+      '@babel/runtime': 7.22.15
+    dev: false
+
   /iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -8157,7 +8166,7 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check@3.5.1(@babel/core@7.22.19)(postcss@8.4.29)(sass@1.67.0)(svelte@4.2.0):
+  /svelte-check@3.5.1(@babel/core@7.22.19)(postcss@8.4.31)(sass@1.67.0)(svelte@4.2.0):
     resolution: {integrity: sha512-+Zb4iHxAhdUtcUg/WJPRjlS1RJalIsWAe9Mz6G1zyznSs7dDkT7VUBdXc3q7Iwg49O/VrZgyJRvOJkjuBfKjFA==}
     hasBin: true
     peerDependencies:
@@ -8170,7 +8179,7 @@ packages:
       picocolors: 1.0.0
       sade: 1.8.1
       svelte: 4.2.0
-      svelte-preprocess: 5.0.4(@babel/core@7.22.19)(postcss@8.4.29)(sass@1.67.0)(svelte@4.2.0)(typescript@5.2.2)
+      svelte-preprocess: 5.0.4(@babel/core@7.22.19)(postcss@8.4.31)(sass@1.67.0)(svelte@4.2.0)(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -8193,7 +8202,7 @@ packages:
       svelte: 4.2.0
     dev: true
 
-  /svelte-preprocess@5.0.4(@babel/core@7.22.19)(postcss@8.4.29)(sass@1.67.0)(svelte@4.2.0)(typescript@5.2.2):
+  /svelte-preprocess@5.0.4(@babel/core@7.22.19)(postcss@8.4.31)(sass@1.67.0)(svelte@4.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-ABia2QegosxOGsVlsSBJvoWeXy1wUKSfF7SWJdTjLAbx/Y3SrVevvvbFNQqrSJw89+lNSsM58SipmZJ5SRi5iw==}
     engines: {node: '>= 14.10.0'}
     requiresBuild: true
@@ -8235,7 +8244,7 @@ packages:
       '@types/pug': 2.0.6
       detect-indent: 6.1.0
       magic-string: 0.27.0
-      postcss: 8.4.29
+      postcss: 8.4.31
       sass: 1.67.0
       sorcery: 0.11.0
       strip-indent: 3.0.0
@@ -8692,7 +8701,7 @@ packages:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
     engines: {node: '>= 10.0.0'}
 
-  /unocss@0.55.7(postcss@8.4.29)(rollup@3.29.1)(vite@4.4.9):
+  /unocss@0.55.7(postcss@8.4.31)(rollup@3.29.1)(vite@4.4.9):
     resolution: {integrity: sha512-3W9P7vj2EhSk/4oPCHBS0VgrwSf5zZL6Az1/XARVOpBnRJtCM2szFInYxHkMgt9pkZTsW8SFCuk/g+QIJ6A8tg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -8708,7 +8717,7 @@ packages:
       '@unocss/cli': 0.55.7(rollup@3.29.1)
       '@unocss/core': 0.55.7
       '@unocss/extractor-arbitrary-variants': 0.55.7
-      '@unocss/postcss': 0.55.7(postcss@8.4.29)
+      '@unocss/postcss': 0.55.7(postcss@8.4.31)
       '@unocss/preset-attributify': 0.55.7
       '@unocss/preset-icons': 0.55.7
       '@unocss/preset-mini': 0.55.7
@@ -8955,7 +8964,7 @@ packages:
       vite: 4.4.9(@types/node@20.6.0)(sass@1.67.0)
     dev: true
 
-  /vitepress@1.0.0-rc.23(@algolia/client-search@4.20.0)(@types/node@20.6.0)(postcss@8.4.29)(sass@1.67.0)(search-insights@2.9.0)(typescript@5.2.2):
+  /vitepress@1.0.0-rc.23(@algolia/client-search@4.20.0)(@types/node@20.6.0)(postcss@8.4.31)(sass@1.67.0)(search-insights@2.9.0)(typescript@5.2.2):
     resolution: {integrity: sha512-0YoBt8aFgbRt2JtYaCeTqq4W21q5lbGso+g1ZwkYYS35ExJxORssRJunhFuUcby8QeN4BP/88QDgsVSIVLAfXQ==}
     hasBin: true
     peerDependencies:
@@ -8976,7 +8985,7 @@ packages:
       focus-trap: 7.5.4
       mark.js: 8.11.1
       minisearch: 6.1.0
-      postcss: 8.4.29
+      postcss: 8.4.31
       shiki: 0.14.5
       vite: 4.5.0(@types/node@20.6.0)(sass@1.67.0)
       vue: 3.3.6(typescript@5.2.2)
@@ -9445,7 +9454,7 @@ packages:
     dev: true
 
   github.com/lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc:
-    resolution: {tarball: https://codeload.github.com/lishid/cm-language/tar.gz/1aadcc247f20ccfda76424a9f853dbb4ee203fdc}
+    resolution: {commit: 1aadcc247f20ccfda76424a9f853dbb4ee203fdc, repo: git+ssh://git@github.com/lishid/cm-language.git, type: git}
     name: '@codemirror/language'
     version: 6.6.0
     prepare: true
@@ -9460,7 +9469,7 @@ packages:
     dev: true
 
   github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
-    resolution: {tarball: https://codeload.github.com/obsidianmd/obsidian-api/tar.gz/249eb773347588f4e9fec7c600e1904cd9240fcb}
+    resolution: {commit: 249eb773347588f4e9fec7c600e1904cd9240fcb, repo: git+ssh://git@github.com/obsidianmd/obsidian-api.git, type: git}
     id: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb
     name: obsidian
     version: 1.4.11

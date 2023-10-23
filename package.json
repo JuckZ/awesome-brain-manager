@@ -89,6 +89,7 @@
     "commander": "^11.0.0",
     "cursor-effects": "^1.0.12",
     "emoji-mart": "^5.5.2",
+    "i18next": "^23.6.0",
     "interactjs": "^1.10.19",
     "jsonfile": "^6.1.0",
     "lodash-es": "^4.17.21",
