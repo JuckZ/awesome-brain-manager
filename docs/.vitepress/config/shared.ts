@@ -127,6 +127,12 @@ export const sharedConfig = defineConfig({
     ],
 
     socialLinks: [
+      {
+        icon: {
+          svg: 'rss'
+        },
+        link: '/feed.rss',
+      },
       // { icon: 'twitter', link: 'https://twitter.com/posva' },
       {
         icon: 'github',

@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import { enConfig } from './en'
 import { sharedConfig } from './shared'
 import { zhConfig } from './zh'
+import { genFeed } from '../genFeed'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -28,5 +29,8 @@ export default defineConfig({
     //   lang: 'zh-TW', 
     //   link: 'https://abm-zh-tw.netlify.app',
     // }
+  },
+  buildEnd(siteConfig) {
+    genFeed(siteConfig)
   },
 })

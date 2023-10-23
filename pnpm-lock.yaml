@@ -199,6 +199,9 @@ devDependencies:
   eslint-plugin-vue:
     specifier: ^9.17.0
     version: 9.17.0(eslint@8.49.0)
+  feed:
+    specifier: ^4.2.2
+    version: 4.2.2
   husky:
     specifier: ^8.0.3
     version: 8.0.3
@@ -4681,6 +4684,13 @@ packages:
       reusify: 1.0.4
     dev: true
 
+  /feed@4.2.2:
+    resolution: {integrity: sha512-u5/sxGfiMfZNtJ3OvQpXcvotFpYkL0n9u9mM2vkui2nGo8b4wvDkJ8gAkYqbA8QpGyFCv3RK0Z+Iv+9veCS9bQ==}
+    engines: {node: '>=0.4.0'}
+    dependencies:
+      xml-js: 1.6.11
+    dev: true
+
   /figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
     engines: {node: '>=4'}
@@ -6752,7 +6762,7 @@ packages:
     resolution: {integrity: sha512-REKQtAuIOKDbvNH/th1C1gWmJWCP5tRn9T/mfZGZt4Zncgko7McXK0aSKFtEInipvgbZJ2nScivvyLdiWluSMw==}
     hasBin: true
     dependencies:
-      obsidian: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
+      obsidian: git@github.com+obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
       tslib: 2.1.0
     transitivePeerDependencies:
       - '@codemirror/state'
@@ -7654,6 +7664,10 @@ packages:
       chokidar: 3.5.3
       immutable: 4.3.4
       source-map-js: 1.0.2
+    dev: true
+
+  /sax@1.3.0:
+    resolution: {integrity: sha512-0s+oAmw9zLl1V1cS9BtZN7JAd0cW5e0QH4W3LWEK6a4LaLEA2OTpGYWDY+6XasBLtz6wkm3u1xRw95mRuJ59WA==}
     dev: true
 
   /saxes@6.0.0:
@@ -9379,6 +9393,13 @@ packages:
         optional: true
     dev: true
 
+  /xml-js@1.6.11:
+    resolution: {integrity: sha512-7rVi2KMfwfWFl+GpPg6m80IVMWXLRjO+PxTq7V2CDhoGak0wzYzFgUY2m4XJ47OGdXd8eLE8EmwfAmdjw7lC1g==}
+    hasBin: true
+    dependencies:
+      sax: 1.3.0
+    dev: true
+
   /xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
     engines: {node: '>=12'}
@@ -9453,8 +9474,23 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
+  git@github.com+obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
+    resolution: {commit: 249eb773347588f4e9fec7c600e1904cd9240fcb, repo: git@github.com:obsidianmd/obsidian-api.git, type: git}
+    id: git@github.com+obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb
+    name: obsidian
+    version: 1.4.11
+    peerDependencies:
+      '@codemirror/state': ^6.0.0
+      '@codemirror/view': ^6.0.0
+    dependencies:
+      '@codemirror/state': 6.2.1
+      '@codemirror/view': 6.19.0
+      '@types/codemirror': 5.60.8
+      moment: 2.29.4
+    dev: true
+
   github.com/lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc:
-    resolution: {commit: 1aadcc247f20ccfda76424a9f853dbb4ee203fdc, repo: git+ssh://git@github.com/lishid/cm-language.git, type: git}
+    resolution: {tarball: https://codeload.github.com/lishid/cm-language/tar.gz/1aadcc247f20ccfda76424a9f853dbb4ee203fdc}
     name: '@codemirror/language'
     version: 6.6.0
     prepare: true
@@ -9466,19 +9502,4 @@ packages:
       '@lezer/highlight': 1.1.6
       '@lezer/lr': 1.3.10
       style-mod: 4.1.0
-    dev: true
-
-  github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
-    resolution: {commit: 249eb773347588f4e9fec7c600e1904cd9240fcb, repo: git+ssh://git@github.com/obsidianmd/obsidian-api.git, type: git}
-    id: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb
-    name: obsidian
-    version: 1.4.11
-    peerDependencies:
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
-    dependencies:
-      '@codemirror/state': 6.2.1
-      '@codemirror/view': 6.19.0
-      '@types/codemirror': 5.60.8
-      moment: 2.29.4
     dev: true
