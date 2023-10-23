@@ -218,8 +218,8 @@ devDependencies:
     specifier: ^1.4.11
     version: 1.4.11(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
   obsidian-dataview:
-    specifier: ^0.5.56
-    version: 0.5.56
+    specifier: ^0.5.61
+    version: 0.5.61
   plantuml-encoder:
     specifier: ^1.4.0
     version: 1.4.0
@@ -6867,17 +6867,17 @@ packages:
     resolution: {integrity: sha512-REKQtAuIOKDbvNH/th1C1gWmJWCP5tRn9T/mfZGZt4Zncgko7McXK0aSKFtEInipvgbZJ2nScivvyLdiWluSMw==}
     hasBin: true
     dependencies:
-      obsidian: git@github.com+obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
+      obsidian: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
       tslib: 2.1.0
     transitivePeerDependencies:
       - '@codemirror/state'
       - '@codemirror/view'
     dev: true
 
-  /obsidian-dataview@0.5.56:
-    resolution: {integrity: sha512-QyXpJLDJVpLmPCiF8ht4XqeuhWaccAs/pSpP+oDmwou4uJvEO4rXosj7joYQXv1QMsxf5UHy2OO56BZoyzVGBg==}
+  /obsidian-dataview@0.5.61:
+    resolution: {integrity: sha512-6qMkdofGZOCU6dfXZtJwHXEKeVGlRBJnC85rvwlRmjBRgIn4m9MomggvF8M73jH9A+dX4282LX+NnfU0e6RUqg==}
     dependencies:
-      '@codemirror/language': git@github.com+lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc
+      '@codemirror/language': github.com/lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc
       '@codemirror/state': 6.2.1
       '@codemirror/view': 6.19.0
       emoji-regex: 10.3.0
@@ -9623,8 +9623,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  git@github.com+lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc:
-    resolution: {commit: 1aadcc247f20ccfda76424a9f853dbb4ee203fdc, repo: git@github.com:lishid/cm-language.git, type: git}
+  github.com/lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc:
+    resolution: {tarball: https://codeload.github.com/lishid/cm-language/tar.gz/1aadcc247f20ccfda76424a9f853dbb4ee203fdc}
     name: '@codemirror/language'
     version: 6.6.0
     prepare: true
@@ -9638,9 +9638,9 @@ packages:
       style-mod: 4.1.0
     dev: true
 
-  git@github.com+obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
-    resolution: {commit: 249eb773347588f4e9fec7c600e1904cd9240fcb, repo: git@github.com:obsidianmd/obsidian-api.git, type: git}
-    id: git@github.com+obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb
+  github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
+    resolution: {tarball: https://codeload.github.com/obsidianmd/obsidian-api/tar.gz/249eb773347588f4e9fec7c600e1904cd9240fcb}
+    id: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb
     name: obsidian
     version: 1.4.11
     peerDependencies:
