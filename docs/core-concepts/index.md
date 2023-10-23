@@ -36,10 +36,6 @@
 
 It's not too long now. Just finish reading.🤣
 
-[中文文档](./README.md)
-
-[English Doc](#)
-
 </details>
 
 <details open>
