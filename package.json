@@ -58,7 +58,8 @@
     "postinstall": "patch-package",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "documate:upload": "documate upload"
   },
   "husky": {
     "hooks": {
@@ -81,6 +82,7 @@
     "@codemirror/language": "^6.9.0",
     "@codemirror/state": "^6.2.1",
     "@codemirror/view": "^6.19.0",
+    "@documate/vue": "^0.3.1",
     "@emoji-mart/data": "^1.1.2",
     "@vicons/ionicons5": "^0.12.0",
     "boxen": "^7.1.1",
@@ -109,6 +111,7 @@
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
     "@commitlint/prompt": "^17.7.1",
+    "@documate/documate": "^0.2.1",
     "@interactjs/types": "^1.10.19",
     "@rollup/plugin-node-resolve": "^15.2.1",
     "@semantic-release/changelog": "^6.0.3",

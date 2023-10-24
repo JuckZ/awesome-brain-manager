@@ -1,6 +1,8 @@
 // https://vitepress.dev/guide/custom-theme
 import { h, watchEffect } from 'vue'
 import Theme from 'vitepress/theme'
+import Documate from '@documate/vue'
+import '@documate/vue/dist/style.css'
 import './style.css'
 import { type EnhanceAppContext, inBrowser, useData } from 'vitepress'
 import MainFooter from './components/MainFooter.vue'
@@ -19,6 +21,9 @@ export default {
   Layout: () => {
     return h(Theme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
+      'nav-bar-content-before': () => h(Documate, {
+        endpoint: 'https://f965a6vcks.us.aircode.run/ask',
+      }),
     })
   },
   enhanceApp({ app, router, siteData }: EnhanceAppContext) {
