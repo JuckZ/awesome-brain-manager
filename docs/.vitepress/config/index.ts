@@ -31,6 +31,7 @@ export default defineConfig({
     //   link: 'https://abm-zh-tw.netlify.app',
     // }
   },
+  markdown: {},
   sitemap: {
     hostname: 'https://abm.timesavior.io'
   },

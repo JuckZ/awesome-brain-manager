@@ -23,6 +23,11 @@ export default {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
       'nav-bar-content-before': () => h(Documate, {
         endpoint: 'https://f965a6vcks.us.aircode.run/ask',
+        predefinedQuestions: [
+          'What is Awesome Brain Manager?',
+          'How to use Awesome Brain Manager?',
+          "What features Awesome Brain Manager have?"
+        ]
       }),
     })
   },
@@ -32,6 +37,7 @@ export default {
     router.onBeforePageLoad = (to) => {
       if (import.meta.env.DEV) return
       const url = 'https://api.gumengya.com/Api/UserInfo'
+      // FIXME 每次构建都会执行，而不是进入路由时执行？
       fetch(url, {
         method: "get",
         mode: 'cors',
