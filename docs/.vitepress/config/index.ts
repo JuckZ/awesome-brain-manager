@@ -3,7 +3,7 @@ import { enConfig } from './en'
 import { sharedConfig } from './shared'
 import { zhConfig } from './zh'
 import { genFeed } from '../genFeed'
-import { genSitemap } from '../genSitemap'
+// import { genSitemap } from '../genSitemap'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -31,9 +31,12 @@ export default defineConfig({
     //   link: 'https://abm-zh-tw.netlify.app',
     // }
   },
+  sitemap: {
+    hostname: 'https://abm.timesavior.io'
+  },
   lastUpdated: true,
   buildEnd(siteConfig) {
     genFeed(siteConfig)
-    genSitemap(siteConfig)
+    // genSitemap(siteConfig)
   },
 })
