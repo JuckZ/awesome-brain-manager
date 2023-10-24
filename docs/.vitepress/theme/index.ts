@@ -31,27 +31,22 @@ export default {
     app.component('AnnouncementBar', AnnouncementBar)
     router.onBeforePageLoad = (to) => {
       if (import.meta.env.DEV) return
-      fetch('https://api.gumengya.com/Api/UserInfo', {
-        method: "post",
+      const url = 'https://api.gumengya.com/Api/UserInfo'
+      fetch(url, {
+        method: "get",
         mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          format: 'json',
-        })
       }).then(
         response => response.json()
       ).then(
         res => {
-          if (res.data.code == 200) {
-            if (res.data.data.location.startsWith('中国') && !router.route.path.startsWith('/zh')) {
+          if (res.code == 200) {
+            if (res.data.location.startsWith('中国') && !router.route.path.startsWith('/zh')) {
               router.go(`/zh${router.route.path}`)
               // zh-CN en-US
               // siteData.value.lang = 'zh-CN'
             }
           } else {
-            console.log(res.data)
+            console.log(res)
           }
         }
       ).catch(
