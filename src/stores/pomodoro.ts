@@ -30,8 +30,7 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
     }
 
     function quickAddPomodoro(task: string) {
-        task = task.replace('- [x] ', '');
-        task = task.replace('- [ ] ', '').trim();
+        task = task.replace(/- \[.\] /, '').trim();
         if (!task) {
             task = t.menu.defaultTask + Date.now();
         }

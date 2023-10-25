@@ -12,6 +12,8 @@ import {
     requireApiVersion,
     setIcon,
 } from 'obsidian';
+import interact from 'interactjs';
+import type { Interactable } from '@interactjs/types';
 import HoverEditorPlugin from '@/main';
 import { useSystemStore } from '@/stores';
 
@@ -89,6 +91,8 @@ export class HoverEditor extends nosuper(HoverPopover) {
         cls: 'popover hover-popover',
         attr: { id: 'he' + this.id },
     });
+
+    thePosition = { x: 0, y: 0 };
 
     constructor(
         parent: HoverEditorParent,
@@ -168,6 +172,8 @@ export class HoverEditor extends nosuper(HoverPopover) {
     }
 
     setInitialDimensions() {
+        // TODO 动态调整zIndex，因为会遮挡其他popover
+        this.hoverEl.style.zIndex = '2000';
         this.hoverEl.style.height = SETTINGS.initialHeight.value;
         this.hoverEl.style.width = SETTINGS.initialWidth.value;
     }
@@ -176,9 +182,43 @@ export class HoverEditor extends nosuper(HoverPopover) {
         this.titleEl = this.document.defaultView!.createDiv('popover-titlebar');
         this.titleEl.createDiv('popover-title');
         const popoverActions = this.titleEl.createDiv('popover-actions');
-
         const closeEl = popoverActions.createEl('a', 'popover-action mod-close');
         setIcon(closeEl, 'x');
+        const minEl = popoverActions.createEl('a', 'popover-action mod-minimize');
+        setIcon(minEl, 'minus');
+        const maxEl = popoverActions.createEl('a', 'popover-action mod-maximize');
+        setIcon(maxEl, 'maximize');
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const _self = this;
+        interact(this.hoverEl).draggable({
+            // origin: 'body',
+            // inertia: true,
+            allowFrom: '.popover-titlebar',
+            modifiers: [
+                // TODO 边缘吸附，留出10px的操作空间
+                interact.modifiers.restrict({
+                    restriction: 'body',
+                    // 不会拖动元素到body之外
+                    elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
+                }),
+            ],
+            listeners: {
+                start(event: DragEvent) {
+                    // console.log(event);
+                },
+                move(event) {
+                    _self.thePosition.x += event.dx;
+                    _self.thePosition.y += event.dy;
+                    event.target.style.transform = `translate(${_self.thePosition.x}px, ${_self.thePosition.y}px)`;
+                },
+                end(event: DragEvent) {
+                    // console.log(event);
+                },
+            },
+        });
+
+        minEl.addEventListener('click', event => {});
+        maxEl.addEventListener('click', event => {});
         closeEl.addEventListener('click', event => {
             this.hide();
         });

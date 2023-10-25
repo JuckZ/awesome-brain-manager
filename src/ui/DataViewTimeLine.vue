@@ -1,15 +1,56 @@
 <template>
     <div>
+        <div>
+            <n-form
+                ref="formRef"
+                :model="model"
+                label-placement="left"
+                label-width="auto"
+                size="small"
+                :style="{
+                    maxWidth: '640px',
+                }"
+            >
+                <n-form-item label="Task" path="taskName">
+                    <n-input v-model:value="model.taskName" placeholder="Input" />
+                </n-form-item>
+                <n-form-item label="Status" path="status">
+                    <n-select v-model:value="model.status" placeholder="Status" :options="statusList" multiple />
+                </n-form-item>
+                <n-form-item label="Due" path="dueRange">
+                    <n-date-picker v-model:value="model.dueRange" type="daterange" clearable />
+                </n-form-item>
+                <n-form-item label="Scheduled" path="scheduledRange">
+                    <n-date-picker v-model:value="model.scheduledRange" type="daterange" clearable />
+                </n-form-item>
+                <n-form-item label="Start" path="startRange">
+                    <n-date-picker v-model:value="model.startRange" type="daterange" clearable />
+                </n-form-item>
+            </n-form>
+        </div>
         <div class="taskListContainer">
-            <div v-for="task in taskList" :key="task.id" @click="onClicked($event, task)">
-                <div>
-                    <input type="checkbox" :checked="task.status !== ' '" @click="onChecked($event, task)" />
-                    {{ task.text }}
-                </div>
-                <n-icon @mouseenter="previewTask($event, task)">
-                    <EyeOutline />
-                </n-icon>
-            </div>
+            <n-list hoverable clickable>
+                <n-list-item v-for="task in taskList" :key="task.id">
+                    <n-thing
+                        content-style="margin-top: 10px;"
+                        @click="onClicked($event, task)"
+                        @mouseenter="previewTask($event, task)"
+                        @mouseleave="cancelPreviewTask($event, task)"
+                    >
+                        <template #description>
+                            <n-space size="small" style="margin-top: 4px">
+                                <n-tag v-for="tag in task.tags" :key="tag" :bordered="false" type="info" size="small">
+                                    {{ tag }}
+                                </n-tag>
+                            </n-space>
+                            <n-icon size="20" @click="onChecked($event, task)">
+                                <CheckmarkCircleOutline :color="task.status !== ' ' ? 'green' : ''" />
+                            </n-icon>
+                            {{ task.text }}
+                        </template>
+                    </n-thing>
+                </n-list-item>
+            </n-list>
         </div>
     </div>
 </template>
@@ -18,8 +59,20 @@
 import { Component, MarkdownPreviewView, MarkdownView, Platform } from 'obsidian';
 import { type SListItem, STask, getAPI as getDataviewApi } from 'obsidian-dataview';
 import { type Ref, ref } from 'vue';
-import { NIcon } from 'naive-ui';
-import { EyeOutline } from '@vicons/ionicons5';
+import {
+    NDatePicker,
+    NForm,
+    NFormItem,
+    NIcon,
+    NInput,
+    NList,
+    NListItem,
+    NSelect,
+    NSpace,
+    NTag,
+    NThing,
+} from 'naive-ui';
+import { CheckmarkCircleOutline } from '@vicons/ionicons5';
 import { debounce } from 'lodash-es';
 import {
     concentrateTasks,
@@ -35,11 +88,38 @@ import { eventTypes } from '@/types/types';
 const keyword = ref('');
 let mdText = ref('');
 const taskList: Ref<STask[]> = ref([]);
+const model = ref({
+    taskName: '',
+    status: [],
+    dueRange: null,
+    scheduledRange: null,
+    startRange: null,
+});
+// 🟠🟣🟤⚫
+const statusList = ref([
+    {
+        label: '🔵 Active',
+        value: ' ', // ' '
+    },
+    {
+        label: '🟢 Completed',
+        value: 'x', // x
+    },
+    {
+        label: '🟡 Ing',
+        value: 'd', // d /
+    },
+    {
+        label: '🔴 Cancelled',
+        value: 'C', // C
+    },
+]);
 
 const DataviewAPI = getDataviewApi();
 const searchHandle = async () => {
     // query
     // mdText.value = (await DataviewAPI.queryMarkdown(listTasks)).value;
+    // TODO 按照表单条件查询任务
     const res = await DataviewAPI.query(concentrateTasks);
     taskList.value = res.value.values;
 };
@@ -52,19 +132,26 @@ const refreshOperation = async () => {
 };
 // DataviewAPI.index.onChange(refreshOperation);
 app.workspace.on('dataview:refresh-views', refreshOperation);
-
-const debouncePreview = debounce((event, item: STask) => {
-    const evt = new CustomEvent(eventTypes.previewCursor, {
-        detail: {
-            originEvent: event,
-            cursorTarget: item,
-        },
-    });
-    window.dispatchEvent(evt);
-}, 400);
+let lastHoverTask: STask = null;
+let lastTimer = null;
 const previewTask = async (event, item: STask) => {
-    // 延迟触发，鼠标移出后取消触发
-    debouncePreview(event, item);
+    // 延迟触发 当悬停在同一个任务上600ms时，触发 previewTask
+    lastHoverTask = item;
+    lastTimer = setTimeout(() => {
+        if (item.id === lastHoverTask.id) {
+            const evt = new CustomEvent(eventTypes.previewCursor, {
+                detail: {
+                    originEvent: event,
+                    cursorTarget: item,
+                },
+            });
+            window.dispatchEvent(evt);
+        }
+    }, 600);
+};
+// 鼠标移出后取消触发
+const cancelPreviewTask = async (event, item: STask) => {
+    clearTimeout(lastTimer);
 };
 
 type SelectionState = {
@@ -98,8 +185,8 @@ const onClicked = async (evt, item: STask) => {
 
 const onChecked = async (evt, item: STask) => {
     evt.stopPropagation();
-    const completed = evt.currentTarget.checked;
-    const status = completed ? 'x' : ' ';
+    const completed = item.checked;
+    const status = completed ? ' ' : 'x';
     // Update data-task on the parent element (css style)
     const parent = evt.currentTarget.parentElement;
     parent?.setAttribute('data-task', status);

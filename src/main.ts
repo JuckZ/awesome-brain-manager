@@ -1,22 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import 'virtual:uno.css';
-import { around } from 'monkey-around';
 import {
     App,
     Editor,
-    type EphemeralState,
     type MarkdownFileInfo,
     MarkdownPreviewRenderer,
     MarkdownView,
     Menu,
+    Notice,
     Plugin,
     type PluginManifest,
     TAbstractFile,
     TFile,
     Tasks,
-    type ViewState,
-    WorkspaceContainer,
-    WorkspaceItem,
     WorkspaceLeaf,
     WorkspaceWindow,
     debounce,
@@ -24,6 +20,7 @@ import {
 } from 'obsidian';
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
+import { HoverEditor, type HoverEditorParent } from '@/ui/popover';
 import { expandEmmetAbbreviation } from '@/utils/emmet';
 import { usePomodoroStore, useSystemStore } from '@/stores';
 import Replacer from '@/Replacer';
@@ -48,11 +45,10 @@ import { eventTypes } from '@/types/types';
 import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
 import { notifyNtfy } from '@/api';
 import '@/main.scss';
-import { NotifyUtil } from '@/utils/notify';
+import { NotifyUtil } from '@/utils/ntfy/notify';
 import { EditorUtil, EditorUtils } from '@/utils/editor';
 import t from '@/i18n';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
-import { HoverEditor, type HoverEditorParent } from '@/popover';
 
 // import { initWorker } from '@/web-worker';
 
@@ -66,7 +62,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     private pomodoroHistoryView: PomodoroHistoryView | null;
     resizeFunction: () => any;
     clickFunction: (evt: MouseEvent) => any;
-    activeLeafChangeFunction: (leaf: WorkspaceLeaf) => any;
     fileOpenFunction: (file: TFile | null) => any;
     layoutChangeFunction: () => any;
     windowOpenFunction: (win: WorkspaceWindow, window: Window) => any;
@@ -75,15 +70,16 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     fileMenuFunction: (menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf) => any;
     editorMenuFunction: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
     editorChangeFunction: (editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
-    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView) => any;
+    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
     editorDropFunction: (evt: DragEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any;
-    codemirrorFunction: (cm: CodeMirror.Editor, info: MarkdownView) => any;
+    codemirrorFunction: (cm: CodeMirror.Editor) => any;
     quitFunction: (tasks: Tasks) => any;
 
     vaultCreateFunction: (file: TAbstractFile) => any;
     vaultModifyFunction: (file: TAbstractFile) => any;
     vaultDeleteFunction: (file: TAbstractFile) => any;
     vaultRenameFunction: (file: TAbstractFile, oldPath: string) => any;
+    vaultRawFunction: (path: string) => any;
     vaultClosedFunction: () => any;
 
     useSnippet = true;
@@ -111,12 +107,12 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.editorChangeFunction = this.customizeEditorChange.bind(this);
         this.editorPasteFunction = this.customizeEditorPaste.bind(this);
         this.fileMenuFunction = this.customizeFileMenu.bind(this);
-        this.activeLeafChangeFunction = this.customizeActiveLeafChange.bind(this);
         this.codemirrorFunction = this.customizeCodeMirror.bind(this);
         this.vaultCreateFunction = this.customizeVaultCreate.bind(this);
         this.vaultModifyFunction = this.customizeVaultModify.bind(this);
         this.vaultDeleteFunction = this.customizeVaultDelete.bind(this);
         this.vaultRenameFunction = this.customizeVaultRename.bind(this);
+        this.vaultRawFunction = this.customizeRaw.bind(this);
     }
 
     openBrowserHandle(e: CustomEvent) {
@@ -243,7 +239,11 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         onCodeMirrorChange(editor);
     }
 
-    async customizeEditorPaste(evt: ClipboardEvent, editor: Editor, markdownView: MarkdownView): Promise<void> {
+    async customizeEditorPaste(
+        evt: ClipboardEvent,
+        editor: Editor,
+        info: MarkdownView | MarkdownFileInfo,
+    ): Promise<void> {
         // LoggerUtil.log('');
     }
 
@@ -257,49 +257,50 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
-    async customizeActiveLeafChange(leaf: WorkspaceLeaf): Promise<void> {
-        HoverEditor.activePopover?.hoverEl.removeClass('is-active');
-        const hoverEditor = (HoverEditor.activePopover = leaf ? HoverEditor.forLeaf(leaf) : undefined);
-        if (hoverEditor && leaf) {
-            hoverEditor.hoverEl.addClass('is-active');
-            const titleEl = hoverEditor.hoverEl.querySelector('.popover-title');
-            if (!titleEl) return;
-            titleEl.textContent = leaf.view?.getDisplayText();
-            if (leaf?.view?.getViewType()) {
-                hoverEditor.hoverEl.setAttribute('data-active-view-type', leaf.view.getViewType());
-            }
-            if (leaf.view?.file?.path) {
-                titleEl.setAttribute('data-path', leaf.view.file.path);
-            } else {
-                titleEl.removeAttribute('data-path');
+    async customizeCodeMirror(cm: CodeMirror.Editor): Promise<void> {
+        // LoggerUtil.log('');
+    }
+
+    async customizeVaultCreate(file: TAbstractFile): Promise<void> {}
+
+    async customizeVaultModify(file: TAbstractFile): Promise<void> {}
+
+    async customizeVaultDelete(file: TAbstractFile): Promise<void> {}
+
+    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {}
+
+    async customizeRaw(path: string): Promise<void> {
+        const paths = path.split('/');
+        const reloadPluginList = ['awesome-brain-manager'];
+        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths.length >= 4) {
+            const plugin = paths[2];
+            const file = paths[paths.length - 1];
+            if (file.endsWith('.mdb')) return;
+            if (reloadPluginList.includes(plugin)) {
+                this.reloadPlugins(plugin);
             }
         }
     }
 
-    async customizeCodeMirror(cm: CodeMirror.Editor, view: MarkdownView): Promise<void> {
-        // LoggerUtil.log('');
-    }
-
-    async customizeVaultCreate(file: TAbstractFile): Promise<void> {
-        // LoggerUtil.log('');
-    }
-
-    async customizeVaultModify(file: TAbstractFile): Promise<void> {
-        // LoggerUtil.log('');
-    }
-
-    async customizeVaultDelete(file: TAbstractFile): Promise<void> {
-        // LoggerUtil.log('');
-    }
-
-    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {
-        // LoggerUtil.log('');
+    async reloadPlugins(plugin: string) {
+        const plugins = this.app.plugins;
+        // Don't reload disabled plugins
+        if (!plugins.enabledPlugins.has(plugin)) return;
+        await plugins.disablePlugin(plugin);
+        try {
+            setTimeout(async () => {
+                await this.app.plugins.enablePlugin(plugin);
+                new Notice(`Plugin "${plugin}" has been reloaded`);
+            }, 100);
+        } catch (error) {
+            new Notice(`Failed reload "${plugin}"`);
+            console.error(error);
+        }
     }
 
     override async onload(): Promise<void> {
         await this.pluginDataIO.load();
         LoggerUtil.init(SETTINGS.debugEnable);
-        this.patchWorkspaceLeaf();
         DBUtil.init(this, () => {
             usePomodoroStore().loadPomodoroData();
             this.startPomodoroTask();
@@ -312,7 +313,8 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         }
         this.registerMarkdownPostProcessor(codeEmoji);
         this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
-        this.registerMarkdownCodeBlockProcessor('vue', this.process.VueProcess);
+        this.registerMarkdownCodeBlockProcessor('vue-widget', this.process.VueProcess);
+        this.registerMarkdownCodeBlockProcessor('react-widget', this.process.ReactProcess);
 
         this.app.workspace.onLayoutReady(async () => {
             if (SETTINGS.debugEnable.value) {
@@ -327,72 +329,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         await this.migrate();
         this.announceUpdate();
-    }
-
-    patchWorkspaceLeaf() {
-        this.register(
-            around(WorkspaceLeaf.prototype, {
-                getRoot(old) {
-                    return function () {
-                        const top = old.call(this);
-                        top.getRoot === this.getRoot ? top : top.getRoot();
-                        // bugfix make.md冲突，不能使用ctrl+o打开文件 #bug
-                        return top;
-                    };
-                },
-                onResize(old) {
-                    return function () {
-                        this.view?.onResize();
-                    };
-                },
-                setViewState(old) {
-                    return async function (viewState: ViewState, eState?: unknown) {
-                        const result = await old.call(this, viewState, eState);
-                        // try and catch files that are opened from outside of the
-                        // HoverEditor class so that we can update the popover title bar
-                        try {
-                            const he = HoverEditor.forLeaf(this);
-                            if (he) {
-                                if (viewState.type) he.hoverEl.setAttribute('data-active-view-type', viewState.type);
-                                const titleEl = he.hoverEl.querySelector('.popover-title');
-                                if (titleEl) {
-                                    titleEl.textContent = this.view?.getDisplayText();
-                                    if (this.view?.file?.path) {
-                                        titleEl.setAttribute('data-path', this.view.file.path);
-                                    } else {
-                                        titleEl.removeAttribute('data-path');
-                                    }
-                                }
-                            }
-                        } catch {
-                            // ignore
-                        }
-                        return result;
-                    };
-                },
-                setEphemeralState(old) {
-                    return function (state: EphemeralState) {
-                        old.call(this, state);
-                        if (state.focus && this.view?.getViewType() === 'empty') {
-                            // Force empty (no-file) view to have focus so dialogs don't reset active pane
-                            this.view.contentEl.tabIndex = -1;
-                            this.view.contentEl.focus();
-                        }
-                    };
-                },
-            }),
-        );
-        this.register(
-            around(WorkspaceItem.prototype, {
-                getContainer(old) {
-                    return function () {
-                        if (!old) return; // 0.14.x doesn't have this
-                        if (!this.parentSplit || this instanceof WorkspaceContainer) return old.call(this);
-                        return this.parentSplit.getContainer();
-                    };
-                },
-            }),
-        );
     }
 
     private startPomodoroTask() {
@@ -514,13 +450,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 });
             }
         });
-    }
-
-    spawnPopover(initiatingEl?: HTMLElement, onShowCallback?: () => unknown): WorkspaceLeaf {
-        const parent = this.app.workspace.activeLeaf as unknown as HoverEditorParent;
-        if (!initiatingEl) initiatingEl = parent.containerEl;
-        const hoverPopover = new HoverEditor(parent, initiatingEl!, this, undefined, onShowCallback);
-        return hoverPopover.attachLeaf();
     }
 
     private setupCommands() {
@@ -728,9 +657,10 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // window.addEventListener('languagechange', () => {
         //     console.log('languagechange event detected!');
         // });
-        this.registerDomEvent(activeDocument, 'selectionchange', async (e: MouseEvent) => {
-            EditorUtil.changeToolbarPopover(e, SETTINGS.toolbar);
-        });
+        const selectionChangeCallback = async (e: Event) => {
+            EditorUtil.changeToolbarPopover(e as MouseEvent, SETTINGS.toolbar);
+        };
+        this.registerDomEvent(activeDocument, 'selectionchange', selectionChangeCallback);
         this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
             toggleMouseClickEffects(e, SETTINGS.clickString);
         });
@@ -741,16 +671,26 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             });
         };
         const previewCursorCallback = (e: CustomEvent) => {
-            const newLeaf = this.spawnPopover(undefined, () => this.app.workspace.setActiveLeaf(newLeaf, false, true));
-            newLeaf.openLinkText(e.detail.cursorTarget.title, e.detail.cursorTarget.path);
+            const newLeaf = new HoverEditor(
+                this.app.workspace.activeLeaf as unknown as HoverEditorParent,
+                this.app.workspace.activeLeaf!.containerEl,
+                this,
+                300,
+                () => {
+                    this.app.workspace.setActiveLeaf(newLeaf, false, true);
+                },
+            ).attachLeaf();
+            newLeaf!.openLinkText(e.detail.cursorTarget.file.name, e.detail.cursorTarget.path);
         };
         window.addEventListener('mousemove', mouseMoveCallback);
         this.register(() => window.removeEventListener('mousemove', mouseMoveCallback));
-        window.addEventListener(eventTypes.previewCursor, previewCursorCallback);
-        this.register(() => window.removeEventListener(eventTypes.previewCursor, previewCursorCallback));
+        window.addEventListener(eventTypes.previewCursor, previewCursorCallback as EventListener);
+        this.register(() =>
+            window.removeEventListener(eventTypes.previewCursor, previewCursorCallback as EventListener),
+        );
         const openBrowserCallback = this.openBrowserHandle.bind(this);
-        window.addEventListener(eventTypes.openBrowser, openBrowserCallback);
-        this.register(() => window.removeEventListener(eventTypes.openBrowser, openBrowserCallback));
+        window.addEventListener(eventTypes.openBrowser, openBrowserCallback as EventListener);
+        this.register(() => window.removeEventListener(eventTypes.openBrowser, openBrowserCallback as EventListener));
         [
             this.app.workspace.on('dataview:refresh-views', this.maybeRefresh),
             this.app.workspace.on('codemirror', this.codemirrorFunction),
@@ -760,11 +700,11 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             this.app.workspace.on('editor-paste', this.editorPasteFunction),
             this.app.workspace.on('file-menu', this.fileMenuFunction),
             this.app.workspace.on('editor-menu', this.editorMenuFunction),
-            this.app.workspace.on('active-leaf-change', this.activeLeafChangeFunction),
             this.app.vault.on('create', this.vaultCreateFunction),
             this.app.vault.on('modify', this.vaultModifyFunction),
             this.app.vault.on('delete', this.vaultDeleteFunction),
             this.app.vault.on('rename', this.vaultRenameFunction),
+            this.app.vault.on('raw', this.vaultRawFunction),
         ].forEach(eventRef => {
             this.registerEvent(eventRef);
         });
@@ -792,5 +732,6 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         toggleBlast('0');
         this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
         this.style.detach();
+        console.warn('unloading plugin');
     }
 }

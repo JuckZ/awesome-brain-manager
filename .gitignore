@@ -89,3 +89,5 @@ dist/**
 
 .env.local
 stats.html
+docs/.vitepress/cache
+docs/.vitepress/dist

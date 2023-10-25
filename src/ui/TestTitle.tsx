@@ -1,4 +1,5 @@
 import { defineComponent } from 'vue';
+import { NGradientText } from 'naive-ui';
 import t from '@/i18n';
 
 export default defineComponent({
@@ -9,6 +10,6 @@ export default defineComponent({
 
 const A = defineComponent({
     setup() {
-        return () => <>{t.info.Pomodoro}</>;
+        return () => <NGradientText type="primary">{t.info.Pomodoro}</NGradientText>;
     },
 });
