@@ -1,3 +1,30 @@
+# [1.11.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.10.0...1.11.0) (2023-10-25)
+
+
+### Bug Fixes
+
+* 2 dead link(s) found. ([a20017e](https://github.com/JuckZ/awesome-brain-manager/commit/a20017e75d0d41801e62b6232fa86b6d139a8d46))
+* auto select lang ([b7117fe](https://github.com/JuckZ/awesome-brain-manager/commit/b7117fe26c0872420392703c098bd96353dd11a4))
+* documate style ([8d54b74](https://github.com/JuckZ/awesome-brain-manager/commit/8d54b74320572ac2f4955bc9bf45ef787e8dfa74))
+* extract tasks ([bf86b9e](https://github.com/JuckZ/awesome-brain-manager/commit/bf86b9e13bd35a7f39366c55ab8e6d48598122d7))
+* getRandomStyle ([d93eb44](https://github.com/JuckZ/awesome-brain-manager/commit/d93eb44d2474539fc1bb624a6aa36b89acc292c2))
+* hotreload ([e255482](https://github.com/JuckZ/awesome-brain-manager/commit/e255482658f4bdd3063ce5687a67500b388e18f7))
+* pnpm-lock ([d79bd70](https://github.com/JuckZ/awesome-brain-manager/commit/d79bd70213639aa766b32531737ee92d6bfd8b98))
+* ssh to https ([e42da15](https://github.com/JuckZ/awesome-brain-manager/commit/e42da15fc675cf2d5b425ede75178e81d8548891))
+
+
+### Features
+
+* 1.remove webassembly for go ([8e0441f](https://github.com/JuckZ/awesome-brain-manager/commit/8e0441fed5e98a5a0bb1ccf6e6e4f400e7a7b3a0))
+* 1.注册vue SFC #ing ([5baff44](https://github.com/JuckZ/awesome-brain-manager/commit/5baff4405022949ea06cd66bbcf61be03b99c55f))
+* 1.简化悬浮窗逻辑 ([6685295](https://github.com/JuckZ/awesome-brain-manager/commit/6685295188dc4d0aed6d9fc9c585cb3b08a348dd))
+* auto reload ([f6d3696](https://github.com/JuckZ/awesome-brain-manager/commit/f6d369628f7408de8d7737576c7d6c1cf89f8c34))
+* webassembly demo for golang ([222c501](https://github.com/JuckZ/awesome-brain-manager/commit/222c5018cf34c0b8308d950c1f59758528268005))
+* 优化popover的拖动窗口，只有标题栏触发拖动 ([eaa6c0f](https://github.com/JuckZ/awesome-brain-manager/commit/eaa6c0f953382637b8bc61b455b251bd709017ee))
+* 增加预览窗口拖拽能力 ([6a0558d](https://github.com/JuckZ/awesome-brain-manager/commit/6a0558d24a58ebfbef7cafd6db469e8bdd5bf163))
+* 样式调整 ([6bcc77a](https://github.com/JuckZ/awesome-brain-manager/commit/6bcc77a28a4d7f47b32e33f302764dc4b6699120))
+* 美化界面 ([ba35293](https://github.com/JuckZ/awesome-brain-manager/commit/ba35293994362341ab53f985ca835b6a092492ee))
+
 # [1.10.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.9.0...1.10.0) (2023-09-16)
 
 
