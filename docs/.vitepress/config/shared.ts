@@ -155,10 +155,10 @@ export const sharedConfig = defineConfig({
     },
 
     search: {
-      provider: 'algolia',
+      provider: 'local',
       options: {
-        appId: 'RR8MGEP5KW',
-        apiKey: '5b4e417a75fc2ec43dcd0611cf439476',
+        appId: 'HYIBMMMO9G',
+        apiKey: 'ee773b050cfbc3f969462b2f3960e348',
         // apiKey: 'ea6dc42a4a4be2c403dbb950e1d2f7b7',
         indexName: 'abm-timesavior',
         insights: false,
