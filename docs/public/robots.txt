@@ -1,1 +1,5 @@
 # Algolia-Crawler-Verif: CFC6BC8883F41B94
+
+User-agent: *
+Allow: /
+Sitemap: https://abm.timesavior.io/sitemap.xml
