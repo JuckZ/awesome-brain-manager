@@ -103,6 +103,9 @@ devDependencies:
   '@interactjs/types':
     specifier: ^1.10.19
     version: 1.10.19
+  '@playwright/test':
+    specifier: ^1.39.0
+    version: 1.39.0
   '@rollup/plugin-node-resolve':
     specifier: ^15.2.1
     version: 15.2.1(rollup@3.29.1)
@@ -1651,6 +1654,14 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       tslib: 2.6.2
+    dev: true
+
+  /@playwright/test@1.39.0:
+    resolution: {integrity: sha512-3u1iFqgzl7zr004bGPYiN/5EZpRUSFddQBra8Rqll5N0/vfpqlP9I9EXqAoGacuAbX6c9Ulg/Cjqglp5VkK6UQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright: 1.39.0
     dev: true
 
   /@pnpm/config.env-replace@1.1.0:
@@ -5106,6 +5117,14 @@ packages:
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
+  /fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -7129,7 +7148,7 @@ packages:
     resolution: {integrity: sha512-REKQtAuIOKDbvNH/th1C1gWmJWCP5tRn9T/mfZGZt4Zncgko7McXK0aSKFtEInipvgbZJ2nScivvyLdiWluSMw==}
     hasBin: true
     dependencies:
-      obsidian: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
+      obsidian: github.com/obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
       tslib: 2.1.0
     transitivePeerDependencies:
       - '@codemirror/state'
@@ -7139,7 +7158,7 @@ packages:
   /obsidian-dataview@0.5.61:
     resolution: {integrity: sha512-6qMkdofGZOCU6dfXZtJwHXEKeVGlRBJnC85rvwlRmjBRgIn4m9MomggvF8M73jH9A+dX4282LX+NnfU0e6RUqg==}
     dependencies:
-      '@codemirror/language': github.com/lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc
+      '@codemirror/language': github.com/lishid/cm-language/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab
       '@codemirror/state': 6.2.1
       '@codemirror/view': 6.19.0
       emoji-regex: 10.3.0
@@ -7613,6 +7632,22 @@ packages:
 
   /plantuml-encoder@1.4.0:
     resolution: {integrity: sha512-sxMwpDw/ySY1WB2CE3+IdMuEcWibJ72DDOsXLkSmEaSzwEUaYBT6DWgOfBiHGCux4q433X6+OEFWjlVqp7gL6g==}
+    dev: true
+
+  /playwright-core@1.39.0:
+    resolution: {integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dev: true
+
+  /playwright@1.39.0:
+    resolution: {integrity: sha512-naE5QT11uC/Oiq0BwZ50gDmy8c8WLPRTEWuSSFVG2egBka/1qMoSqYQcROMT9zLwJ86oPofcTH2jBY/5wWOgIw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.39.0
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /postcss-import@15.1.0(postcss@8.4.31):
@@ -10056,10 +10091,10 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  github.com/lishid/cm-language/1aadcc247f20ccfda76424a9f853dbb4ee203fdc:
-    resolution: {tarball: https://codeload.github.com/lishid/cm-language/tar.gz/1aadcc247f20ccfda76424a9f853dbb4ee203fdc}
+  github.com/lishid/cm-language/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab:
+    resolution: {tarball: https://codeload.github.com/lishid/cm-language/tar.gz/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab}
     name: '@codemirror/language'
-    version: 6.6.0
+    version: 6.9.2
     prepare: true
     requiresBuild: true
     dependencies:
@@ -10071,9 +10106,9 @@ packages:
       style-mod: 4.1.0
     dev: true
 
-  github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
-    resolution: {tarball: https://codeload.github.com/obsidianmd/obsidian-api/tar.gz/249eb773347588f4e9fec7c600e1904cd9240fcb}
-    id: github.com/obsidianmd/obsidian-api/249eb773347588f4e9fec7c600e1904cd9240fcb
+  github.com/obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
+    resolution: {tarball: https://codeload.github.com/obsidianmd/obsidian-api/tar.gz/791214a68d0dc322b88e5abce617bdf603cc2a2d}
+    id: github.com/obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d
     name: obsidian
     version: 1.4.11
     peerDependencies:
