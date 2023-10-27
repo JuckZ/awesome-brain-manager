@@ -2,7 +2,7 @@ import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { App as VueApp } from 'vue';
 import PomodoroHistory from '@/ui/PomodoroHistory.vue';
-import t from '@/i18n';
+import t, { useI18n } from '@/i18n';
 import type AwesomeBrainManagerPlugin from 'main';
 
 export const POMODORO_HISTORY_VIEW = 'pomodoro-history-view';
@@ -49,6 +49,7 @@ export class PomodoroHistoryView extends ItemView {
             el => {
                 el.onNodeInserted(() => {
                     this.vueapp = createApp(PomodoroHistory);
+                    this.vueapp = useI18n(this.vueapp);
                     this.vueapp.mount(el);
                     this.mounted = true;
                 });

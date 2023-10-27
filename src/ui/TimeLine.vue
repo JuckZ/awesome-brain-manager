@@ -55,7 +55,7 @@
                 </template>
             </n-timeline-item>
         </n-timeline>
-        <n-empty v-else :description="t.info.noTimeLine">
+        <n-empty v-else :description="$t('info.noTimeLine')">
             <template #icon>
                 <n-icon>
                     <airplane />
@@ -71,8 +71,8 @@ import { Airplane, RadioButtonOffOutline } from '@vicons/ionicons5';
 import { Ref, onUpdated, ref, toRefs, watchEffect } from 'vue';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
+import { t } from 'i18next';
 import { PomodoroStatus } from '@/utils/pomotodo';
-import t from '@/i18n';
 import { usePomodoroStore } from '@/stores';
 import type { Pomodoro } from '@/schemas/spaces';
 const { pomodoroHistory } = storeToRefs(usePomodoroStore());
@@ -119,32 +119,32 @@ const formatDuration = (duration: number) => {
 const getOptions = currentStatus => {
     return [
         {
-            label: t.info.startTask,
+            label: t('info.startTask'),
             key: 'ing',
             show: !['done', 'cancelled', 'ing'].contains(currentStatus),
         },
         {
-            label: t.info.stopTask,
+            label: t('info.stopTask'),
             key: 'break',
             show: !['done', 'cancelled', 'todo', 'break'].contains(currentStatus),
         },
         {
-            label: t.info.finishTask,
+            label: t('info.finishTask'),
             key: 'done',
             show: !['done', 'cancelled', 'todo', 'break'].contains(currentStatus),
         },
         {
-            label: t.info.cancelTask,
+            label: t('info.cancelTask'),
             key: 'cancelled',
             show: !['done', 'cancelled'].contains(currentStatus),
         },
         {
-            label: t.info.repeatTask,
+            label: t('info.repeatTask'),
             key: 'repeat',
             show: true,
         },
         {
-            label: t.info.deleteTask,
+            label: t('info.deleteTask'),
             key: 'deleted',
             show: true,
         },
@@ -159,7 +159,7 @@ const handleSelect = (
         if (targetStatus === 'ing') {
             const ingPomodoro = pomodoroList.value.find(item => item.status === 'ing');
             if (ingPomodoro) {
-                message.error(`${t.info.handleThisFirst + ingPomodoro.task}`);
+                message.error(`${t('info.handleThisFirst') + ingPomodoro.task}`);
                 return;
             }
         }

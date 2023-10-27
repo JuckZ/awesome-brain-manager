@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref } from 'vue';
+import { t } from 'i18next';
 import type { Pomodoro } from '@/schemas/spaces';
-import t from '@/i18n';
 import { DBUtil } from '@/utils/db/db';
 import { getTagsFromTask, getTaskContentFromTask } from '@/utils/common';
 import { SETTINGS } from '@/settings';
@@ -32,7 +32,7 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
     function quickAddPomodoro(task: string) {
         task = task.replace(/- \[.\] /, '').trim();
         if (!task) {
-            task = t.menu.defaultTask + Date.now();
+            task = t('menu.defaultTask') + Date.now();
         }
         const createTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const tags: string[] = getTagsFromTask(task);

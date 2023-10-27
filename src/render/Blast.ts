@@ -3,7 +3,7 @@ import { type Editor, Platform } from 'obsidian';
 import { throttle } from 'lodash-es';
 import party from 'party-js';
 import type { DynamicSourceType } from 'party-js/lib/systems/sources';
-import t from '@/i18n';
+import { t } from 'i18next';
 import type { SettingModel } from '@/model/settings';
 import { EditorUtils } from '@/utils/editor';
 
@@ -264,7 +264,7 @@ export function toggleShake(targetVal: SettingModel<boolean, boolean>) {
 }
 
 export function toggleBlast(targetEffect: string) {
-    if (Object.keys(t.info.powerMode).contains(targetEffect)) {
+    if (Object.keys(t('info.powerMode', { returnObjects: true })).contains(targetEffect)) {
         effect = targetEffect;
         isActive = true;
         if (!canvas) {

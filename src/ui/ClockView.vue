@@ -14,7 +14,13 @@
             >
                 <div class="radialTimeText">{{ time }}</div>
             </RadialProgress>
-            <n-result v-else status="418" size="small" :title="t.info.noDoingTask" :description="t.info.haveABreak">
+            <n-result
+                v-else
+                status="418"
+                size="small"
+                :title="$t('info.noDoingTask')"
+                :description="$t('info.haveABreak')"
+            >
             </n-result>
         </n-space>
     </div>
@@ -28,7 +34,6 @@ import { NResult, NSpace } from 'naive-ui';
 import { moment } from 'obsidian';
 import { storeToRefs } from 'pinia';
 import { usePomodoroStore } from '@/stores';
-import t from '@/i18n';
 
 const time: Ref<string> = ref('');
 const currentSpend: Ref<number> = ref(0);

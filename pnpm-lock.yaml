@@ -44,12 +44,30 @@ dependencies:
   i18next:
     specifier: ^23.6.0
     version: 23.6.0
+  i18next-browser-languagedetector:
+    specifier: ^7.1.0
+    version: 7.1.0
+  i18next-http-backend:
+    specifier: ^2.3.0
+    version: 2.3.0
+  i18next-locize-backend:
+    specifier: ^6.3.0
+    version: 6.3.0
+  i18next-vue:
+    specifier: ^3.0.0
+    version: 3.0.0(i18next@23.6.0)(vue@3.3.4)
   interactjs:
     specifier: ^1.10.19
     version: 1.10.19
   jsonfile:
     specifier: ^6.1.0
     version: 6.1.0
+  locize:
+    specifier: ^2.4.6
+    version: 2.4.6
+  locize-lastused:
+    specifier: ^3.3.0
+    version: 3.3.0
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -3982,6 +4000,14 @@ packages:
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
+  /cross-fetch@4.0.0:
+    resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
+    dependencies:
+      node-fetch: 2.7.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /cross-spawn@6.0.5:
     resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
     engines: {node: '>=4.8'}
@@ -5567,6 +5593,38 @@ packages:
     hasBin: true
     dev: true
 
+  /i18next-browser-languagedetector@7.1.0:
+    resolution: {integrity: sha512-cr2k7u1XJJ4HTOjM9GyOMtbOA47RtUoWRAtt52z43r3AoMs2StYKyjS3URPhzHaf+mn10hY9dZWamga5WPQjhA==}
+    dependencies:
+      '@babel/runtime': 7.23.2
+    dev: false
+
+  /i18next-http-backend@2.3.0:
+    resolution: {integrity: sha512-9m34IcWdS3r43cgq/7O5IsDxTvSQ7pePwk2eQIH5q6Em6OjDCsSjboRWg2jqVdeIoCtHwzTN/byDHPStMsKsPQ==}
+    dependencies:
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /i18next-locize-backend@6.3.0:
+    resolution: {integrity: sha512-b3VjEOz0wq5LbjMEQChSNiPNvzd0S1ftMf6L7j9im7ELx/mUHCAFAvlDdiWMLHEm8NNnuCY/M1JbG+vLLR1ypw==}
+    dependencies:
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /i18next-vue@3.0.0(i18next@23.6.0)(vue@3.3.4):
+    resolution: {integrity: sha512-YGsrJa6IXq9VcaE2Ot5we8Zb4hLjzzdqd6HZORsWNVFNXK82nZ0BAC/bavkF1kpj+aD1dxz8KWRAtOe6LuI7Fw==}
+    peerDependencies:
+      i18next: '>=23'
+      vue: ^3.3.4
+    dependencies:
+      i18next: 23.6.0
+      vue: 3.3.4
+    dev: false
+
   /i18next@23.6.0:
     resolution: {integrity: sha512-z0Cxr0MGkt+kli306WS4nNNM++9cgt2b2VCMprY92j+AIab/oclgPxdwtTZVLP1zn5t5uo8M6uLsZmYrcjr3HA==}
     dependencies:
@@ -6392,6 +6450,18 @@ packages:
       p-locate: 6.0.0
     dev: true
 
+  /locize-lastused@3.3.0:
+    resolution: {integrity: sha512-/asmufAL9LZR9qxt01ztIoy+rO2ejapRGvM0B1lQMGRpXj8vpyMfoqngeKdxsWxc9i8ypwXPmtD/PsmDgazgQw==}
+    dependencies:
+      cross-fetch: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /locize@2.4.6:
+    resolution: {integrity: sha512-o3X2/v8D+zuWAJRWuooEZbwblRQMJ5WYaT/4Psgek1+HXgqvb3TeZ7BUHaLc+oX2DK3TFSjSDqEFrSRVdu+B3A==}
+    dev: false
+
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
 
@@ -6908,7 +6978,6 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-    dev: true
 
   /node-releases@2.0.13:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==}
@@ -9015,7 +9084,6 @@ packages:
 
   /tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
-    dev: true
 
   /tr46@4.1.1:
     resolution: {integrity: sha512-2lv/66T7e5yNyhAAC4NaKe5nVavzuGJQVVtRYLyQ2OI8tsJ61PMLlelehb0wi2Hx6+hT/OJUWZcw8MjlSRnxvw==}
@@ -9884,7 +9952,6 @@ packages:
 
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
-    dev: true
 
   /webidl-conversions@7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
@@ -9916,7 +9983,6 @@ packages:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
-    dev: true
 
   /which-boxed-primitive@1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}

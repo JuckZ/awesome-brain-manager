@@ -9,8 +9,8 @@ import { onMounted, onUpdated, ref, toRefs } from 'vue';
 import type { Ref } from 'vue';
 import Chart from 'chart.js/auto';
 import type { ChartItem } from 'chart.js/auto';
+import { t } from 'i18next';
 import type { Pomodoro } from '@/schemas/spaces';
-import t from '@/i18n';
 
 const props = defineProps<{
     allPomodoro: Pomodoro[];
@@ -79,14 +79,14 @@ onMounted(async () => {
         labels,
         datasets: [
             {
-                label: t.info.planNum,
+                label: t('info.planNum'),
                 fill: false,
                 backgroundColor: 'rgb(54, 162, 235)',
                 borderColor: 'rgba(54, 162, 235, 0.6)',
                 data: todayStart.value,
             },
             {
-                label: t.info.finishNum,
+                label: t('info.finishNum'),
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgba(255, 99, 132, 0.6)',
                 data: todayDone.value,
