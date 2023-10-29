@@ -1,7 +1,7 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/settings.ts
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 import { t } from 'i18next';
-import { RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
+import { DropdownSettingModelBuilder, RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
 import { toggleCursorEffects } from '@/render/CursorEffects';
 import { toggleBlast } from '@/render/Blast';
 import { EditorUtil } from '@/utils/editor';
@@ -10,8 +10,8 @@ import type { PluginDataIO } from '@/data';
 class Settings {
     settings: SettingTabModel = new SettingTabModel();
 
-    cursorEffectBuilder: any;
-    powerModeBuilder: any;
+    cursorEffectBuilder: DropdownSettingModelBuilder<string>;
+    powerModeBuilder: DropdownSettingModelBuilder<string>;
 
     cursorEffect: SettingModel<string, string>;
     powerMode: SettingModel<string, string>;
@@ -339,8 +339,8 @@ class Settings {
         this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }
 
-    public forEach(consumer: (setting: SettingModel<any, any>) => void) {
-        this.settings.forEach(consumer);
+    public forEach<R, E>(consumer: (setting: SettingModel<R, E>) => void) {
+        this.settings.forEach<R, E>(consumer);
     }
 }
 

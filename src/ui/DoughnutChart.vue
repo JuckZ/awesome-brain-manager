@@ -6,7 +6,7 @@
 
 <script setup lang="tsx">
 import { onMounted, onUpdated, ref, toRefs } from 'vue';
-import Chart from 'chart.js/auto';
+import ChartJS from 'chart.js/auto';
 import type { ChartItem } from 'chart.js/auto';
 import { t } from 'i18next';
 import type { Pomodoro } from '@/schemas/spaces';
@@ -88,7 +88,7 @@ onMounted(async () => {
         },
     };
 
-    chart = new Chart(doughnutChart.value as unknown as ChartItem, {
+    chart = new ChartJS(doughnutChart.value as unknown as ChartItem, {
         type: 'doughnut',
         options: options,
         data: data,

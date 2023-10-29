@@ -1,4 +1,4 @@
-import { AbstractTextComponent, Setting } from 'obsidian';
+import { AbstractTextComponent, Setting, TextAreaComponent, TextComponent } from 'obsidian';
 import { type ReadOnlyReference, Reference } from '@/model/ref';
 import { LoggerUtil } from '@/utils/logger';
 
@@ -26,11 +26,13 @@ class SettingContext {
     public name?: string;
     public desc?: string;
     public tags: Array<string> = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public settingModel?: SettingModel<any, any>;
     anyValueChanged?: AnyValueChanged;
 
     constructor(private _settingRegistry: SettingRegistry) {}
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     init(settingModel: SettingModel<any, any>, setting: Setting, containerEl: HTMLElement) {
         this.settingModel = settingModel;
         this._setting = setting;
@@ -186,7 +188,7 @@ abstract class AbstractSettingModelBuilder<R> {
     }
 }
 
-class TextSettingModelBuilder extends AbstractSettingModelBuilder<string> {
+export class TextSettingModelBuilder extends AbstractSettingModelBuilder<string> {
     private _placeHolder?: string;
 
     constructor(
@@ -204,7 +206,7 @@ class TextSettingModelBuilder extends AbstractSettingModelBuilder<string> {
 
     build<E>(serde: Serde<string, E>): SettingModel<string, E> {
         return this.buildSettingModel(serde, ({ setting, rawValue, context }) => {
-            const initText = (text: AbstractTextComponent<any>) => {
+            const initText = (text: AbstractTextComponent<HTMLInputElement | HTMLTextAreaElement>) => {
                 text.setPlaceholder(this._placeHolder ?? '')
                     .setValue(rawValue.value)
                     .onChange(async value => {
@@ -223,11 +225,11 @@ class TextSettingModelBuilder extends AbstractSettingModelBuilder<string> {
                     });
             };
             if (this.longText) {
-                setting.addTextArea(textarea => {
+                setting.addTextArea((textarea: TextAreaComponent) => {
                     initText(textarea);
                 });
             } else {
-                setting.addText(text => {
+                setting.addText((text: TextComponent) => {
                     initText(text);
                 });
             }
@@ -235,7 +237,7 @@ class TextSettingModelBuilder extends AbstractSettingModelBuilder<string> {
     }
 }
 
-class NumberSettingModelBuilder extends AbstractSettingModelBuilder<number> {
+export class NumberSettingModelBuilder extends AbstractSettingModelBuilder<number> {
     private _placeHolder?: string;
 
     constructor(context: SettingContext, initValue: number) {
@@ -249,7 +251,7 @@ class NumberSettingModelBuilder extends AbstractSettingModelBuilder<number> {
 
     build<E>(serde: Serde<number, E>): SettingModel<number, E> {
         return this.buildSettingModel(serde, ({ setting, rawValue, context }) => {
-            const initText = (text: AbstractTextComponent<any>) => {
+            const initText = (text: AbstractTextComponent<HTMLInputElement>) => {
                 text.setPlaceholder(this._placeHolder ?? '')
                     .setValue(rawValue.value.toString())
                     .onChange(async value => {
@@ -267,14 +269,14 @@ class NumberSettingModelBuilder extends AbstractSettingModelBuilder<number> {
                         }
                     });
             };
-            setting.addText(textarea => {
-                initText(textarea);
+            setting.addText((text: TextComponent) => {
+                initText(text);
             });
         });
     }
 }
 
-class ToggleSettingModelBuilder extends AbstractSettingModelBuilder<boolean> {
+export class ToggleSettingModelBuilder extends AbstractSettingModelBuilder<boolean> {
     build<E>(serde: Serde<boolean, E>): SettingModel<boolean, E> {
         return new SettingModelImpl(this.context, serde, this.initValue, ({ setting, rawValue }) => {
             setting.addToggle(toggle =>
@@ -294,7 +296,7 @@ class DropdownOption {
     ) {}
 }
 
-class DropdownSettingModelBuilder<E> extends AbstractSettingModelBuilder<string> {
+export class DropdownSettingModelBuilder<E> extends AbstractSettingModelBuilder<string> {
     private options: Array<DropdownOption> = [];
 
     addOption(label: string, value: string) {
@@ -325,9 +327,9 @@ export interface SettingModel<R, E> extends ReadOnlyReference<E> {
 
     createSetting(containerEl: HTMLElement): Setting;
 
-    load(settings: any): void;
+    load(settings: SettingsData): void;
 
-    store(settings: any): void;
+    store(settings: SettingsData): void;
 
     hasTag(tag: string): boolean;
 }
@@ -376,7 +378,7 @@ class SettingModelImpl<R, E> implements SettingModel<R, E> {
         return this.context.key!;
     }
 
-    load(settings: any): void {
+    load(settings: SettingsData): void {
         if (settings === undefined) {
             return;
         }
@@ -386,7 +388,7 @@ class SettingModelImpl<R, E> implements SettingModel<R, E> {
         }
     }
 
-    store(settings: any): void {
+    store(settings: SettingsData): void {
         settings[this.key] = this.rawValue.value;
     }
 
@@ -396,9 +398,11 @@ class SettingModelImpl<R, E> implements SettingModel<R, E> {
 }
 
 export class SettingGroup {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public settings: Array<SettingModel<any, any>> = [];
     constructor(public name: string) {}
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     addSettings(...settingModels: Array<SettingModel<any, any>>) {
         this.settings.push(...settingModels);
     }
@@ -429,7 +433,7 @@ export class SettingTabModel {
         this.registry.forEach(context => context.update());
     }
 
-    public forEach(consumer: (setting: SettingModel<any, any>) => void) {
+    public forEach<R, E>(consumer: (setting: SettingModel<R, E>) => void) {
         this.groups.forEach(group => {
             group.settings.forEach(setting => {
                 consumer(setting);
@@ -446,3 +450,27 @@ export class RawSerde<R> implements Serde<R, R> {
         return value;
     }
 }
+
+export type SettingsData = {
+    cursorEffect: string;
+    clickString: string;
+    customTag: string;
+    powerMode: string | number;
+    shakeMode: boolean;
+    expectedTime: string | number;
+    toolbar: boolean;
+    enableTwemoji: boolean;
+    systemNoticeEnable: boolean;
+    noticeAudio: string;
+    ntfyServerHost: string;
+    ntfyToken: string;
+    qweatherApiKey: string;
+    aMapApiKey: string;
+    serverHost: string;
+    debugEnable: boolean;
+    version: string;
+};
+
+export type SettingData = {
+    settings: SettingsData;
+};

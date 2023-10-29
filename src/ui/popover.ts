@@ -13,7 +13,6 @@ import {
     setIcon,
 } from 'obsidian';
 import interact from 'interactjs';
-import type { Interactable } from '@interactjs/types';
 import HoverEditorPlugin from '@/main';
 import { useSystemStore } from '@/stores';
 
@@ -30,15 +29,7 @@ export interface HoverEditorParent {
 }
 type ConstructableWorkspaceSplit = new (ws: Workspace, dir: 'horizontal' | 'vertical') => WorkspaceSplit;
 
-function nosuper<T>(base: new (...args: unknown[]) => T): new () => T {
-    const derived = function () {
-        return Object.setPrototypeOf(new Component(), new.target.prototype);
-    };
-    derived.prototype = base.prototype;
-    return Object.setPrototypeOf(derived, base);
-}
-
-export class HoverEditor extends nosuper(HoverPopover) {
+export class HoverEditor extends HoverPopover {
     onTarget: boolean;
 
     onHover: boolean;
@@ -101,8 +92,8 @@ export class HoverEditor extends nosuper(HoverPopover) {
         waitTime?: number,
         public onShowCallback?: () => unknown,
     ) {
-        //
-        super();
+        // TODO parent: HoverParent
+        super(parent, targetEl, waitTime);
 
         this.oldPopover = parent.hoverPopover ?? null;
         if (waitTime === undefined) {
@@ -250,7 +241,7 @@ export class HoverEditor extends nosuper(HoverPopover) {
         // Workaround until 0.15.7
         if (requireApiVersion('0.15.1') && !requireApiVersion('0.15.7'))
             app.workspace.iterateLeaves(leaf => {
-                if (leaf.view instanceof MarkdownView) (leaf.view.editMode as any).reinit?.();
+                if (leaf.view instanceof MarkdownView) (leaf.view.editMode as unknown).reinit?.();
             }, this.rootSplit);
 
         this.onShowCallback?.();

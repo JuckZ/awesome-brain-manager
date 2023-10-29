@@ -49,7 +49,7 @@ export const usePomodoroStore = defineStore('pomodoro', () => {
             status: 'todo',
             tags: tagsStr,
         };
-        this.addPomodoro(currentPomodoro as Pomodoro);
+        addPomodoro(currentPomodoro as Pomodoro);
     }
 
     function addPomodoro(pomodoro: Pomodoro) {

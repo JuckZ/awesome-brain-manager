@@ -24,11 +24,9 @@ import {
 } from 'cursor-effects';
 import { debounce } from 'lodash-es';
 import { randomColor } from '@/utils/common';
-import { EditorUtils } from '@/utils/editor';
 import type { SettingModel } from 'model/settings';
 
 const cursorEffects: object[] = [];
-let oldCursorEffects: object[] = [];
 let newCanvas: HTMLCanvasElement;
 function enableCursorEffect(effectName) {
     const canvasesBefore = Array.from(document.querySelectorAll('canvas'));
@@ -92,7 +90,6 @@ export function toggleCursorEffects(target: string) {
             document.body.removeChild(newCanvas);
         }
     };
-    oldCursorEffects = [...cursorEffects];
     const titlebarEleList = document.querySelectorAll('.titlebar, .workspace-tab-header-container');
     if (target != 'none') {
         disableCursorEffect();

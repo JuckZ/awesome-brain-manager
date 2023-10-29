@@ -7,7 +7,7 @@
 <script setup lang="tsx">
 import { onMounted, onUpdated, ref, toRefs } from 'vue';
 import type { Ref } from 'vue';
-import Chart from 'chart.js/auto';
+import ChartJS from 'chart.js/auto';
 import type { ChartItem } from 'chart.js/auto';
 import { t } from 'i18next';
 import type { Pomodoro } from '@/schemas/spaces';
@@ -102,7 +102,7 @@ onMounted(async () => {
             intersect: false,
         },
     };
-    chart = new Chart(lineChart.value as unknown as ChartItem, {
+    chart = new ChartJS(lineChart.value as unknown as ChartItem, {
         type: 'line',
         options: options,
         data: data,

@@ -18,7 +18,7 @@ export class DBUtils {
     private app: App;
     awesomeBrainDB: Database;
     awesomeBrainDBPath: string;
-    initedCallback: any;
+    initedCallback: (args?: unknown[]) => Promise<unknown>;
 
     async init(plugin: AwesomeBrainManagerPlugin, initedCallback) {
         this.plugin = plugin;

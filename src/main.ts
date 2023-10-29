@@ -250,7 +250,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     async customizeFileMenu(menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf): Promise<void> {
         menu.addItem(item => {
-            item.setTitle(t.menu.setBannerForTheFolder)
+            item.setTitle(t('menu.setBannerForTheFolder'))
                 .setIcon('image')
                 .onClick(async () => {
                     new ImageOriginModal(this.app, this, file).open();

@@ -1,5 +1,5 @@
 import { merge } from 'lodash-es';
-import i18next from 'i18next';
+import i18next, { use } from 'i18next';
 // TODO 对比两个不同的实现
 import Backend from 'i18next-locize-backend';
 // import Backend from 'i18next-http-backend';
@@ -23,38 +23,38 @@ if (!isProduction) {
     // sets a timestamp of last access on every translation segment on locize
     // -> safely remove the ones not being touched for weeks/months
     // https://github.com/locize/locize-lastused
-    i18next.use(LastUsed);
+    use(LastUsed);
 }
 
-export const i18nextPromise = i18next
+export const i18nextPromise =
     // locize-editor
     // InContext Editor of locize
-    .use(locizePlugin)
-    // i18next-http-backend
-    // loads translations from your server
-    // https://github.com/i18next/i18next-http-backend
-    // TODO
-    // .use(Backend)
-    // detect user language
-    // learn more: https://github.com/i18next/i18next-browser-languageDetector
-    .use(LanguageDetector)
-    // init i18next
-    // for all options read: https://www.i18next.com/overview/configuration-options
-    .init({
-        debug: true,
-        fallbackLng: 'en',
-        saveMissing: !isProduction,
-        backend: locizeOptions,
-        locizeLastUsed: locizeOptions,
-        resources: {
-            en: {
-                translation: en,
+    use(locizePlugin)
+        // i18next-http-backend
+        // loads translations from your server
+        // https://github.com/i18next/i18next-http-backend
+        // TODO
+        // .use(Backend)
+        // detect user language
+        // learn more: https://github.com/i18next/i18next-browser-languageDetector
+        .use(LanguageDetector)
+        // init i18next
+        // for all options read: https://www.i18next.com/overview/configuration-options
+        .init({
+            debug: true,
+            fallbackLng: 'en',
+            saveMissing: !isProduction,
+            backend: locizeOptions,
+            locizeLastUsed: locizeOptions,
+            resources: {
+                en: {
+                    translation: en,
+                },
+                zh: {
+                    translation: zh,
+                },
             },
-            zh: {
-                translation: zh,
-            },
-        },
-    });
+        });
 
 export function useI18n(app) {
     app.use(I18NextVue, { i18next });
