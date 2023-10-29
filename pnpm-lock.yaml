@@ -20,6 +20,9 @@ dependencies:
   '@emoji-mart/data':
     specifier: ^1.1.2
     version: 1.1.2
+  '@types/markdown-it-container':
+    specifier: ^2.0.8
+    version: 2.0.8
   '@vicons/ionicons5':
     specifier: ^0.12.0
     version: 0.12.0
@@ -71,9 +74,18 @@ dependencies:
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
+  markdown-it:
+    specifier: ^13.0.2
+    version: 13.0.2
+  markdown-it-container:
+    specifier: ^3.0.0
+    version: 3.0.0
   naive-ui:
     specifier: ^2.34.4
     version: 2.34.4(vue@3.3.4)
+  nanoid:
+    specifier: ^5.0.2
+    version: 5.0.2
   ora:
     specifier: ^7.0.1
     version: 7.0.1
@@ -2175,7 +2187,6 @@ packages:
 
   /@types/linkify-it@3.0.4:
     resolution: {integrity: sha512-hPpIeeHb/2UuCw06kSNAOVWgehBLXEo0/fUs0mw3W2qhqX89PI2yvok83MnuctYGCPrabGIoi0fFso4DQ+sNUQ==}
-    dev: true
 
   /@types/lodash-es@4.17.10:
     resolution: {integrity: sha512-YJP+w/2khSBwbUSFdGsSqmDvmnN3cCKoPOL7Zjle6s30ZtemkkqhjVfFqGwPN7ASil5VyjE2GtyU/yqYY6mC0A==}
@@ -2187,16 +2198,20 @@ packages:
     resolution: {integrity: sha512-YI/M/4HRImtNf3pJgbF+W6FrXovqj+T+/HpENLTooK9PnkacBsDpeP3IpHab40CClUfhNmdM2WTNP2sa2dni5Q==}
     dev: false
 
+  /@types/markdown-it-container@2.0.8:
+    resolution: {integrity: sha512-epl+pYkAXmMOncHnp0uWsGkM00r/+5ClRAiQJz7iX3NX5cydJcBkIJEPkORpL9DSgunXpXkZt9spYHbJPuSJZw==}
+    dependencies:
+      '@types/markdown-it': 13.0.5
+    dev: false
+
   /@types/markdown-it@13.0.5:
     resolution: {integrity: sha512-QhJP7hkq3FCrFNx0szMNCT/79CXfcEgUIA3jc5GBfeXqoKsk3R8JZm2wRXJ2DiyjbPE4VMFOSDemLFcUTZmHEQ==}
     dependencies:
       '@types/linkify-it': 3.0.4
       '@types/mdurl': 1.0.4
-    dev: true
 
   /@types/mdurl@1.0.4:
     resolution: {integrity: sha512-ARVxjAEX5TARFRzpDRVC6cEk0hUIXCCwaMhz8y7S1/PxU6zZS1UMjyobz7q4w/D/R552r4++EhwmXK1N2rAy0A==}
-    dev: true
 
   /@types/minimist@1.2.4:
     resolution: {integrity: sha512-Kfe/D3hxHTusnPNRbycJE1N77WHDsdS4AjUYIzlDzhDrS47NrwuL3YW4VITxwR7KCVpzwgy4Rbj829KSSQmwXQ==}
@@ -6643,6 +6658,10 @@ packages:
     resolution: {integrity: sha512-1I+1qpDt4idfgLQG+BNWmrqku+7/2bi5nLf4YwF8y8zXvmfiTBY3PV3ZibfrjBueCByROpuBjLLFCajqkgYoLQ==}
     dev: true
 
+  /markdown-it-container@3.0.0:
+    resolution: {integrity: sha512-y6oKTq4BB9OQuY/KLfk/O3ysFhB3IMYoIWhGJEidXt1NQFocFK2sA2t0NYZAMyMShAGL6x5OPIbrmXPIqaN9rw==}
+    dev: false
+
   /markdown-it-highlightjs@4.0.1:
     resolution: {integrity: sha512-EPXwFEN6P5nqR3G4KjT20r20xbGYKMMA/360hhSYFmeoGXTE6hsLtJAiB/8ID8slVH4CWHHEL7GX0YenyIstVQ==}
     dependencies:
@@ -6927,6 +6946,12 @@ packages:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid@5.0.2:
+    resolution: {integrity: sha512-2ustYUX1R2rL/Br5B/FMhi8d5/QzvkJ912rBYxskcpu0myTHzSZfTr1LAS2Sm7jxRUObRrSBFoyzwAhL49aVSg==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
 
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
@@ -7217,7 +7242,7 @@ packages:
     resolution: {integrity: sha512-REKQtAuIOKDbvNH/th1C1gWmJWCP5tRn9T/mfZGZt4Zncgko7McXK0aSKFtEInipvgbZJ2nScivvyLdiWluSMw==}
     hasBin: true
     dependencies:
-      obsidian: github.com/obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
+      obsidian: git@github.com+obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d(@codemirror/state@6.2.1)(@codemirror/view@6.19.0)
       tslib: 2.1.0
     transitivePeerDependencies:
       - '@codemirror/state'
@@ -7227,7 +7252,7 @@ packages:
   /obsidian-dataview@0.5.61:
     resolution: {integrity: sha512-6qMkdofGZOCU6dfXZtJwHXEKeVGlRBJnC85rvwlRmjBRgIn4m9MomggvF8M73jH9A+dX4282LX+NnfU0e6RUqg==}
     dependencies:
-      '@codemirror/language': github.com/lishid/cm-language/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab
+      '@codemirror/language': git@github.com+lishid/cm-language/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab
       '@codemirror/state': 6.2.1
       '@codemirror/view': 6.19.0
       emoji-regex: 10.3.0
@@ -10157,8 +10182,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  github.com/lishid/cm-language/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab:
-    resolution: {tarball: https://codeload.github.com/lishid/cm-language/tar.gz/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab}
+  git@github.com+lishid/cm-language/cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab:
+    resolution: {commit: cc6a2cc30288db6be3f879ddf0e3ef64f14ed6ab, repo: git@github.com:lishid/cm-language.git, type: git}
     name: '@codemirror/language'
     version: 6.9.2
     prepare: true
@@ -10172,9 +10197,9 @@ packages:
       style-mod: 4.1.0
     dev: true
 
-  github.com/obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
-    resolution: {tarball: https://codeload.github.com/obsidianmd/obsidian-api/tar.gz/791214a68d0dc322b88e5abce617bdf603cc2a2d}
-    id: github.com/obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d
+  git@github.com+obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d(@codemirror/state@6.2.1)(@codemirror/view@6.19.0):
+    resolution: {commit: 791214a68d0dc322b88e5abce617bdf603cc2a2d, repo: git@github.com:obsidianmd/obsidian-api.git, type: git}
+    id: git@github.com+obsidianmd/obsidian-api/791214a68d0dc322b88e5abce617bdf603cc2a2d
     name: obsidian
     version: 1.4.11
     peerDependencies:

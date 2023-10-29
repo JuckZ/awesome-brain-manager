@@ -38,7 +38,6 @@ features:
     details: 请移步到指南查看更多
 ---
 
-<AnnouncementBar />
 <style module>
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);
