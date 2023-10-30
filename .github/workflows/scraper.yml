@@ -1,17 +1,22 @@
+name: Build meilisearch indexes
+
 on:
   workflow_dispatch:
   push:
+
 env:
   HOST_URL: ${{ secrets.MEILISEARCH_HOST_URL }}
   API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
   CONFIG_FILE_PATH: scraper.config.json
+
 jobs:
   run-scraper:
     # needs: <your-deployment-job>
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Run scraper
         run: |
           docker run -t --rm \
