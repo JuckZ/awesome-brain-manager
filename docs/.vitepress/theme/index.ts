@@ -3,7 +3,6 @@ import { h, watchEffect, onMounted } from 'vue'
 import Theme from 'vitepress/theme'
 import Documate from '@documate/vue'
 import '@documate/vue/dist/style.css'
-import { docsearch } from "meilisearch-docsearch";
 import "meilisearch-docsearch/css";
 import './style.css'
 import { type EnhanceAppContext, inBrowser, useData } from 'vitepress'
@@ -20,12 +19,20 @@ export default {
       }
     })
     onMounted(() => {
-      docsearch({
-        container: "#docsearch",
-        host: "https://meilisearch-chaovee.koyeb.app",
-        apiKey: "d34c065c81456f05748bd58bd9b1719209c231d1cfe201777bd55f8c21da32d0",
-        indexUid: "abm",
-      });
+      // For SSR Compatibility https://vitepress.dev/guide/ssr-compat#ssr-compatibility
+      import('meilisearch-docsearch').then((docsearch) => {
+        docsearch.default({
+          container: "#docsearch",
+          host: "https://meilisearch-chaovee.koyeb.app",
+          apiKey: "d34c065c81456f05748bd58bd9b1719209c231d1cfe201777bd55f8c21da32d0",
+          indexUid: "abm",
+          translations: {
+            button: {},
+            modal: {}
+          }
+        });
+      })
+     
     })
   },
   Layout: () => {
@@ -33,7 +40,7 @@ export default {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
       'nav-bar-content-before': () => h(
         'span',
-        { id: 'content-before'},
+        { id: 'content-before' },
         [
           h(Documate, {
             endpoint: 'https://f965a6vcks.us.aircode.run/ask',
