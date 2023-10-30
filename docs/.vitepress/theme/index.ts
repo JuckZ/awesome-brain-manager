@@ -1,8 +1,10 @@
 // https://vitepress.dev/guide/custom-theme
-import { h, watchEffect } from 'vue'
+import { h, watchEffect, onMounted } from 'vue'
 import Theme from 'vitepress/theme'
 import Documate from '@documate/vue'
 import '@documate/vue/dist/style.css'
+import { docsearch } from "meilisearch-docsearch";
+import "meilisearch-docsearch/css";
 import './style.css'
 import { type EnhanceAppContext, inBrowser, useData } from 'vitepress'
 import MainFooter from './components/MainFooter.vue'
@@ -17,18 +19,35 @@ export default {
         document.cookie = `nf_lang=${lang.value}; expires=Mon, 1 Jan 2024 00:00:00 UTC; path=/`
       }
     })
+    onMounted(() => {
+      docsearch({
+        container: "#docsearch",
+        host: "https://meilisearch-chaovee.koyeb.app",
+        apiKey: "d34c065c81456f05748bd58bd9b1719209c231d1cfe201777bd55f8c21da32d0",
+        indexUid: "abm",
+      });
+    })
   },
   Layout: () => {
     return h(Theme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
-      'nav-bar-content-before': () => h(Documate, {
-        endpoint: 'https://f965a6vcks.us.aircode.run/ask',
-        predefinedQuestions: [
-          'What is Awesome Brain Manager?',
-          'How to use Awesome Brain Manager?',
-          "What features Awesome Brain Manager have?"
+      'nav-bar-content-before': () => h(
+        'span',
+        { id: 'content-before'},
+        [
+          h(Documate, {
+            endpoint: 'https://f965a6vcks.us.aircode.run/ask',
+            predefinedQuestions: [
+              'What is Awesome Brain Manager?',
+              'How to use Awesome Brain Manager?',
+              "What features Awesome Brain Manager have?"
+            ]
+          }),
+          h('span', {
+            id: 'docsearch'
+          }),
         ]
-      }),
+      ),
     })
   },
   enhanceApp({ app, router, siteData }: EnhanceAppContext) {

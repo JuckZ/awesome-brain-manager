@@ -105,6 +105,7 @@
     "lodash-es": "^4.17.21",
     "markdown-it": "^13.0.2",
     "markdown-it-container": "^3.0.0",
+    "meilisearch-docsearch": "^0.5.0",
     "naive-ui": "^2.34.4",
     "nanoid": "^5.0.2",
     "ora": "^7.0.1",

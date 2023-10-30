@@ -141,3 +141,12 @@
 .combobox-options .markdown-body {
   background-color: transparent;
 }
+
+#content-before {
+  display: flex;
+  justify-content: space-between;
+}
+
+#docsearch {
+  margin: auto 1em;
+}

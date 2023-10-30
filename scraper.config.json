@@ -1,0 +1,24 @@
+{
+  "index_uid": "abm",
+  "start_urls": ["https://abm.timesavior.io"],
+  "sitemap_urls": ["https://abm.timesavior.io/sitemap.xml"],
+  "stop_urls": [],
+  "selectors": {
+    "lvl0": {
+      "selector": ".docs-lvl0",
+      "global": true,
+      "default_value": "Documentation"
+    },
+    "lvl1": {
+      "selector": ".docs-lvl1",
+      "global": true,
+      "default_value": "Chapter"
+    },
+    "lvl2": ".docs-content .docs-lvl2",
+    "lvl3": ".docs-content .docs-lvl3",
+    "lvl4": ".docs-content .docs-lvl4",
+    "lvl5": ".docs-content .docs-lvl5",
+    "lvl6": ".docs-content .docs-lvl6",
+    "text": ".docs-content p, .docs-content li"
+  }
+}
