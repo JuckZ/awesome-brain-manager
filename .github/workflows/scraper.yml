@@ -1,16 +1,21 @@
-run-scraper:
+on:
+  workflow_dispatch:
+  push:
+env:
+  HOST_URL: ${{ secrets.MEILISEARCH_HOST_URL }}
+  API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
+  CONFIG_FILE_PATH: scraper.config.json
+jobs:
+  run-scraper:
     # needs: <your-deployment-job>
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@master
-    - name: Run scraper
-      env:
-        HOST_URL: ${{ secrets.MEILISEARCH_HOST_URL }}
-        API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
-        CONFIG_FILE_PATH: scraper.config.json
-      run: |
-        docker run -t --rm \
-          -e MEILISEARCH_HOST_URL=$HOST_URL \
-          -e MEILISEARCH_API_KEY=$API_KEY \
-          -v $CONFIG_FILE_PATH:/docs-scraper/$CONFIG_FILE_PATH \
-          getmeili/docs-scraper:0.12.12 pipenv run ./docs_scraper $CONFIG_FILE_PATH
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run scraper
+        run: |
+          docker run -t --rm \
+            -e MEILISEARCH_HOST_URL=$HOST_URL \
+            -e MEILISEARCH_API_KEY=$API_KEY \
+            -v $CONFIG_FILE_PATH:/docs-scraper/$CONFIG_FILE_PATH \
+            getmeili/docs-scraper:0.12.12 pipenv run ./docs_scraper $CONFIG_FILE_PATH
