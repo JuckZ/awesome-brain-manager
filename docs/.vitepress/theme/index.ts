@@ -24,7 +24,7 @@ export default {
         docsearch.default({
           container: "#docsearch",
           host: "https://meilisearch-chaovee.koyeb.app",
-          apiKey: "0f257267f4ff3326d946fbde74b275551f2766b322b72173561e4f6f38b2de81",
+          apiKey: "377c858a57c87d5748ef6d04f0e8ed611b5bb42366f9e72d2cb5e9b7ce04e8e7",
           indexUid: "abm",
           translations: {
             button: {},
