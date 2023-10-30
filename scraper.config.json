@@ -1,6 +1,6 @@
 {
   "index_uid": "abm",
-  "start_urls": ["https://abm.timesavior.io"],
+  "start_urls": ["https://abm.timesavior.io/"],
   "sitemap_urls": ["https://abm.timesavior.io/sitemap.xml"],
   "stop_urls": [],
   "selectors": {
