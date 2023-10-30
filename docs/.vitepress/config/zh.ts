@@ -1,10 +1,14 @@
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 
-export const META_URL = 'https://pinia.vuejs.org'
-export const META_TITLE = 'Pinia 🍍'
-export const META_DESCRIPTION = '值得你喜欢的 Vue Store'
-// TODO: translation of this
-// 'Intuitive, type safe, light and flexible Store for Vue'
+export const META_URL = 'https://abm.timesavior.io'
+export const META_TITLE = 'Awesome Brain Manager'
+export const META_DESCRIPTION = '旨在解决大多数人在Obsidian中遇到的所有琐碎问题'
+
+export const zhLangPack = {
+  META_URL: 'https://abm.timesavior.io',
+  META_TITLE: 'Awesome Brain Manager',
+  META_DESCRIPTION: '旨在解决大多数人在Obsidian中遇到的所有琐碎问题'
+}
 
 export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,

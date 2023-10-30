@@ -2,21 +2,13 @@
 
   <div v-if="show" class="announcement" @click="close">
     <div class="card">
-      <slot>{{ translations[site.lang] }}</slot>
+      <slot>{{ title }}</slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useData } from 'vitepress'
-import { onMount } from 'svelte'
-
-const { site } = useData()
-const translations = {
-  'en-US': 'Too many features have been introduced to update the document (15% progress). If you find that the document does not match the reality, please contact the author',
-  'zh-CN': '引入了太多功能，来不及更新文档(进度15%)，如发现文档与实际不相符，请联系作者',
-}
 
 const show = ref(false)
 defineProps<{ title: string }>()

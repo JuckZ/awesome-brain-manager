@@ -43,6 +43,8 @@ import { useData } from 'vitepress'
 const { page } = useData()
 </script>
 
+<div>{{ $t('test') }}</div>
+
 <style module>
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);

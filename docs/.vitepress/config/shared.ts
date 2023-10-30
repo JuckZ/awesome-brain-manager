@@ -1,6 +1,6 @@
 import { defineConfig, HeadConfig } from 'vitepress'
 
-export const META_IMAGE = 'https://pinia.vuejs.org/social.png'
+export const META_IMAGE = 'https://abm.timesavior.io/logo.png'
 export const isProduction =
   process.env.NETLIFY && process.env.CONTEXT === 'production'
 
@@ -30,7 +30,7 @@ export const slugify = (str: string): string =>
     .replace(/^(\d)/, '_$1')
 
 export const sharedConfig = defineConfig({
-  title: 'Pinia',
+  title: 'Awesome Brain Manager',
   appearance: 'dark',
 
   markdown: {
@@ -109,12 +109,6 @@ export const sharedConfig = defineConfig({
   themeConfig: {
     logo: '/logo.png',
     outline: [2, 3],
-
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
 
     sidebar: [
       {

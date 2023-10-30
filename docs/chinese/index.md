@@ -38,6 +38,8 @@ features:
     details: 请移步到指南查看更多
 ---
 
+<div>{{ $t('test') }}</div>
+
 <style module>
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
-import { enConfig } from './en'
 import { sharedConfig } from './shared'
+import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { genFeed } from '../genFeed'
 import { admonitionPlugin } from '../theme/plugins/admonition'
@@ -8,6 +8,9 @@ import { admonitionPlugin } from '../theme/plugins/admonition'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  rewrites: {
+    // 'chinese/:page': 'zh/:page',
+  },
   ...sharedConfig,
   title: "Awesome Brain Manager",
   description: "A plugin that tries to solve all the trivial problems most people usually encountered in obsidian. 旨在解决大多数人在Obsidian中遇到的所有琐碎问题",
@@ -22,7 +25,7 @@ export default defineConfig({
     zh: {
       label: '简体中文',
       lang: 'zh-CN',
-      link: '/zh/',
+      link: '/zh',
       description: '旨在解决大多数人在Obsidian中遇到的所有琐碎问题',
       ...zhConfig
     },

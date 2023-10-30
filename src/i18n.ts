@@ -1,4 +1,3 @@
-import { merge } from 'lodash-es';
 import i18next, { use } from 'i18next';
 // TODO 对比两个不同的实现
 import Backend from 'i18next-locize-backend';
@@ -61,24 +60,4 @@ export function useI18n(app) {
     return app;
 }
 
-class T {
-    lang: string;
-
-    all = {
-        en,
-        zh,
-    };
-
-    constructor() {
-        this.lang = localStorage.getItem('language') || 'en';
-    }
-
-    get texts(): typeof this.all.en {
-        const selectLangPack = this.all[this.lang];
-        const defaultLangPack = this.all['en'];
-        return merge(defaultLangPack, selectLangPack);
-    }
-}
-
-export default new T().texts;
 export const i18nextConst = i18next;

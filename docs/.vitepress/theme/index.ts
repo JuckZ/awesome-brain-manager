@@ -5,8 +5,10 @@ import Documate from '@documate/vue'
 import '@documate/vue/dist/style.css'
 import './style.css'
 import { type EnhanceAppContext, inBrowser, useData } from 'vitepress'
+import { i18nextConst, useI18n } from '../config/i18n'
 import MainFooter from './components/MainFooter.vue'
 import AnnouncementBar from './components/AnnouncementBar.vue'
+import LanguageChange from './components/LanguageChange.vue'
 
 export default {
   extends: Theme,
@@ -15,13 +17,16 @@ export default {
     watchEffect(() => {
       if (inBrowser) {
         document.cookie = `nf_lang=${lang.value}; expires=Mon, 1 Jan 2024 00:00:00 UTC; path=/`
+        i18nextConst.changeLanguage(lang.value)
       }
     })
   },
   Layout: () => {
+    const askAISlot = 'nav-bar-content-before'
+    const languageChangeSlot = 'nav-bar-content-after'
     return h(Theme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
-      'nav-bar-content-before': () => h(Documate, {
+      [askAISlot]: () => h(Documate, {
         endpoint: 'https://f965a6vcks.us.aircode.run/ask',
         predefinedQuestions: [
           'What is Awesome Brain Manager?',
@@ -29,35 +34,13 @@ export default {
           "What features Awesome Brain Manager have?"
         ]
       }),
+      [languageChangeSlot]: () => h(LanguageChange, {}),
     })
   },
   enhanceApp({ app, router, siteData }: EnhanceAppContext) {
+    app = useI18n(app)
     app.component('MainFooter', MainFooter)
     app.component('AnnouncementBar', AnnouncementBar)
-    router.onBeforePageLoad = (to) => {
-      if (import.meta.env.DEV) return
-      const url = 'https://api.gumengya.com/Api/UserInfo'
-      // FIXME 每次构建都会执行，而不是进入路由时执行？
-      fetch(url, {
-        method: "get",
-        mode: 'cors',
-      }).then(
-        response => response.json()
-      ).then(
-        res => {
-          if (res.code == 200) {
-            if (res.data.location.startsWith('中国') && !router.route.path.startsWith('/zh')) {
-              router.go(`/zh${router.route.path}`)
-              // zh-CN en-US
-              // siteData.value.lang = 'zh-CN'
-            }
-          } else {
-            console.log(res)
-          }
-        }
-      ).catch(
-        console.error
-      )
-    }
+    app.component('LanguageChange', LanguageChange)
   }
 }
