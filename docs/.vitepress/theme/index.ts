@@ -1,6 +1,7 @@
 // https://vitepress.dev/guide/custom-theme
 import { h, watchEffect, onMounted } from 'vue'
 import Theme from 'vitepress/theme'
+import posthog from 'posthog-js'
 import Documate from '@documate/vue'
 import '@documate/vue/dist/style.css'
 import "meilisearch-docsearch/css";
@@ -19,6 +20,7 @@ export default {
       }
     })
     onMounted(() => {
+      posthog.init('phc_NytZg6FNhRogFvdoQmuPhRLlf5WE9NjbkFvat7YcLS0', { api_host: 'https://app.posthog.com' })
       // For SSR Compatibility https://vitepress.dev/guide/ssr-compat#ssr-compatibility
       import('meilisearch-docsearch').then((docsearch) => {
         docsearch.default({
@@ -32,7 +34,7 @@ export default {
           // }
         });
       })
-     
+
     })
   },
   Layout: () => {

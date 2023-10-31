@@ -112,6 +112,7 @@
     "party-js": "^2.2.0",
     "patch-package": "^8.0.0",
     "pinia": "^2.1.6",
+    "posthog-js": "^1.87.5",
     "rrule": "^2.7.2",
     "sql.js": "^1.8.0",
     "svelte": "^4.2.0",
