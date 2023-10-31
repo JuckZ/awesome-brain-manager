@@ -23,13 +23,13 @@ export default {
       import('meilisearch-docsearch').then((docsearch) => {
         docsearch.default({
           container: "#docsearch",
-          host: "http://meili.ihave.cool/",
-          apiKey: "4053ed627643aea2a4b779e212d5e616aac81790038d887c6f08999d7a760490",
+          host: "https://meilisearch.ihave.cool",
+          apiKey: "fa7139c0f2dbef713103a0a447332930fba5ecb939f81e86b17b07235506f25d",
           indexUid: "abm",
-          translations: {
-            button: {},
-            modal: {}
-          }
+          // translations: {
+          //   button: {},
+          //   modal: {}
+          // }
         });
       })
      

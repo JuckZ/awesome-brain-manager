@@ -8,7 +8,7 @@ primary_region = "sin"
   image = "getmeili/meilisearch:v1.4.2"
 
 [env]
-  MEILI_MASTER_KEY = "xxxx"
+  MEILI_MASTER_KEY = "xxx"
 
 [experimental]
   allowed_public_ports = []
@@ -17,6 +17,7 @@ primary_region = "sin"
 [[mounts]]
   source = "meiliapp_data"
   destination = "/meili_data"
+ 
 [[services]]
   http_checks = []
   internal_port = 7700
