@@ -23,8 +23,8 @@ export default {
       import('meilisearch-docsearch').then((docsearch) => {
         docsearch.default({
           container: "#docsearch",
-          host: "https://meilisearch-chaovee.koyeb.app",
-          apiKey: "eccafd5cf92a27ba68306689120438adab054a605c3d79a7027447c6bc2ea594",
+          host: "http://meili.ihave.cool/",
+          apiKey: "4053ed627643aea2a4b779e212d5e616aac81790038d887c6f08999d7a760490",
           indexUid: "abm",
           translations: {
             button: {},

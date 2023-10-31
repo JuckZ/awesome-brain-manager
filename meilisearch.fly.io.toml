@@ -1,22 +1,22 @@
-app = "my-meilisearch"
+app = "meiliapp"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
+primary_region = "sin"
 
 [build]
-  image = "getmeili/meilisearch:v0.12.12"
+  image = "getmeili/meilisearch:v1.4.2"
 
 [env]
-  MEILI_MASTER_KEY=xxxxx
+  MEILI_MASTER_KEY = "xxxx"
 
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
 
 [[mounts]]
-  source = "disc1"
+  source = "meiliapp_data"
   destination = "/meili_data"
-
 [[services]]
   http_checks = []
   internal_port = 7700
