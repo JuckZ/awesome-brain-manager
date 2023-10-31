@@ -18,11 +18,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run scraper
-        env:
-          GITHUB_EVENT: ${{ toJson(github.event) }}
+        # env:
+          # GITHUB_EVENT: ${{ toJson(github.event) }}
+        if: contains(github.event.deployment.environment, 'Production')
         run: |
-          echo "$GITHUB_EVENT"
-          cat ${{ github.workspace }}/$CONFIG_FILE_PATH
           docker run -t --rm \
             -e MEILISEARCH_HOST_URL=$HOST_URL \
             -e MEILISEARCH_API_KEY=$API_KEY \
