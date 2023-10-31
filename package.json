@@ -117,6 +117,7 @@
     "sql.js": "^1.8.0",
     "svelte": "^4.2.0",
     "twemoji": "^14.0.2",
+    "vitepress-plugin-comment-with-giscus": "^1.1.9",
     "vue": "^3.3.4",
     "vue3-radial-progress": "^1.1.1"
   },
