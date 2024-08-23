@@ -12,11 +12,11 @@ import en from '@/locale/en';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const locizeOptions = {
-    projectId: process.env.VUE_APP_LOCIZE_PROJECTID as string,
-    apiKey: process.env.VUE_APP_LOCIZE_APIKEY as string, // YOU should not expose your apps API key to production!!!
-    version: process.env.VUE_APP_LOCIZE_VERSION as string,
-};
+// const locizeOptions = {
+//     projectId: process.env.VUE_APP_LOCIZE_PROJECTID as string,
+//     apiKey: process.env.VUE_APP_LOCIZE_APIKEY as string, // YOU should not expose your apps API key to production!!!
+//     version: process.env.VUE_APP_LOCIZE_VERSION as string,
+// };
 
 if (!isProduction) {
     // locize-lastused
@@ -44,8 +44,8 @@ export const i18nextPromise =
             debug: true,
             fallbackLng: 'en',
             saveMissing: !isProduction,
-            backend: locizeOptions,
-            locizeLastUsed: locizeOptions,
+            // backend: locizeOptions,
+            // locizeLastUsed: locizeOptions,
             resources: {
                 en: {
                     translation: en,
