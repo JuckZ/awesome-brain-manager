@@ -1,7 +1,7 @@
 {
   "index_uid": "abm",
-  "start_urls": ["https://abm.timesavior.io"],
-  "sitemap_urls": ["https://abm.timesavior.io/sitemap.xml"],
+  "start_urls": ["https://abm.ihave.cool"],
+  "sitemap_urls": ["https://abm.ihave.cool/sitemap.xml"],
   "stop_urls": [],
   "selectors": {
     "lvl0": {

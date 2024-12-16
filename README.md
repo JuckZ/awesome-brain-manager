@@ -34,7 +34,7 @@
 <details open>
   <summary><h2>📝 Documentation </h2></summary>
 
-  To check out docs, visit [English Doc](https://abm.timesavior.io) or [中文文档](https://abm.timesavior.io/zh)
+  To check out docs, visit [English Doc](https://abm.ihave.cool) or [中文文档](https://abm.ihave.cool/zh)
 
 </details>
 

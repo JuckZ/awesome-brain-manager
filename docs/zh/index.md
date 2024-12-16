@@ -15,7 +15,7 @@ hero:
       link: /zh/markdown-examples
     - theme: alt
       text: 在线案例
-      link: https://playground.abm.timesavior.io
+      link: https://playground.abm.ihave.cool
 
 features:
   - title: 🍅 番茄钟

@@ -38,7 +38,7 @@ export default defineConfig({
     },
   },
   sitemap: {
-    hostname: 'https://abm.timesavior.io'
+    hostname: 'https://abm.ihave.cool'
   },
   lastUpdated: true,
   buildEnd(siteConfig) {

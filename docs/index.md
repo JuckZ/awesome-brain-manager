@@ -15,7 +15,7 @@ hero:
       link: /markdown-examples
     - theme: alt
       text: Online demo
-      link: https://playground.abm.timesavior.io
+      link: https://playground.abm.ihave.cool
 
 features:
   - title: 🍅 Pomodoro

@@ -3,7 +3,7 @@ import { writeFileSync } from 'fs'
 import { Feed } from 'feed'
 import { createContentLoader, type SiteConfig } from 'vitepress'
 
-const baseUrl = `https://abm.timesavior.io`
+const baseUrl = `https://abm.ihave.cool`
 
 export async function genFeed(config: SiteConfig) {
   const feed = new Feed({
