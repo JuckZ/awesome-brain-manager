@@ -1,8 +1,8 @@
 import { HoverPopover, ItemView, WorkspaceLeaf } from 'obsidian';
 import { createApp } from 'vue';
 import type { Ref, App as VueApp } from 'vue';
+import { t } from 'i18next';
 import BrowserViewComp from '@/ui/BrowserView.vue';
-import t from '@/i18n';
 import type AwesomeBrainManagerPlugin from 'main';
 
 export const BROWSER_VIEW = 'browser-view';
@@ -24,7 +24,7 @@ export class BrowserView extends ItemView {
     }
 
     getDisplayText(): string {
-        return t.info.Browser;
+        return t('info.Browser');
     }
 
     getIcon(): string {

@@ -55,6 +55,7 @@ import {
     zhCN,
 } from 'naive-ui';
 import { storeToRefs } from 'pinia';
+import t, { i18nextPromise, useI18n } from '@/i18n';
 import OverView from '@/ui/OverView.vue';
 import TaskSelector from '@/ui/TaskSelector.vue';
 import ClockView from '@/ui/ClockView.vue';
@@ -134,4 +135,5 @@ const focusChangeHandle = ({ year, month, date }: { year: number; month: number;
         date,
     };
 };
+// await i18nextPromise;
 </script>

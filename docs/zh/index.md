@@ -15,7 +15,7 @@ hero:
       link: /zh/markdown-examples
     - theme: alt
       text: 在线案例
-      link: https://playground.abm.timesavior.io
+      link: https://playground.abm.ihave.cool
 
 features:
   - title: 🍅 番茄钟
@@ -38,7 +38,6 @@ features:
     details: 请移步到指南查看更多
 ---
 
-<AnnouncementBar />
 <style module>
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);

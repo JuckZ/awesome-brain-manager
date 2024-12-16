@@ -1,5 +1,6 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/data.ts
 import type { Plugin } from 'obsidian';
+import type { SettingData, SettingsData } from './model/settings';
 import { SETTINGS } from '@/settings';
 
 export class PluginDataIO {
@@ -14,7 +15,7 @@ export class PluginDataIO {
     }
 
     async load() {
-        const data = await this.plugin.loadData();
+        const data: SettingData = await this.plugin.loadData();
         if (!data) {
             return;
         }
@@ -29,7 +30,7 @@ export class PluginDataIO {
         if (!this.changed) {
             return;
         }
-        const settings = {};
+        const settings = {} as SettingsData;
         SETTINGS.forEach(setting => {
             setting.store(settings);
         });

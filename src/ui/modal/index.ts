@@ -1,8 +1,8 @@
 import { App, FuzzySuggestModal, Modal, Notice, SuggestModal, TAbstractFile } from 'obsidian';
 import { Picker } from 'emoji-mart';
 import data from '@emoji-mart/data';
+import { t } from 'i18next';
 import type { Pomodoro } from '@/schemas/spaces';
-import t from '@/i18n';
 import type AwesomeBrainManagerPlugin from 'main';
 
 interface Book {
@@ -92,7 +92,7 @@ export class PomodoroReminderModal extends Modal {
 
     onOpen() {
         const { contentEl } = this;
-        contentEl.createEl('h2', { text: t.info.done });
+        contentEl.createEl('h2', { text: t('info.done') });
         contentEl.createEl('div', {
             text: `✅ ${this.pomodoro.task}`,
         });

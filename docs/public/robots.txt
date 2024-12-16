@@ -2,4 +2,4 @@
 
 User-agent: *
 Allow: /
-Sitemap: https://abm.timesavior.io/sitemap.xml
+Sitemap: https://abm.ihave.cool/sitemap.xml

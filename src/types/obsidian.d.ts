@@ -88,13 +88,13 @@ declare module 'obsidian' {
 
     interface Workspace {
         activeLeaf: WorkspaceLeaf;
-        floatingSplit: any;
+        floatingSplit: unknown;
     }
     interface WorkspaceSplit {
-        children: any;
+        children: unknown;
     }
     interface WorkspaceTabs {
-        children: any;
+        children: unknown;
     }
 
     interface ViewRegistry {

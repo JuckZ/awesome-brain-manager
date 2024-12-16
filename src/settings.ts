@@ -1,17 +1,17 @@
 // https://github.com/uphy/obsidian-reminder/blob/master/src/settings.ts
 import { App, Plugin, PluginSettingTab } from 'obsidian';
-import { RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
+import { t } from 'i18next';
+import { DropdownSettingModelBuilder, RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
 import { toggleCursorEffects } from '@/render/CursorEffects';
 import { toggleBlast } from '@/render/Blast';
-import t from '@/i18n';
 import { EditorUtil } from '@/utils/editor';
 import type { PluginDataIO } from '@/data';
 
 class Settings {
     settings: SettingTabModel = new SettingTabModel();
 
-    cursorEffectBuilder: any;
-    powerModeBuilder: any;
+    cursorEffectBuilder: DropdownSettingModelBuilder<string>;
+    powerModeBuilder: DropdownSettingModelBuilder<string>;
 
     cursorEffect: SettingModel<string, string>;
     powerMode: SettingModel<string, string>;
@@ -47,107 +47,109 @@ class Settings {
         this.defaultMode = this.settings
             .newSettingBuilder()
             .key('defaultMode')
-            .name(t.setting.defaultMode.name)
-            .desc(t.setting.defaultMode.desc)
+            .name(t('setting.defaultMode.name'))
+            .desc(t('setting.defaultMode.desc'))
             .dropdown('preview')
             .build(new RawSerde());
 
         this.autoPin = this.settings
             .newSettingBuilder()
             .key('autoPin')
-            .name(t.setting.autoPin.name)
-            .desc(t.setting.autoPin.desc)
+            .name(t('setting.autoPin.name'))
+            .desc(t('setting.autoPin.desc'))
             .text('onMove')
             .build(new RawSerde());
 
         this.triggerDelay = this.settings
             .newSettingBuilder()
             .key('triggerDelay')
-            .name(t.setting.triggerDelay.name)
-            .desc(t.setting.triggerDelay.desc)
+            .name(t('setting.triggerDelay.name'))
+            .desc(t('setting.triggerDelay.desc'))
             .number(300)
             .build(new RawSerde());
 
         this.closeDelay = this.settings
             .newSettingBuilder()
             .key('closeDelay')
-            .name(t.setting.closeDelay.name)
-            .desc(t.setting.closeDelay.desc)
+            .name(t('setting.closeDelay.name'))
+            .desc(t('setting.closeDelay.desc'))
             .number(600)
             .build(new RawSerde());
 
         this.autoFocus = this.settings
             .newSettingBuilder()
             .key('autoFocus')
-            .name(t.setting.autoFocus.name)
-            .desc(t.setting.autoFocus.desc)
+            .name(t('setting.autoFocus.name'))
+            .desc(t('setting.autoFocus.desc'))
             .toggle(true)
             .build(new RawSerde());
 
         this.rollDown = this.settings
             .newSettingBuilder()
             .key('rollDown')
-            .name(t.setting.rollDown.name)
-            .desc(t.setting.rollDown.desc)
+            .name(t('setting.rollDown.name'))
+            .desc(t('setting.rollDown.desc'))
             .toggle(false)
             .build(new RawSerde());
 
         this.snapToEdges = this.settings
             .newSettingBuilder()
             .key('snapToEdges')
-            .name(t.setting.snapToEdges.name)
-            .desc(t.setting.snapToEdges.desc)
+            .name(t('setting.snapToEdges.name'))
+            .desc(t('setting.snapToEdges.desc'))
             .toggle(false)
             .build(new RawSerde());
 
         this.initialHeight = this.settings
             .newSettingBuilder()
             .key('initialHeight')
-            .name(t.setting.initialHeight.name)
-            .desc(t.setting.initialHeight.desc)
+            .name(t('setting.initialHeight.name'))
+            .desc(t('setting.initialHeight.desc'))
             .text('340px')
             .build(new RawSerde());
 
         this.initialWidth = this.settings
             .newSettingBuilder()
             .key('initialWidth')
-            .name(t.setting.initialWidth.name)
-            .desc(t.setting.initialWidth.desc)
+            .name(t('setting.initialWidth.name'))
+            .desc(t('setting.initialWidth.desc'))
             .text('400px')
             .build(new RawSerde());
 
         this.cursorEffectBuilder = this.settings
             .newSettingBuilder()
             .key('cursorEffect')
-            .name(t.setting.cursorEffect.name)
-            .desc(t.setting.cursorEffect.desc)
+            .name(t('setting.cursorEffect.name'))
+            .desc(t('setting.cursorEffect.desc'))
             .dropdown('none');
 
         this.showViewHeader = this.settings
             .newSettingBuilder()
             .key('showViewHeader')
-            .name(t.setting.showViewHeader.name)
-            .desc(t.setting.showViewHeader.desc)
+            .name(t('setting.showViewHeader.name'))
+            .desc(t('setting.showViewHeader.desc'))
             .toggle(true)
             .build(new RawSerde());
 
         this.imageZoom = this.settings
             .newSettingBuilder()
             .key('imageZoom')
-            .name(t.setting.imageZoom.name)
-            .desc(t.setting.imageZoom.desc)
+            .name(t('setting.imageZoom.name'))
+            .desc(t('setting.imageZoom.desc'))
             .toggle(true)
             .build(new RawSerde());
 
         this.hoverEmbeds = this.settings
             .newSettingBuilder()
             .key('hoverEmbeds')
-            .name(t.setting.hoverEmbeds.name)
-            .desc(t.setting.hoverEmbeds.desc)
+            .name(t('setting.hoverEmbeds.name'))
+            .desc(t('setting.hoverEmbeds.desc'))
             .toggle(false)
             .build(new RawSerde());
 
-        Object.keys(t.info.effects).forEach(f => this.cursorEffectBuilder.addOption(`${t.info.effects[f]}`, f));
+        Object.keys(t('info.effects', { returnObjects: true })).forEach(f =>
+            this.cursorEffectBuilder.addOption(t(`info.effects.${f}`), f),
+        );
 
         this.cursorEffect = this.cursorEffectBuilder
             .onAnyValueChanged(context => {
@@ -158,11 +160,12 @@ class Settings {
         this.powerModeBuilder = this.settings
             .newSettingBuilder()
             .key('powerMode')
-            .name(t.setting.powerMode.name)
-            .desc(t.setting.powerMode.desc)
+            .name(t('setting.powerMode.name'))
+            .desc(t('setting.powerMode.desc'))
             .dropdown('0');
-        Object.keys(t.info.powerMode).forEach(f => {
-            this.powerModeBuilder.addOption(t.info.powerMode[f], f);
+        const powerModeTranslation = t('info.powerMode', { returnObjects: true });
+        Object.keys(powerModeTranslation).forEach(f => {
+            this.powerModeBuilder.addOption(powerModeTranslation[f], f);
         });
         this.powerMode = this.powerModeBuilder
             .onAnyValueChanged(context => {
@@ -173,16 +176,16 @@ class Settings {
         this.shakeMode = this.settings
             .newSettingBuilder()
             .key('shakeMode')
-            .name(t.setting.shakeMode.name)
-            .desc(t.setting.shakeMode.desc)
+            .name(t('setting.shakeMode.name'))
+            .desc(t('setting.shakeMode.desc'))
             .toggle(false)
             .build(new RawSerde());
 
         this.expectedTime = this.settings
             .newSettingBuilder()
             .key('expectedTime')
-            .name(t.setting.expectedTime.name)
-            .desc(t.setting.expectedTime.desc)
+            .name(t('setting.expectedTime.name'))
+            .desc(t('setting.expectedTime.desc'))
             .text('25')
             .build(new RawSerde());
 
@@ -225,16 +228,16 @@ class Settings {
         this.toolbar = this.settings
             .newSettingBuilder()
             .key('toolbar')
-            .name(t.setting.toolbar.name)
-            .desc(t.setting.toolbar.desc)
+            .name(t('setting.toolbar.name'))
+            .desc(t('setting.toolbar.desc'))
             .toggle(false)
             .build(new RawSerde());
 
         this.enableTwemoji = this.settings
             .newSettingBuilder()
             .key('enableTwemoji')
-            .name(t.setting.enableTwemoji.name)
-            .desc(t.setting.enableTwemoji.desc)
+            .name(t('setting.enableTwemoji.name'))
+            .desc(t('setting.enableTwemoji.desc'))
             .toggle(false)
             .build(new RawSerde());
 
@@ -316,12 +319,12 @@ class Settings {
             .build(new RawSerde());
 
         this.settings
-            .newGroup(t.setting.title.effects)
+            .newGroup(t('setting.title.effects'))
             .addSettings(this.cursorEffect, this.clickString, this.customTag, this.powerMode, this.shakeMode);
 
-        this.settings.newGroup(t.setting.title.pomodoro).addSettings(this.expectedTime);
+        this.settings.newGroup(t('setting.title.pomodoro')).addSettings(this.expectedTime);
 
-        this.settings.newGroup(t.setting.title.tools).addSettings(this.toolbar, this.enableTwemoji);
+        this.settings.newGroup(t('setting.title.tools')).addSettings(this.toolbar, this.enableTwemoji);
 
         this.settings
             .newGroup('Notification')
@@ -336,8 +339,8 @@ class Settings {
         this.settings.newGroup('Advanced').addSettings(this.serverHost, this.debugEnable, this.version);
     }
 
-    public forEach(consumer: (setting: SettingModel<any, any>) => void) {
-        this.settings.forEach(consumer);
+    public forEach<R, E>(consumer: (setting: SettingModel<R, E>) => void) {
+        this.settings.forEach<R, E>(consumer);
     }
 }
 

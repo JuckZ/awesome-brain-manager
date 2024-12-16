@@ -15,7 +15,7 @@ hero:
       link: /markdown-examples
     - theme: alt
       text: Online demo
-      link: https://playground.abm.timesavior.io
+      link: https://playground.abm.ihave.cool
 
 features:
   - title: 🍅 Pomodoro
@@ -43,7 +43,6 @@ import { useData } from 'vitepress'
 const { page } = useData()
 </script>
 
-<AnnouncementBar />
 <style module>
 sup {
   background: linear-gradient(to right, #FF0000, #FFD700);

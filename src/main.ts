@@ -20,6 +20,8 @@ import {
 } from 'obsidian';
 import { ref } from 'vue';
 import type { Database } from 'sql.js';
+import { t } from 'i18next';
+import { i18nextPromise } from '@/i18n';
 import { HoverEditor, type HoverEditorParent } from '@/ui/popover';
 import { expandEmmetAbbreviation } from '@/utils/emmet';
 import { usePomodoroStore, useSystemStore } from '@/stores';
@@ -47,7 +49,6 @@ import { notifyNtfy } from '@/api';
 import '@/main.scss';
 import { NotifyUtil } from '@/utils/ntfy/notify';
 import { EditorUtil, EditorUtils } from '@/utils/editor';
-import t from '@/i18n';
 import { UpdateModal } from '@/ui/modal/UpdateModal';
 
 // import { initWorker } from '@/web-worker';
@@ -173,7 +174,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     getMenus() {
         return [
             {
-                title: t.menu.setBannerForCurrent,
+                title: t('menu.setBannerForCurrent'),
                 icon: 'image',
                 clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     new ImageOriginModal(this.app, this, this.app.workspace.getActiveFile()).open();
@@ -200,7 +201,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             },
             {
-                title: t.menu.planPomodoro,
+                title: t('menu.planPomodoro'),
                 icon: 'send',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     const task = EditorUtils.getCurrentSelection(editor);
@@ -208,7 +209,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             },
             {
-                title: t.menu.showPomodoro,
+                title: t('menu.showPomodoro'),
                 icon: 'alarm-clock',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
                     this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
@@ -249,7 +250,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
     async customizeFileMenu(menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf): Promise<void> {
         menu.addItem(item => {
-            item.setTitle(t.menu.setBannerForTheFolder)
+            item.setTitle(t('menu.setBannerForTheFolder'))
                 .setIcon('image')
                 .onClick(async () => {
                     new ImageOriginModal(this.app, this, file).open();
@@ -299,6 +300,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     }
 
     override async onload(): Promise<void> {
+        await i18nextPromise;
         await this.pluginDataIO.load();
         LoggerUtil.init(SETTINGS.debugEnable);
         DBUtil.init(this, () => {
@@ -452,11 +454,60 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
+    private async copyDebugInfo() {
+        const debugInfo = this.getDebugInfo(); // 获取调试信息的函数
+        await navigator.clipboard.writeText(debugInfo);
+        new Notice('调试信息已复制到剪贴板');
+    }
+
+    private getDebugInfo(): string {
+        // 这里构建你的调试信息
+        return `调试信息：\n插件版本: ${this.manifest.version}\n其他信息...`;
+    }
+
+    private sendHelpEmail() {
+        const debugInfo = this.getDebugInfo();
+        const mailtoLink = `mailto:juckz@foxmail.com?subject=求助&body=${encodeURIComponent(debugInfo)}`;
+        window.open(mailtoLink);
+    }
+
+    private openGitHubIssue(errorMessage: string): void {
+        const repoUrl = 'https://github.com/juckz/awesome-brain-manager/issues/new'; // 替换为您的 GitHub 仓库 URL
+        const issueTitle = encodeURIComponent('错误报告');
+        const body = encodeURIComponent(`## 错误详情\n\n\`\`\`\n${errorMessage}\n\`\`\``);
+        const issueUrl = `${repoUrl}?title=${issueTitle}&body=${body}`;
+        window.open(issueUrl, '_blank');
+    }
+
     private setupCommands() {
+        this.addCommand({
+            id: 'copy-debug-info',
+            name: '复制调试信息',
+            callback: () => {
+                this.copyDebugInfo();
+            },
+        });
+
+        this.addCommand({
+            id: 'send-help-email',
+            name: '发送求助邮件',
+            callback: () => {
+                this.sendHelpEmail();
+            },
+        });
+
+        this.addCommand({
+            id: 'new-issue',
+            name: '创建github issue',
+            callback: () => {
+                this.openGitHubIssue(this.getDebugInfo());
+            },
+        });
+
         this.addCommand({
             id: 'cut-line',
             icon: 'scissors',
-            name: t.command['cut-line'],
+            name: t('command.cut-line'),
             callback: () => {
                 const editor = this.app.workspace.activeEditor?.editor;
                 if (editor) {
@@ -467,7 +518,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.addCommand({
             id: 'plan-pomodoro',
             icon: 'scissors',
-            name: t.command['plan-pomodoro'],
+            name: t('command.plan-pomodoro'),
             callback: () => {
                 const editor = this.app.workspace.activeEditor?.editor;
                 if (editor) {
@@ -478,7 +529,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
         this.addCommand({
             id: 'check-in',
-            name: t.command['check-in'],
+            name: t('command.check-in'),
             callback: () => {
                 this.habitCheckIn();
             },
@@ -486,7 +537,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'remove-check-in',
-            name: t.command['remove-check-in'],
+            name: t('command.remove-check-in'),
             callback: () => {
                 this.removeHabitCheckIn();
             },
@@ -494,7 +545,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'query-openai',
-            name: t.command['query-openai'],
+            name: t('command.query-openai'),
             hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
             // 带条件的编辑器指令
             // editorCheckCallback: (checking: boolean, editor: Editor, view: MarkdownView) => {}
@@ -511,7 +562,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
 
         this.addCommand({
             id: 'open-emoji-picker',
-            name: t.command['open-emoji-picker'],
+            name: t('command.open-emoji-picker'),
             // 带条件的指令
             checkCallback: (checking: boolean) => {
                 const activeFile = this.app.workspace.getActiveFile();

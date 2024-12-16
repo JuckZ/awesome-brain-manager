@@ -1,0 +1,29 @@
+name: Build meilisearch indexes
+
+on:
+  workflow_dispatch:
+  deployment:
+
+env:
+  HOST_URL: ${{ secrets.MEILISEARCH_HOST_URL }}
+  API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
+  CONFIG_FILE_PATH: scraper.config.json
+
+jobs:
+  run-scraper:
+    # needs: <your-deployment-job>
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run scraper
+        # env:
+          # GITHUB_EVENT: ${{ toJson(github.event) }}
+        if: contains(github.event.deployment.environment, 'Production')
+        run: |
+          docker run -t --rm \
+            -e MEILISEARCH_HOST_URL=$HOST_URL \
+            -e MEILISEARCH_API_KEY=$API_KEY \
+            -v ${{ github.workspace }}/$CONFIG_FILE_PATH:/docs-scraper/$CONFIG_FILE_PATH \
+            getmeili/docs-scraper:v0.12.12 pipenv run ./docs_scraper $CONFIG_FILE_PATH

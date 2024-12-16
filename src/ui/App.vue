@@ -10,7 +10,7 @@
             <NSpace vertical>
                 <NNotificationProvider :max="3">
                     <Teleport to="body" disable="false">
-                        <Toolbar />
+                        <ToolBar />
                     </Teleport>
                     <Teleport to="body" disable="false">
                         <NModal
@@ -51,7 +51,7 @@ import {
 import { onUpdated, ref, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSystemStore } from '@/stores';
-import Toolbar from '@/ui/Toolbar.vue';
+import ToolBar from '@/ui/ToolBar.vue';
 import { LoggerUtil } from '@/utils/logger';
 
 let theme = ref(darkTheme);

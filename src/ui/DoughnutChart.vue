@@ -6,10 +6,10 @@
 
 <script setup lang="tsx">
 import { onMounted, onUpdated, ref, toRefs } from 'vue';
-import Chart from 'chart.js/auto';
+import ChartJS from 'chart.js/auto';
 import type { ChartItem } from 'chart.js/auto';
+import { t } from 'i18next';
 import type { Pomodoro } from '@/schemas/spaces';
-import t from '@/i18n';
 
 const props = defineProps<{
     allPomodoro: Pomodoro[];
@@ -20,10 +20,10 @@ const doughnutChart = ref(null);
 let labels: string[] = [];
 let dateSet: number[] = [];
 const setDataSet = (raw: Pomodoro[]) => {
-    const res = { [t.info.noTag]: 0 };
+    const res = { [t('info.noTag')]: 0 };
     raw.forEach(pomodoro => {
         if (!pomodoro.tags) {
-            res[t.info.noTag]++;
+            res[t('info.noTag')]++;
         } else {
             pomodoro.tags?.split(',').forEach(tag => {
                 if (res[tag] == undefined) {
@@ -46,7 +46,7 @@ onMounted(async () => {
         labels,
         datasets: [
             {
-                label: t.info.taskType,
+                label: t('info.taskType'),
                 backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(54, 162, 235)',
@@ -88,7 +88,7 @@ onMounted(async () => {
         },
     };
 
-    chart = new Chart(doughnutChart.value as unknown as ChartItem, {
+    chart = new ChartJS(doughnutChart.value as unknown as ChartItem, {
         type: 'doughnut',
         options: options,
         data: data,

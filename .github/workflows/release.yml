@@ -1,8 +1,10 @@
 name: Build obsidian plugin
 
 on:
-  workflow_dispatch:
   push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 env:
   PLUGIN_NAME: awesome-brain-manager

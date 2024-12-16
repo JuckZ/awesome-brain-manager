@@ -3,6 +3,7 @@ import { enConfig } from './en'
 import { sharedConfig } from './shared'
 import { zhConfig } from './zh'
 import { genFeed } from '../genFeed'
+import { admonitionPlugin } from '../theme/plugins/admonition'
 // import { genSitemap } from '../genSitemap'
 
 // https://vitepress.dev/reference/site-config
@@ -31,9 +32,13 @@ export default defineConfig({
     //   link: 'https://abm-zh-tw.netlify.app',
     // }
   },
-  markdown: {},
+  markdown: {
+    config: (md) => {
+        md.use(admonitionPlugin)
+    },
+  },
   sitemap: {
-    hostname: 'https://abm.timesavior.io'
+    hostname: 'https://abm.ihave.cool'
   },
   lastUpdated: true,
   buildEnd(siteConfig) {

@@ -2,7 +2,11 @@
     <div v-show="isShow" id="abmToolbar" :style="getComputedStyle()">
         <n-tooltip placement="bottom" trigger="hover">
             <template #trigger>
-                <n-icon size="24" :component="OpenAI" @click="clickHandle(ServiceNames.OpenAI, currentState.selection)">
+                <n-icon
+                    size="24"
+                    :component="OpenAIIcon"
+                    @click="clickHandle(ServiceNames.OpenAI, currentState.selection)"
+                >
                 </n-icon>
             </template>
             <span> 问问openAI </span>
@@ -10,7 +14,7 @@
 
         <n-tooltip placement="bottom" trigger="hover">
             <template #trigger>
-                <n-icon size="24" :component="Bing" @click="clickHandle(ServiceNames.Bing, currentState.selection)">
+                <n-icon size="24" :component="BingIcon" @click="clickHandle(ServiceNames.Bing, currentState.selection)">
                 </n-icon>
             </template>
             <span> 问问bing chat </span>
@@ -20,7 +24,7 @@
             <template #trigger>
                 <n-icon
                     size="24"
-                    :component="ChatGPT"
+                    :component="ChatGPTIcon"
                     @click="clickHandle(ServiceNames.ChatGPT, currentState.selection)"
                 >
                 </n-icon>
@@ -32,7 +36,7 @@
             <template #trigger>
                 <n-icon
                     size="24"
-                    :component="ScanImage"
+                    :component="ScanImageIcon"
                     @click="clickHandle(ServiceNames.GenImageWithChatGPT, currentState.selection)"
                 >
                 </n-icon>
@@ -42,7 +46,11 @@
 
         <n-tooltip placement="bottom" trigger="hover">
             <template #trigger>
-                <n-icon size="24" :component="Baidu" @click="clickHandle(ServiceNames.Baidu, currentState.selection)">
+                <n-icon
+                    size="24"
+                    :component="BaiduIcon"
+                    @click="clickHandle(ServiceNames.Baidu, currentState.selection)"
+                >
                 </n-icon>
             </template>
             <span> 百度一下 </span>
@@ -50,7 +58,11 @@
 
         <n-tooltip placement="bottom" trigger="hover">
             <template #trigger>
-                <n-icon size="24" :component="Google" @click="clickHandle(ServiceNames.Google, currentState.selection)">
+                <n-icon
+                    size="24"
+                    :component="GoogleIcon"
+                    @click="clickHandle(ServiceNames.Google, currentState.selection)"
+                >
                 </n-icon>
             </template>
             <span> Google </span>
@@ -67,12 +79,12 @@ import { useEditorStore } from '@/stores';
 import { eventTypes } from '@/types/types';
 import { LoggerUtil } from '@/utils/logger';
 import { getNumberFromStr } from '@/utils/common';
-import OpenAI from '@/ui/components/icon/OpenAI.vue';
-import Baidu from '@/ui/components/icon/Baidu.vue';
-import Bing from '@/ui/components/icon/Bing.vue';
-import ChatGPT from '@/ui/components/icon/ChatGPT.vue';
-import Google from '@/ui/components/icon/Google.vue';
-import ScanImage from '@/ui/components/icon/ScanImage.vue';
+import OpenAI from '@/ui/components/icon/OpenAIIcon.vue';
+import Baidu from '@/ui/components/icon/BaiduIcon.vue';
+import Bing from '@/ui/components/icon/BingIcon.vue';
+import ChatGPT from '@/ui/components/icon/ChatGPTIcon.vue';
+import Google from '@/ui/components/icon/GoogleIcon.vue';
+import ScanImageIcon from '@/ui/components/icon/ScanImageIcon.vue';
 
 import { customAvatar, customContent, customDescription, customTitle } from '@/ui/CustomContent';
 
