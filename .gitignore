@@ -92,6 +92,7 @@ stats.html
 docs/.vitepress/cache
 docs/.vitepress/dist
 /test-results/
+test-report.junit.xml
 /playwright-report/
 /playwright/.cache/
 
