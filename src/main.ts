@@ -454,7 +454,56 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         });
     }
 
+    private async copyDebugInfo() {
+        const debugInfo = this.getDebugInfo(); // 获取调试信息的函数
+        await navigator.clipboard.writeText(debugInfo);
+        new Notice('调试信息已复制到剪贴板');
+    }
+
+    private getDebugInfo(): string {
+        // 这里构建你的调试信息
+        return `调试信息：\n插件版本: ${this.manifest.version}\n其他信息...`;
+    }
+
+    private sendHelpEmail() {
+        const debugInfo = this.getDebugInfo();
+        const mailtoLink = `mailto:juckz@foxmail.com?subject=求助&body=${encodeURIComponent(debugInfo)}`;
+        window.open(mailtoLink);
+    }
+
+    private openGitHubIssue(errorMessage: string): void {
+        const repoUrl = 'https://github.com/juckz/awesome-brain-manager/issues/new'; // 替换为您的 GitHub 仓库 URL
+        const issueTitle = encodeURIComponent('错误报告');
+        const body = encodeURIComponent(`## 错误详情\n\n\`\`\`\n${errorMessage}\n\`\`\``);
+        const issueUrl = `${repoUrl}?title=${issueTitle}&body=${body}`;
+        window.open(issueUrl, '_blank');
+    }
+
     private setupCommands() {
+        this.addCommand({
+            id: 'copy-debug-info',
+            name: '复制调试信息',
+            callback: () => {
+                this.copyDebugInfo();
+            },
+        });
+
+        this.addCommand({
+            id: 'send-help-email',
+            name: '发送求助邮件',
+            callback: () => {
+                this.sendHelpEmail();
+            },
+        });
+
+        this.addCommand({
+            id: 'new-issue',
+            name: '创建github issue',
+            callback: () => {
+                this.openGitHubIssue(this.getDebugInfo());
+            },
+        });
+
         this.addCommand({
             id: 'cut-line',
             icon: 'scissors',
