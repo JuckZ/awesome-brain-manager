@@ -1,3 +1,29 @@
+# [1.12.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.11.0...1.12.0) (2024-12-17)
+
+
+### Bug Fixes
+
+* again ([63d728e](https://github.com/JuckZ/awesome-brain-manager/commit/63d728e8c30594bced73cf11a8d8a19a95ee5f16))
+* config ([22e9d35](https://github.com/JuckZ/awesome-brain-manager/commit/22e9d3507dda7ca4811b93b0c835c99c8dca36f0))
+* docker needs absolute path ([73712c3](https://github.com/JuckZ/awesome-brain-manager/commit/73712c3e2a8ff0ed20e9db5dc9c285db7697ba96))
+* for SSR Compatibility ([07c6dd1](https://github.com/JuckZ/awesome-brain-manager/commit/07c6dd1d810396c0998035c517fc0e028d61fd7a))
+* pnpm version ([f3faafb](https://github.com/JuckZ/awesome-brain-manager/commit/f3faafbe58ae14f5f880f77ac636a9567a2f0aaf))
+* pnpm: command not found ([5ce923e](https://github.com/JuckZ/awesome-brain-manager/commit/5ce923e783c3fa7b5256a6c1a3b4b090a6e8d775))
+* redeploy make the apiKey changed ([3f002a6](https://github.com/JuckZ/awesome-brain-manager/commit/3f002a6d0367c72868407b255424d9dc82d03181))
+* search apiKey ([51f68a9](https://github.com/JuckZ/awesome-brain-manager/commit/51f68a94f8bec5660dead8c49dd347503a637d59))
+* update lock ([655b84d](https://github.com/JuckZ/awesome-brain-manager/commit/655b84d8a18b0af7968edafd35711d247b64743a))
+* 拼写错误 ([2a8ca21](https://github.com/JuckZ/awesome-brain-manager/commit/2a8ca219785233f42371e801e69210bad61136ac))
+
+
+### Features
+
+* add vitepress plugin ([948f87a](https://github.com/JuckZ/awesome-brain-manager/commit/948f87ac63cfbfa2b56575a23e616ca1069da9db))
+* i18next ([72998df](https://github.com/JuckZ/awesome-brain-manager/commit/72998dfa2c0a8504e86838fbbc2bc01e2f996a88))
+* integrate giscus ([522578f](https://github.com/JuckZ/awesome-brain-manager/commit/522578f48bf595c9356e0a1e516a0e253022e107))
+* integrate meilisearch ([546a993](https://github.com/JuckZ/awesome-brain-manager/commit/546a99341afe53d630edb78757d913d58215a746))
+* update test ([3d0830d](https://github.com/JuckZ/awesome-brain-manager/commit/3d0830de7a22e5d1fd316678418fc5f472bbdc41))
+* 测试更新 ([11887f3](https://github.com/JuckZ/awesome-brain-manager/commit/11887f33d032bb3ec48c5880201c23112b51f030))
+
 # [1.11.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.10.0...1.11.0) (2023-10-25)
 
 
