@@ -1,9 +1,9 @@
 {
   // "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*.ts", "types.d.ts",],
+  "include": ["src", "types.d.ts",],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     // "inlineSourceMap": true,
     // "inlineSources": true,
     "module": "ESNext",
@@ -39,7 +39,7 @@
       "svelte"
     ],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
   }
 }
