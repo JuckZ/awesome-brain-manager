@@ -9,16 +9,27 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 18.14.x
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      id: pnpm-install
+
     - name: Install dependencies
       run: pnpm install
+
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
+
     - name: Run Playwright tests
       run: pnpm exec playwright test
+      
     - uses: actions/upload-artifact@v3
       if: always()
       with:
