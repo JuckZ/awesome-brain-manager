@@ -50,8 +50,8 @@ import {
 } from 'naive-ui';
 import { onUpdated, ref, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
+import ToolBar from '@/ui/Toolbar.vue';
 import { useSystemStore } from '@/stores';
-import ToolBar from '@/ui/ToolBar.vue';
 import { LoggerUtil } from '@/utils/logger';
 
 let theme = ref(darkTheme);

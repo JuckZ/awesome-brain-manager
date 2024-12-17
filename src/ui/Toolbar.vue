@@ -79,11 +79,11 @@ import { useEditorStore } from '@/stores';
 import { eventTypes } from '@/types/types';
 import { LoggerUtil } from '@/utils/logger';
 import { getNumberFromStr } from '@/utils/common';
-import OpenAI from '@/ui/components/icon/OpenAIIcon.vue';
-import Baidu from '@/ui/components/icon/BaiduIcon.vue';
-import Bing from '@/ui/components/icon/BingIcon.vue';
-import ChatGPT from '@/ui/components/icon/ChatGPTIcon.vue';
-import Google from '@/ui/components/icon/GoogleIcon.vue';
+import OpenAIIcon from '@/ui/components/icon/OpenAIIcon.vue';
+import BaiduIcon from '@/ui/components/icon/BaiduIcon.vue';
+import BingIcon from '@/ui/components/icon/BingIcon.vue';
+import ChatGPTIcon from '@/ui/components/icon/ChatGPTIcon.vue';
+import GoogleIcon from '@/ui/components/icon/GoogleIcon.vue';
 import ScanImageIcon from '@/ui/components/icon/ScanImageIcon.vue';
 
 import { customAvatar, customContent, customDescription, customTitle } from '@/ui/CustomContent';
@@ -170,7 +170,8 @@ const getComputedStyle = () => {
     const getLeft = () => {
         const activeDoc = activeDocument.querySelector('.workspace-leaf.mod-active .cm-content');
 
-        if (activeDoc.innerWidth < 250) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((activeDoc as any)?.innerWidth < 250) {
             return getElementViewLeft(activeLine);
         } else {
             // FIXME hack value
