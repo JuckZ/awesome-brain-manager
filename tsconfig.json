@@ -1,9 +1,9 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
+  // "extends": "@tsconfig/svelte/tsconfig.json",
   "include": ["src/**/*.ts", "types.d.ts",],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "baseUrl": "./src/",
+    "baseUrl": "./",
     // "inlineSourceMap": true,
     // "inlineSources": true,
     "module": "ESNext",
@@ -24,8 +24,8 @@
     "importsNotUsedAsValues": "remove",
     "importHelpers": true,
     "isolatedModules": true,
-	"skipLibCheck": true,
-	"strictNullChecks": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
     "lib": [
       "DOM",
       "ES5",
@@ -35,11 +35,11 @@
     ],
     "types": [
       "node",
-	  "vite/client",
+	    "vite/client",
       "svelte"
     ],
-	"paths": {
-		"@/*": ["./*"],
-	}
+    "paths": {
+      "@/*": ["src/*"]
+    },
   }
 }
