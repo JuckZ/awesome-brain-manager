@@ -38,10 +38,10 @@ export default defineConfig(({ command, mode }) => {
                         return entryName;
                     }
                 },
-                formats: ['umd'],
+                formats: ['es'],
             },
-            minify: prod ? true : false,
-            sourcemap: prod ? false : true,
+            minify: prod,
+            sourcemap: !prod,
             rollupOptions: {
                 plugins: [
                     nodeResolve({
