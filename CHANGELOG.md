@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/JuckZ/awesome-brain-manager/compare/1.12.0...1.12.1) (2024-12-17)
+
+
+### Bug Fixes
+
+* test release ([141e570](https://github.com/JuckZ/awesome-brain-manager/commit/141e570f652ac90140128b90dd2483ed238bc0de))
+
 # [1.12.0](https://github.com/JuckZ/awesome-brain-manager/compare/1.11.0...1.12.0) (2024-12-17)
 
 

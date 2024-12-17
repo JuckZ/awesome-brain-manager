@@ -1,7 +1,7 @@
 {
 	"id": "awesome-brain-manager",
 	"name": "Awesome Brain Manager",
-	"version": "1.12.0",
+	"version": "1.12.1",
 	"minAppVersion": "0.15.0",
 	"description": "A toolkit tries to solve all the trivial problems most people usually encountered in obsidian.",
 	"author": "Juck",
