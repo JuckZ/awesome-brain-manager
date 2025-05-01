@@ -427,7 +427,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     };
 
     async setRandomBanner(path: TAbstractFile | null, origin: string): Promise<void> {
-        // const ignorePath = ['Journal', 'Reading', 'MyObsidian', 'Archive'];
+        // const ignorePath = ['Journal', 'Reading', 'Obsidian', 'Archive'];
         const ignorePath = [];
         // FIXME 找到并使用更高性能api this.app.vault.getMarkdownFiles();
         const allFilePathNeededHandle: TFile[] = await getAllFiles(this.app, path, ignorePath, ['md'], []);
