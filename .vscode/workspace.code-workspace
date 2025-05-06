@@ -1,0 +1,61 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../"
+    },
+    {
+      "name": "xxx",
+      "path": "../apps/xxx"
+    },
+    {
+      "name": "yyy",
+      "path": "../apps/yyy"
+    }
+  ],
+  "settings": {
+    // 这里的设置会应用到所有项目，作为基础配置
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    // "typescript.tsdk": "根目录/node_modules/typescript/lib",
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto"
+      }
+    ],
+    "files.exclude": {
+      "**/miniprogram_npm/": true,
+      "**/node_modules/": true,
+      "**/packages/": true,
+      "**/apps/": true
+    },
+    // 其他共享设置...
+    // Jest 不会在整个 monorepo 的任何地方自动执行
+    "jest.autoEnable": false,
+    // 禁用 Jest 在某些工作区文件夹中自动执行
+    "jest.disabledWorkspaceFolders": [
+      "ROOT",
+      "@repo/ui"
+    ],
+    "monorepoWorkspace.folder.custom": [
+      {
+        "regex": "apps/xxx",
+        "prefix": "🔥"
+      },
+      {
+        "regex": "apps/yyy",
+        "prefix": "📚"
+      }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "folke.vscode-monorepo-workspace",
+      "dbaeumer.vscode-eslint",
+      "orta.vscode-jest",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "orta.vscode-jest"
+    ]
+  }
+}
