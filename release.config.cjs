@@ -17,7 +17,7 @@ const config = {
             '@semantic-release/exec',
             {
                 publishCmd:
-                    'cp manifest.json versions.json dest && cp dest awesome-brain-manager -r && zip release.zip -r awesome-brain-manager',
+                    'cp manifest.json versions.json dist && cp dist awesome-brain-manager -r && zip release.zip -r awesome-brain-manager',
             },
         ],
         [
@@ -36,8 +36,8 @@ const config = {
                     { path: 'License', label: 'License' },
                     { path: 'manifest.json', label: 'manifest.json' },
                     { path: 'versions.json', label: 'versions.json' },
-                    { path: 'dest/styles.css', label: 'styles.css' },
-                    { path: 'dest/main.js', label: 'main.js' },
+                    { path: 'dist/styles.css', label: 'styles.css' },
+                    { path: 'dist/main.js', label: 'main.js' },
                     { path: 'release.zip', label: 'release.zip' },
                 ],
             },

@@ -61,7 +61,7 @@ jobs:
         if: ${{ steps.get-branch-name.outputs.BRANCH_NAME == 'master' }}
         run: |
           pnpm run build
-          cp manifest.json dest
+          cp manifest.json dist
 
       - name: Release
         if: ${{ steps.get-branch-name.outputs.BRANCH_NAME == 'master' }}

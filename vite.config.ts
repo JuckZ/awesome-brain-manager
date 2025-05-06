@@ -21,7 +21,7 @@ export default defineConfig(({ command, mode }) => {
     // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
     const env = loadEnv(mode, process.cwd(), 'VITE_');
     const prod = process.argv[3] !== '-w';
-    const dir = process.env.OUTDIR ? process.env.OUTDIR : env['VITE_OUTDIR'] ? env['VITE_OUTDIR'] : 'dest';
+    const dir = process.env.OUTDIR ? process.env.OUTDIR : env['VITE_OUTDIR'] ? env['VITE_OUTDIR'] : 'dist';
 
     return {
         build: {
@@ -98,7 +98,7 @@ export default defineConfig(({ command, mode }) => {
             //     targets: [
             //         {
             //             src: '.hotreload',
-            //             dest: '',
+            //             dist: '',
             //         },
             //     ],
             // }),
