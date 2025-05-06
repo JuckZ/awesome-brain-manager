@@ -1,0 +1,214 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
+{
+  "name": "Existing Docker Compose (Extend)",
+
+  // Update the 'dockerComposeFile' list if you have more compose files or use different names.
+  // The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.yml"
+  ],
+  // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+  // "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  // "runArgs": [
+  //   "--env-file",
+  //   ".devcontainer/devcontainer.env"
+  // ],
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  // "build": {
+  //   "dockerfile": "Dockerfile"
+  // },
+
+  // The 'service' property is the name of the service for the container that VS Code should
+  // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+  "service": "awesomebrainmanager",
+  "mounts": [
+    "source=projectname-bashhistory,target=/commandhistory,type=volume",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/host-home-folder,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/app-data,target=/data,type=bind,consistency=cached",
+    "source=/local/source/path/goes/here,target=/target/path/in/container/goes/here,type=bind,consistency=cached",
+    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
+
+  // The optional 'workspaceFolder' property is the path VS Code should open by default when
+  // connected. This is typically a file mount in .devcontainer/docker-compose.yml
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // "workspaceMount": "source=${localWorkspaceFolder}/sub-folder,target=/workspace,type=bind",
+  "containerEnv": {
+    "MY_CONTAINER_VAR": "some-value-here",
+    "MY_CONTAINER_VAR2": "${localEnv:SOME_LOCAL_VAR}"
+  },
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/some/other/path",
+    "MY_REMOTE_VARIABLE": "some-other-value-here",
+    "MY_REMOTE_VARIABLE2": "${localEnv:SOME_LOCAL_VAR}"
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {
+      "autoPull": true,
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true,
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": true,
+      "version": "lts",
+      "pnpmVersion": "latest",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/powershell:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": true,
+      "installJupyterlab": false,
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers-extra/features/http-server:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-extra/features/starship:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-extra/features/turborepo-npm:1": {
+      "version": "latest"
+    }
+  },
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    3333,
+    2333
+  ],
+  // "portsAttributes": {
+  //   "3000": {
+  //     "label": "Application",
+  //     "onAutoForward": "notify"
+  //   }
+  // },
+  // "appPort": [
+  //   3333,
+  //   "8921:5000"
+  // ],
+
+  // Uncomment the next line if you want start specific services in your Docker Compose config.
+  // "runServices": [],
+
+  // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+  // "shutdownAction": "none",
+  "shutdownAction": "stopCompose",
+  // Uncomment the next line to run commands after the container is created.
+  // "postCreateCommand": "pnpm install",
+  // "postCreateCommand": "sudo chown node node_modules",
+
+  // Configure tool-specific properties.
+  "customizations": {
+    "codespaces": {},
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "1yib.rust-bundle",
+        "alefragnani.project-manager",
+        "amodio.tsl-problem-matcher",
+        "antfu.browse-lite",
+        "antfu.goto-alias",
+        "antfu.iconify",
+        "antfu.pnpm-catalog-lens",
+        "antfu.unocss",
+        "antfu.vite",
+        "astro-build.astro-vscode",
+        "christian-kohler.path-intellisense",
+        "crazyurus.miniprogram-vscode-extension",
+        "cuixiaorui.cvim",
+        "dart-code.dart-code",
+        "dart-code.flutter",
+        "dbaeumer.vscode-eslint",
+        "dotjoshjohnson.xml",
+        "dsznajder.es7-react-js-snippets",
+        "dustypomerleau.rust-syntax",
+        "eamodio.gitlens",
+        "ecmel.vscode-html-css",
+        "esbenp.prettier-vscode",
+        "fabiospampinato.vscode-open-in-github",
+        "fill-labs.dependi",
+        "formulahendry.code-runner",
+        "foxundermoon.shell-format",
+        "github.codespaces",
+        "github.copilot",
+        "github.copilot-chat",
+        "github.remotehub",
+        "github.vscode-pull-request-github",
+        "gitpod.gitpod-desktop",
+        "gruntfuggly.todo-tree",
+        "henriquebruno.github-repository-manager",
+        "joshbolduc.commitlint",
+        "justjavac.vscode-deno-extensionpack",
+        "juckz.timesavior",
+        "leetcode.vscode-leetcode",
+        "lokalise.i18n-ally",
+        "mgmcdermott.vscode-language-babel",
+        "mikestead.dotenv",
+        "mongodb.mongodb-vscode",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-playwright.playwright",
+        "ms-pyright.pyright",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode-remote.remote-ssh",
+        "ms-vscode-remote.remote-ssh-edit",
+        "ms-vscode.azure-repos",
+        "ms-vscode.powershell",
+        "ms-vscode.remote-explorer",
+        "ms-vscode.remote-repositories",
+        "ms-vscode.remote-server",
+        "ms-vsliveshare.vsliveshare",
+        "naumovs.color-highlight",
+        "overtrue.miniapp-helper",
+        "pflannery.vscode-versionlens",
+        "qiu8310.minapp-vscode",
+        "redhat.vscode-yaml",
+        "richie5um2.vscode-sort-json",
+        "rooveterinaryinc.roo-cline",
+        "rust-lang.rust-analyzer",
+        "saoudrizwan.claude-dev",
+        "sleistner.vscode-fileutils",
+        "streetsidesoftware.code-spell-checker",
+        "stylelint.vscode-stylelint",
+        "sumneko.lua",
+        "tamasfe.even-better-toml",
+        "thqby.vscode-autohotkey2-lsp",
+        "tobermory.es6-string-html",
+        "usernamehw.errorlens",
+        "vintharas.learn-vim",
+        "vitest.explorer",
+        "vscodevim.vim",
+        "vue.volar",
+        "wakatime.vscode-wakatime",
+        "xabikos.javascriptsnippets",
+        "xuanzai.element-plus-vue",
+        "yoavbls.pretty-ts-errors",
+        "yrm.type-challenges",
+        "yzhang.markdown-all-in-one",
+        "zero-plusplus.vscode-autohotkey-debug"
+      ],
+      "settings": {
+        // "java.home": "/docker-java-home"
+      }
+    }
+  },
+
+  // Connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+  "remoteUser": "root"
+}

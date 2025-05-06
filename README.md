@@ -5,6 +5,11 @@
 </p>
 
 <p align="center">
+  <!-- Open in Dev Containers -->
+  <a href="https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/JuckZ/awesome-brain-manager/tree/develop">
+    <img src="https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue">
+  </a>
+
   <a href="https://github.com/semantic-release/semantic-release">
     <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
   </a>
