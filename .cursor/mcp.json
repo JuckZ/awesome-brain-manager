@@ -1,0 +1,192 @@
+{
+  "mcpServers": {
+    "lark-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@larksuiteoapi/lark-mcp",
+        "mcp",
+        "-a",
+        "<your_app_id>",
+        "-s",
+        "<your_app_secret>",
+        "-u",
+        "<your_user_token>"
+      ]
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "context7-local": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "@21st-dev/magic": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@21st-dev/magic@latest",
+        "API_KEY=\"your-api-key\""
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "markitdown": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "markitdown-mcp:latest"
+      ]
+    },
+    "mermaid": {
+      "command": "npx",
+      "args": [
+        "-y @peng-shawn/mermaid-mcp-server"
+      ]
+    },
+    "mcp_excalidraw": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "excalidraw-mcp"
+      ]
+    },
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=<your-figma-api-key>",
+        "--stdio"
+      ],
+      "env": {
+        "FIGMA_API_KEY": "<your-figma-api-key>",
+        "PORT": 3334
+      }
+    },
+    "jetbrains": {
+      "command": "npx",
+      "args": [
+        "@jetbrains/mcp-proxy"
+      ],
+      "env": {
+        "LOG_ENABLED": "true"
+      }
+    },
+    "obsidian": {
+      "command": "cmd /c npx",
+      "args": [
+        "-y",
+        "obsidian-mcp",
+        "C:\\Users\\ajuck\\Projects\\one-blog"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "json": {
+      "command": "npm exec",
+      "args": [
+        "@gongrzhe/server-json-mcp@1.0.3"
+      ]
+    },
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@kazuph/mcp-fetch"
+      ]
+    },
+    "mcp_server_mysql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benborla29/mcp-server-mysql"
+      ],
+      "env": {
+        "MYSQL_HOST": "xxx",
+        "MYSQL_PORT": "xx",
+        "MYSQL_USER": "xx",
+        "MYSQL_PASS": "xxx",
+        "MYSQL_DB": "xxx"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
+    "git": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--mount",
+        "type=bind,src=C:\\Users\\ajuck\\Projects\\awesome-brain-manager,dst=/projects/awesome-brain-manager",
+        "mcp/git"
+      ]
+    },
+    "everything": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everything"
+      ]
+    },
+    "filesystem-docker": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--mount",
+        "type=bind,src=C:\\Users\\ajuck\\Projects\\awesome-brain-manager\\mcp,dst=/projects/mcp",
+        "mcp/filesystem",
+        "/projects"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\ajuck\\Projects\\awesome-brain-manager\\mcp"
+      ]
+    },
+    "weather": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\ajuck\\Projects\\awesome-brain-manager\\mcp\\weather-server-typescript\\build\\index.js"
+      ]
+    },
+    "openapi-supplier-api": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "openapi-mcp-server",
+        "C:\\Users\\ajuck\\Projects\\awesome-brain-manager\\openapi\\teashop_supplier\\api-docs.json"
+      ]
+    }
+  }
+}

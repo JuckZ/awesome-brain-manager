@@ -1,0 +1,14 @@
+# 注释行，以下为配置正文，每一行代表一个配置。
+# 一个路径规则后边，需要有一个或多个Owner
+
+# 用户 A@example.com,B@example.com 作为所有文件的CodeOwner
+** @A@example.com @B@example.com
+
+# 用户 C@example.com 作为所有java文件的CodeOwner
+**.java @C@example.com
+
+# 用户 D@example.com、E@example.com 作为force-api目录下文件的CodeOwner
+force-api/** @D@example.com @E@example.com
+
+# 用户 F@example.com 作为force-base/src/main/java目录下文件的CodeOwner
+force-base/src/main/java/** @F@example.com

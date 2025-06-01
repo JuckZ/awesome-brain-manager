@@ -1,6 +1,9 @@
 # vscode
 .vscode 
 
+# cursor
+.cursor
+
 # Intellij
 *.iml
 .idea
