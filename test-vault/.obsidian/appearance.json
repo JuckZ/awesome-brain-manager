@@ -1,1 +1,7 @@
-{}
+{
+  "enabledCssSnippets": [
+    "awesome-brain-manager"
+  ],
+  "accentColor": "",
+  "cssTheme": "AwesomeBrainManager"
+}

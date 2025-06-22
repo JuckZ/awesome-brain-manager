@@ -76,3 +76,128 @@
   This project owes a debt of gratitude to [obsidian-rollover-daily-todos](https://github.com/lumoe/obsidian-rollover-daily-todos), [obsidian-admotion](https://github.com/valentine195/obsidian-admonition), [obsidian-reminder](https://github.com/uphy/obsidian-reminder), [makemd](https://github.com/Make-md/makemd), [Blue-topaz-example](https://github.com/PKM-er/Blue-topaz-example) and some other projects for their invaluable contributions, especially project Blue-topaz-example、obsidian-reminder、makemd bring me lots of inspiratio. I have utilized and customized some of their code in this project, and I strongly recommend these projects for their impressive.
 
 </details>
+
+# Awesome Brain Manager Monorepo
+
+一个解决 Obsidian 中常见问题的插件，现在使用 monorepo 结构进行管理。
+
+## 技术栈
+
+- **构建工具**：Turborepo
+- **包管理器**：pnpm
+- **UI 框架**：Vue 3
+- **构建系统**：Vite
+- **文档工具**：VitePress
+
+## 项目结构
+
+```
+awesome-brain-manager/
+├── apps/                   # 应用程序
+│   └── obsidian-plugin/    # Obsidian 插件应用
+│
+├── packages/               # 可共享的包
+│   ├── ui/                 # UI 组件库
+│   ├── utils/              # 实用工具库
+│   ├── theme/              # 主题相关
+│   ├── docs/               # 文档
+│   └── tsconfig/           # 共享 TypeScript 配置
+│
+└── turbo.json              # Turborepo 配置
+```
+
+## 开发指南
+
+### 安装依赖
+
+```bash
+pnpm install
+```
+
+### 开发模式
+
+```bash
+# 开发所有工作区
+pnpm dev
+
+# 开发特定工作区
+pnpm dev --filter=awesome-brain-manager
+pnpm dev --filter=@repo/ui
+```
+
+### 构建项目
+
+```bash
+# 构建所有工作区
+pnpm build
+
+# 构建特定工作区
+pnpm build --filter=awesome-brain-manager
+```
+
+### 测试
+
+```bash
+# 测试所有工作区
+pnpm test
+
+# 测试特定工作区
+pnpm test --filter=@repo/utils
+```
+
+### 文档开发
+
+```bash
+# 启动文档开发服务器
+pnpm docs:dev
+```
+
+## 添加新的依赖
+
+```bash
+# 添加依赖到根目录
+pnpm add -w [package]
+
+# 添加依赖到特定工作区
+pnpm add [package] --filter=awesome-brain-manager
+```
+
+## 添加内部依赖
+
+在 `package.json` 中使用 `workspace:*` 语法添加工作区依赖：
+
+```json
+{
+  "dependencies": {
+    "@repo/ui": "workspace:*"
+  }
+}
+```
+
+## 常见问题
+
+### 1. 如何创建新的包或应用？
+
+可以使用以下命令创建新的工作区：
+
+```bash
+pnpm turbo gen workspace
+```
+
+然后按照提示进行设置。
+
+### 2. 如何确保依赖关系正确？
+
+在 `turbo.json` 中设置任务的依赖关系，例如：
+
+```json
+{
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
+  }
+}
+```
+
+这确保了在构建当前包之前，其依赖的所有包都已经完成构建。

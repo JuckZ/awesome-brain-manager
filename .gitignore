@@ -87,7 +87,7 @@ typings/
 # next.js build output
 .next
 
-dist/**
+dist
 
 .env.local
 stats.html
@@ -99,3 +99,4 @@ test-report.junit.xml
 /playwright/.cache/
 
 .local/**
+.turbo

@@ -1,0 +1,38 @@
+{
+  "name": "@repo/utils",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./db": "./src/db/index.ts",
+    "./ntfy": "./src/ntfy/index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore && tsc --noEmit --pretty",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "commander": "^11.0.0",
+    "jsonfile": "^6.1.0",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^5.0.2",
+    "ora": "^7.0.1",
+    "sql.js": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.0",
+    "@types/sql.js": "^1.4.4",
+    "@typescript-eslint/eslint-plugin": "6.7.0",
+    "@typescript-eslint/parser": "6.7.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "typescript": "5.2.2",
+    "vitest": "^2.1.8"
+  }
+}

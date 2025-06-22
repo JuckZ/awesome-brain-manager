@@ -1,5 +1,15 @@
 {
   "mcpServers": {
+    "yunxiao": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "alibabacloud-devops-mcp-server"
+      ],
+      "env": {
+        "YUNXIAO_ACCESS_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
     "lark-mcp": {
       "command": "npx",
       "args": [

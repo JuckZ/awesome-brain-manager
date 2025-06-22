@@ -1,0 +1,8 @@
+# Ignore all files in the `dist` directory
+dist/
+build/
+
+# Ignore all `.log` files
+*.log
+
+node_modules/

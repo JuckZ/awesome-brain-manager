@@ -1,0 +1,26 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "dev": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": [
+        "awesome-brain-manager#build:theme"
+      ],
+      "cache": true,
+      "persistent": true
+    },
+    "build:theme": {
+      "cache": true
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

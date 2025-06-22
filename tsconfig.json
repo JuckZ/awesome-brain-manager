@@ -1,6 +1,5 @@
 {
-  // "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src", "types.d.ts",],
+  "include": ["types.d.ts",],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "baseUrl": ".",
@@ -35,11 +34,10 @@
     ],
     "types": [
       "node",
-	    "vite/client",
-      "svelte"
+	    "vite/client"
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src-back/*"]
     },
   }
 }
