@@ -4,7 +4,7 @@
     "type": "split",
     "children": [
       {
-        "id": "05b17f34d2041098",
+        "id": "d05c0185c9f60ca7",
         "type": "tabs",
         "children": [
           {
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 249.5
   },
   "right": {
     "id": "eddf5cab1095b6f5",
@@ -157,11 +157,13 @@
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
-      "command-palette:打开命令面板": false
+      "command-palette:打开命令面板": false,
+      "awesome-brain-manager:Awesome Brain Manager": false
     }
   },
   "active": "905dca0bc314f160",
   "lastOpenFiles": [
+    "README.md",
     "Hello.md"
   ]
 }
