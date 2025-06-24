@@ -1,0 +1,53 @@
+/* 
+ * Theme based on:
+ * https://github.com/whyt-byte/Blue-Topaz_Obsidian-css 
+ * https://github.com/kepano/obsidian-minimal
+ */
+
+@use 'obsidian-default-theme';
+@use 'styles-setting';
+@use 'fonts';
+@use '../color-schemes/macos';
+@use '../color-schemes/atom';
+@use '../color-schemes/nord';
+@use '../color-schemes/awesome';
+@use 'clutter-heading';
+@use 'notebook-like-bg';
+@use 'callout';
+@use 'blockquote';
+@use 'fullwidth';
+@use 'checkbox';
+
+@mixin namespace($namespace) {
+    @at-root {
+
+        /* .#{$namespace} & {
+            @content;
+        } */
+        &.#{$namespace} {
+            @content;
+        }
+    }
+}
+
+body {
+    @include namespace('mod-windows') {
+        --theme-color: var(--interactive-accent);
+        /*radius*/
+        --radius-xs: 3px;
+        --radius-s: 5px;
+        --radius-m: 7px;
+        --radius-l: 15px;
+        --font-size-preview-blockquote: 1em;
+        --callout-color: var(--interactive-accent-rgb);
+        /* tag */
+        --font-size-tag: 0.75em;
+        --font-family-special-tag: "Lucida Handwriting", "Segoe UI Emoji";
+    }
+}
+
+/* .mod-windows {
+    @extend body;
+} */
+
+/* sourceMappingURL=theme.css.map */

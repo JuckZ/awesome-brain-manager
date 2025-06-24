@@ -10,11 +10,7 @@
       "persistent": true
     },
     "build": {
-      "dependsOn": [
-        "abm-theme#build"
-      ],
-      "cache": true,
-      "persistent": true
+      "cache": true
     },
     "clean": {
       "cache": false

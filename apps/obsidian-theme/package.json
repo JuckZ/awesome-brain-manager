@@ -1,0 +1,24 @@
+{
+  "name": "abo-theme",
+  "version": "0.0.1",
+  "description": "A theme that tries to solve all the trivial problems most people usually encountered in obsidian.",
+  "keywords": [
+    "Obsidian-theme",
+    "Obsidian"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "dotenvx run -- tsx watch scripts/dev-theme.ts",
+    "build": "dotenvx run -- tsx scripts/build-theme.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.31.0",
+    "sass-embedded": "catalog:",
+    "ts-node": "^10.9.1",
+    "unocss": "catalog:",
+    "vite": "catalog:vite",
+    "vite-plugin-static-copy": "^3.0.0",
+    "vue-tsc": "^1.8.11"
+  }
+}

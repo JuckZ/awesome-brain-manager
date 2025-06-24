@@ -12,13 +12,12 @@ catalog:
   wxml2canvas-2d: 1.0.0
   miniprogram-api-typings: ^4.0.2
   '@types/node': ^22.0.0
-  sass-embedded: ^1.85.1
-  sass: ^1.85.1
-  vue: ^3.5.13
+  sass-embedded: ^1.89.2
+  vue: ^3.5.17
   vue-router: ^4.4.3
   '@vueuse/core': ^11.0.1
   '@element-plus/icons-vue': ^2.3.1
-  unocss: ^66.0.0
+  unocss: ^66.2.3
   axios: ^1.8.2
   axios-miniprogram: ^2.7.2
   axios-plugins: ^0.5.2

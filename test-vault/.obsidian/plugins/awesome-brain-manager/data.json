@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "cursorEffect": "none",
+    "clickString": "",
+    "customTag": "[[\"white\",\"#ac6700\",\"inprogress\",\" 🕯️\",\"'Lucida Handwriting', 'Segoe UI Emoji'\"],[\"white\",\"#bd1919\",\"important\",\" \",\"\"],[\"white\",\"#565656d8\",\"ideas\",\" 💡\",\"\"],[\"white\",\"#6640ae\",\"questions\",\" ❓\",\"\"],[\"white\",\"#058c1c\",\"complete\",\" \",\"\"],[\"red\",\"#ffb6b9\",\"principle\",\" 📌\",\"\"],[\"white\",\"#323232\",\"abandon\",\" 🏁\",\"\"],[\"white\",\"#b5dc8e\",\"review\",\" 🌱\",\"\"],[\"white\",\"#b5dc8e\",\"flashcards\",\" 🌱\",\"\"],[\"white\",\"#a6e3e9\",\"juck\",\" 👨‍💻\",\"\"],[\"white\",\"#a6e3e9\",\"juckz\",\" 👨‍💻\",\"\"],[\"white\",\"#a6e3e9\",\"todo\",\" 📥\",\"\"],[\"white\",\"#e23e57\",\"bug\",\" 🐛\",\"\"],[\"white\",\"#f9ed69\",\"fixme\",\" 🛠️\",\"\"]]",
+    "powerMode": "0",
+    "shakeMode": false,
+    "expectedTime": "25",
+    "toolbar": false,
+    "enableTwemoji": false,
+    "systemNoticeEnable": false,
+    "noticeAudio": "https://cdn.freesound.org/sounds/573/573381-7411b311-d148-41f2-8812-7572170a00b6?filename=573381__ammaro__ding.wav",
+    "ntfyServerHost": "",
+    "ntfyToken": "",
+    "qweatherApiKey": "",
+    "aMapApiKey": "",
+    "serverHost": "https://vercel.ihave.cool",
+    "debugEnable": false,
+    "version": "1.11.0"
+  }
+}
