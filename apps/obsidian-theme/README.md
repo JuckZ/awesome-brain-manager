@@ -47,6 +47,15 @@ pnpm build
 
 这将编译主题并将其复制到指定的输出目录。构建过程会生成压缩的CSS文件和对应的sourcemap文件，便于在浏览器中调试。
 
+### 特殊注释
+
+主题构建过程会自动保留以下类型的注释：
+
+1. `/* @settings */` 注释块 - 用于Obsidian的Style Settings插件配置
+2. 以 `/*!` 开头的重要注释
+
+如果你需要在编译后的CSS中保留某些注释，请使用上述格式。
+
 ## 配置
 
 主题可以通过 Obsidian 的 Style Settings 插件进行配置。主要设置包括：
@@ -63,6 +72,7 @@ pnpm build
 - 遵循 Obsidian 主题规范
 - 支持sourcemap，便于开发调试
 - 使用@use语法替代旧的@import语法，符合Sass未来发展方向
+- 自动保留@settings注释块，确保Style Settings插件正常工作
 
 ## 贡献
 

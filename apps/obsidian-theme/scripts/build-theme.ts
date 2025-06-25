@@ -27,10 +27,40 @@ try {
         // 启用sourcemap
         sourceMap: true,
         sourceMapIncludeSources: true,
+        // 保留重要注释（/*!开头的注释）
+        charset: true,
     });
 
     // 写入编译后的CSS到输出文件
-    fs.writeFileSync(outputFile, result.css);
+    let cssContent = result.css;
+
+    // 处理编译后的CSS，保留@settings注释块
+    // 首先从原始文件中提取@settings块
+    const originalContent = fs.readFileSync(inputFile, 'utf8');
+    const settingsRegex = /\/\*\s*@settings[\s\S]*?\*\//g;
+    const settingsBlocks: string[] = [];
+    let match: RegExpExecArray | null;
+
+    // 遍历所有SCSS文件查找@settings块
+    const scssFiles = getAllScssFiles('./src/styles');
+    for (const file of scssFiles) {
+        const content = fs.readFileSync(file, 'utf8');
+        const regex = new RegExp(settingsRegex); // 创建新的正则表达式实例
+        while ((match = regex.exec(content)) !== null) {
+            settingsBlocks.push(match[0]);
+        }
+    }
+
+    // 将所有@settings块添加到编译后的CSS开头
+    if (settingsBlocks.length > 0) {
+        cssContent = settingsBlocks.join('\n\n') + '\n\n' + cssContent;
+    }
+
+    // 添加sourcemap注释
+    cssContent += '\n\n/* sourceMappingURL=theme.css.map */';
+
+    // 写入处理后的CSS
+    fs.writeFileSync(outputFile, cssContent);
 
     // 如果有sourcemap，写入sourcemap文件
     if (result.sourceMap) {
@@ -49,4 +79,25 @@ try {
 } catch (error) {
     console.error('Theme build failed:', (error as any).message);
     process.exit(1);
+}
+
+// 递归获取所有SCSS文件
+function getAllScssFiles(dir: string): string[] {
+    let results: string[] = [];
+    const list = fs.readdirSync(dir);
+
+    for (const file of list) {
+        const filePath = path.join(dir, file);
+        const stat = fs.statSync(filePath);
+
+        if (stat.isDirectory()) {
+            // 递归遍历子目录
+            results = results.concat(getAllScssFiles(filePath));
+        } else if (path.extname(file) === '.scss') {
+            // 添加SCSS文件
+            results.push(filePath);
+        }
+    }
+
+    return results;
 }
