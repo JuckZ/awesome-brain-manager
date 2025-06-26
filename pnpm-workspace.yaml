@@ -2,56 +2,22 @@ packages:
   - 'apps/*'
   - 'packages/*'
 catalog:
-  '@vant/weapp': 1.10.23
   '@commitlint/cli': ^19.5.0
-  mobx-miniprogram-bindings: 2.1.5
-  mobx-miniprogram: 4.13.2
-  dayjs: 1.11.7
   miniprogram-recycle-view: 0.1.5
-  wxml2canvas: 1.0.1
-  wxml2canvas-2d: 1.0.0
-  miniprogram-api-typings: ^4.0.2
   '@types/node': ^22.0.0
   sass-embedded: ^1.89.2
   vue: ^3.5.17
-  vue-router: ^4.4.3
   '@vueuse/core': ^11.0.1
-  '@element-plus/icons-vue': ^2.3.1
   unocss: ^66.2.3
   axios: ^1.8.2
-  axios-miniprogram: ^2.7.2
-  axios-plugins: ^0.5.2
-  element-china-area-data: ^6.1.0
-  '@vant/area-data': ^1.5.2
-  element-plus: ^2.9.6
-  echarts: ^5.5.1
   js-base64: ^3.7.7
   mathjs: ^13.0.3
-  moment: ^2.30.1
-  normalize.css: ^8.0.1
-  path-browserify: ^1.0.1
-  path-to-regexp: ^7.0.1
   pinia: ^2.2.2
   screenfull: ^6.0.2
-  immer: ^10.1.1
-  canvas-to-blob: ^1.0.0
-  vue-jsonp: ^2.0.0
-  vuedraggable: ^4.1.0
-  vxe-table: ^4.12.5
-  vxe-pc-ui: ^4.5.11
-  '@vxe-ui/plugin-render-element': ^4.0.10
-  '@vxe-ui/plugin-export-xlsx': ^4.2.0
-  '@vxe-ui/plugin-export-pdf': ^4.2.0
-  exceljs: ^4.4.0
-  xlsx: ^0.18.5
-  jspdf: ^3.0.1
-  xlsx-js-style: ^1.2.0
   zod: ^3.23.8
-  vite-plugin-dts: ^4.5.3
   vitest: ^3.0.8
   vite-svg-loader: ^5.1.0
   vite-plugin-svg-icons: ^2.0.1
-  vite-plugin-mock: ^3.0.2
   vite-plugin-vue-devtools: ^7.6.3
   vite-plugin-stylelint: ^5.3.1
   vite-plugin-top-level-await: ^1.4.2
@@ -61,14 +27,10 @@ catalog:
   unplugin-vue-components: ^28.4.1
   vue-eslint-parser: ^9.4.3
   vue-tsc: 2.0.29
-  vditor: ^3.10.7
   terser: ^5.31.3
   type-fest: ^4.26.1
-  dependency-cruiser: ^16.4.0
-  depcheck: ^1.4.7
   npm-check-updates: ^17.1.11
   rollup-plugin-visualizer: ^5.12.0
-  print-js: ^1.6.0
   autoprefixer: ^10.4.19
   '@iconify/json': ^2.2.231
   ua-parser-js: 2.0.0
@@ -117,47 +79,20 @@ catalogs:
   semver:
     semver: ^7.6.3
     '@types/semver': ^7.5.8
-  crypto:
-    crypto-js: ^4.2.0
-    '@types/crypto-js': ^4.2.0
   validator:
     validator: ^13.12.0
     async-validator: ^4.2.5
-  pinyin:
-    '@pinyin-pro/data': ^1.2.0
-    pinyin-pro: ^3.26.0
   uuid:
     uuid: 10.0.0
     '@types/uuid': 10.0.0
-  qrcode:
-    '@chenfengyuan/vue-qrcode': ^2.0.0
-    qrcode.vue: ^3.4.1
-  mock:
-    mockjs: ^1.1.0
-    '@types/mockjs': ^1.0.10
-  js-cookie:
-    js-cookie: ^3.0.5
-    '@types/js-cookie': ^3.0.5
-  file-saver:
-    file-saver: ^2.0.5
-    '@types/file-saver': ^2.0.5
-  nprogress:
-    nprogress: ^0.2.0
-    '@types/nprogress': ^0.2.0
   sortablejs:
     sortablejs: ^1.15.2
     '@types/sortablejs': ^1.15.2
-  path-browserify:
-    path-browserify: ^1.0.1
-    '@types/path-browserify': ^1.0.3
   postcss:
     postcss: ^8.4.49
     postcss-preset-env: ^10.0.9
     postcss-normalize: ^13.0.1
     '@types/postcss-normalize': ^9.0.4
-  babel:
-    '@babel/plugin-transform-class-properties': ^7.25.9
-    '@rollup/plugin-babel': ^6.0.4
   eslint:
     eslint: ^9.15.0
     '@types/eslint': ^9.6.1
@@ -174,16 +109,7 @@ catalogs:
     '@typescript-eslint/eslint-plugin': ^8.0.0
     '@typescript-eslint/parser': ^8.0.0
     '@eslint-community/eslint-plugin-eslint-comments': ^4.4.1
-  miniprogram-computed:
-    miniprogram-computed: 4.4.0
-    rfdc: 1.3.0
-    fast-deep-equal: 3.1.3
-  zodance:
-    '@zodance/codegen': ^0.0.50
-    '@zodance/teashop-utils': ^1.1.206
-    '@zodance/typescript-config': ^0.0.8
-    '@zodance/commitlint-config': 0.0.8
-    '@zodance/stylelint-config': 0.0.10
-    '@zodance/prettier-config': ^0.0.2
-    '@zodance/eslint-config': ^0.0.3
-    '@zodance/ui': ^0.0.11
+  obsidian:
+    obsidian: ^1.8.7
+    obsidian-dataview: ^0.5.68
+    obsidian-typings: ^3.12.0
