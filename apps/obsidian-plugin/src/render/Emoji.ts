@@ -25,6 +25,7 @@ export class Emoji extends MarkdownRenderChild {
 }
 
 export function codeEmoji(el: HTMLElement, ctx: MarkdownPostProcessorContext) {
+    console.error('codeEmoji', el, ctx);
     const codeblocks = el.querySelectorAll('code');
     for (let index = 0; index < codeblocks.length; index++) {
         const codeblock = codeblocks.item(index);

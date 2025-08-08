@@ -2,8 +2,7 @@
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 import { t } from 'i18next';
 import { DropdownSettingModelBuilder, RawSerde, type SettingModel, SettingTabModel } from '@/model/settings';
-import { toggleCursorEffects } from '@/render/CursorEffects';
-import { toggleBlast } from '@/render/Blast';
+// 特效功能已移动到addon中
 import { EditorUtil } from '@/utils/editor';
 import type { PluginDataIO } from '@/data';
 
@@ -152,9 +151,6 @@ class Settings {
         );
 
         this.cursorEffect = this.cursorEffectBuilder
-            .onAnyValueChanged(context => {
-                toggleCursorEffects(SETTINGS.cursorEffect.value);
-            })
             .build(new RawSerde());
 
         this.powerModeBuilder = this.settings
@@ -168,9 +164,6 @@ class Settings {
             this.powerModeBuilder.addOption(powerModeTranslation[f], f);
         });
         this.powerMode = this.powerModeBuilder
-            .onAnyValueChanged(context => {
-                toggleBlast(SETTINGS.powerMode.value);
-            })
             .build(new RawSerde());
 
         this.shakeMode = this.settings

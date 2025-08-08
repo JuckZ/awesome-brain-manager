@@ -13,6 +13,8 @@ export default {
         planPomodoro: '规划一个番茄钟',
         defaultTask: '默认任务：',
         showPomodoro: '展示番茄钟',
+        reloadObsidian: '重载Obsidian',
+        openEmojiPicker: '插入表情符号',
     },
     command: {
         'check-in': '习惯打卡',

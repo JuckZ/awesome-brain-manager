@@ -8,7 +8,7 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "dotenvx run -- tsx watch scripts/dev-theme.ts",
+    "dev": "dotenvx run -- tsx scripts/build-theme.ts --dev",
     "build": "dotenvx run -- tsx scripts/build-theme.ts"
   },
   "dependencies": {},

@@ -13,6 +13,8 @@ export default {
         planPomodoro: 'Plan a pomodoro',
         defaultTask: 'Default task: ',
         showPomodoro: 'Show pomodoro',
+        reloadObsidian: 'Reload Obsidian',
+        openEmojiPicker: 'Insert emoji',
     },
     command: {
         'check-in': 'Habit Check In',

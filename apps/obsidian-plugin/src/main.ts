@@ -29,23 +29,22 @@ import Replacer from '@/Replacer';
 import Process from '@/process/Process';
 import { checkInDefaultPath, checkInList, customSnippetPath } from '@/utils/constants';
 import { monkeyPatchConsole } from '@/obsidian-hack/obsidian-debug-mobile';
-import { EmojiPickerModal, ImageOriginModal, PomodoroReminderModal } from '@/ui/modal';
-import { POMODORO_HISTORY_VIEW, PomodoroHistoryView } from '@/ui/view/PomodoroHistoryView';
+import { ImageOriginModal, PomodoroReminderModal } from '@/ui/modal';
+// POMODORO_HISTORY_VIEW 现在由 PomodoroAddon 管理
 import { BROWSER_VIEW, BrowserView } from '@/ui/view/BrowserView';
-import { codeEmoji } from '@/render/Emoji';
-import { toggleCursorEffects, toggleMouseClickEffects } from '@/render/CursorEffects';
+
 import { LoggerUtil } from '@/utils/logger';
 import { getAllFiles, getCleanTitle, getNotePath } from '@/utils/file';
 import { weatherDesc } from '@/api/weather';
 import { DBUtil } from '@/utils/db/db';
 import { insertAfterHandler } from '@/utils/content';
 import { getLocalRandomImg, searchPicture } from '@/utils/genBanner';
-import { PomodoroStatus } from '@/utils/pomotodo';
 import { AwesomeBrainSettingTab, SETTINGS } from '@/settings';
 import { PluginDataIO } from '@/data';
 import { eventTypes } from '@/types/types';
-import { onCodeMirrorChange, toggleBlast, toggleShake } from '@/render/Blast';
-import { notifyNtfy } from '@/api';
+import { onCodeMirrorChange } from '@/render/Blast';
+import { AddonManager } from '@/core/AddonManager';
+import { AddonRegistry } from '@/addons';
 import '@/main.scss';
 import { NotifyUtil } from '@/utils/ntfy/notify';
 import { EditorUtil, EditorUtils } from '@/utils/editor';
@@ -60,37 +59,36 @@ const media = window.matchMedia('(prefers-color-scheme: dark)');
 
 export default class AwesomeBrainManagerPlugin extends Plugin {
     pluginDataIO: PluginDataIO;
-    private pomodoroHistoryView: PomodoroHistoryView | null = null;
+    private addonManager: AddonManager;
     spaceDB: Database | null = null;
 
-    resizeFunction: () => any = () => {};
-    clickFunction: (evt: MouseEvent) => any = () => {};
-    fileOpenFunction: (file: TFile | null) => any = () => {};
-    layoutChangeFunction: () => any = () => {};
-    windowOpenFunction: (win: WorkspaceWindow, window: Window) => any = () => {};
-    windowCloseFunction: (win: WorkspaceWindow, window: Window) => any = () => {};
-    cssChangeFunction: () => any = () => {};
-    fileMenuFunction: (menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf) => any = () => {};
-    editorMenuFunction: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => {};
-    editorChangeFunction: (editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => {};
-    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => {};
-    editorDropFunction: (evt: DragEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => {};
-    codemirrorFunction: (cm: CodeMirror.Editor) => any = () => {};
-    quitFunction: (tasks: Tasks) => any = () => {};
+    resizeFunction: () => any = () => { };
+    clickFunction: (evt: MouseEvent) => any = () => { };
+    fileOpenFunction: (file: TFile | null) => any = () => { };
+    layoutChangeFunction: () => any = () => { };
+    windowOpenFunction: (win: WorkspaceWindow, window: Window) => any = () => { };
+    windowCloseFunction: (win: WorkspaceWindow, window: Window) => any = () => { };
+    cssChangeFunction: () => any = () => { };
+    fileMenuFunction: (menu: Menu, file: TAbstractFile, source: string, leaf?: WorkspaceLeaf) => any = () => { };
+    editorMenuFunction: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => { };
+    editorChangeFunction: (editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => { };
+    editorPasteFunction: (evt: ClipboardEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => { };
+    editorDropFunction: (evt: DragEvent, editor: Editor, info: MarkdownView | MarkdownFileInfo) => any = () => { };
+    codemirrorFunction: (cm: CodeMirror.Editor) => any = () => { };
+    quitFunction: (tasks: Tasks) => any = () => { };
 
-    vaultCreateFunction: (file: TAbstractFile) => any = () => {};
-    vaultModifyFunction: (file: TAbstractFile) => any = () => {};
-    vaultDeleteFunction: (file: TAbstractFile) => any = () => {};
-    vaultRenameFunction: (file: TAbstractFile, oldPath: string) => any = () => {};
-    vaultRawFunction: (path: string) => any = () => {};
-    vaultClosedFunction: () => any = () => {};
+    vaultCreateFunction: (file: TAbstractFile) => any = () => { };
+    vaultModifyFunction: (file: TAbstractFile) => any = () => { };
+    vaultDeleteFunction: (file: TAbstractFile) => any = () => { };
+    vaultRenameFunction: (file: TAbstractFile, oldPath: string) => any = () => { };
+    vaultRawFunction: (path: string) => any = () => { };
+    vaultClosedFunction: () => any = () => { };
 
     useSnippet = true;
     style: HTMLStyleElement = document.createElement('style');
     spacesDBPath: string = '';
     replacer: Replacer = new Replacer(this);
     process: Process = new Process(this);
-    emojiPickerModal: EmojiPickerModal = new EmojiPickerModal(this.app);
     interact: any = null;
 
     constructor(app: App, manifest: PluginManifest) {
@@ -99,6 +97,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.replacer = new Replacer(this);
         this.process = new Process(this);
         this.pluginDataIO = new PluginDataIO(this);
+        this.addonManager = new AddonManager(this.app, this);
         this.bindFunction();
     }
 
@@ -182,10 +181,17 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 },
             },
             {
+                title: t('menu.reloadObsidian'),
+                icon: 'refresh-cw',
+                clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    window.location.reload();
+                },
+            },
+            {
                 title: 'Notify this to ntfy',
                 icon: 'megaphone',
                 clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    notifyNtfy(EditorUtils.getCurrentSelection(editor));
+                    // 这个功能已经移动到addon中
                 },
             },
             {
@@ -213,16 +219,19 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 title: t('menu.showPomodoro'),
                 icon: 'alarm-clock',
                 clickFn: async (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
-                    this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-                    await this.app.workspace.getRightLeaf(false)?.setViewState({
-                        type: POMODORO_HISTORY_VIEW,
-                        active: true,
-                    });
-                    this.app.workspace.revealLeaf(
-                        this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
-                    );
+                    // 这个功能现在由 PomodoroAddon 处理
+                    console.log('Show Pomodoro History - handled by PomodoroAddon');
                 },
             },
+            // TODO 放在这里不合适，丢失了上下文
+            {
+                title: t('menu.openEmojiPicker'),
+                icon: 'smile',
+                clickFn: (menu: Menu, editor: Editor, info: MarkdownView | MarkdownFileInfo) => {
+                    // 这个功能现在由 EmojiAddon 处理
+                    console.log('Open Emoji Picker - handled by EmojiAddon');
+                },
+            }
         ];
     }
 
@@ -263,41 +272,16 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // LoggerUtil.log('');
     }
 
-    async customizeVaultCreate(file: TAbstractFile): Promise<void> {}
+    async customizeVaultCreate(file: TAbstractFile): Promise<void> { }
 
-    async customizeVaultModify(file: TAbstractFile): Promise<void> {}
+    async customizeVaultModify(file: TAbstractFile): Promise<void> { }
 
-    async customizeVaultDelete(file: TAbstractFile): Promise<void> {}
+    async customizeVaultDelete(file: TAbstractFile): Promise<void> { }
 
-    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> {}
+    async customizeVaultRename(file: TAbstractFile, oldPath: string): Promise<void> { }
 
     async customizeRaw(path: string): Promise<void> {
-        const paths = path.split('/');
-        const reloadPluginList = ['awesome-brain-manager'];
-        if (path.startsWith(this.app.plugins.getPluginFolder()) && paths.length >= 4) {
-            const plugin = paths[2];
-            const file = paths[paths.length - 1];
-            if (file.endsWith('.mdb')) return;
-            if (reloadPluginList.includes(plugin)) {
-                this.reloadPlugins(plugin);
-            }
-        }
-    }
-
-    async reloadPlugins(plugin: string) {
-        const plugins = this.app.plugins;
-        // Don't reload disabled plugins
-        if (!plugins.enabledPlugins.has(plugin)) return;
-        await plugins.disablePlugin(plugin);
-        try {
-            setTimeout(async () => {
-                await this.app.plugins.enablePlugin(plugin);
-                new Notice(`Plugin "${plugin}" has been reloaded`);
-            }, 100);
-        } catch (error) {
-            new Notice(`Failed reload "${plugin}"`);
-            console.error(error);
-        }
+        // 热重载功能已移动到HotReloadAddon
     }
 
     override async onload(): Promise<void> {
@@ -306,18 +290,18 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         LoggerUtil.init(SETTINGS.debugEnable);
         DBUtil.init(this, () => {
             usePomodoroStore().loadPomodoroData();
-            this.startPomodoroTask();
         });
         EditorUtil.init(this);
         NotifyUtil.init(this);
+
+        // 初始化并注册所有附加组件
+        const addons = AddonRegistry.createAllAddons();
+        addons.forEach(addon => {
+            this.addonManager.register(addon);
+        });
+        await this.addonManager.initializeAll();
+
         this.setupCommands();
-        if (SETTINGS.enableTwemoji.value) {
-            MarkdownPreviewRenderer.registerPostProcessor(this.process.EmojiProcess);
-        }
-        this.registerMarkdownPostProcessor(codeEmoji);
-        this.registerMarkdownCodeBlockProcessor('plantuml', this.process.UMLProcess);
-        this.registerMarkdownCodeBlockProcessor('vue-widget', this.process.VueProcess);
-        this.registerMarkdownCodeBlockProcessor('react-widget', this.process.ReactProcess);
 
         this.app.workspace.onLayoutReady(async () => {
             if (SETTINGS.debugEnable.value) {
@@ -334,47 +318,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.announceUpdate();
     }
 
-    private startPomodoroTask() {
-        // 进来就找到ing任务，如果有，则开始interval任务，倒计时准备弹窗提醒
-        // 监听数据库变化事件，若变化，则刷新监听的任务
-        this.registerInterval(
-            window.setInterval(() => {
-                const pomodoro = usePomodoroStore().currentPomodoro;
-                if (!pomodoro) {
-                    return;
-                }
-                const pomodoroStatus = new PomodoroStatus(pomodoro);
-                if (pomodoroStatus.isOutTime()) {
-                    NotifyUtil.playNoticeAudio();
-                    if (SETTINGS.systemNoticeEnable.value) {
-                        NotifyUtil.nativeSystemNotify('Pomodoro task done: ', pomodoro.task);
-                    } else {
-                        new PomodoroReminderModal(this.app, pomodoro).open();
-                    }
-                    if (SETTINGS.ntfyServerHost.value) {
-                        notifyNtfy('Pomodoro task done: ' + pomodoro.task);
-                    }
-                    const changed = pomodoroStatus.changeState('done');
-                    if (changed) {
-                        usePomodoroStore().updatePomodoro(pomodoro);
-                    } else {
-                        LoggerUtil.error('Update failed', pomodoro);
-                    }
-                }
-                if (pomodoroStatus.getState() === 'ing') {
-                    const statusBar = document.querySelector('#obsidian-manager-pomodoro-status-bar');
-                    statusBar?.setAttr('title', pomodoro.task);
-                    // TODO 控制titlebar的宽度，使用省略号
-                    const remainTime = moment.duration(pomodoroStatus.getRemainTime(), 'milliseconds');
-                    statusBar?.setText(
-                        `🍅 ${pomodoroStatus.getPomodoro().task} ${moment
-                            .utc(remainTime.asMilliseconds())
-                            .format('HH:mm:ss')}`,
-                    );
-                }
-            }, 1 * 1000),
-        );
-    }
+
 
     private async addACheck(path: string, filename: string, time: string, content: string) {
         const normalizedPath = await getNotePath(path, filename);
@@ -516,18 +460,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
                 }
             },
         });
-        this.addCommand({
-            id: 'plan-pomodoro',
-            icon: 'scissors',
-            name: t('command.plan-pomodoro'),
-            callback: () => {
-                const editor = this.app.workspace.activeEditor?.editor;
-                if (editor) {
-                    const task = EditorUtils.getCurrentSelection(editor);
-                    usePomodoroStore().quickAddPomodoro(task);
-                }
-            },
-        });
+
         this.addCommand({
             id: 'check-in',
             name: t('command.check-in'),
@@ -561,24 +494,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
             },
         });
 
-        this.addCommand({
-            id: 'open-emoji-picker',
-            name: t('command.open-emoji-picker'),
-            // 带条件的指令
-            checkCallback: (checking: boolean) => {
-                const activeFile = this.app.workspace.getActiveFile();
-                if (activeFile) {
-                    if (!checking) {
-                        if (!this.emojiPickerModal) {
-                            this.emojiPickerModal = new EmojiPickerModal(this.app);
-                        }
-                        this.emojiPickerModal.open();
-                    }
-                    return true;
-                }
-                return false;
-            },
-        });
+        // emoji选择器命令已移动到EmojiAddon
     }
 
     async openBrowser(url: string) {
@@ -597,39 +513,9 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         this.style = document.head.createEl('style', {
             attr: { id: 'OBSIDIAN_MANAGER_CUSTOM_STYLE_SHEET' },
         });
-        // this.registerEditorExtension(emojiListPlugin);
-        toggleBlast(SETTINGS.powerMode.value);
-        toggleShake(SETTINGS.shakeMode);
-        toggleCursorEffects(SETTINGS.cursorEffect.value);
-        // 状态栏图标
-        const obsidianManagerPomodoroStatusBar = this.addStatusBarItem();
-        obsidianManagerPomodoroStatusBar.createEl('span', {
-            text: '🍅',
-            attr: {
-                id: 'obsidian-manager-pomodoro-status-bar',
-                style: 'cursor: pointer',
-            },
-        });
-        obsidianManagerPomodoroStatusBar.onClickEvent(async evt => {
-            this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
-            await this.app.workspace.getRightLeaf(false)?.setViewState({
-                type: POMODORO_HISTORY_VIEW,
-                active: true,
-            });
-            this.app.workspace.revealLeaf(
-                this.app.workspace.getLeavesOfType(POMODORO_HISTORY_VIEW)[0] as WorkspaceLeaf,
-            );
-        });
-        // 自定义图标
-        // addIcon('circle', '<circle cx="50" cy="50" r="50" fill="currentColor" />');
+
         // 设置选项卡
         this.addSettingTab(new AwesomeBrainSettingTab(this.app, this, this.pluginDataIO));
-        this.registerView(POMODORO_HISTORY_VIEW, leaf => {
-            if (!this.pomodoroHistoryView) {
-                this.pomodoroHistoryView = new PomodoroHistoryView(leaf, this);
-            }
-            return this.pomodoroHistoryView;
-        });
         this.registerView(BROWSER_VIEW, leaf => new BrowserView(leaf, this, OpenUrl));
 
         EditorUtil.addTags(JSON.parse(SETTINGS.customTag.value));
@@ -709,13 +595,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
         // window.addEventListener('languagechange', () => {
         //     console.log('languagechange event detected!');
         // });
-        const selectionChangeCallback = async (e: Event) => {
-            EditorUtil.changeToolbarPopover(e as MouseEvent, SETTINGS.toolbar);
-        };
-        this.registerDomEvent(activeDocument, 'selectionchange', selectionChangeCallback);
-        this.registerDomEvent(activeDocument, 'click', async (e: MouseEvent) => {
-            toggleMouseClickEffects(e, SETTINGS.clickString);
-        });
+        // 工具栏功能已移动到ToolbarAddon
         const mouseMoveCallback = (event: MouseEvent) => {
             useSystemStore().updateMouseCoords({
                 x: event.clientX,
@@ -781,8 +661,7 @@ export default class AwesomeBrainManagerPlugin extends Plugin {
     override async onunload(): Promise<void> {
         EditorUtil.unload();
         NotifyUtil.onload();
-        toggleBlast('0');
-        this.app.workspace.detachLeavesOfType(POMODORO_HISTORY_VIEW);
+        await this.addonManager.unloadAll();
         this.style.detach();
         console.warn('unloading plugin');
     }
