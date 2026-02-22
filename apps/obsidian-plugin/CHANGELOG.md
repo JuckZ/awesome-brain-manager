@@ -1,5 +1,15 @@
 # awesome-brain-manager
 
+## 1.13.0
+
+### Minor Changes
+
+- 80eea11: test2
+
+### Patch Changes
+
+- c445920: test
+
 ## 1.12.2
 
 ### Patch Changes
