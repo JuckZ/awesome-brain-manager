@@ -14,11 +14,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     concurrency: ${{ github.workflow }}-${{ github.ref }}
-    permissions:
-      contents: write # to create release (changesets/action)
-      issues: write # to post issue comments (changesets/action)
-      pull-requests: write # to create pull request (changesets/action)
-      id-token: write # to use OpenID Connect token for provenance (changesets/action)
 
     steps:
       - name: Checkout
@@ -50,6 +45,7 @@ jobs:
           commit: "chore: version packages"
           title: "chore: version packages"
           # branch: master
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
