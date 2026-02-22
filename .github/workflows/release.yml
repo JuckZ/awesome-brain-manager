@@ -42,9 +42,6 @@ jobs:
         with:
           version: pnpm changeset:version
           publish: pnpm changeset:publish
-          commit: "chore: version packages"
-          title: "chore: version packages"
-          # branch: master
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
