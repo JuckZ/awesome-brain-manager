@@ -107,7 +107,7 @@ catalogs:
     '@vue/eslint-config-typescript': ^13.0.0
     '@vue/eslint-config-prettier': ^9.0.0
     '@unocss/eslint-plugin': ^0.62.4
-    '@typescript-eslint/eslint-plugin': ^8.0.0
+    '@typescript-eslint/eslint-plugin': ^8.56.0
     '@typescript-eslint/parser': ^8.0.0
     '@eslint-community/eslint-plugin-eslint-comments': ^4.4.1
   obsidian:
