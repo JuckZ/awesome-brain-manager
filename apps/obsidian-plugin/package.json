@@ -43,8 +43,7 @@
     "format:write": "prettier --write {src,__mocks__,bin}/**/*.ts",
     "start:help": "ts-node ./src/bin/order.bin.ts -h",
     "start:example": "ts-node ./src/bin/order.bin.ts pizza beer",
-    "semantic-release": "semantic-release",
-    "version": "node version-bump.mjs",
+    "version": "node ../../version-bump.mjs",
     "prepare": "husky install",
     "postinstall": "patch-package"
   },

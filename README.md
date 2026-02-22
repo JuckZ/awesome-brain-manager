@@ -10,8 +10,8 @@
     <img src="https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue">
   </a>
 
-  <a href="https://github.com/semantic-release/semantic-release">
-    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
+  <a href="https://github.com/changesets/changesets">
+    <img src="https://img.shields.io/badge/versioning-changesets-blue.svg">
   </a>
   <a href="https://npmcharts.com/compare/awesome-brain-manager?minimal=true">
     <img src="https://img.shields.io/npm/dm/awesome-brain-manager.svg">
@@ -172,6 +172,26 @@ pnpm add [package] --filter=awesome-brain-manager
     "@repo/ui": "workspace:*"
   }
 }
+```
+
+## 发布流程（Changesets）
+
+```bash
+# 1) 新功能/修复提交前，创建 changeset
+pnpm changeset
+
+# 2) 合并到 master 后，CI 会自动创建/更新版本 PR
+#    （由 .github/workflows/release.yml 驱动）
+
+# 3) 版本 PR 合并后，CI 自动执行发布
+#    - 运行 pnpm changeset:version
+#    - 发布 npm 包（pnpm changeset:publish）
+```
+
+发布前如果需要本地预演版本文件更新：
+
+```bash
+pnpm changeset:version
 ```
 
 ## 常见问题

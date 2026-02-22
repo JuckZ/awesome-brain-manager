@@ -18,5 +18,5 @@ jobs:
     - stage: Build & publish
       script:
       - npm run build
-      - npx semantic-release
+      - npx changeset publish
       if: branch = master

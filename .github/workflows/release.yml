@@ -1,72 +1,51 @@
-name: Build obsidian plugin
+name: Release
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
+  workflow_dispatch:
 
-env:
-  PLUGIN_NAME: awesome-brain-manager
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
+    concurrency: ${{ github.workflow }}-${{ github.ref }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
         with:
-          node-version: 18.14.x
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
-        id: pnpm-install
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-        
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          version: 9
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
 
       - name: Install
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
 
-      - name: Test
-        run: pnpm run report:coverage
+      - name: Build plugin
+        run: pnpm --filter awesome-brain-manager build
 
-      - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
+      - name: Create release PR or publish
+        id: changesets
+        uses: changesets/action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Get the branch name
-        id: get-branch-name
-        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-
-      - name: Build
-        id: build
-        if: ${{ steps.get-branch-name.outputs.BRANCH_NAME == 'master' }}
-        run: |
-          pnpm run build
-          cp manifest.json dist
-
-      - name: Release
-        if: ${{ steps.get-branch-name.outputs.BRANCH_NAME == 'master' }}
+          version: pnpm changeset:version
+          publish: pnpm changeset:publish
+          commit: "chore: version packages"
+          title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npx semantic-release
