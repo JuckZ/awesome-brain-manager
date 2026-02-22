@@ -44,7 +44,7 @@
     "start:help": "ts-node ./src/bin/order.bin.ts -h",
     "start:example": "ts-node ./src/bin/order.bin.ts pizza beer",
     "version": "node ../../version-bump.mjs",
-    "prepare": "husky install",
+    "prepare": "husky",
     "postinstall": "patch-package"
   },
   "dependencies": {
