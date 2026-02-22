@@ -61,7 +61,7 @@
       "pnpmVersion": "latest",
       "nvmVersion": "latest"
     },
-    "ghcr.io/devcontainers/features/powershell:1": {
+    "ghcr.io/devcontainers/features/powershell:2": {
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/python:1": {
