@@ -1,5 +1,11 @@
 # awesome-brain-manager
 
+## 1.12.2
+
+### Patch Changes
+
+- test cicd
+
 ## 1.12.0
 
 ### Minor Changes
