@@ -1,6 +1,6 @@
-import { DateTime } from 'luxon';
-import { type STask } from 'obsidian-dataview';
-import { Vault } from 'obsidian';
+import { type STask } from "obsidian-dataview";
+import { Vault, moment } from "obsidian";
+
 // export function getTaskByTags(tags: string[], taskList: STask[]): STask | undefined {
 //     return taskList.find(task => {
 //         const taskTags = task.tags.map(tag => tag.tag);
@@ -41,21 +41,26 @@ export const queryAll = `function overdue(t) {
 function trimEndingLines(text: string): string {
     const parts = text.split(/\r?\n/u);
     let trim = parts.length - 1;
-    while (trim > 0 && parts[trim].trim() == '') trim--;
+    while (trim > 0 && parts[trim].trim() == "") trim--;
 
-    return parts.join('\n');
+    return parts.join("\n");
 }
 
 /** Sets or replaces the value of an inline field; if the value is 'undefined', deletes the key. */
-export function setInlineField(source: string, key: string, value?: string): string {
+export function setInlineField(
+    source: string,
+    key: string,
+    value?: string,
+): string {
     const existing = extractInlineFields(source);
-    const existingKeys = existing.filter(f => f.key == key);
+    const existingKeys = existing.filter((f) => f.key == key);
 
     // Don't do anything if there are duplicate keys OR the key already doesn't exist.
-    if (existingKeys.length > 2 || (existingKeys.length == 0 && !value)) return source;
+    if (existingKeys.length > 2 || (existingKeys.length == 0 && !value))
+        return source;
     const existingKey = existingKeys[0];
 
-    const annotation = value ? `[${key}:: ${value}]` : '';
+    const annotation = value ? `[${key}:: ${value}]` : "";
     if (existingKey) {
         const prefix = source.substring(0, existingKey.start);
         const suffix = source.substring(existingKey.end);
@@ -85,14 +90,18 @@ export interface InlineField {
 }
 
 /** The wrapper characters that can be used to define an inline field. */
-export const INLINE_FIELD_WRAPPERS: Readonly<Record<string, string>> = Object.freeze({
-    '[': ']',
-    '(': ')',
-});
+export const INLINE_FIELD_WRAPPERS: Readonly<Record<string, string>> =
+    Object.freeze({
+        "[": "]",
+        "(": ")",
+    });
 
 /** Find the '::' separator in an inline field. */
-function findSeparator(line: string, start: number): { key: string; valueIndex: number } | undefined {
-    const sep = line.indexOf('::', start);
+function findSeparator(
+    line: string,
+    start: number,
+): { key: string; valueIndex: number } | undefined {
+    const sep = line.indexOf("::", start);
     if (sep < 0) return undefined;
 
     return { key: line.substring(start, sep).trim(), valueIndex: sep + 2 };
@@ -114,7 +123,7 @@ function findClosing(
         const char = line.charAt(index);
 
         // Allows for double escapes like '\\' to be rendered normally.
-        if (char == '\\') {
+        if (char == "\\") {
             escaped = !escaped;
             continue;
         }
@@ -129,7 +138,11 @@ function findClosing(
         else if (char == close) nesting--;
 
         // Only occurs if we are on a close character and trhere is no more nesting.
-        if (nesting < 0) return { value: line.substring(start, index).trim(), endIndex: index + 1 };
+        if (nesting < 0)
+            return {
+                value: line.substring(start, index).trim(),
+                endIndex: index + 1,
+            };
 
         escaped = false;
     }
@@ -138,18 +151,28 @@ function findClosing(
 }
 
 /** Try to completely parse an inline field starting at the given position. Assuems `start` is on a wrapping character. */
-function findSpecificInlineField(line: string, start: number): InlineField | undefined {
+function findSpecificInlineField(
+    line: string,
+    start: number,
+): InlineField | undefined {
     const open = line.charAt(start);
 
     const key = findSeparator(line, start + 1);
     if (key === undefined) return undefined;
 
     // Fail the match if we find any separator characters (not allowed in keys).
-    for (const sep of Object.keys(INLINE_FIELD_WRAPPERS).concat(Object.values(INLINE_FIELD_WRAPPERS))) {
+    for (const sep of Object.keys(INLINE_FIELD_WRAPPERS).concat(
+        Object.values(INLINE_FIELD_WRAPPERS),
+    )) {
         if (key.key.includes(sep)) return undefined;
     }
 
-    const value = findClosing(line, key.valueIndex, open, INLINE_FIELD_WRAPPERS[open]);
+    const value = findClosing(
+        line,
+        key.valueIndex,
+        open,
+        INLINE_FIELD_WRAPPERS[open],
+    );
     if (value === undefined) return undefined;
 
     return {
@@ -163,17 +186,18 @@ function findSpecificInlineField(line: string, start: number): InlineField | und
 }
 
 export const CREATED_DATE_REGEX = /\u{2795}\s*(\d{4}-\d{2}-\d{2})/u;
-export const DUE_DATE_REGEX = /(?:\u{1F4C5}|\u{1F4C6}|\u{1F5D3}\u{FE0F}?)\s*(\d{4}-\d{2}-\d{2})/u;
+export const DUE_DATE_REGEX =
+    /(?:\u{1F4C5}|\u{1F4C6}|\u{1F5D3}\u{FE0F}?)\s*(\d{4}-\d{2}-\d{2})/u;
 export const DONE_DATE_REGEX = /\u{2705}\s*(\d{4}-\d{2}-\d{2})/u;
 export const SCHEDULED_DATE_REGEX = /[\u{23F3}\u{231B}]\s*(\d{4}-\d{2}-\d{2})/u;
 export const START_DATE_REGEX = /\u{1F6EB}\s*(\d{4}-\d{2}-\d{2})/u;
 
 export const EMOJI_REGEXES = [
-    { regex: CREATED_DATE_REGEX, key: 'created' },
-    { regex: START_DATE_REGEX, key: 'start' },
-    { regex: SCHEDULED_DATE_REGEX, key: 'scheduled' },
-    { regex: DUE_DATE_REGEX, key: 'due' },
-    { regex: DONE_DATE_REGEX, key: 'completion' },
+    { regex: CREATED_DATE_REGEX, key: "created" },
+    { regex: START_DATE_REGEX, key: "start" },
+    { regex: SCHEDULED_DATE_REGEX, key: "scheduled" },
+    { regex: DUE_DATE_REGEX, key: "due" },
+    { regex: DONE_DATE_REGEX, key: "completion" },
 ];
 
 /** Parse special completed/due/done task fields which are marked via emoji. */
@@ -190,7 +214,7 @@ function extractSpecialTaskFields(line: string): InlineField[] {
             start: match.index,
             startValue: match.index + 1,
             end: match.index + match[0].length,
-            wrapping: 'emoji-shorthand',
+            wrapping: "emoji-shorthand",
         });
     }
 
@@ -203,7 +227,10 @@ function extractSpecialTaskFields(line: string): InlineField[] {
  * - Look for any wrappers ('[' and '(') in the line, trying to parse whatever comes after it as an inline key::.
  * - If successful, scan until you find a matching end bracket, and parse whatever remains as an inline value.
  */
-export function extractInlineFields(line: string, includeTaskFields = false): InlineField[] {
+export function extractInlineFields(
+    line: string,
+    includeTaskFields = false,
+): InlineField[] {
     let fields: InlineField[] = [];
     for (const wrapper of Object.keys(INLINE_FIELD_WRAPPERS)) {
         let foundIndex = line.indexOf(wrapper);
@@ -219,13 +246,17 @@ export function extractInlineFields(line: string, includeTaskFields = false): In
         }
     }
 
-    if (includeTaskFields) fields = fields.concat(extractSpecialTaskFields(line));
+    if (includeTaskFields)
+        fields = fields.concat(extractSpecialTaskFields(line));
 
     fields.sort((a, b) => a.start - b.start);
 
     const filteredFields: InlineField[] = [];
     for (let i = 0; i < fields.length; i++) {
-        if (i == 0 || filteredFields[filteredFields.length - 1].end < fields[i].start) {
+        if (
+            i == 0 ||
+            filteredFields[filteredFields.length - 1].end < fields[i].start
+        ) {
             filteredFields.push(fields[i]);
         }
     }
@@ -243,36 +274,49 @@ export function setTaskCompletion(
     const blockIdRegex = /\^[a-z0-9\\-]+/i;
 
     if (!complete && !useEmojiShorthand)
-        return trimEndingLines(setInlineField(originalText.trimEnd(), completionKey)).trimEnd();
+        return trimEndingLines(
+            setInlineField(originalText.trimEnd(), completionKey),
+        ).trimEnd();
 
     const parts = originalText.split(/\r?\n/u);
     const matches = blockIdRegex.exec(parts[parts.length - 1]);
-    console.debug('matchreg', matches);
+    console.debug("matchreg", matches);
 
-    let processedPart = parts[parts.length - 1].split(blockIdRegex).join(''); // last part without block id
+    let processedPart = parts[parts.length - 1].split(blockIdRegex).join(""); // last part without block id
     if (useEmojiShorthand) {
         processedPart = setEmojiShorthandCompletionField(
             processedPart,
-            complete ? DateTime.now().toFormat('yyyy-MM-dd') : '',
+            complete ? moment().format("YYYY-MM-DD") : "",
         );
     } else {
-        processedPart = setInlineField(processedPart, completionKey, DateTime.now().toFormat(completionDateFormat));
+        processedPart = setInlineField(
+            processedPart,
+            completionKey,
+            moment().format(completionDateFormat),
+        );
     }
-    processedPart = `${processedPart.trimEnd()}${matches?.length ? ' ' + matches[0].trim() : ''}`.trimEnd(); // add back block id
+    processedPart =
+        `${processedPart.trimEnd()}${matches?.length ? " " + matches[0].trim() : ""}`.trimEnd(); // add back block id
     parts[parts.length - 1] = processedPart;
 
-    return parts.join('\n');
+    return parts.join("\n");
 }
 
-export function setEmojiShorthandCompletionField(source: string, value?: string): string {
+export function setEmojiShorthandCompletionField(
+    source: string,
+    value?: string,
+): string {
     const existing = extractInlineFields(source, true);
-    const existingKeys = existing.filter(f => f.key === 'completion' && f.wrapping === 'emoji-shorthand');
+    const existingKeys = existing.filter(
+        (f) => f.key === "completion" && f.wrapping === "emoji-shorthand",
+    );
 
     // Don't do anything if there are duplicate keys OR the key already doesn't exist.
-    if (existingKeys.length > 2 || (existingKeys.length == 0 && !value)) return source;
+    if (existingKeys.length > 2 || (existingKeys.length == 0 && !value))
+        return source;
 
     /* No wrapper, add own spacing at start */
-    const annotation = value ? ` ✅ ${value}` : '';
+    const annotation = value ? ` ✅ ${value}` : "";
     const existingKey = existingKeys[0];
     if (existingKey) {
         const prefix = source.substring(0, existingKey.start);
@@ -284,38 +328,49 @@ export function setEmojiShorthandCompletionField(source: string, value?: string)
 }
 
 // TODO: Consider using an actual parser in leiu of a more expensive regex.
-export const LIST_ITEM_REGEX = /^[\s>]*(\d+\.|\d+\)|\*|-|\+)\s*(\[.{0,1}\])?\s*(.*)$/mu;
+export const LIST_ITEM_REGEX =
+    /^[\s>]*(\d+\.|\d+\)|\*|-|\+)\s*(\[.{0,1}\])?\s*(.*)$/mu;
 
 /** Rewrite a task with the given completion status and new text. */
-export async function rewriteTask(vault: Vault, task: STask, desiredStatus: string, desiredText?: string) {
-    if (desiredStatus == task.status && (desiredText == undefined || desiredText == task.text)) return;
-    desiredStatus = desiredStatus == '' ? ' ' : desiredStatus;
+export async function rewriteTask(
+    vault: Vault,
+    task: STask,
+    desiredStatus: string,
+    desiredText?: string,
+) {
+    if (
+        desiredStatus == task.status &&
+        (desiredText == undefined || desiredText == task.text)
+    )
+        return;
+    desiredStatus = desiredStatus == "" ? " " : desiredStatus;
 
     const rawFiletext = await vault.adapter.read(task.path);
-    const hasRN = rawFiletext.contains('\r');
+    const hasRN = rawFiletext.contains("\r");
     const filetext = rawFiletext.split(/\r?\n/u);
 
     if (filetext.length < task.line) return;
     const match = LIST_ITEM_REGEX.exec(filetext[task.line]);
     if (!match || match[2].length == 0) return;
 
-    const taskTextParts = task.text.split('\n');
+    const taskTextParts = task.text.split("\n");
     if (taskTextParts[0].trim() != match[3].trim()) return;
 
     // We have a positive match here at this point, so go ahead and do the rewrite of the status.
     const initialSpacing = /^[\s>]*/u.exec(filetext[task.line])![0];
     if (desiredText) {
-        const desiredParts = desiredText.split('\n');
+        const desiredParts = desiredText.split("\n");
 
-        const newTextLines: string[] = [`${initialSpacing}${task.symbol} [${desiredStatus}] ${desiredParts[0]}`].concat(
-            desiredParts.slice(1).map(l => initialSpacing + '\t' + l),
-        );
+        const newTextLines: string[] = [
+            `${initialSpacing}${task.symbol} [${desiredStatus}] ${desiredParts[0]}`,
+        ].concat(desiredParts.slice(1).map((l) => initialSpacing + "\t" + l));
 
         filetext.splice(task.line, task.lineCount, ...newTextLines);
     } else {
-        filetext[task.line] = `${initialSpacing}${task.symbol} [${desiredStatus}] ${taskTextParts[0].trim()}`;
+        filetext[task.line] =
+            `${initialSpacing}${task.symbol} [${desiredStatus}] ${taskTextParts[0].trim()}`;
     }
 
-    const newText = filetext.join(hasRN ? '\r\n' : '\n');
+    const newText = filetext.join(hasRN ? "\r\n" : "\n");
     await vault.adapter.write(task.path, newText);
 }
