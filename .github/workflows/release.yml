@@ -36,14 +36,39 @@ jobs:
       - name: Build plugin
         run: pnpm --filter awesome-brain-manager build
 
-      - name: Create release PR or publish
-        id: changesets
-        uses: changesets/action@v1
+      # - name: Create release PR or publish
+      #   id: changesets
+      #   uses: changesets/action@v1
+      #   with:
+      #     version: pnpm changeset:version
+      #     publish: pnpm changeset:publish
+      #     commit: "chore: version packages"
+      #     createGithubReleases: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     NPM_CONFIG_PROVENANCE: true
+
+      - name: Get plugin version
+        # if: steps.changesets.outputs.published == 'true' && contains(steps.changesets.outputs.publishedPackages, 'awesome-brain-manager')
+        id: plugin_version
+        shell: bash
+        run: |
+          version=$(node -p "require('./apps/obsidian-plugin/package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Create Obsidian GitHub Release
+        # if: steps.changesets.outputs.published == 'true' && contains(steps.changesets.outputs.publishedPackages, 'awesome-brain-manager')
+        uses: softprops/action-gh-release@v2
         with:
-          version: pnpm changeset:version
-          publish: pnpm changeset:publish
-          commit: "chore: version packages"
-          createGithubReleases: true
+          tag_name: ${{ steps.plugin_version.outputs.version }}
+          name: ${{ steps.plugin_version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            apps/obsidian-plugin/dist/main.js
+            apps/obsidian-plugin/dist/manifest.json
+            apps/obsidian-plugin/dist/styles.css
+            apps/obsidian-plugin/dist/awesome-brain-manager.css
+            versions.json
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
