@@ -12,9 +12,6 @@
   ],
   "type": "module",
   "exports": "./main.js",
-  "bin": {
-    "example": "./dist/bin/order.bin.ts"
-  },
   "files": [
     "dist"
   ],
