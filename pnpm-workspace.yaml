@@ -3,6 +3,7 @@ packages:
   - 'packages/*'
 catalog:
   '@commitlint/cli': ^19.5.0
+  '@commitlint/types': ^19.5.0
   miniprogram-recycle-view: 0.1.5
   '@types/node': ^22.0.0
   sass-embedded: ^1.89.2
