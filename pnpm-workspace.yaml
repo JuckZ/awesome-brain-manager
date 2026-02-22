@@ -113,4 +113,4 @@ catalogs:
   obsidian:
     obsidian: ^1.8.7
     obsidian-dataview: ^0.5.68
-    obsidian-typings: ^3.12.0
+    obsidian-typings: ^4.99.0
